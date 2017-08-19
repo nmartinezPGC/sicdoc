@@ -1,0 +1,51 @@
+BackendBundle\Entity\TblDepartamentosFuncionales:
+    type: entity
+    table: tbl_departamentos_funcionales
+    indexes:
+        fki_deptos_func_direccion:
+            columns:
+                - cod_direccion_sreci
+    id:
+        codDeptoFuncional:
+            type: string
+            nullable: false
+            length: 5
+            options:
+                fixed: false
+            id: true
+            column: cod_depto_funcional
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idDeptoFuncional:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_depto_funcional
+        descDeptoFuncional:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: desc_depto_funcional
+        inicialesDeptoFuncional:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: iniciales_depto_funcional
+    manyToOne:
+        codDireccionSreci:
+            targetEntity: TblDireccionesSreci
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_direccion_sreci:
+                    referencedColumnName: cod_direccion_sreci
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

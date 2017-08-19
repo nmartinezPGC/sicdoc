@@ -1,0 +1,43 @@
+BackendBundle\Entity\TblEstados:
+    type: entity
+    table: tbl_estados
+    id:
+        codEstado:
+            type: string
+            nullable: false
+            length: 5
+            options:
+                fixed: false
+            id: true
+            column: cod_estado
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idEstado:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_estado
+        descripcionEstado:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: descripcion_estado
+        inicalesEstado:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: inicales_estado
+        grupoEstado:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: grupo_estado
+    lifecycleCallbacks: {  }

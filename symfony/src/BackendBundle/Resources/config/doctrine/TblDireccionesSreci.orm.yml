@@ -1,0 +1,36 @@
+BackendBundle\Entity\TblDireccionesSreci:
+    type: entity
+    table: tbl_direcciones_sreci
+    id:
+        codDireccionSreci:
+            type: string
+            nullable: false
+            length: 5
+            options:
+                fixed: false
+            id: true
+            column: cod_direccion_sreci
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idDireccionSreci:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_direccion_sreci
+        descDireccionSreci:
+            type: string
+            nullable: true
+            length: 40
+            options:
+                fixed: false
+            column: desc_direccion_sreci
+        inicialesDireccionSreci:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: iniciales_direccion_sreci
+    lifecycleCallbacks: {  }

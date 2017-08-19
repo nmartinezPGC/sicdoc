@@ -1,0 +1,118 @@
+BackendBundle\Entity\TblUsuarios:
+    type: entity
+    table: tbl_usuarios
+    indexes:
+        fki_usuario_estado:
+            columns:
+                - cod_estado
+        fki_usuario_tipo_funcionario:
+            columns:
+                - cod_tipo_funcionario
+        fki_usaurio_depto_funcional:
+            columns:
+                - cod_depto_funcional
+        fki_usuario_tipo_usuario:
+            columns:
+                - cod_tipo_usuario
+    id:
+        codUsuario:
+            type: string
+            nullable: false
+            length: 13
+            options:
+                fixed: false
+            id: true
+            column: cod_usuario
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idUsuario:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_usuario
+        nombre1Usuario:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: nombre1_usuario
+        nombre2Usuario:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: nombre2_usuario
+        apellido1Usuario:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: apellido1_usuario
+        apellido2Usuario:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: apellido2_usuario
+        emailUsuario:
+            type: string
+            nullable: true
+            length: 80
+            options:
+                fixed: false
+            column: email_usuario
+        inicialesUsuario:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: iniciales_usuario
+    manyToOne:
+        codDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_depto_funcional:
+                    referencedColumnName: cod_depto_funcional
+            orphanRemoval: false
+        codEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_estado:
+                    referencedColumnName: cod_estado
+            orphanRemoval: false
+        codTipoFuncionario:
+            targetEntity: TblTiposFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_tipo_funcionario:
+                    referencedColumnName: cod_tipo_funcionario
+            orphanRemoval: false
+        codTipoUsuario:
+            targetEntity: TblTipoUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_tipo_usuario:
+                    referencedColumnName: cod_tipo_usuario
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

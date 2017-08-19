@@ -1,0 +1,36 @@
+BackendBundle\Entity\TblPrioridades:
+    type: entity
+    table: tbl_prioridades
+    id:
+        codPrioridad:
+            type: string
+            nullable: false
+            length: 5
+            options:
+                fixed: false
+            id: true
+            column: cod_prioridad
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idPrioridad:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_prioridad
+        descPrioridad:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: desc_prioridad
+        inicialesPrioridad:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: iniciales_prioridad
+    lifecycleCallbacks: {  }

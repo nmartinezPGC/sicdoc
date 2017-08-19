@@ -1,0 +1,65 @@
+BackendBundle\Entity\TblCorrespondenciaEnc:
+    type: entity
+    table: tbl_correspondencia_enc
+    id:
+        codCorrespondenciaEnc:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+            id: true
+            column: cod_correspondencia_enc
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idCorrespondenciaEnc:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_correspondencia_enc
+        descCorrespondenciaEnc:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: desc_correspondencia_enc
+        codInstitucion:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: cod_institucion
+        codUsuario:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: cod_usuario
+        codEstado:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: cod_estado
+        fechaIngreso:
+            type: date
+            nullable: true
+            column: fecha_ingreso
+        fechaMaxEntrega:
+            type: date
+            nullable: true
+            column: fecha_max_entrega
+        codDireccionSreci:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: cod_direccion_sreci
+    lifecycleCallbacks: {  }

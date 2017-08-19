@@ -1,0 +1,85 @@
+BackendBundle\Entity\TblCorrespondenciaDet:
+    type: entity
+    table: tbl_correspondencia_det
+    indexes:
+        fki_det_enc:
+            columns:
+                - cod_correspondencia_enc
+        fki_det_usuario:
+            columns:
+                - cod_usuario
+        fki_det_estado:
+            columns:
+                - cod_estado
+    id:
+        codCorrespondenciaDet:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+            id: true
+            column: cod_correspondencia_det
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idCorrespondenciaDet:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_correspondencia_det
+        descCorrespondenciaDet:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: desc_correspondencia_det
+        actividadRealizar:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: actividad_realizar
+        fechaIngreso:
+            type: date
+            nullable: true
+            column: fecha_ingreso
+        fechaSalida:
+            type: date
+            nullable: true
+            column: fecha_salida
+    manyToOne:
+        codCorrespondenciaEnc:
+            targetEntity: TblCorrespondenciaEnc
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_correspondencia_enc:
+                    referencedColumnName: cod_correspondencia_enc
+            orphanRemoval: false
+        codEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_estado:
+                    referencedColumnName: cod_estado
+            orphanRemoval: false
+        codUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_usuario:
+                    referencedColumnName: cod_usuario
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

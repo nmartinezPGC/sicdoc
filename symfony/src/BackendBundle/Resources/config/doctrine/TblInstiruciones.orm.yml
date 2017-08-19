@@ -1,0 +1,90 @@
+BackendBundle\Entity\TblInstiruciones:
+    type: entity
+    table: tbl_instiruciones
+    indexes:
+        fki_institucion_pais:
+            columns:
+                - cod_pais
+        fki_institucion_tipo_institucion:
+            columns:
+                - cod_tipo_institucion
+    id:
+        codInstitucion:
+            type: string
+            nullable: false
+            length: 5
+            options:
+                fixed: false
+            id: true
+            column: cod_institucion
+            generator:
+                strategy: SEQUENCE
+    fields:
+        idInstitucion:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: id_institucion
+        descInstitucion:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: desc_institucion
+        perfilInstitucion:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: perfil_institucion
+        direccionInstitucion:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: direccion_institucion
+        telefonoInstitucion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: telefono_institucion
+        celularInstitucion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: celular_institucion
+        emailInstitucion:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: email_institucion
+    manyToOne:
+        codPais:
+            targetEntity: TblPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_pais:
+                    referencedColumnName: cod_pais
+            orphanRemoval: false
+        codTipoInstitucion:
+            targetEntity: TblTipoInstitucion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_tipo_institucion:
+                    referencedColumnName: cod_tipo_institucion
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
