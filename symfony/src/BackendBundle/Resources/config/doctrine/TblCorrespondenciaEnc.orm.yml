@@ -1,6 +1,19 @@
 BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
+    indexes:
+        fki_enc_direccion_sreci:
+            columns:
+                - cod_direccion_sreci
+        fki_enc_institucion:
+            columns:
+                - cod_institucion
+        fki_enc_usuario:
+            columns:
+                - cod_usuario
+        fki_enc_estado:
+            columns:
+                - cod_estado
     id:
         codCorrespondenciaEnc:
             type: string
@@ -26,27 +39,6 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             options:
                 fixed: false
             column: desc_correspondencia_enc
-        codInstitucion:
-            type: string
-            nullable: true
-            length: 5
-            options:
-                fixed: false
-            column: cod_institucion
-        codUsuario:
-            type: string
-            nullable: true
-            length: 5
-            options:
-                fixed: false
-            column: cod_usuario
-        codEstado:
-            type: string
-            nullable: true
-            length: 5
-            options:
-                fixed: false
-            column: cod_estado
         fechaIngreso:
             type: date
             nullable: true
@@ -55,11 +47,45 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             type: date
             nullable: true
             column: fecha_max_entrega
+    manyToOne:
+        codInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_institucion:
+                    referencedColumnName: cod_institucion
+            orphanRemoval: false
+        codUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_usuario:
+                    referencedColumnName: cod_usuario
+            orphanRemoval: false
+        codEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_estado:
+                    referencedColumnName: cod_estado
+            orphanRemoval: false
         codDireccionSreci:
-            type: string
-            nullable: true
-            length: 5
-            options:
-                fixed: false
-            column: cod_direccion_sreci
+            targetEntity: TblDireccionesSreci
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cod_direccion_sreci:
+                    referencedColumnName: cod_direccion_sreci
+            orphanRemoval: false
     lifecycleCallbacks: {  }
