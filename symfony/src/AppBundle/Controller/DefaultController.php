@@ -18,4 +18,15 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ]);
     }
+    
+    /**
+     * @Route("/pais", name="pais")
+     */
+    public function paisAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager(); 
+        $paises = $em->getRepository('BackendBundle:TblPais')->findAll();
+        var_dump($paises);
+        die();
+    }
 }
