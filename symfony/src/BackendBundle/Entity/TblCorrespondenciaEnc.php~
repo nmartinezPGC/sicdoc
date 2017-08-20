@@ -255,3 +255,4 @@ class TblCorrespondenciaEnc
         return $this->codDireccionSreci;
     }
 }
+

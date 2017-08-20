@@ -11,4 +11,10 @@ default_index:
 default_pais:
     path: /pais
     defaults: { _controller: "AppBundle:Default:pais" }
-    methods: GET    
+    methods: GET
+    
+# Ruta para el Login de la API
+default_login:
+    path: /login
+    defaults: { _controller: "AppBundle:Default:login" }
+    methods: POST

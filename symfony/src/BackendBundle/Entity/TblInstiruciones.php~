@@ -3,9 +3,9 @@
 namespace BackendBundle\Entity;
 
 /**
- * TblInstituciones
+ * TblInstiruciones
  */
-class TblInstituciones
+class TblInstiruciones
 {
     /**
      * @var string
@@ -73,7 +73,7 @@ class TblInstituciones
      *
      * @param integer $idInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setIdInstitucion($idInstitucion)
     {
@@ -97,7 +97,7 @@ class TblInstituciones
      *
      * @param string $descInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setDescInstitucion($descInstitucion)
     {
@@ -121,7 +121,7 @@ class TblInstituciones
      *
      * @param string $perfilInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setPerfilInstitucion($perfilInstitucion)
     {
@@ -145,7 +145,7 @@ class TblInstituciones
      *
      * @param string $direccionInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setDireccionInstitucion($direccionInstitucion)
     {
@@ -169,7 +169,7 @@ class TblInstituciones
      *
      * @param integer $telefonoInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setTelefonoInstitucion($telefonoInstitucion)
     {
@@ -193,7 +193,7 @@ class TblInstituciones
      *
      * @param integer $celularInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setCelularInstitucion($celularInstitucion)
     {
@@ -217,7 +217,7 @@ class TblInstituciones
      *
      * @param string $emailInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setEmailInstitucion($emailInstitucion)
     {
@@ -241,7 +241,7 @@ class TblInstituciones
      *
      * @param \BackendBundle\Entity\TblPais $codPais
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setCodPais(\BackendBundle\Entity\TblPais $codPais = null)
     {
@@ -265,7 +265,7 @@ class TblInstituciones
      *
      * @param \BackendBundle\Entity\TblTipoInstitucion $codTipoInstitucion
      *
-     * @return TblInstituciones
+     * @return TblInstiruciones
      */
     public function setCodTipoInstitucion(\BackendBundle\Entity\TblTipoInstitucion $codTipoInstitucion = null)
     {
@@ -284,3 +284,4 @@ class TblInstituciones
         return $this->codTipoInstitucion;
     }
 }
+

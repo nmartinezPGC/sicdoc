@@ -74,6 +74,13 @@ BackendBundle\Entity\TblUsuarios:
             options:
                 fixed: false
             column: iniciales_usuario
+        passwordUsuario:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: password_usuario
     manyToOne:
         codDeptoFuncional:
             targetEntity: TblDepartamentosFuncionales

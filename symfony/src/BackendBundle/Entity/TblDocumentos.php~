@@ -197,3 +197,4 @@ class TblDocumentos
         return $this->codUsuario;
     }
 }
+
