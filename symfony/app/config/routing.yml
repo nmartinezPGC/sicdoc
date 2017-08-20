@@ -1,3 +1,4 @@
+## Redireccionamos las Rutas al Fichero
 app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix: /

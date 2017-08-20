@@ -1,0 +1,6 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto
+app_default:
+    resource: "@AppBundle/Resources/config/routing/default.yml"
+    prefix: /

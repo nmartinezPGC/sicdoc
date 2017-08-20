@@ -1,0 +1,14 @@
+## YAML Template.
+## 
+---
+## Ruta para la Index
+default_index:
+    path: /
+    defaults: { _controller: "AppBundle:Default:index" }
+    methods: GET
+    
+# Ruta para los Paises
+default_pais:
+    path: /pais
+    defaults: { _controller: "AppBundle:Default:pais" }
+    methods: GET    
