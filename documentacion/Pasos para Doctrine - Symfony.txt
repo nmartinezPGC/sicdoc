@@ -1,0 +1,5 @@
+1 ) Generar los Bundle
+	php bin/console generate:bundle --namespace=BackendBundle --format=yml
+2 ) Generar las Entidades
+	php bin/console doctrine:mapping:import BackendBundle yml
+3 ) php bin/console doctrine:generate:entities BackendBundle
