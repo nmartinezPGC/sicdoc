@@ -44,6 +44,23 @@ BackendBundle\Entity\TblDocumentos:
             type: date
             nullable: true
             column: fecha_ingreso
+        fechaModificacion:
+            type: date
+            nullable: true
+            column: fecha_modificacion
+        miniImagen:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: mini_imagen
+        status:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
     manyToOne:
         codCorrespondenciaDet:
             targetEntity: TblCorrespondenciaDet

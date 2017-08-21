@@ -27,7 +27,20 @@ class TblTiposFuncionarios
      */
     private $inicialesTipoFuncionario;
 
+    /**
+     * Set codTipoFuncionario
+     *
+     * @param integer $codTipoFuncionario
+     *
+     * @return TblTiposFuncionarios
+     */
+    public function setCodTipoFuncionario($codTipoFuncionario)
+    {
+        $this->codTipoFuncionario = $codTipoFuncionario;
 
+        return $this;
+    }    
+    
     /**
      * Get codTipoFuncionario
      *

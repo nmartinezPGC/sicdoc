@@ -28,6 +28,20 @@ class TblEstados
     private $inicalesEstado;
 
     /**
+     * Set codEstado
+     *
+     * @param integer $codEstado
+     *
+     * @return TblEstados
+     */
+    public function setCodEstado($codEstado)
+    {
+        $this->codEstado = $codEstado;
+
+        return $this;
+    }
+    
+    /**
      * @var string
      */
     private $grupoEstado;

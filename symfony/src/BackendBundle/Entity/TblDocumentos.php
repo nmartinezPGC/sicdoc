@@ -46,7 +46,7 @@ class TblDocumentos
     /**
      * Set coDocumento
      *
-     * @param string $coDocumento
+     * @param string $codDocumento
      *
      * @return TblDocumentos
      */
@@ -209,5 +209,92 @@ class TblDocumentos
     public function getCodUsuario()
     {
         return $this->codUsuario;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $fechaModificacion;
+
+    /**
+     * @var string
+     */
+    private $miniImagen;
+
+    /**
+     * @var string
+     */
+    private $status;
+
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return TblDocumentos
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
+     * Set miniImagen
+     *
+     * @param string $miniImagen
+     *
+     * @return TblDocumentos
+     */
+    public function setMiniImagen($miniImagen)
+    {
+        $this->miniImagen = $miniImagen;
+
+        return $this;
+    }
+
+    /**
+     * Get miniImagen
+     *
+     * @return string
+     */
+    public function getMiniImagen()
+    {
+        return $this->miniImagen;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return TblDocumentos
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
