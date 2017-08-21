@@ -2,36 +2,36 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        fki_enc_direccion_sreci:
+        fki_enc_user:
             columns:
-                - cod_direccion_sreci
-        fki_enc_institucion:
+                - id_usuario
+        fki_enc_inst:
             columns:
-                - cod_institucion
-        fki_enc_usuario:
-            columns:
-                - cod_usuario
+                - id_institucion
         fki_enc_estado:
             columns:
-                - cod_estado
+                - id_estado
+        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
+            columns:
+                - cod_correspondencia_enc
     id:
+        idCorrespondenciaEnc:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_correspondencia_enc
+            generator:
+                strategy: SEQUENCE
+    fields:
         codCorrespondenciaEnc:
             type: string
             nullable: false
             length: 10
             options:
                 fixed: false
-            id: true
             column: cod_correspondencia_enc
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idCorrespondenciaEnc:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_correspondencia_enc
         descCorrespondenciaEnc:
             type: string
             nullable: true
@@ -47,45 +47,42 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             type: date
             nullable: true
             column: fecha_max_entrega
+        codDireccionSreci:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: cod_direccion_sreci
     manyToOne:
-        codInstitucion:
-            targetEntity: TblInstituciones
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                cod_institucion:
-                    referencedColumnName: cod_institucion
-            orphanRemoval: false
-        codUsuario:
+        idUsuario:
             targetEntity: TblUsuarios
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_usuario:
-                    referencedColumnName: cod_usuario
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
-        codEstado:
+        idInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idEstado:
             targetEntity: TblEstados
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_estado:
-                    referencedColumnName: cod_estado
-            orphanRemoval: false
-        codDireccionSreci:
-            targetEntity: TblDireccionesSreci
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                cod_direccion_sreci:
-                    referencedColumnName: cod_direccion_sreci
+                id_estado:
+                    referencedColumnName: id_estado
             orphanRemoval: false
     lifecycleCallbacks: {  }

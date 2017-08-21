@@ -10,16 +10,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 //Importamos las Tablas a Relacionar
 use BackendBundle\Entity\TblUsuarios;
 use BackendBundle\Entity\TblDocumentos;
+use BackendBundle\Entity\TblCorrespondenciaDet;
 
 /**
  * Description of DocumentosController
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Nahum Martinez <nahum.sreci@gmail.com>
  */
 class DocumentosController extends Controller{
     //Accion de Prueba
-    //Funcion de Nuevo Documento ***********************************************
-    //**************************************************************************
+    //Funcion de Nuevo Documento *********************************************************************************************************
+    //************************************************************************************************************************************
     public function newAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
@@ -30,7 +31,7 @@ class DocumentosController extends Controller{
         $checkToken = $helpers->authCheck($hash);
         //Evalua que el Token sea True
         if($checkToken == true){
-            $identity = authCheck($hash, true);
+            $identity = $helpers->authCheck($hash, true);
             
             //Convertimos los Parametros POSt a Json
             $json = $request->get("json", null);
@@ -49,43 +50,89 @@ class DocumentosController extends Controller{
                 $image              = null;
                 $status             = ($params->status != null) ? $params->status : null ;
                 //Relaciones de la Tabla con Otras
-                $cod_correspondencia  = ($params->cod_correspondencia != null) ? $params->cod_correspondencia : null ;
-                $cod_usuario          = ($params->cod_usuario != null) ? $params->cod_usuario : null ;
+                $cod_correspondencia_det  = ($params->cod_correspondencia_det != null) ? $params->cod_correspondencia_det : null ;
+                //$cod_usuario          = ($params->cod_usuario != null) ? $params->cod_usuario : null ;
+                $cod_usuario              = $identity->codUser;               
                 
-                
+                //Evaluamos que el Codigo de Usuario no sea Null y la Descripcion tambien
                 if($cod_usuario != null && $desc_documento != null){
                     //La condicion fue Exitosa
+                    //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
-                    $usuario = $em->getRepository("backendBundle:TblUsuarios")->findOneBy(
-                        array(
-                           "codUsuario" => $cod_usuario 
-                        ));
                     
-                    //Instanciamos Las Clases
+                    //Seteo de Datos Generales de la tabla
                     $documentoNew = new TblDocumentos();
                     $documentoNew->setCodDocumento($cod_documento);
                     $documentoNew->setDescDocumento($desc_documento);
                     $documentoNew->setUrlDocumento($url_documento);
                     $documentoNew->setFechaIngreso($fecha_ingreso);
-                    $documentoNew->setfech($fecha_modificacion);
-                    $documentoNew->setUrlDocumento($url_documento);
-                    $documentoNew->setCodUsuario($usuario);
-                    $documentoNew = new TblDocumentos();
-                    $documentoNew = new TblDocumentos();
+                    $documentoNew->setFechaModificacion($fecha_modificacion);
+                    $documentoNew->setMiniImagen($image);
+                    $documentoNew->setStatus($status);
                     
+                    //variables de Otras Tablas
+                    //Instanciamos de la Clase TblUsuario
+                    $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                        array(
+                           "codUsuario" => $identity->codUser
+                           // "idUsuario" => $identity->sub
+                        ));                    
+                    $documentoNew->setCodUsuario($usuario); //Set de Codigo de Usuario
+                    //Instanciamos de la Clase TblCorrespondenciaDet
+                                  echo "Voy por Aka 1.3  " . $identity->codUser;      
+                    $correspondencia = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(                            
+                        array(
+                           "codCorrespondenciaDet" => $cod_correspondencia_det
+                        ));
                     
+                    $documentoNew->setIdCorrespondenciaDet($correspondencia); //Set de Codigo de Detalle de Correspondencia
                     
+                    //Realizar la Persistencia de los Datos y enviar a la BD
+                    $em->persist($documentoNew);
+                    $em->flush();
+                    
+                    //Consulta de ese Documento recien Ingresado
+                    $documentoConsulta = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
+                            array(
+                                //"codUsuario"        => $cod_usuario, 
+                                "descDocumento"     => $desc_documento,
+                                "status"            => $status,
+                                "fechaIngreso"      => $fecha_ingreso,
+                                "fechaModificacion" => $fecha_modificacion,
+                                "codDocumento"      => $cod_documento 
+                            ));
+                    
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "success", 
+                       "code"   => 200, 
+                       "data"   => $documentoConsulta
+                    );
+                } else {
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "error", 
+                       "code"   => 400, 
+                       "msg"   => "Documento no Creado !!"
+                    );
+                }                
+            } else {
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "error", 
+                       "code"   => 400, 
+                       "msg"   => "Documento no Creado, parametros invalidos !!"
+                    );
                 }
-                
-            }
-            
-        } else {
+            } else {
             $data = array(
                 "status" => "error",                
                 "code" => "400",                
                 "msg" => "Autorizacion de Token no valida !!"                
             );
-        }
+        }        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
     } //Fin de la Funcion New Documento ****************************************
     
 }

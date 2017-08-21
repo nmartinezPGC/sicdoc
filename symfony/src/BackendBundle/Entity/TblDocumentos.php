@@ -297,4 +297,62 @@ class TblDocumentos
     {
         return $this->status;
     }
+    /**
+     * @var integer
+     */
+    private $idCorrespondenciaDet;
+
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+
+    /**
+     * Set idCorrespondenciaDet
+     *
+     * @param integer $idCorrespondenciaDet
+     *
+     * @return TblDocumentos
+     */
+    public function setIdCorrespondenciaDet($idCorrespondenciaDet)
+    {
+        $this->idCorrespondenciaDet = $idCorrespondenciaDet;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaDet
+     *
+     * @return integer
+     */
+    public function getIdCorrespondenciaDet()
+    {
+        return $this->idCorrespondenciaDet;
+    }
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblDocumentos
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
 }

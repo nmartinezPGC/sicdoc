@@ -2,30 +2,33 @@ BackendBundle\Entity\TblDocumentos:
     type: entity
     table: tbl_documentos
     indexes:
-        fki_documento_det:
+        fki_det_corr:
             columns:
-                - cod_correspondencia_det
-        fki_documento_usuario:
+                - id_correspondencia_det
+        tbl_documentos_cod_documento_idx:
             columns:
-                - cod_usuario
+                - cod_documento
+        fki_doc_user:
+            columns:
+                - id_usuario
     id:
+        idDocumento:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_documento
+            generator:
+                strategy: SEQUENCE
+    fields:
         codDocumento:
             type: string
             nullable: false
             length: 50
             options:
                 fixed: false
-            id: true
             column: cod_documento
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idDocumento:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_documento
         descDocumento:
             type: string
             nullable: true
@@ -62,24 +65,24 @@ BackendBundle\Entity\TblDocumentos:
             options:
                 fixed: false
     manyToOne:
-        codCorrespondenciaDet:
-            targetEntity: TblCorrespondenciaDet
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                cod_correspondencia_det:
-                    referencedColumnName: cod_correspondencia_det
-            orphanRemoval: false
-        codUsuario:
+        idUsuario:
             targetEntity: TblUsuarios
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_usuario:
-                    referencedColumnName: cod_usuario
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idCorrespondenciaDet:
+            targetEntity: TblCorrespondenciaDet
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_det:
+                    referencedColumnName: id_correspondencia_det
             orphanRemoval: false
     lifecycleCallbacks: {  }

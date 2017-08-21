@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblTiposFuncionarios:
     type: entity
     table: tbl_tipos_funcionarios
+    indexes:
+        tbl_tipos_funcionarios_cod_tipo_funcionario_idx:
+            columns:
+                - cod_tipo_funcionario
     id:
+        idTipoFuncionario:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_funcionario
+            generator:
+                strategy: SEQUENCE
+    fields:
         codTipoFuncionario:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_tipo_funcionario
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idTipoFuncionario:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_tipo_funcionario
         descTipoFuncionario:
             type: string
             nullable: true

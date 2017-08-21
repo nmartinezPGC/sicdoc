@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblEstados:
     type: entity
     table: tbl_estados
+    indexes:
+        tbl_estados_cod_estado_idx:
+            columns:
+                - cod_estado
     id:
+        idEstado:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_estado
+            generator:
+                strategy: SEQUENCE
+    fields:
         codEstado:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_estado
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idEstado:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_estado
         descripcionEstado:
             type: string
             nullable: true

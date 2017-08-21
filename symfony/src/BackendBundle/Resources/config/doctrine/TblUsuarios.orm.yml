@@ -2,18 +2,21 @@ BackendBundle\Entity\TblUsuarios:
     type: entity
     table: tbl_usuarios
     indexes:
-        fki_usuario_estado:
+        fki_tipo_funcionario_user:
             columns:
-                - cod_estado
-        fki_usuario_tipo_funcionario:
+                - id_tipo_funcionario
+        fki_tipo_user:
             columns:
-                - cod_tipo_funcionario
-        fki_usaurio_depto_funcional:
+                - id_tipo_usuario
+        idx_cod_user:
             columns:
-                - cod_depto_funcional
-        fki_usuario_tipo_usuario:
+                - cod_usuario
+        fki_deptos_user:
             columns:
-                - cod_tipo_usuario
+                - id_depto_funcional
+        fki_estados_user:
+            columns:
+                - id_estado
     id:
         idUsuario:
             type: integer
@@ -23,31 +26,15 @@ BackendBundle\Entity\TblUsuarios:
             id: true
             column: id_usuario
             generator:
-                strategy: IDENTITY
-        #codUsuario:
-            #type: string
-            #nullable: false
-            #length: 13
-            #options:
-                #fixed: false
-            #id: true
-            #column: cod_usuario
-            #generator:
-                #strategy: NONE
+                strategy: SEQUENCE
     fields:
         codUsuario:
             type: string
-            nullable: true
+            nullable: false
             length: 13
             options:
                 fixed: false
             column: cod_usuario
-        #idUsuario:
-            #type: integer
-            #nullable: false
-            #options:
-                #unsigned: false
-            #column: id_usuario
         nombre1Usuario:
             type: string
             nullable: true
@@ -109,44 +96,44 @@ BackendBundle\Entity\TblUsuarios:
             nullable: true
             column: fecha_creacion
     manyToOne:
-        codDeptoFuncional:
-            targetEntity: TblDepartamentosFuncionales
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                cod_depto_funcional:
-                    referencedColumnName: cod_depto_funcional
-            orphanRemoval: false
-        codEstado:
+        idEstado:
             targetEntity: TblEstados
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_estado:
-                    referencedColumnName: cod_estado
+                id_estado:
+                    referencedColumnName: id_estado
             orphanRemoval: false
-        codTipoFuncionario:
+        idTipoFuncionario:
             targetEntity: TblTiposFuncionarios
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_tipo_funcionario:
-                    referencedColumnName: cod_tipo_funcionario
+                id_tipo_funcionario:
+                    referencedColumnName: id_tipo_funcionario
             orphanRemoval: false
-        codTipoUsuario:
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+        idTipoUsuario:
             targetEntity: TblTipoUsuario
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_tipo_usuario:
-                    referencedColumnName: cod_tipo_usuario
+                id_tipo_usuario:
+                    referencedColumnName: id_tipo_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

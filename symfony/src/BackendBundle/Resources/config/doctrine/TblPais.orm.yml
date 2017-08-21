@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblPais:
     type: entity
     table: tbl_pais
+    indexes:
+        tbl_pais_cod_pais_idx:
+            columns:
+                - cod_pais
     id:
+        idPais:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_pais
+            generator:
+                strategy: SEQUENCE
+    fields:
         codPais:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_pais
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idPais:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_pais
         descPais:
             type: string
             nullable: true

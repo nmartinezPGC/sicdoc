@@ -283,4 +283,76 @@ class TblInstituciones
     {
         return $this->codTipoInstitucion;
     }
+    /**
+     * @var \BackendBundle\Entity\TblTipoInstitucion
+     */
+    private $idTipoInstitucion;
+
+    /**
+     * @var \BackendBundle\Entity\TblPais
+     */
+    private $idPais;
+
+
+    /**
+     * Set codInstitucion
+     *
+     * @param string $codInstitucion
+     *
+     * @return TblInstituciones
+     */
+    public function setCodInstitucion($codInstitucion)
+    {
+        $this->codInstitucion = $codInstitucion;
+
+        return $this;
+    }
+
+    /**
+     * Set idTipoInstitucion
+     *
+     * @param \BackendBundle\Entity\TblTipoInstitucion $idTipoInstitucion
+     *
+     * @return TblInstituciones
+     */
+    public function setIdTipoInstitucion(\BackendBundle\Entity\TblTipoInstitucion $idTipoInstitucion = null)
+    {
+        $this->idTipoInstitucion = $idTipoInstitucion;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoInstitucion
+     *
+     * @return \BackendBundle\Entity\TblTipoInstitucion
+     */
+    public function getIdTipoInstitucion()
+    {
+        return $this->idTipoInstitucion;
+    }
+
+    /**
+     * Set idPais
+     *
+     * @param \BackendBundle\Entity\TblPais $idPais
+     *
+     * @return TblInstituciones
+     */
+    public function setIdPais(\BackendBundle\Entity\TblPais $idPais = null)
+    {
+        $this->idPais = $idPais;
+
+        return $this;
+    }
+
+    /**
+     * Get idPais
+     *
+     * @return \BackendBundle\Entity\TblPais
+     */
+    public function getIdPais()
+    {
+        return $this->idPais;
+    }
 }

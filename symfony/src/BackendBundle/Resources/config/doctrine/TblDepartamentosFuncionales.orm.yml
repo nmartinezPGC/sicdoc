@@ -2,27 +2,30 @@ BackendBundle\Entity\TblDepartamentosFuncionales:
     type: entity
     table: tbl_departamentos_funcionales
     indexes:
-        fki_deptos_func_direccion:
+        tbl_departamentos_funcionales_cod_depto_funcional_idx:
             columns:
-                - cod_direccion_sreci
+                - cod_depto_funcional
+        fki_deptos_direcciones:
+            columns:
+                - id_direccion_sreci
     id:
+        idDeptoFuncional:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_depto_funcional
+            generator:
+                strategy: SEQUENCE
+    fields:
         codDeptoFuncional:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_depto_funcional
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idDeptoFuncional:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_depto_funcional
         descDeptoFuncional:
             type: string
             nullable: true
@@ -38,14 +41,14 @@ BackendBundle\Entity\TblDepartamentosFuncionales:
                 fixed: false
             column: iniciales_depto_funcional
     manyToOne:
-        codDireccionSreci:
+        idDireccionSreci:
             targetEntity: TblDireccionesSreci
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cod_direccion_sreci:
-                    referencedColumnName: cod_direccion_sreci
+                id_direccion_sreci:
+                    referencedColumnName: id_direccion_sreci
             orphanRemoval: false
     lifecycleCallbacks: {  }

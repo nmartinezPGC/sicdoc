@@ -151,4 +151,33 @@ class TblDepartamentosFuncionales
     {
         return $this->codDireccionSreci;
     }
+    /**
+     * @var \BackendBundle\Entity\TblDireccionesSreci
+     */
+    private $idDireccionSreci;
+
+
+    /**
+     * Set idDireccionSreci
+     *
+     * @param \BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci
+     *
+     * @return TblDepartamentosFuncionales
+     */
+    public function setIdDireccionSreci(\BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci = null)
+    {
+        $this->idDireccionSreci = $idDireccionSreci;
+
+        return $this;
+    }
+
+    /**
+     * Get idDireccionSreci
+     *
+     * @return \BackendBundle\Entity\TblDireccionesSreci
+     */
+    public function getIdDireccionSreci()
+    {
+        return $this->idDireccionSreci;
+    }
 }

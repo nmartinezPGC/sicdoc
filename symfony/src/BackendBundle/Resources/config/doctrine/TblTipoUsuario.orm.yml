@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblTipoUsuario:
     type: entity
     table: tbl_tipo_usuario
+    indexes:
+        tbl_tipo_usuario_cod_tipo_usuario_idx:
+            columns:
+                - cod_tipo_usuario
     id:
+        idTipoUsuario:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_usuario
+            generator:
+                strategy: SEQUENCE
+    fields:
         codTipoUsuario:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_tipo_usuario
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idTipoUsuario:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_tipo_usuario
         descTipoUsuario:
             type: string
             nullable: true

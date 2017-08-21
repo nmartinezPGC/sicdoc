@@ -109,4 +109,18 @@ class TblPrioridades
     {
         return $this->inicialesPrioridad;
     }
+
+    /**
+     * Set codPrioridad
+     *
+     * @param string $codPrioridad
+     *
+     * @return TblPrioridades
+     */
+    public function setCodPrioridad($codPrioridad)
+    {
+        $this->codPrioridad = $codPrioridad;
+
+        return $this;
+    }
 }

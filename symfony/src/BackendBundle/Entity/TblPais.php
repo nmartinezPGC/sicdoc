@@ -167,4 +167,18 @@ class TblPais
     {
         return $this->codContinente;
     }
+
+    /**
+     * Set codPais
+     *
+     * @param string $codPais
+     *
+     * @return TblPais
+     */
+    public function setCodPais($codPais)
+    {
+        $this->codPais = $codPais;
+
+        return $this;
+    }
 }

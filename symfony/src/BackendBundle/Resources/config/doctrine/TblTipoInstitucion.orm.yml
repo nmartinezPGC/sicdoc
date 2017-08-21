@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblTipoInstitucion:
     type: entity
     table: tbl_tipo_institucion
+    indexes:
+        tbl_tipo_institucion_cod_tipo_institucion_idx:
+            columns:
+                - cod_tipo_institucion
     id:
+        idTipoInstitucion:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_institucion
+            generator:
+                strategy: SEQUENCE
+    fields:
         codTipoInstitucion:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_tipo_institucion
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idTipoInstitucion:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_tipo_institucion
         descTipoInstitucion:
             type: string
             nullable: true

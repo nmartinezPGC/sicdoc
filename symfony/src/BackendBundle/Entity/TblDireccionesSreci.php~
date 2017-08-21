@@ -109,4 +109,18 @@ class TblDireccionesSreci
     {
         return $this->inicialesDireccionSreci;
     }
+
+    /**
+     * Set codDireccionSreci
+     *
+     * @param string $codDireccionSreci
+     *
+     * @return TblDireccionesSreci
+     */
+    public function setCodDireccionSreci($codDireccionSreci)
+    {
+        $this->codDireccionSreci = $codDireccionSreci;
+
+        return $this;
+    }
 }

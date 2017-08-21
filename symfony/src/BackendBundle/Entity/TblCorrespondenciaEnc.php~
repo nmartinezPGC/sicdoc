@@ -254,4 +254,105 @@ class TblCorrespondenciaEnc
     {
         return $this->codDireccionSreci;
     }
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+    /**
+     * @var \BackendBundle\Entity\TblInstituciones
+     */
+    private $idInstitucion;
+
+    /**
+     * @var \BackendBundle\Entity\TblEstados
+     */
+    private $idEstado;
+
+
+    /**
+     * Set codCorrespondenciaEnc
+     *
+     * @param string $codCorrespondenciaEnc
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setCodCorrespondenciaEnc($codCorrespondenciaEnc)
+    {
+        $this->codCorrespondenciaEnc = $codCorrespondenciaEnc;
+
+        return $this;
+    }
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+
+    /**
+     * Set idInstitucion
+     *
+     * @param \BackendBundle\Entity\TblInstituciones $idInstitucion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdInstitucion(\BackendBundle\Entity\TblInstituciones $idInstitucion = null)
+    {
+        $this->idInstitucion = $idInstitucion;
+
+        return $this;
+    }
+
+    /**
+     * Get idInstitucion
+     *
+     * @return \BackendBundle\Entity\TblInstituciones
+     */
+    public function getIdInstitucion()
+    {
+        return $this->idInstitucion;
+    }
+
+    /**
+     * Set idEstado
+     *
+     * @param \BackendBundle\Entity\TblEstados $idEstado
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdEstado(\BackendBundle\Entity\TblEstados $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \BackendBundle\Entity\TblEstados
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
 }

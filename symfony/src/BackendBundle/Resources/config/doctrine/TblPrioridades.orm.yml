@@ -1,24 +1,28 @@
 BackendBundle\Entity\TblPrioridades:
     type: entity
     table: tbl_prioridades
+    indexes:
+        tbl_prioridades_cod_prioridad_idx:
+            columns:
+                - cod_prioridad
     id:
+        idPrioridad:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_prioridad
+            generator:
+                strategy: SEQUENCE
+    fields:
         codPrioridad:
             type: string
             nullable: false
             length: 5
             options:
                 fixed: false
-            id: true
             column: cod_prioridad
-            generator:
-                strategy: SEQUENCE
-    fields:
-        idPrioridad:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: id_prioridad
         descPrioridad:
             type: string
             nullable: true

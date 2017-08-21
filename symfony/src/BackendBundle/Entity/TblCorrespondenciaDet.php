@@ -52,6 +52,20 @@ class TblCorrespondenciaDet
      */
     private $codUsuario;
 
+    
+    /**
+     * Set codCorrespondenciaDet
+     *
+     * @param integer $codCorrespondenciaDet
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setCodCorrespondenciaDet($codCorrespondenciaDet)
+    {
+        $this->codCorrespondenciaDet = $codCorrespondenciaDet;
+
+        return $this;
+    }
 
     /**
      * Get codCorrespondenciaDet
@@ -253,5 +267,92 @@ class TblCorrespondenciaDet
     public function getCodUsuario()
     {
         return $this->codUsuario;
+    }
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+    /**
+     * @var \BackendBundle\Entity\TblEstados
+     */
+    private $idEstado;
+
+    /**
+     * @var \BackendBundle\Entity\TblCorrespondenciaEnc
+     */
+    private $idCorrespondenciaEnc;
+
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+
+    /**
+     * Set idEstado
+     *
+     * @param \BackendBundle\Entity\TblEstados $idEstado
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setIdEstado(\BackendBundle\Entity\TblEstados $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \BackendBundle\Entity\TblEstados
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
+
+    /**
+     * Set idCorrespondenciaEnc
+     *
+     * @param \BackendBundle\Entity\TblCorrespondenciaEnc $idCorrespondenciaEnc
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setIdCorrespondenciaEnc(\BackendBundle\Entity\TblCorrespondenciaEnc $idCorrespondenciaEnc = null)
+    {
+        $this->idCorrespondenciaEnc = $idCorrespondenciaEnc;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaEnc
+     *
+     * @return \BackendBundle\Entity\TblCorrespondenciaEnc
+     */
+    public function getIdCorrespondenciaEnc()
+    {
+        return $this->idCorrespondenciaEnc;
     }
 }

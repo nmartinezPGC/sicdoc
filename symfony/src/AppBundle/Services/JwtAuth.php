@@ -38,6 +38,7 @@ class JwtAuth {
             //Generamos el Token
             $token = array(
                 "sub" => $user->getIdUsuario(),
+                "codUser" => $user->getCodUsuario(),
                 "password" => $user->getPasswordUsuario(),
                 "email" => $user->getEmailUsuario(),
                 "nombre" => $user->getNombre1Usuario(),

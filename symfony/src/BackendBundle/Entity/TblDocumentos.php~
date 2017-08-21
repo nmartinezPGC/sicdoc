@@ -210,4 +210,149 @@ class TblDocumentos
     {
         return $this->codUsuario;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fechaModificacion;
+
+    /**
+     * @var string
+     */
+    private $miniImagen;
+
+    /**
+     * @var string
+     */
+    private $status;
+
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return TblDocumentos
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
+     * Set miniImagen
+     *
+     * @param string $miniImagen
+     *
+     * @return TblDocumentos
+     */
+    public function setMiniImagen($miniImagen)
+    {
+        $this->miniImagen = $miniImagen;
+
+        return $this;
+    }
+
+    /**
+     * Get miniImagen
+     *
+     * @return string
+     */
+    public function getMiniImagen()
+    {
+        return $this->miniImagen;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return TblDocumentos
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    /**
+     * @var integer
+     */
+    private $idCorrespondenciaDet;
+
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+
+    /**
+     * Set idCorrespondenciaDet
+     *
+     * @param integer $idCorrespondenciaDet
+     *
+     * @return TblDocumentos
+     */
+    public function setIdCorrespondenciaDet($idCorrespondenciaDet)
+    {
+        $this->idCorrespondenciaDet = $idCorrespondenciaDet;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaDet
+     *
+     * @return integer
+     */
+    public function getIdCorrespondenciaDet()
+    {
+        return $this->idCorrespondenciaDet;
+    }
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblDocumentos
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
 }

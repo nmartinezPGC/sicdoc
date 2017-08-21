@@ -441,4 +441,120 @@ class TblUsuarios
     {
         return $this->fechaCreacion;
     }
+    /**
+     * @var \BackendBundle\Entity\TblEstados
+     */
+    private $idEstado;
+
+    /**
+     * @var \BackendBundle\Entity\TblTiposFuncionarios
+     */
+    private $idTipoFuncionario;
+
+    /**
+     * @var \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    private $idDeptoFuncional;
+
+    /**
+     * @var \BackendBundle\Entity\TblTipoUsuario
+     */
+    private $idTipoUsuario;
+
+
+    /**
+     * Set idEstado
+     *
+     * @param \BackendBundle\Entity\TblEstados $idEstado
+     *
+     * @return TblUsuarios
+     */
+    public function setIdEstado(\BackendBundle\Entity\TblEstados $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \BackendBundle\Entity\TblEstados
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
+
+    /**
+     * Set idTipoFuncionario
+     *
+     * @param \BackendBundle\Entity\TblTiposFuncionarios $idTipoFuncionario
+     *
+     * @return TblUsuarios
+     */
+    public function setIdTipoFuncionario(\BackendBundle\Entity\TblTiposFuncionarios $idTipoFuncionario = null)
+    {
+        $this->idTipoFuncionario = $idTipoFuncionario;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoFuncionario
+     *
+     * @return \BackendBundle\Entity\TblTiposFuncionarios
+     */
+    public function getIdTipoFuncionario()
+    {
+        return $this->idTipoFuncionario;
+    }
+
+    /**
+     * Set idDeptoFuncional
+     *
+     * @param \BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional
+     *
+     * @return TblUsuarios
+     */
+    public function setIdDeptoFuncional(\BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional = null)
+    {
+        $this->idDeptoFuncional = $idDeptoFuncional;
+
+        return $this;
+    }
+
+    /**
+     * Get idDeptoFuncional
+     *
+     * @return \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    public function getIdDeptoFuncional()
+    {
+        return $this->idDeptoFuncional;
+    }
+
+    /**
+     * Set idTipoUsuario
+     *
+     * @param \BackendBundle\Entity\TblTipoUsuario $idTipoUsuario
+     *
+     * @return TblUsuarios
+     */
+    public function setIdTipoUsuario(\BackendBundle\Entity\TblTipoUsuario $idTipoUsuario = null)
+    {
+        $this->idTipoUsuario = $idTipoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoUsuario
+     *
+     * @return \BackendBundle\Entity\TblTipoUsuario
+     */
+    public function getIdTipoUsuario()
+    {
+        return $this->idTipoUsuario;
+    }
 }

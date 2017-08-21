@@ -109,4 +109,18 @@ class TblTipoInstitucion
     {
         return $this->inicialesTipoInstitucion;
     }
+
+    /**
+     * Set codTipoInstitucion
+     *
+     * @param string $codTipoInstitucion
+     *
+     * @return TblTipoInstitucion
+     */
+    public function setCodTipoInstitucion($codTipoInstitucion)
+    {
+        $this->codTipoInstitucion = $codTipoInstitucion;
+
+        return $this;
+    }
 }
