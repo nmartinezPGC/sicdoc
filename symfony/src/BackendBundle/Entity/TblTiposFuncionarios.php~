@@ -110,4 +110,3 @@ class TblTiposFuncionarios
         return $this->inicialesTipoFuncionario;
     }
 }
-

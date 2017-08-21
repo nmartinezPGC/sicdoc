@@ -341,5 +341,33 @@ class TblUsuarios
     {
         return $this->codTipoUsuario;
     }
-}
+    /**
+     * @var string
+     */
+    private $passwordUsuario;
 
+
+    /**
+     * Set passwordUsuario
+     *
+     * @param string $passwordUsuario
+     *
+     * @return TblUsuarios
+     */
+    public function setPasswordUsuario($passwordUsuario)
+    {
+        $this->passwordUsuario = $passwordUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordUsuario
+     *
+     * @return string
+     */
+    public function getPasswordUsuario()
+    {
+        return $this->passwordUsuario;
+    }
+}

@@ -139,4 +139,3 @@ class TblDepartamentosFuncionales
         return $this->codDireccionSreci;
     }
 }
-

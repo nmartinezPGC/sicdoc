@@ -32,6 +32,19 @@ class TblDepartamentosFuncionales
      */
     private $codDireccionSreci;
 
+    /**
+     * Set codDeptoFuncional
+     *
+     * @param integer $codDeptoFuncional
+     *
+     * @return TblDepartamentosFuncionales
+     */
+    public function setCodDeptoFuncional($codDeptoFuncional)
+    {
+        $this->codDeptoFuncional = $codDeptoFuncional;
+
+        return $this;
+    }
 
     /**
      * Get codDeptoFuncional

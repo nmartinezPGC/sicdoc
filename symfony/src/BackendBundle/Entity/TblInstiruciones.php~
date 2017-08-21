@@ -284,4 +284,3 @@ class TblInstiruciones
         return $this->codTipoInstitucion;
     }
 }
-

@@ -110,4 +110,3 @@ class TblTipoUsuario
         return $this->inicialesTipoUsuario;
     }
 }
-

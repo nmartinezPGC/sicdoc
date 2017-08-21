@@ -110,4 +110,3 @@ class TblTipoInstitucion
         return $this->inicialesTipoInstitucion;
     }
 }
-

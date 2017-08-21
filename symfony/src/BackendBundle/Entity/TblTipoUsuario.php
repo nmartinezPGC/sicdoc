@@ -27,6 +27,19 @@ class TblTipoUsuario
      */
     private $inicialesTipoUsuario;
 
+    /**
+     * Set codTipoUsuario
+     *
+     * @param integer $codTipoUsuario
+     *
+     * @return TblTipoUsuario
+     */
+    public function setCodTipoUsuario($codTipoUsuario)
+    {
+        $this->codTipoUsuario = $codTipoUsuario;
+
+        return $this;
+    }
 
     /**
      * Get codTipoUsuario

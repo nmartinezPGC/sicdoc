@@ -4,3 +4,8 @@
 app_default:
     resource: "@AppBundle/Resources/config/routing/default.yml"
     prefix: /
+
+## Redireccionamiento de las Ruta por Defecto
+app_usuario:
+    resource: "@AppBundle/Resources/config/routing/usuario.yml"
+    prefix: /usuario

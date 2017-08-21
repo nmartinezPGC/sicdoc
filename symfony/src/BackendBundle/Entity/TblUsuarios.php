@@ -67,6 +67,19 @@ class TblUsuarios
      */
     private $codTipoUsuario;
 
+    /**
+     * Set codUsuario
+     *
+     * @param integer $codUsuario
+     *
+     * @return TblUsuarios
+     */
+    public function setcodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
+
+        return $this;
+    }
 
     /**
      * Get codUsuario
@@ -369,5 +382,63 @@ class TblUsuarios
     public function getPasswordUsuario()
     {
         return $this->passwordUsuario;
+    }
+    /**
+     * @var string
+     */
+    private $imagenUsuario;
+
+    /**
+     * @var \DateTime
+     */
+    private $fechaCreacion;
+
+
+    /**
+     * Set imagenUsuario
+     *
+     * @param string $imagenUsuario
+     *
+     * @return TblUsuarios
+     */
+    public function setImagenUsuario($imagenUsuario)
+    {
+        $this->imagenUsuario = $imagenUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get imagenUsuario
+     *
+     * @return string
+     */
+    public function getImagenUsuario()
+    {
+        return $this->imagenUsuario;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return TblUsuarios
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
     }
 }

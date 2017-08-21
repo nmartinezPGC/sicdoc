@@ -110,4 +110,3 @@ class TblPrioridades
         return $this->inicialesPrioridad;
     }
 }
-

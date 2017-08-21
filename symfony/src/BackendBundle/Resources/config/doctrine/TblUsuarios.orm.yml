@@ -15,23 +15,39 @@ BackendBundle\Entity\TblUsuarios:
             columns:
                 - cod_tipo_usuario
     id:
-        codUsuario:
-            type: string
-            nullable: false
-            length: 13
-            options:
-                fixed: false
-            id: true
-            column: cod_usuario
-            generator:
-                strategy: SEQUENCE
-    fields:
         idUsuario:
             type: integer
             nullable: false
             options:
                 unsigned: false
+            id: true
             column: id_usuario
+            generator:
+                strategy: IDENTITY
+        #codUsuario:
+            #type: string
+            #nullable: false
+            #length: 13
+            #options:
+                #fixed: false
+            #id: true
+            #column: cod_usuario
+            #generator:
+                #strategy: NONE
+    fields:
+        codUsuario:
+            type: string
+            nullable: true
+            length: 13
+            options:
+                fixed: false
+            column: cod_usuario
+        #idUsuario:
+            #type: integer
+            #nullable: false
+            #options:
+                #unsigned: false
+            #column: id_usuario
         nombre1Usuario:
             type: string
             nullable: true
@@ -81,6 +97,17 @@ BackendBundle\Entity\TblUsuarios:
             options:
                 fixed: false
             column: password_usuario
+        imagenUsuario:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: imagen_usuario
+        fechaCreacion:
+            type: date
+            nullable: true
+            column: fecha_creacion
     manyToOne:
         codDeptoFuncional:
             targetEntity: TblDepartamentosFuncionales
