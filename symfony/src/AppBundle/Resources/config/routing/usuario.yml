@@ -10,3 +10,8 @@ usuario_edit:
     path: /edit
     defaults: { _controller: "AppBundle:Usuario:edit" }
     methods: POST
+    
+usuario_upload_image:
+    path: /upload-image-user
+    defaults: { _controller: "AppBundle:Usuario:uploadImage" }
+    methods: POST
