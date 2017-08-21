@@ -44,6 +44,20 @@ class TblDocumentos
 
 
     /**
+     * Set coDocumento
+     *
+     * @param string $coDocumento
+     *
+     * @return TblDocumentos
+     */
+    public function setCodDocumento($codDocumento)
+    {
+        $this->codDocumento = $codDocumento;
+
+        return $this;
+    }
+    
+    /**
      * Get codDocumento
      *
      * @return string

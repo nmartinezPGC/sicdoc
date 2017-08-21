@@ -1,11 +1,16 @@
 ## YAML Template.
 ---
-## Redireccionamiento de las Ruta por Defecto
+## Redireccionamiento de las Ruta por Defecto | Modulo Inicial
 app_default:
     resource: "@AppBundle/Resources/config/routing/default.yml"
     prefix: /
 
-## Redireccionamiento de las Ruta por Defecto
+## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios
 app_usuario:
     resource: "@AppBundle/Resources/config/routing/usuario.yml"
     prefix: /usuario
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Documentos
+app_documento:
+    resource: "@AppBundle/Resources/config/routing/documentos.yml"
+    prefix: /documentos
