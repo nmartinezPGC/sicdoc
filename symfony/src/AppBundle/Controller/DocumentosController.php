@@ -87,6 +87,13 @@ class DocumentosController extends Controller{
                     
                     $documentoNew->setIdCorrespondenciaDet($correspondencia); //Set de Codigo de Detalle de Correspondencia
                     
+                    //Verificacion del Codigo del Documentos********************
+                    $isset_doc_cod = $em->getRepository("BackendBundle:TblDocumentos")->findBy(
+                        array(
+                          "codDocumento" => $cod_documento
+                        ));
+                    //Verificamos que el retorno de la Funcion sea = 0 ********* 
+                    if(count($isset_doc_cod) == 0){                    
                     //Realizar la Persistencia de los Datos y enviar a la BD
                     $em->persist($documentoNew);
                     $em->flush();
@@ -102,12 +109,20 @@ class DocumentosController extends Controller{
                                 "codDocumento"      => $cod_documento 
                             ));
                     
-                    //Array de Mensajes
-                    $data = array(
-                       "status" => "success", 
-                       "code"   => 200, 
-                       "data"   => $documentoConsulta
-                    );
+                        //Array de Mensajes
+                        $data = array(
+                            "status" => "success", 
+                            "code"   => 200, 
+                            "data"   => $documentoConsulta
+                        );
+                    }else{
+                        $data = array(
+                            "status" => "error", 
+                            "code"   => 400, 
+                            "data"   => "Error al registrar, ya existe un documento con ese Codigo !!"
+                        );                       
+                    }//Finaliza el Bloque de la validadacion de la Data en la Tabla
+                    // TblDocumentos
                 } else {
                     //Array de Mensajes
                     $data = array(
