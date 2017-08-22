@@ -5,6 +5,10 @@ BackendBundle\Entity\TblTiposFuncionarios:
         tbl_tipos_funcionarios_cod_tipo_funcionario_idx:
             columns:
                 - cod_tipo_funcionario
+    uniqueConstraints:
+        tbl_tipos_funcionarios_cod_tipo_funcionario_key:
+            columns:
+                - cod_tipo_funcionario
     id:
         idTipoFuncionario:
             type: integer

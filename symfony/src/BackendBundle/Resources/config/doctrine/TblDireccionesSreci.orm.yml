@@ -1,6 +1,10 @@
 BackendBundle\Entity\TblDireccionesSreci:
     type: entity
     table: tbl_direcciones_sreci
+    uniqueConstraints:
+        tbl_direcciones_sreci_cod_direccion_sreci_key:
+            columns:
+                - cod_direccion_sreci
     id:
         idDireccionSreci:
             type: integer

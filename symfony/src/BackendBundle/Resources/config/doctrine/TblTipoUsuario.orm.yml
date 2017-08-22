@@ -5,6 +5,10 @@ BackendBundle\Entity\TblTipoUsuario:
         tbl_tipo_usuario_cod_tipo_usuario_idx:
             columns:
                 - cod_tipo_usuario
+    uniqueConstraints:
+        tbl_tipo_usuario_cod_tipo_usuario_key:
+            columns:
+                - cod_tipo_usuario
     id:
         idTipoUsuario:
             type: integer

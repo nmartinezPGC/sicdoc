@@ -5,6 +5,10 @@ BackendBundle\Entity\TblPais:
         tbl_pais_cod_pais_idx:
             columns:
                 - cod_pais
+    uniqueConstraints:
+        tbl_pais_cod_pais_key:
+            columns:
+                - cod_pais
     id:
         idPais:
             type: integer

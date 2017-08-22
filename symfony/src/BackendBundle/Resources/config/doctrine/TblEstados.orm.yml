@@ -5,6 +5,10 @@ BackendBundle\Entity\TblEstados:
         tbl_estados_cod_estado_idx:
             columns:
                 - cod_estado
+    uniqueConstraints:
+        tbl_estados_cod_estado_key:
+            columns:
+                - cod_estado
     id:
         idEstado:
             type: integer

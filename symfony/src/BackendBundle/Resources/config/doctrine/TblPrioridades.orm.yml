@@ -5,6 +5,10 @@ BackendBundle\Entity\TblPrioridades:
         tbl_prioridades_cod_prioridad_idx:
             columns:
                 - cod_prioridad
+    uniqueConstraints:
+        tbl_prioridades_cod_prioridad_key:
+            columns:
+                - cod_prioridad
     id:
         idPrioridad:
             type: integer

@@ -5,6 +5,10 @@ BackendBundle\Entity\TblTipoInstitucion:
         tbl_tipo_institucion_cod_tipo_institucion_idx:
             columns:
                 - cod_tipo_institucion
+    uniqueConstraints:
+        tbl_tipo_institucion_cod_tipo_institucion_key:
+            columns:
+                - cod_tipo_institucion
     id:
         idTipoInstitucion:
             type: integer

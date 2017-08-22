@@ -5,13 +5,17 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_det_user:
             columns:
                 - id_usuario
-        fki_fk-det_estado:
-            columns:
-                - id_estado
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
+        fki_fk-det_estado:
+            columns:
+                - id_estado
         tbl_correspondencia_det_cod_correspondencia_det_idx:
+            columns:
+                - cod_correspondencia_det
+    uniqueConstraints:
+        tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:
                 - cod_correspondencia_det
     id:
@@ -55,16 +59,6 @@ BackendBundle\Entity\TblCorrespondenciaDet:
             nullable: true
             column: fecha_salida
     manyToOne:
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
         idEstado:
             targetEntity: TblEstados
             cascade: {  }
@@ -84,5 +78,15 @@ BackendBundle\Entity\TblCorrespondenciaDet:
             joinColumns:
                 id_correspondencia_enc:
                     referencedColumnName: id_correspondencia_enc
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

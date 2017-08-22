@@ -2,21 +2,25 @@ BackendBundle\Entity\TblUsuarios:
     type: entity
     table: tbl_usuarios
     indexes:
-        fki_tipo_funcionario_user:
-            columns:
-                - id_tipo_funcionario
-        fki_tipo_user:
-            columns:
-                - id_tipo_usuario
         idx_cod_user:
             columns:
                 - cod_usuario
+        fki_tipo_user:
+            columns:
+                - id_tipo_usuario
         fki_deptos_user:
             columns:
                 - id_depto_funcional
+        fki_tipo_funcionario_user:
+            columns:
+                - id_tipo_funcionario
         fki_estados_user:
             columns:
                 - id_estado
+    uniqueConstraints:
+        tbl_usuarios_cod_usuario_key:
+            columns:
+                - cod_usuario
     id:
         idUsuario:
             type: integer
@@ -96,6 +100,16 @@ BackendBundle\Entity\TblUsuarios:
             nullable: true
             column: fecha_creacion
     manyToOne:
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
         idEstado:
             targetEntity: TblEstados
             cascade: {  }
@@ -115,16 +129,6 @@ BackendBundle\Entity\TblUsuarios:
             joinColumns:
                 id_tipo_funcionario:
                     referencedColumnName: id_tipo_funcionario
-            orphanRemoval: false
-        idDeptoFuncional:
-            targetEntity: TblDepartamentosFuncionales
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_depto_funcional:
-                    referencedColumnName: id_depto_funcional
             orphanRemoval: false
         idTipoUsuario:
             targetEntity: TblTipoUsuario

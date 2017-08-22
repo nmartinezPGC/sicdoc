@@ -10,3 +10,13 @@ documento_edit:
     path: /edit/{id}
     defaults: { _controller: "AppBundle:Documentos:edit", id:null }
     methods: POST
+    
+documento_upload_image:
+    path: /upload-image/{id}
+    defaults: { _controller: "AppBundle:Documentos:upload", id:null }
+    methods: POST
+    
+documento_upload_pdf:
+    path: /upload-pdf/{id}
+    defaults: { _controller: "AppBundle:Documentos:upload", id:null }
+    methods: POST
