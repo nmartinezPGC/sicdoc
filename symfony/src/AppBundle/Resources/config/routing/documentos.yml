@@ -5,3 +5,8 @@ documento_new:
     path: /new
     defaults: { _controller: "AppBundle:Documentos:new" }
     methods: POST
+
+documento_edit:
+    path: /edit/{id}
+    defaults: { _controller: "AppBundle:Documentos:edit", id:null }
+    methods: POST
