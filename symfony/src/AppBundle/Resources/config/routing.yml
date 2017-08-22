@@ -14,3 +14,8 @@ app_usuario:
 app_documento:
     resource: "@AppBundle/Resources/config/routing/documentos.yml"
     prefix: /documentos
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Correspondencia
+app_correspondencia:
+    resource: "@AppBundle/Resources/config/routing/correspondencia.yml"
+    prefix: /correspondencia

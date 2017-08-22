@@ -355,4 +355,62 @@ class TblCorrespondenciaEnc
     {
         return $this->idEstado;
     }
+    /**
+     * @var \BackendBundle\Entity\TblDireccionesSreci
+     */
+    private $idDireccionSreci;
+
+
+    /**
+     * Set idDireccionSreci
+     *
+     * @param \BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdDireccionSreci(\BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci = null)
+    {
+        $this->idDireccionSreci = $idDireccionSreci;
+
+        return $this;
+    }
+
+    /**
+     * Get idDireccionSreci
+     *
+     * @return \BackendBundle\Entity\TblDireccionesSreci
+     */
+    public function getIdDireccionSreci()
+    {
+        return $this->idDireccionSreci;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $fechaModificacion;
+
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
 }

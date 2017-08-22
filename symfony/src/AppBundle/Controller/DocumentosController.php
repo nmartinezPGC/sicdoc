@@ -64,7 +64,7 @@ class DocumentosController extends Controller{
                 $cod_usuario              = $identity->codUser;               
                 
                 //Evaluamos que el Codigo de Usuario no sea Null y la Descripcion tambien
-                if($cod_usuario != null && $desc_documento != null){
+                if($cod_documento != null && $desc_documento != null){
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
@@ -277,7 +277,7 @@ class DocumentosController extends Controller{
         }        
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } //Fin de la Funcion Editar Documento *************************
+    } //Fin de la Funcion Editar Documento *************************************
     
     
     /* Funcion de Subir Documento **********************************************
@@ -328,7 +328,8 @@ class DocumentosController extends Controller{
                             //Archivo a Subir
                             //$file_name = time(). "." .$ext;                            
                             $file_name = $documentoEM->getCodDocumento() . "-" . date('Y-m-d'). "." .$ext;                            
-                            $path_of_file = "uploads/correspondencia/correspondencia_".$documentoEM->getCodDocumento();
+                            //$path_of_file = "uploads/correspondencia/correspondencia_".$documentoEM->getCodDocumento();
+                            $path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
                             
                             $file->move($path_of_file, $file_name);
                             

@@ -1,6 +1,6 @@
 ## YAML Template.
 ---
-# Ruta para los Usuarios de la API
+# Ruta para Ingresar los Documentos de la API
 documento_new:
     path: /new
     defaults: { _controller: "AppBundle:Documentos:new" }

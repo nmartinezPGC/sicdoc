@@ -8,12 +8,12 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
-        fki_fk-det_estado:
-            columns:
-                - id_estado
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
+        fki_fk-det_estado:
+            columns:
+                - id_estado
     uniqueConstraints:
         tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:
@@ -32,7 +32,7 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         codCorrespondenciaDet:
             type: string
             nullable: false
-            length: 10
+            length: 40
             options:
                 fixed: false
             column: cod_correspondencia_det
