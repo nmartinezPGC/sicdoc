@@ -24,3 +24,8 @@ correspondencia_upload_pdf:
     path: /upload-pdf/{id}
     defaults: { _controller: "AppBundle:IngresoCorrespondencia:upload", id:null }
     methods: POST
+    
+correspondencia_index:
+    path: /index
+    defaults: { _controller: "AppBundle:IngresoCorrespondencia:index" }
+    methods: POST

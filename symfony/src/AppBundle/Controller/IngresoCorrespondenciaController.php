@@ -26,6 +26,19 @@ use BackendBundle\Entity\TblDireccionesSreci;
  ********************************************************************/
 class IngresoCorrespondenciaController extends Controller{
     
+    
+    public function indexAction()
+    {
+    $mensaje = \Swift_Message::newInstance()
+        ->setSubject('Hola')
+        ->setFrom('nahum.sreci@gmail.com')
+        ->setTo('nahum.sreci@gmail.com')
+        ->setBody('Hola Mundo');
+        $this->get('mailer')->send($mensaje);
+        //return $this->render(...);
+        return 0;
+    }
+    
     /* Funcion de Nuevo Correspondencia ****************************************
      * Parametros:                                                             * 
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
@@ -45,7 +58,7 @@ class IngresoCorrespondenciaController extends Controller{
             
             //Convertimos los Parametros POSt a Json
             $json = $request->get("json", null);
-            
+           
             //Comprobamos que Json no es Null
             if ($json != null) {
                 //Decodificamos el Json
@@ -56,7 +69,7 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_correspondencia  = ($params->cod_correspondencia != null) ? $params->cod_correspondencia : null ;
                 $desc_correspondencia = ($params->desc_correspondencia != null) ? $params->desc_correspondencia : null ;                
                 $fecha_ingreso        = new \DateTime('now');
-                $fecha_maxima_entrega = ($params->fecha_maxima != null) ? $params->fecha_maxima : null ;
+                $fecha_maxima_entrega = ($params->fecha_maxima_entrega != null) ? $params->fecha_maxima_entrega : null ;
                 
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
@@ -127,8 +140,8 @@ class IngresoCorrespondenciaController extends Controller{
                     if(count($isset_corresp_cod) == 0){                    
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaNew);
-                        $em->flush();
-                    
+                        $em->flush();                                          
+
                         //Consulta de esa Correspondencia recien Ingresada
                         $correspondenciaConsulta = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                             array(                                
@@ -208,61 +221,100 @@ class IngresoCorrespondenciaController extends Controller{
 
                 //Parametros a Convertir                                
                 //Parametro de la Url
-                $getCodCorrespondencia   = $id;
+                $correspondenciaId       = $id;
                       
                 //Datos generales de la Tabla, que viene del Json
                 $desc_correspondencia     = ($params->desc_correspondencia != null) ? $params->desc_correspondencia : null ;                
                 $fecha_modificacion       = new \DateTime('now');
-                $fecha_maxima_entrega     = ($params->fecha_maxima != null) ? $params->fecha_maxima : null ;
-                                
-                //Relaciones de la Tabla con Otras, llamando a las Entidades para
-                //Math entre ellas
-                $cod_usuario        = $identity->sub;
+                $fecha_maxima_entrega     = ($params->fecha_maxima_entrega != null) ? $params->fecha_maxima_entrega : null ;                 
                 
-                //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
-                if($cod_usuario != null && $desc_documento != null){
+                
+                //Relaciones de la Tabla con Otras.
+                // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
+                $cod_institucion      = ($params->cod_institucion != null) ? $params->cod_institucion : null ;
+                
+                // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
+                $cod_usuario          = $identity->codUser;
+                
+                // Envio por Json el Codigo de Estados | Buscar en la Tabla: TblEstados
+                $cod_estado           = ($params->cod_estado != null) ? $params->cod_estado : null ;
+                
+                // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
+                $cod_direccion_sreci  = ($params->cod_direccion_sreci != null) ? $params->cod_direccion_sreci : null ;                
+                
+                
+                //Evaluamos que el Codigo de Usuario no sea Null y la Descripcion tambien
+                if($correspondenciaId != null && $desc_correspondencia != null){
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
                     
-                    //Repositorio de la Tabla: TblUsuarios
-                    $documentoNew = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
+                    //Repositorio de la Tabla: TblCorrespondenciaEnc, se Busca si el Codigo
+                    // enviado por Parametro Existe
+                    $correspondenciaEdit = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
-                            "codDocumento" => $documentoId_2
+                            "codCorrespondenciaEnc" => $correspondenciaId
                         ));                   
                         
                         //Evaluo el Resultado del Query, con el Paramtro del Codigo del
                         //Documento, para verificar si existe en la BD
-                        if(count($documentoNew) > 0){
+                        if(count($correspondenciaEdit) > 0){
                             //Asignamos el usuario de la Consulta Anterior
-                            $idUsarioDocumento = $documentoNew->getIdUsuario()->getIdUsuario();
+                            $idUsarioCorrespondencia = $correspondenciaEdit->getIdUsuario()->getIdUsuario();
                             
                             //Evaluamos que el Usuario de la Consulta del Token, sea el dueño
-                            // del Documento
-                            if (isset($identity->sub) && $identity->sub === $idUsarioDocumento) {
-                                //$documentoNew->setCodDocumento($cod_documento);
-                                $documentoNew->setDescDocumento($desc_documento);
-                                $documentoNew->setUrlDocumento($url_documento);
-                                $documentoNew->setFechaModificacion($fecha_modificacion);
-                                $documentoNew->setMiniImagen($image);
-                                $documentoNew->setStatus($status);
+                            // de la Correspondencia
+                            if (isset($identity->sub) && $identity->sub === $idUsarioCorrespondencia) {
+                                //Seteamos los valores de los campos modificados
+                                $correspondenciaEdit->setDescCorrespondenciaEnc($desc_correspondencia);
+                                $correspondenciaEdit->setFechaMaxEntrega($fecha_maxima_entrega);
+                                
+                                //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
+                                //Instanciamos de la Clase TblInstituciones
+                                $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                                    array(
+                                       "codInstitucion" => $cod_institucion                        
+                                    ));                    
+                                $correspondenciaEdit->setIdInstitucion($institucion); //Set de Codigo de Institucion
 
+                                //Instanciamos de la Clase TblUsuario
+                                $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                    array(
+                                       "codUsuario" => $identity->codUser                           
+                                    ));                    
+                                $correspondenciaEdit->setIdUsuario($usuario); //Set de Codigo de Usuario
+
+                                //Instanciamos de la Clase TblEstados                        
+                                $estado = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                                    array(
+                                       "codEstado" => $cod_estado
+                                    ));                    
+                                $correspondenciaEdit->setIdEstado($estado); //Set de Codigo de Estados   
+
+                                //Instanciamos de la Clase TblDireccionesSreci                        
+                                $direccion = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
+                                    array(
+                                       "codDireccionSreci" => $cod_direccion_sreci
+                                    ));                    
+                                $correspondenciaEdit->setIdDireccionSreci($direccion); //Set de Codigo de Dreicciones Sreci 
+                                //Finaliza Busqueda de Integridad entre Tablas
+                                
                                 //Realizar la Persistencia de los Datos y enviar a la BD
-                                $em->persist($documentoNew);
+                                $em->persist($correspondenciaEdit);
                                 $em->flush();
 
                                 //Array de Mensajes
                                 $data = array(
                                     "status" => "success",
                                     "code" => 200,
-                                    "msg" => "Documento actualizado, exitosamente !!"
+                                    "msg" => "La Correspondencia ha sido actualizada, exitosamente !!"
                                 );
                             } else {
                                 //Array de Mensajes
                                 $data = array(
                                     "status" => "error",
                                     "code" => 400,
-                                    "msg" => "Documento no ha sido actualizado, no eres el creador del Documento !!"
+                                    "msg" => "La Correspondencia no ha sido actualizada, no eres el creador del Documento !!"
                                 );
                             }
                         }else{                            
@@ -270,14 +322,14 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "error", 
                                 "code"   => 400,
-                                "msg"   => "No existe un Documento con ese Codigo !!"
+                                "msg"   => "No existe una Correspondencia con ese Codigo !!"
                             );                           
                         }
                     }else{
                         $data = array(
                             "status" => "error", 
                             "code"   => 400, 
-                            "data"   => "Error al registrar, ya existe un documento con ese Codigo !!"
+                            "data"   => "Error al editar, ya existe una Correspondencia con ese Codigo !!"
                         );                       
                     } //Finaliza el Bloque de la validadacion de la Data en la Tabla
             } else {
@@ -285,17 +337,17 @@ class IngresoCorrespondenciaController extends Controller{
                     $data = array(
                        "status" => "error", 
                        "code"   => 400, 
-                       "msg"   => "Documento no actualizado, parametros invalidos !!"
+                       "msg"   => "Correspondencia no actualizada, parametros invalidos !!"
                     );
                 }
             } else {
             $data = array(
                 "status" => "error",                
-                "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
+                "code"   => 400,                
+                "msg"    => "Autorizacion de Token no valida !!"                
             );
         }        
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } //Fin de la Funcion Editar Correspondencia *******************
+    } //Fin de la Funcion Editar Correspondencia *******************************
 }
