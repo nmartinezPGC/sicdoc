@@ -1,4 +1,5 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
 //Importamos todas las Rutas que deseamos movernos
 import { LoginComponent } from './components/login/login.component';
@@ -10,8 +11,10 @@ const APP_ROUTES: Routes = [
 
   { path: 'index', component: DefaultComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'login/:id', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];
 
-export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash:true });
+//export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash:true });
+export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);
