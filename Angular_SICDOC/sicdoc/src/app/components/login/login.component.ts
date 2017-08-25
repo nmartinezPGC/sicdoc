@@ -10,6 +10,8 @@ import { HttpModule,  Http, Response, Headers } from '@angular/http';
 
 import { NgForm }    from '@angular/forms';
 
+import { FormsModule }   from '@angular/forms';
+
 //Imprtamos las Rutas
 import { APP_ROUTING } from '../../app.routes';
 
@@ -28,37 +30,95 @@ export class LoginComponent implements OnInit {
   public identity;
   public token;
 
+  //Url de Respuesta
+  public returnUrl: string;
 
-  constructor( private _loginService: LoginService){
+  constructor( private _loginService: LoginService, private router: Router){
     //Codigo del Constructor
   }
 
   ngOnInit() {
     //Parametros del Login
-    //alert(this._loginService.signup());
       this.user = {
         "email"    : "",
         "password" : "",
         "gethash"  : "false"
       }
+
+      //Local Storage de la API
+      let ide = this._loginService.getIdentity();
+      let tk = this._loginService.getToken();
+
+    console.log(ide);
+    console.log(tk);
   }
 
-  onSubmit(){
-    console.log(this.user);
-    this._loginService.signup(this.user).subscribe(
+  //Funcion que se lanza al Momento de enviar el Formulario de Login
+  onSubmit(forma:NgForm){
+    //console.log(this.user);
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._loginService.signUp(this.user).subscribe(
         response => {
-          alert(response);
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            alert(response.data);
+          }else if (response.status == "success" ){
+            //LocalStorage
+            let identity = response.data;
+            this.identity = identity;
+
+            if(this.identity.length <= 1 ){
+                alert('Error en el Servidor');
+            }else{
+              if(!identity.status){
+                localStorage.setItem('identity', JSON.stringify(identity));
+
+                //Volvemos a llamar el Servicio Ajax, para obtener el Token
+                this.user.gethash = "true";
+                this._loginService.signUp(this.user).subscribe(
+                    response => {
+                        let token = response.data;
+                        this.token = token;
+
+                        if(this.token.length <= 0){
+                            alert("Error en el servidor");
+                        }else{
+                          if(!this.token.status){
+                            localStorage.setItem( 'token', token );
+
+                            //Redirecciona a la Pagina Oficial
+                            this.router.navigateByUrl('/defautl');
+                          }
+                        }
+                    },
+                    error => {
+                        //Regisra cualquier Error de la Llamada a la API
+                        this.errorMessage = <any>error;
+
+                        //Evaluar el error
+                        if(this.errorMessage != null){
+                          console.log(this.errorMessage);
+                          alert("Error en la Petición !!" + this.errorMessage);
+                        }
+                    }
+              );
+            } // identity status
+          } //identity <= 0
+        } // status = success
+
         },
         error => {
-          this.errorMessage = <any>error;
+            //Regisra cualquier Error de la Llamada a la API
+            this.errorMessage = <any>error;
 
+            //Evaluar el error
             if(this.errorMessage != null){
               console.log(this.errorMessage);
-              alert("Error en la Petición !!");
+              alert("Error en la Petición !!" + this.errorMessage);
             }
         }
     );
   }
-
 
 }

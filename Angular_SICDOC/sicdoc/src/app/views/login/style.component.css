@@ -13,3 +13,8 @@
 .container {
   font-family: -system-ui
 }
+
+.ng-invalid.ng-touched:not(form) {
+  border: 1 px solid red;
+
+}

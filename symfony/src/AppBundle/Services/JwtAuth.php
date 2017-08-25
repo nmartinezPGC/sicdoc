@@ -36,7 +36,7 @@ class JwtAuth {
         //Evalua el valor de la variable $signup
         if ($signup == true ) {
             //Generamos el Token
-            $token = array(
+            $token = array(           
                 "sub" => $user->getIdUsuario(),
                 "codUser" => $user->getCodUsuario(),
                 "password" => $user->getPasswordUsuario(),
@@ -50,14 +50,16 @@ class JwtAuth {
             $jwt = JWT::encode($token, $key, 'HS256') ;
             $decoded = JWT::decode($jwt, $key, array('HS256')) ;
             
-            if ($getHash != null) {
-                return $jwt;
+            if ($getHash != null || $getHash != false ) {
+                //return $jwt;
+                return array("status" => "success", "data" => $jwt);
             } else {
-                return $decoded;
+                //return $decoded;
+                return array("status" => "success", "data" => $decoded);
             }            
-            //return array("status" => "error", "data" => "Login success!!");
+            //return array("status" => "success", "data" => "Login success!!");
         } else {
-            return array("status" => "error", "data" => "Login failed!!");
+            return array("status" => "error", "data" => "Login failed, try again !!");
         }
     }//FIN | signUp
         //

@@ -73,7 +73,7 @@ class DefaultController extends Controller
             //Valida el Conteo de la Funcion de validacion del Mail
             if(count($valid_email) == 0 && $password != null){                
                 //Validacion del Token
-                if($getHash == null){
+                if($getHash == null || $getHash == "false"){
                   //Ejecucion del JWT;
                   $signup = $jwt_auth->signUp($email, $pwd);
                   //return $helpers->parserJson($signup);                  
@@ -87,7 +87,7 @@ class DefaultController extends Controller
                 //echo 'Data incorrect !!';
                 return $helpers->parserJson(array(
                     "status" => "error",
-                    "data" => "Login not valid !!"
+                    "data" => "Login not valid, user not register !!"
                 ));                
             }            
         }else{
