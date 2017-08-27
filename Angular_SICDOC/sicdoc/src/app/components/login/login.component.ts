@@ -5,6 +5,8 @@ import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 import { UsuariosService, Usuario } from '../../services/usuarios/usuarios.service';
 import { LoginService } from '../../services/login/login.service'; //Servico del Login
 
+import { AppComponent } from '../../app.component'; //Servico del Login
+
 //Providers de los Accesos a Ajax
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 
@@ -17,7 +19,7 @@ import { APP_ROUTING } from '../../app.routes';
 
 @Component({
   selector: 'app-login',
-  templateUrl: '../../views/login/login.html',
+  templateUrl: '../../views/login/login.component.html',
   styleUrls: ['../../views/login/style.component.css'],
   providers: [LoginService]
 })
@@ -33,11 +35,36 @@ export class LoginComponent implements OnInit {
   //Url de Respuesta
   public returnUrl: string;
 
-  constructor( private _loginService: LoginService, private router: Router){
+  constructor( private _loginService: LoginService,
+               private _router: Router,
+               private _route: ActivatedRoute,
+               private _appComponent: AppComponent){
     //Codigo del Constructor
   }
 
   ngOnInit() {
+    //Variables de paso para el logout
+    this._route.params.subscribe( params => {
+      let logout = + params["id"];
+
+      if(logout == 1){
+        // Quitamos las variables del Storage
+        localStorage.removeItem('identity');
+        localStorage.removeItem('token');
+
+        // Seteamos las variables a null
+        this.identity = null;
+        this.token = null;
+
+        //Se ejecuta la Funcion de Inicio del Componente de
+        // AppComponent, para actualizar el Menu
+        //this._appComponent.ngOnInit();
+        window.location.href= "/login";
+        // Redireccionamos a la Pagina Oficial
+        this._router.navigate(["/login"]);
+      }
+    });
+
     //Parametros del Login
       this.user = {
         "email"    : "",
@@ -46,11 +73,17 @@ export class LoginComponent implements OnInit {
       }
 
       //Local Storage de la API
-      let ide = this._loginService.getIdentity();
-      let tk = this._loginService.getToken();
+      let identity = this._loginService.getIdentity();
+      let token = this._loginService.getToken();
 
-    console.log(ide);
-    console.log(tk);
+      // Evaluamos que no tengamos variables de LocalStorage, asi si existe una
+      // se redirige a la Index
+      if( identity != null && identity.sub){
+          this._router.navigate(["/index"]);
+      }
+
+    //console.log(ide);
+    //console.log(tk);
   }
 
   //Funcion que se lanza al Momento de enviar el Formulario de Login
@@ -87,8 +120,11 @@ export class LoginComponent implements OnInit {
                           if(!this.token.status){
                             localStorage.setItem( 'token', token );
 
+                            //Se ejecuta la Funcion de Inicio del Componente de
+                            // AppComponent, para actualizar el Menu
+                            this._appComponent.ngOnInit();
                             //Redirecciona a la Pagina Oficial
-                            this.router.navigateByUrl('/defautl');
+                            this._router.navigateByUrl('/defautl');
                           }
                         }
                     },

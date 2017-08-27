@@ -16,6 +16,8 @@ export class LoginService {
   public identity;
   public token;
 
+  
+
   //Constructor de la Clase
   constructor( private _http: Http ) { }
 
