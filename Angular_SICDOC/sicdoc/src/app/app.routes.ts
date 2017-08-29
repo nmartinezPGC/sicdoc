@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, Routes, ActivatedRoute, Router, ROUTER_CONFIGURATION } from '@angular/router';
 
 //Importamos todas las Rutas que deseamos movernos
 import { LoginComponent } from './components/login/login.component';
 import { DefaultComponent } from './components/login/default.component';
 import { RegisterComponent } from './components/login/register.component';
 
-const APP_ROUTES: Routes = [
+export const APP_ROUTES: Routes = [
   //Ruta por defecto
 
   { path: 'index', component: DefaultComponent },

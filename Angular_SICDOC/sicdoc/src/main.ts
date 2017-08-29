@@ -13,4 +13,4 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule, [HttpModule]);
+platformBrowserDynamic().bootstrapModule(AppModule, [HttpModule, APP_ROUTING]).catch(Error => console.log(Error))  ;

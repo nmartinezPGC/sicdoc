@@ -22,8 +22,14 @@ use BackendBundle\Entity\TblDepartamentosFuncionales;
 class UsuarioController extends Controller{
     //put your code here
     
-    //Funcion de Nuevo Usuario ***********************************************************
-    //************************************************************************************
+    
+    /**
+     * @Route("/new", name="new")
+     * Creacion del Controlador: Usuarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00001
+     */
     public function newAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
@@ -148,10 +154,16 @@ class UsuarioController extends Controller{
         }
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    }    
+    } // FIN FND00001
     
-    //Funcion para Editar Usuario ********************************************************
-    //************************************************************************************
+    
+    /**
+     * @Route("/edit", name="edit")
+     * Creacion del Controlador: Usuarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00002
+     */
     public function editAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
@@ -298,10 +310,16 @@ class UsuarioController extends Controller{
         }
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } 
+    } // FIN FND00002
     
-    //Metodo de Subir Imagen *************************************************************
-    //************************************************************************************
+    
+    /**
+     * @Route("/upload", name="upload")
+     * Creacion del Controlador: Usuarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003
+     */
     public function uploadImageAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");        
@@ -368,6 +386,6 @@ class UsuarioController extends Controller{
         }
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    }
+    } // FIN FND00003
     
 }

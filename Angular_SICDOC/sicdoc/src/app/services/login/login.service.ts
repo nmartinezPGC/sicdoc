@@ -16,6 +16,7 @@ export class LoginService {
   public identity;
   public token;
 
+
   //Constructor de la Clase
   constructor( private _http: Http ) { }
 
@@ -24,7 +25,6 @@ export class LoginService {
       let json = JSON.stringify( user_to_login );
       let params = "json=" + json;
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
-
 
     return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
   }
