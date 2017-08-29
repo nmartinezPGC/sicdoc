@@ -1,0 +1,29 @@
+## YAML Template.
+## Author: Nahum Martinez
+## Fecha: 28-08-2017
+---
+# Ruta para Seleccionar Listas Comunes
+# Lista de Estados
+listascomunes_estadosUsuarioList:
+    path: /estadosUsuarioList
+    defaults: { _controller: "AppBundle:ListasComunes:estadosUsuarioList" }
+    methods: POST
+
+# Lista de Tipo de Usuarios
+listascomunes_tipoUsuarioList:
+    path: /tipoUsuarioList
+    defaults: { _controller: "AppBundle:ListasComunes:tipoUsuarioList"}
+    methods: POST
+    
+# Lista de Tipo de Funcionario
+listascomunes_tipoFuncionarioList:
+    path: /tipoFuncionarioList
+    defaults: { _controller: "AppBundle:ListasComunes:tipoFuncionarioList"}
+    methods: POST
+    
+# Lista de Departamento Funcional
+listascomunes_deptoFuncionalList:
+    path: /deptoFuncionalList
+    defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
+    methods: POST
+        

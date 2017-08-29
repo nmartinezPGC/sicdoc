@@ -19,3 +19,8 @@ app_documento:
 app_correspondencia:
     resource: "@AppBundle/Resources/config/routing/correspondencia.yml"
     prefix: /correspondencia
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de ListasComunes
+app_listas:
+    resource: "@AppBundle/Resources/config/routing/listascomunes.yml"
+    prefix: /listas

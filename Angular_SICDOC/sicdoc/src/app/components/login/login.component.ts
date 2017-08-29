@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
     this._route.params.subscribe( params => {
       let logout = + params["id"];
 
+      // Realizamos el Logout de la Aplicacion
       if(logout == 1){
         // Quitamos las variables del Storage
         localStorage.removeItem('identity');
@@ -58,10 +59,11 @@ export class LoginComponent implements OnInit {
 
         //Se ejecuta la Funcion de Inicio del Componente de
         // AppComponent, para actualizar el Menu
-        //this._appComponent.ngOnInit();
-        window.location.href= "/login";
+        this._appComponent.ngOnInit();
+        //this._router.navigate(["/login"]);
+        this._router.navigateByUrl('/login');
         // Redireccionamos a la Pagina Oficial
-        this._router.navigate(["/login"]);
+        window.location.href= "/login";
       }
     });
 
@@ -82,13 +84,10 @@ export class LoginComponent implements OnInit {
           this._router.navigate(["/index"]);
       }
 
-    //console.log(ide);
-    //console.log(tk);
   }
 
   //Funcion que se lanza al Momento de enviar el Formulario de Login
   onSubmit(forma:NgForm){
-    //console.log(this.user);
     //Llamar al metodo, de Login para Obtener la Identidad
     this._loginService.signUp(this.user).subscribe(
         response => {
