@@ -12,12 +12,14 @@ import { APP_ROUTING } from './app.routes';
 //Servicios de la Aplicacion ***************************************************
 import { UsuariosService }  from "./services/usuarios/usuarios.service";
 import { LoginService } from './services/login/login.service';
+import { IngresoComunicacionService } from './services/comunicaciones/ingreso.service';
 
 //Compoenentes *****************************************************************
 import { AppComponent } from './app.component';
 import { DefaultComponent } from "./components/login/default.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/login/register.component";
+import { IngresoComunicacionComponent } from "./components/comunicaciones/ingreso.component";
 
 import { NavbarComponent } from "./components/shared/navbar.component"; //NavBar de Tareas del Proyecto
 import { HeaderComponent } from "./components/shared/header.component"; //Header de Tareas del Proyecto
@@ -29,6 +31,7 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     DefaultComponent,
     LoginComponent,
     RegisterComponent,
+    IngresoComunicacionComponent,
     NavbarComponent,
     HeaderComponent
 
@@ -43,7 +46,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
   ],
   providers: [
     UsuariosService,
-    LoginService
+    LoginService,
+    IngresoComunicacionService
   ],
   bootstrap: [AppComponent]
 })

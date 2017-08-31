@@ -384,4 +384,33 @@ class TblCorrespondenciaEnc
     {
         return $this->idDireccionSreci;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fechaModificacion;
+
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
 }

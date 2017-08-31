@@ -14,14 +14,18 @@ export class Usuarios{
       public emailUsuario:string,
       public inicialesUsuario:string,
       public passwordUsuairo:string,
-      public imagenUsuairo:string,
-      public fechaCreacion:string,
+      // public imagenUsuario:string,
+      //public fechaCreacion:string,
 
       // Datos de Relaciones de Tablas
-      public idEstado:number,
+      public idEstado:string,
       public idTipoFuncionario:number,
       public idDeptoFuncional:number,
-      public idTipoUsuario:number
+      public idTipoUsuario:number,
+
+      //Variables de Validacion
+      public passwordConfirmation:string
+
 
     ){}
 

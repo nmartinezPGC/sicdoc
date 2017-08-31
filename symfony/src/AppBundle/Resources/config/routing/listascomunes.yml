@@ -3,10 +3,16 @@
 ## Fecha: 28-08-2017
 ---
 # Ruta para Seleccionar Listas Comunes
-# Lista de Estados
+# Lista de Estados de Usuarios
 listascomunes_estadosUsuarioList:
-    path: /estadosUsuarioList
+    path: /estados-user-list
     defaults: { _controller: "AppBundle:ListasComunes:estadosUsuarioList" }
+    methods: POST
+    
+# Lista de Estados de Comunicaciones | 30-08-2017
+listascomunes_estadosComunicacionList:
+    path: /estados-comunicacion-list
+    defaults: { _controller: "AppBundle:ListasComunes:estadosComunicacionList" }
     methods: POST
 
 # Lista de Tipo de Usuarios
@@ -25,5 +31,17 @@ listascomunes_tipoFuncionarioList:
 listascomunes_deptoFuncionalList:
     path: /deptoFuncionalList
     defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
+    methods: POST
+    
+# Lista de Instituciones | 30-08-2017
+listascomunes_instituciones:
+    path: /instituciones
+    defaults: { _controller: "AppBundle:ListasComunes:instituciones"}
+    methods: POST
+    
+# Lista de Paises | 30-08-2017
+listascomunes_paisesList:
+    path: /lista-paises
+    defaults: { _controller: "AppBundle:ListasComunes:paisesList"}
     methods: POST
         

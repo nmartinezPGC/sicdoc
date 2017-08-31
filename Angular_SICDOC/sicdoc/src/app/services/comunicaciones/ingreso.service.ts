@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class LoginService {
+export class IngresoComunicacionService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
   public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
@@ -18,7 +18,7 @@ export class LoginService {
 
 
   //Constructor de la Clase
-  constructor( private _http: Http ) { }
+  constructor( private _http: Http ) {  }
 
 
   /****************************************************

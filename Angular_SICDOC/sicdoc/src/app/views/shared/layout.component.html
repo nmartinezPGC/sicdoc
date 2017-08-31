@@ -15,7 +15,7 @@
           Comunicaciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['registro']" routerLinkActive="active">Entrada de Comunicacion</a>
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Entrada de Comunicacion</a>
           <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a>
           <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Comunicacion</a>
         </div>
@@ -43,12 +43,12 @@
          </a>
          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
            <a class="dropdown-item" [routerLink]="['/index']">
-               <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Editar Perfil</a>
+               <img src="../assets/img/file.svg" alt="Editar Perfil">Editar Perfil</a>
            <a class="dropdown-item" [routerLink]="['/index']">
-             <img src="../assets/img/file.svg" alt="Cambiar Contraseña">Cambiar Contraseña</a>
+             <img src="../assets/img/file.svg" alt="Cambiar Contraseña"> Cambiar Contraseña</a>
            <hr>
            <a class="dropdown-item" [routerLink]="['/login/1']">
-             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>Cerrar sesion</a>
+             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Cerrar sesion</a><span class="glyphicons glyphicons-leaf"></span>
          </div>
        </li>
    </ul>
@@ -69,4 +69,5 @@
     </form>
   </div>
 </nav>
+
 <router-outlet></router-outlet>

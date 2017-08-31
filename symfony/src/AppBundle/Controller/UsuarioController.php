@@ -41,7 +41,7 @@ class UsuarioController extends Controller{
         $data = $data = array(
                 "status" => "error",                
                 "code" => "400",                
-                "msg" => "Usuario no creado, hay problemas en los Datos !!"                
+                "msg" => "Usuario no creado, hay problemas en los datos, faltan campos por llenar !!"                
             ); 
         
         //Evaluamos el Json
@@ -49,22 +49,22 @@ class UsuarioController extends Controller{
             //Variables que vienen del Json ***********************************************
             //Seccion de Identificacion ***************************************************
             //El ID no se incluye; ya que es un campo Serial            
-            $cod_usuario = (isset($params->cod_usuario)) ? $params->cod_usuario : null;
-            $iniciales = (isset($params->iniciales)) ? $params->iniciales : null;
-            $nombre1 = (isset($params->nombre1) && ctype_alpha($params->nombre1) ) ? $params->nombre1 : null;
-            $nombre2 = (isset($params->nombre2) && ctype_alpha($params->nombre2) ) ? $params->nombre2 : null;
-            $apellido1 = (isset($params->apellido1) && ctype_alpha($params->apellido1) ) ? $params->apellido1 : null;
-            $apellido2 = (isset($params->apellido2) && ctype_alpha($params->apellido2) ) ? $params->apellido2 : null;
-            $email = (isset($params->email)) ? $params->email : null;            
+            $cod_usuario      = (isset($params->codUsuario)) ? $params->codUsuario : null;
+            $iniciales        = (isset($params->inicialesUsuario)) ? $params->inicialesUsuario : null;
+            $nombre1          = (isset($params->primerNombre) && ctype_alpha($params->primerNombre) ) ? $params->primerNombre : null;
+            $nombre2          = (isset($params->segundoNombre) && ctype_alpha($params->segundoNombre) ) ? $params->segundoNombre : null;
+            $apellido1        = (isset($params->primerApellido) && ctype_alpha($params->primerApellido) ) ? $params->primerApellido : null;
+            $apellido2        = (isset($params->segundoApellido) && ctype_alpha($params->segundoApellido) ) ? $params->segundoApellido : null;
+            $email            = (isset($params->emailUsuario)) ? $params->emailUsuario  : null;            
             //Seccion de Relaciones entre Tablas ********************************************************************
-            $cod_estado = (isset($params->cod_estado)) ? $params->cod_estado : null;
-            $cod_tipo_funcionario = (isset($params->cod_tipo_funcionario)) ? $params->cod_tipo_funcionario : null;
-            $cod_depto_funcional = (isset($params->cod_depto_funcional)) ? $params->cod_depto_funcional : null;
-            $cod_tipo_usuario = (isset($params->cod_tipo_usuario)) ? $params->cod_tipo_usuario : null;                        
+            $cod_estado           = (isset($params->idEstado)) ? $params->idEstado : null;
+            $cod_tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            $cod_depto_funcional  = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
+            $cod_tipo_usuario     = (isset($params->idTipoUsuario)) ? $params->idTipoUsuario : null;                        
             //Datos de Bitacora *************************************************************************************
-            $createdAt = new \DateTime("now");
-            $image = null;
-            $password = (isset($params->password)) ? $params->password : null;
+            $createdAt        = new \DateTime("now");
+            $image            = "";
+            $password         = (isset($params->passwordUsuairo)) ? $params->passwordUsuairo : null;
             
             //Validamos el Email ************************************************************************************
             $emailConstraint = new Assert\Email();
@@ -89,27 +89,28 @@ class UsuarioController extends Controller{
                 //Instancia a la Tabla: TblEstados *****************************                
                 $estados = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
                             array(
-                                "codEstado" => $cod_estado
+                                "idEstado" => $cod_estado
                             )) ;
-                $usuario->setCodEstado($estados);
+                
+                $usuario->setIdEstado($estados);
                 //Instancia a la Tabla: TblTipoFuncionarios ********************                
                 $tipoFuncionario = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findOneBy(
                             array(
-                                "codTipoFuncionario" => $cod_tipo_funcionario
+                                "idTipoFuncionario" => $cod_tipo_funcionario
                             )) ;
-                $usuario->setCodTipoFuncionario($tipoFuncionario);  
+                $usuario->setIdTipoFuncionario($tipoFuncionario);  
                 //Instancia a la Tabla: TblDepartamentosFuncionales ************                
                 $deptoFuncional = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
                             array(
-                                "codDeptoFuncional" => $cod_depto_funcional
+                                "idDeptoFuncional" => $cod_depto_funcional
                             )) ;
-                $usuario->setCodDeptoFuncional($deptoFuncional);
+                $usuario->setIdDeptoFuncional($deptoFuncional);
                 //Instancia a la Tabla: TblTipoUsuario *************************                
                 $tipoUsuario = $em->getRepository("BackendBundle:TblTipoUsuario")->findOneBy(
                             array(
-                                "codTipoUsuario" => $cod_tipo_usuario
+                                "idTipoUsuario" => $cod_tipo_usuario
                             )) ;
-                $usuario->setCodTipoUsuario($tipoUsuario);
+                $usuario->setIdTipoUsuario($tipoUsuario);
                 //Seteamos el Resto de campos de la Tabla: TblUsuarios *********
                 $usuario->setInicialesUsuario($iniciales);
                 //Cifrar la Contraseña *****************************************
@@ -130,7 +131,7 @@ class UsuarioController extends Controller{
                           "codUsuario" => $cod_usuario
                         ));
                 //Verificamos que el retorno de la Funcion sea = 0 *************                
-                if(count($isset_user_cod) == 0){
+                if(count($isset_user_cod) == 0 || count($isset_user_mail) == 0){
                     $em->persist($usuario);
                     //$em->persist($estados);
                     //$em->persist($tipoUsuario);

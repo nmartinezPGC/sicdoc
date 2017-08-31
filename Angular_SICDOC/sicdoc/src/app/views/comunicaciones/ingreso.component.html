@@ -1,0 +1,156 @@
+<div class="container">
+<!-- Datos Generales de los Usuarios -->
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
+      <!-- Div que representan las Acciones al Ingresar un Usuario -->
+      <div class="alert alert-success" role="alert" *ngIf="status == 'success' " >
+        <strong>Bien echo!</strong> {{ mensajes }} <a [routerLink]="['/login']" >Pulsa aqui ...</a>.
+      </div>
+
+      <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
+        <strong>Que mal!</strong> {{ mensajes }}
+      </div>
+
+		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(ingresoComunicacionForm)" name="ingresoComunicacionForm" role="form">
+			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
+			<hr class="colorgraph">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#datosGen">Datos Generales</a>
+        </h4>
+      </div>
+      <hr>
+      <div class="panel-collapse collapse" id="datosGen">
+
+        <div class="row">
+  				<div class="col-xs-12 col-sm-6 col-md-6">
+  					<div class="form-group" >
+               <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
+                    ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci"
+                   class="form-control input-lg" required placeholder="Codigo de Referencia en SRECI" tabindex="1" maxlength="13" minlength="5">
+                  <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
+                  <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
+  					</div>
+  				</div>
+
+          <div class="col-xs-12 col-sm-6 col-md-12">
+            <div class="form-group">
+                <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="3"
+                    placeholder="Ingresa la Descripcion de la Comunicacion" ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
+                <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
+                <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="form-group">
+                <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega</label>
+                <input class="form-control" type="date" [value]=" fechaHoy " id="example-date-input">
+            </div>
+          </div>
+  			</div>
+      </div>
+
+      <hr>
+      <!-- Datos de las Relaciones de las Tablas -->
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#demo">Informacion Complementaria</a>
+        </h4>
+      </div>
+
+      <hr>
+      <div class="panel-collapse collapse in" id="demo">
+
+  			<div class="row">
+  				<div class="col-xs-12 col-sm-6 col-md-6">
+  					<div class="form-group">
+              <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+                    ngControl="idPais" [(ngModel)]="comunicacion.idPais"  >
+                  <option value="0">Selecciona un Pais</option>
+                  <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un Pais</small>
+  					</div>
+  				</div>
+
+
+          <!-- Estado de la Comunicacion -->
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="form-group">
+              <select #idEstado="ngModel" class="form-control" name="idEstado" id="idEstado"
+                    ngControl="idEstado" [(ngModel)]="comunicacion.idEstado"  >
+                  <option value="0">Selecciona un Estado</option>
+                  <option *ngFor="let list of JsonOutgetlistaEstados" value="{{ list.idEstado }}">{{ list.descripcionEstado }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idEstado.value == 0 || idEstado.value == null " >Debes Seleccionar un Estado</small>
+            </div>
+          </div>
+
+  			</div>
+      </div>
+
+      <hr>
+
+			<div class="row">
+				<div class="col-xs-8 col-sm-9 col-md-9">
+					 Cuando pulsas <strong class="label label-primary">Registrarse</strong>, estas aceptando los <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terminos y Condiciones</a> que tiene este sistema.
+				</div>
+			</div>
+
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+            <input type="submit" value="Registrarse" class="btn btn-primary btn-block btn-lg" tabindex="17" onclick="validCampo(passwordConfirmation)">
+        </div>
+				<div class="col-xs-12 col-md-6">
+            <a [routerLink]="['/login']" class="btn btn-success btn-block btn-lg" disabled
+              ng-disabled="passwordUsuairo.errors?.minlength" >Ingresar</a>
+        </div>
+			</div>
+		</form>
+	</div>
+  <!-- Columna del formulario -->
+
+  <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+  <div class="col-2">
+    <div class="card" style="width: 16rem; margin-top:5px">
+      <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+      <div class="card-block">
+        <h4 class="card-title">Resumen</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+<!-- Columna de las Tarjetas -->
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel">Terminos & Condiciones</h4>
+			</div>
+			<div class="modal-body">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<hr>
+
+
+</div>

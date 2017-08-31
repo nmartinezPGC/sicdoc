@@ -58,6 +58,13 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             type: date
             nullable: true
             column: fecha_modificacion
+        codReferenciaSreci:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: cod_referencia_sreci
     manyToOne:
         idEstado:
             targetEntity: TblEstados

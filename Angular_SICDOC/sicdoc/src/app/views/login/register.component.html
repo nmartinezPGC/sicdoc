@@ -1,21 +1,35 @@
 <div class="container">
 <!-- Datos Generales de los Usuarios -->
 <div class="row">
-    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form role="form">
+    <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
+
+      <!-- Div que representan las Acciones al Ingresar un Usuario -->
+      <div class="alert alert-success" role="alert" *ngIf="status == 'success' " >
+        <strong>Bien echo!</strong> {{ mensajes }} <a [routerLink]="['/login']" >Pulsa aqui ...</a>.
+      </div>
+
+      <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
+        <strong>Que mal!</strong> {{ mensajes }}
+      </div>
+
+		<form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" name="registerForm" role="form">
 			<h2>Registro de Usuarios <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#">Datos Generales</a>
+          <a data-toggle="collapse" href="#datosGen">Datos Generales</a>
         </h4>
       </div>
       <hr>
-      <div class="row" id="datosGen">
+      <div class="panel-collapse collapse in" id="datosGen">
+
+      <div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
-					<div class="form-group">
-             <input type="number" name="codigoUsuario" id="codigoUsuario" class="form-control input-lg"
-                 placeholder="No. Identidad" tabindex="1" required maxlength="13">
+					<div class="form-group" >
+             <input #codigoUsuario="ngModel" type="text" name="codigoUsuario" id="codigoUsuario" ngControl="codigoUsuario" [(ngModel)]="user.codUsuario"
+                 class="form-control input-lg" required placeholder="No. Identidad" tabindex="1" maxlength="13" minlength="5">
+                <small class="form-text text-muted" *ngIf="codigoUsuario.errors?.required" >El Numero de Identidad es obligatorio</small>
+                <small class="form-text text-muted" *ngIf="codigoUsuario.errors?.minlength" >Se nesesita por lo menos {{ codigoUsuario.errors.minlength.requiredLength }} caracteres</small>
 					</div>
 				</div>
       </div>
@@ -23,12 +37,15 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group">
-             <input type="text" name="primerNombre" id="primerNombre" class="form-control input-lg" placeholder="Primer Nombre" tabindex="2" required>
+             <input #primerNombre="ngModel" type="text" name="primerNombre" id="primerNombre" class="form-control input-lg"  ngControl="primerNombre" [(ngModel)]="user.primerNombre"
+               placeholder="Primer Nombre" tabindex="2" required maxlength="20">
+               <small class="form-text text-muted" *ngIf="primerNombre.errors?.required" >E Primer Nombre es obligatorio</small>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group">
-						 <input type="text" name="segundoNombre" id="segundoNombre" class="form-control input-lg" placeholder="Segundo Nombre" tabindex="3" >
+						 <input type="text" name="segundoNombre" id="segundoNombre" class="form-control input-lg" ngControl="segundoNombre" [(ngModel)]="user.segundoNombre"
+                placeholder="Segundo Nombre" tabindex="3" maxlength="20" >
 					</div>
 				</div>
 			</div>
@@ -36,16 +53,21 @@
         <div class="row" >
           <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="form-group">
-               <input type="text" name="primerApellido" id="primerApellido" class="form-control input-lg" placeholder="Primer Apellido" tabindex="4" required>
+               <input #primerApellido="ngModel" type="text" name="primerApellido" id="primerApellido" class="form-control input-lg" ngControl="primerApellido" [(ngModel)]="user.primerApellido"
+                  placeholder="Primer Apellido" tabindex="4" required maxlength="20">
+                  <small class="form-text text-muted" *ngIf="primerApellido.errors?.required" >E Primer Apellido es obligatorio</small>
             </div>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="form-group">
-               <input type="text" name="segundoNombre" id="segundoNombre" class="form-control input-lg" placeholder="Segundo Apellido" tabindex="5" >
+               <input type="text" name="segundoApellido" id="segundoApellido" class="form-control input-lg" ngControl="segundoApellido" [(ngModel)]="user.segundoApellido"
+                  placeholder="Segundo Apellido" tabindex="5" maxlength="20" >
             </div>
           </div>
         </div>
+      </div>
 
+      <hr>
       <!-- Datos de las Credenciales -->
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -57,75 +79,110 @@
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
-              <input type="text" name="inicialesUsuario" id="inicialesUsuario" class="form-control input-lg" placeholder="Iniciales" tabindex="3">
+              <input #inicialesUsuario="ngModel" type="text" name="inicialesUsuario" id="inicialesUsuario"
+                  class="form-control input-lg" ngControl="inicialesUsuario" [(ngModel)]="user.inicialesUsuario"
+                  placeholder="Iniciales" tabindex="6" required minlength="3" maxlength="5">
+                  <small class="form-text text-muted" *ngIf="inicialesUsuario.errors?.required" >Las Iniciales son Obligatorias</small>
+                  <small class="form-text text-muted" *ngIf="inicialesUsuario.errors?.minlength" >Se nesesita por lo menos {{ inicialesUsuario.errors.minlength.requiredLength }} caracteres</small>
           </div>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-9">
   			  <div class="form-group">
-  				    <input type="email" name="emailUsuario" id="emailUsuario" class="form-control input-lg" placeholder="Direccion de Correo Electronico" tabindex="4">
+            <input #emailUsuario="ngModel" type="email" name="emailUsuario" id="emailUsuario" class="form-control input-lg" ngControl="emailUsuario" [(ngModel)]="user.emailUsuario"
+                  placeholder="nombre@dominio.com" tabindex="7" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                  <small class="form-text text-muted" *ngIf="emailUsuario.errors?.pattern" >El campo no tiene formato de Correo</small>
+                  <small class="form-text text-muted" *ngIf="emailUsuario.errors?.required" >El Email es obligatorio</small>
   			  </div>
   			</div>
 
   				<div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group">
-  						<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Contraseña" tabindex="5">
+  						<input #passwordUsuairo="ngModel" type="password" name="passwordUsuairo" id="passwordUsuairo" class="form-control input-lg" ngControl="passwordUsuairo" [(ngModel)]="user.passwordUsuairo"
+                  placeholder="Contraseña" tabindex="8" required minlength="5" maxlength="20">
+                  <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.minlength" >Se nesesita por lo menos {{ passwordUsuairo.errors.minlength.requiredLength }} caracteres</small>
+                  <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.required" >La Contraseña es obligatoria</small>
   					</div>
   				</div>
   				<div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group">
-  						<input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirma Contraseña" tabindex="6">
+  						<input #passwordConfirmation="ngModel" type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control input-lg" ngControl="user.passwordConfirmation" [(ngModel)]="user.passwordConfirmation"
+                  placeholder="Confirma Contraseña" tabindex="9" required maxlength="20" >
+                  <small class="form-text text-muted" *ngIf=" user.passwordUsuairo != user.passwordConfirmation " >Las Contraseñas no son iguales</small>
   					</div>
   				</div>
 
-          <div class="col-xs-12 col-sm-6 col-md-6">
+          <!-- <div class="col-xs-12 col-sm-6 col-md-12">
             <div class="form-group">
                <label for="exampleInputFile">Agregar Imagen</label>
-               <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+               <input #imagenUsuario="ngModel" type="file" class="form-control-file" id="imagenUsuario" name="imagenUsuario"
+                    ngControl="imagenUsuario" [(ngModel)]="user.imagenUsuario" placeholder="Subir Imagen ..." aria-describedby="fileHelp"
+                    (change)="fileChangeEvent($event)">
+
                <small id="fileHelp" class="form-text text-muted">Esta seccion, sirve para ingresar una imagen desde su equipo local y asiganarla al perfil.</small>
+              </div> -->
+              <!-- Barra de Progreso de Carga de la Imagen -->
+              <!-- <div class="progress">
+                  <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                      role="progressbar"
+                      aria-valuenow="0"
+                      aria-valuemin="0"
+                      aria-valuemax="0"
+                      style="width:1%">
+                  </div>
               </div>
-          </div>
+              <p id="status"></p>
+          </div> -->
   			</div>
       </div>
 
+      <hr>
       <!-- Datos de las Relaciones de las Tablas -->
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" href="#demo">Informacion Complementaria</a>
         </h4>
       </div>
+
       <hr>
       <div class="panel-collapse collapse in" id="demo">
 
   			<div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group">
-              <select class="form-control">
-                  <option>Tipo de Funcionario</option>
-                  <option *ngFor="let list of JsonOutgetlistaTipoFuncionario">{{ list.descTipoFuncionario }}</option>
+              <select #idTipoFuncionario="ngModel" class="form-control" name="idTipoFuncionario" id="idTipoFuncionario" ngControl="idTipoFuncionario" [(ngModel)]="user.idTipoFuncionario" >
+                  <option value="0">Selecciona una Opcion</option>
+                  <option *ngFor="let list of JsonOutgetlistaTipoFuncionario" value="{{ list.idTipoFuncionario }}">{{ list.descTipoFuncionario }}</option>
               </select>
+              <small class="form-text text-muted" *ngIf="idTipoFuncionario.value == 0 || idTipoFuncionario.value == null " >Debes Seleccionar un Tipo de Funcionario</small>
   					</div>
   				</div>
 
+          <!-- <small #idEstado="ngModel" name="idEstado" id="idEstado" ngControl="idEstado" [(ngModel)]="user.idEstado" ></small> -->
+
           <div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group" >
-              <select  class="form-control">
-                  <option>Tipo de Usuario</option>
-                  <option *ngFor="let list of JsonOutgetlistaEstados">{{ list.descripcionEstado }}</option>
+              <select #idTipoUsuario="ngModel" class="form-control" name="idTipoUsuario" id="idTipoUsuario" ngControl="idTipoUsuario" [(ngModel)]="user.idTipoUsuario">
+                  <option value="0">Selecciona una Opcion</option>
+                  <option *ngFor="let list of JsonOutgetlistaTipoUsuario"  [value]="list.idTipoUsuario" >{{ list.descTipoUsuario }}</option>
               </select>
+              <small class="form-text text-muted" *ngIf="idTipoUsuario.value == 0 || idTipoUsuario.value == null " >Debes Seleccionar un Tipo de Usuario</small>
   					</div>
   				</div>
 
           <div class="col-xs-12 col-sm-6 col-md-12">
   					<div class="form-group">
-              <select class="form-control">
-                  <option>Departamento Funcional</option>
-                  <option *ngFor="let list of JsonOutgetlistaDeptosFuncionales">{{ list.descDeptoFuncional }}</option>
+              <select #idDeptoFuncional="ngModel" class="form-control"  name="idDeptoFuncional" id="idDeptoFuncional" ngControl="idDeptoFuncional" [(ngModel)]="user.idDeptoFuncional">
+                  <option value="0">Selecciona una Opcion</option>
+                  <option *ngFor="let list of JsonOutgetlistaDeptosFuncionales" value='{{ list.idDeptoFuncional }}'>{{ list.descDeptoFuncional }}</option>
               </select>
+              <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null " >Debes Seleccionar un Departamento Funcional</small>
   					</div>
   				</div>
   			</div>
       </div>
+
+      <hr>
 
 			<div class="row">
 				<div class="col-xs-8 col-sm-9 col-md-9">
@@ -135,8 +192,13 @@
 
 			<hr class="colorgraph">
 			<div class="row">
-				<div class="col-xs-12 col-md-6"><input type="submit" value="Registrarse" class="btn btn-primary btn-block btn-lg" tabindex="7"></div>
-				<div class="col-xs-12 col-md-6"><a href="#" class="btn btn-success btn-block btn-lg">Ingresar</a></div>
+				<div class="col-xs-12 col-md-6">
+            <input type="submit" value="Registrarse" class="btn btn-primary btn-block btn-lg" tabindex="17" onclick="validCampo(passwordConfirmation)">
+        </div>
+				<div class="col-xs-12 col-md-6">
+            <a [routerLink]="['/login']" class="btn btn-success btn-block btn-lg" disabled
+              ng-disabled="passwordUsuairo.errors?.minlength" >Ingresar</a>
+        </div>
 			</div>
 		</form>
 	</div>

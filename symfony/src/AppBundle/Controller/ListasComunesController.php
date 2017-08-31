@@ -63,7 +63,7 @@ class ListasComunesController extends Controller {
      * Funcion: FND00002
      */
     public function tipoFuncionarioListAction(Request $request)
-    {
+        {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -147,7 +147,7 @@ class ListasComunesController extends Controller {
         // Query para Obtener todos los Estados de la Tabla: TblEstados
         $tipoFunc = $em->getRepository("BackendBundle:TblTipoUsuario")->findBy(
                 array(
-                    "idTipoUsuario" => [2,3,4] //Excluimos el Administrador
+                    "idTipoUsuario" => [2,3,4,5] //Excluimos el Administrador
                 ));
         
         // Condicion de la Busqueda
@@ -167,6 +167,143 @@ class ListasComunesController extends Controller {
         
         return $helpers->parserJson($data);
     }//FIN | FND00004
+    
+    
+    /**
+     * @Route("/instituciones", name="instituciones")
+     * Creacion del Controlador: Instituciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00005
+     */
+    public function institucionesAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Array de Mensajes
+        $data = $data = array(
+                "status" => "error",                
+                "code" => "400",                
+                "msg" => "No se ha podido obtener los Datos, los parametros son erroneos !!"                
+        ); 
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ***********************************************
+            ////Recogemos el Pais y el Tipo de Institucion ********************************
+            $pais_institucion      = (isset($params->codUsuario)) ? $params->codUsuario : null;
+            $tipo_institucion      = (isset($params->inicialesUsuario)) ? $params->inicialesUsuario : null;
+            
+            
+        }
+        
+             
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $tipoFunc = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
+                array(
+                    "idInstitucion" => ""//Excluimos el Administrador
+                ));
+        
+        // Condicion de la Busqueda
+        if (count($tipoFunc) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $tipoFunc
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Tipo Usuarios !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00005
+    
+    
+    /**
+     * @Route("/paisesList", name="paisesList")
+     * Creacion del Controlador: Paises
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00006
+     */
+    public function paisesListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $paisList = $em->getRepository("BackendBundle:TblPais")->findAll();
+        
+        // Condicion de la Busqueda
+        if (count( $paisList ) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $paisList
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Paises !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00006
+    
+    
+    /**
+     * @Route("/estadosComunicacionList", name="estadosComunicacionList")
+     * Creacion del Controlador: Estados
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00007
+     */
+    public function estadosComunicacionListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $estados = $em->getRepository("BackendBundle:TblEstados")->findBy(
+                array(
+                    "grupoEstado" => "MAIL"
+                ));
+        
+        // Condicion de la Busqueda
+        if (count($estados) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $estados
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Estados !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00007
     
     
     

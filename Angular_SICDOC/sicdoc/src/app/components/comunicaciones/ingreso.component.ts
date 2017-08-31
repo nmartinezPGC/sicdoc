@@ -5,8 +5,9 @@ import { HttpModule,  Http, Response, Headers } from '@angular/http';
 
 //Importamos los Servicios
 import { LoginService } from '../../services/login/login.service'; //Servico del Login
+import { IngresoComunicacionService } from '../../services/comunicaciones/ingreso.service'; //Servico del Comunicaciones
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
-import { UploadService } from '../../services/shared/upload.service'; //Servico Listas Comunes
+import { UploadService } from '../../services/shared/upload.service'; //Servico Carga de Arhcivos
 
 
 import { AppComponent } from '../../app.component'; //Servico del Login
@@ -16,23 +17,26 @@ import { NgForm }    from '@angular/forms';
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
 // Importamos la CLase Usuarios del Modelo
-import { Usuarios } from '../../models/usuarios/usuarios.model'; //Servico del Login
+import { Usuarios } from '../../models/usuarios/usuarios.model'; // Servico del Login
+import { Comunicaciones } from '../../models/comunicaciones/comunicacion.model'; // Modelo a Utilizar
+
 
 //Importamos los Javascript
 //import '../../views/login/register.component';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: '../../views/login/register.component.html',
-  styleUrls: ['../../views/login/style.component.css'],
-  providers: [LoginService, ListasComunesService, UploadService]
+  selector: 'app-ingreso-comunicacion',
+  templateUrl: '../../views/comunicaciones/ingreso.component.html',
+  styleUrls: ['../../views/comunicaciones/style.component.css'],
+  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService]
 })
 
-export class RegisterComponent implements OnInit{
-  public titulo:string = "Registro de Usuarios";
+export class IngresoComunicacionComponent implements OnInit{
+  public titulo:string = "Ingreso de Comunicación";
 
   // Instacia de la variable del Modelo
   public user:Usuarios;
+  public comunicacion: Comunicaciones;
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -52,6 +56,7 @@ export class RegisterComponent implements OnInit{
   public JsonOutgetlistaTipoFuncionario:any[];
   public JsonOutgetlistaDeptosFuncionales:any[];
   public JsonOutgetlistaTipoUsuario:any[];
+  public JsonOutgetlistaPaises:any[];
   // public JsonOut:any[];
 
 
@@ -59,32 +64,25 @@ export class RegisterComponent implements OnInit{
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
+               private _ingresoComunicacion: IngresoComunicacionService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http){
-
-    // Construimos las Validaciones del Formulario
-    this.forma = new FormGroup({
-      // Arreglo de la Estructura del Form
-      'codigoUsuario': new FormControl('00002'),
-      'primerNombre': new FormControl('Juan'),
-      'primerApellido': new FormControl('Perez')
-    });
-
-  }
+               private _http: Http){  }
 
   // Metodo OnInit
   ngOnInit(){
     // Inicializacion de las Listas
-    // this.getlistaEstados();
-    this.getlistaTipoFuncionario();
-    this.getlistaDeptosFuncionales();
-    this.getlistaTipoUsuarios();
+    this.getlistaEstados();
+    this.getlistaPaises();
+    // alert('**********************');
+    // this.getlistaTipoFuncionario();
+    // this.getlistaDeptosFuncionales();
+    // this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0,  "");
-    this.loadScript('../assets/js/register.component.js');
+    this.comunicacion = new Comunicaciones(1, "", "", "",  0, 0, 0, 0,  "", "",  0);
+    //this.loadScript('../assets/js/register.component.js');
   }
 
 
@@ -145,7 +143,7 @@ export class RegisterComponent implements OnInit{
   ******************************************************/
   getlistaEstados() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","estadosUsuarioList").subscribe(
+    this._listasComunes.listasComunes("","estados-comunicacion-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
@@ -165,16 +163,15 @@ export class RegisterComponent implements OnInit{
 
   /******************************************************
   * Funcion: FND-00003
-  * Fecha: 28-07-2017
-  * Descripcion: Carga la Lista de los Tipos de
-  * Funcionarios.
-  * Objetivo: Obtener la lista de los Tipos de Funciona.
-  * de la BD, Llamando a la API, por su metodo
-  * (tipoFuncionarioList).
+  * Fecha: 30-07-2017
+  * Descripcion: Carga la Lista de los Paiese.
+  * Objetivo: Obtener la lista de los Paises de la BD,
+  * Llamando a la API, por su metodo
+  * (paises).
   *******************************************************/
-  getlistaTipoFuncionario() {
+  getlistaPaises() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","tipoFuncionarioList").subscribe(
+    this._listasComunes.listasComunes("","lista-paises").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
@@ -184,7 +181,7 @@ export class RegisterComponent implements OnInit{
             alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
-            this.JsonOutgetlistaTipoFuncionario = response.data;
+            this.JsonOutgetlistaPaises = response.data;
             // console.log(response.data);
 
           }

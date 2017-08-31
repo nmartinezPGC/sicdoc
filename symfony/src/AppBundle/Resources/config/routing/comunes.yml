@@ -1,0 +1,8 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios
+comunes_upload_image:
+    path: / upload-image
+    defaults: { _controller: "AppBundle:Comunes:uploadImage" }
+    methods: POST
+   

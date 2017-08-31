@@ -95,36 +95,40 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew = new TblCorrespondenciaEnc();
                     
                     $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia);
+                    
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega);
+                    
+                    // Nuevo Campo de Codigo de Refrencia SRECI ----------------
+                    $correspondenciaNew->setCodReferenciaSreci($cod_referencia_sreci);
                     
                     //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                     //Instanciamos de la Clase TblInstituciones
                     $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
                         array(
-                           "codInstitucion" => $cod_institucion                        
+                           "idInstitucion" => $cod_institucion                        
                         ));                    
                     $correspondenciaNew->setIdInstitucion($institucion); //Set de Codigo de Institucion
                     
                     //Instanciamos de la Clase TblUsuario
                     $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(
-                           "codUsuario" => $identity->codUser                           
+                           "idUsuario" => $identity->sub                           
                         ));                    
                     $correspondenciaNew->setIdUsuario($usuario); //Set de Codigo de Usuario
                     
                     //Instanciamos de la Clase TblEstados                        
                     $estado = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
                         array(
-                           "codEstado" => $cod_estado
+                           "idEstado" => $cod_estado
                         ));                    
                     $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados   
                     
                     //Instanciamos de la Clase TblDireccionesSreci                        
                     $direccion = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
                         array(
-                           "codDireccionSreci" => $cod_direccion_sreci
+                           "idDireccionSreci" => $cod_direccion_sreci
                         ));                    
                     $correspondenciaNew->setIdDireccionSreci($direccion); //Set de Codigo de Dreicciones Sreci 
                     //Finaliza Busqueda de Integridad entre Tablas

@@ -413,4 +413,33 @@ class TblCorrespondenciaEnc
     {
         return $this->fechaModificacion;
     }
+    /**
+     * @var string
+     */
+    private $codReferenciaSreci;
+
+
+    /**
+     * Set codReferenciaSreci
+     *
+     * @param string $codReferenciaSreci
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setCodReferenciaSreci($codReferenciaSreci)
+    {
+        $this->codReferenciaSreci = $codReferenciaSreci;
+
+        return $this;
+    }
+
+    /**
+     * Get codReferenciaSreci
+     *
+     * @return string
+     */
+    public function getCodReferenciaSreci()
+    {
+        return $this->codReferenciaSreci;
+    }
 }
