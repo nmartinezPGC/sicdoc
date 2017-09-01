@@ -6,6 +6,7 @@ export class Comunicaciones{
       // Datos Generales
       public codCorrespondencia:string,
       public descCorrespondencia:string,
+      public temaCorrespondencia:string,
       public codReferenciaSreci:string,
 
       // Datos de Relaciones de Tablas
@@ -15,11 +16,16 @@ export class Comunicaciones{
       public idDireccionSreci:number,
 
       // Datos de fechas
-      public fechaMaxEntrega:string,
-      public fechaModificacion:string,
+      public fechaMaxEntrega:Date,
+      public fechaModificacion:Date,
 
       // Datos Externos a la Tablas
-      public idPais:number
+      public idPais:number,
+      public idTipoInstitucion:number,
+
+      //Datos para Ingresar la Primera Accion
+      public idDeptoFuncional:number
+
 
     ){}
 

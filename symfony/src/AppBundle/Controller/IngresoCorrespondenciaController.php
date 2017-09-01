@@ -44,7 +44,7 @@ class IngresoCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      ***************************************************************************/
-    public function newAction(Request $request) {
+    public function newCorrespondenciaAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -66,23 +66,25 @@ class IngresoCorrespondenciaController extends Controller{
 
                 //Parametros a Convertir                                
                 //Datos generales de la Tabla                
-                $cod_correspondencia  = ($params->cod_correspondencia != null) ? $params->cod_correspondencia : null ;
-                $desc_correspondencia = ($params->desc_correspondencia != null) ? $params->desc_correspondencia : null ;                
+                $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
+                $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
+                $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;                
                 $fecha_ingreso        = new \DateTime('now');
-                $fecha_maxima_entrega = ($params->fecha_maxima_entrega != null) ? $params->fecha_maxima_entrega : null ;
+                $fecha_maxima_entrega = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
                 
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
-                $cod_institucion      = ($params->cod_institucion != null) ? $params->cod_institucion : null ;
+                $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
                 
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
-                $cod_usuario          = $identity->codUser;
+                $cod_usuario          = $identity->sub;
                 
                 // Envio por Json el Codigo de Estados | Buscar en la Tabla: TblEstados
-                $cod_estado           = ($params->cod_estado != null) ? $params->cod_estado : null ;
+                $cod_estado           = ($params->idEstado != null) ? $params->idEstado : null ;                
                 
                 // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
-                $cod_direccion_sreci  = ($params->cod_direccion_sreci != null) ? $params->cod_direccion_sreci : null ;
+                $cod_direccion_sreci  = ($params->idDireccionSreci != null) ? $params->idDireccionSreci : null ;
                 
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
@@ -204,7 +206,7 @@ class IngresoCorrespondenciaController extends Controller{
      *     Informacion.                                                        * 
      * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
      ***************************************************************************/
-    public function editAction(Request $request, $id = null) {
+    public function editCorrespondenciaAction(Request $request, $id = null) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

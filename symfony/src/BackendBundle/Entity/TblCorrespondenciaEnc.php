@@ -442,4 +442,62 @@ class TblCorrespondenciaEnc
     {
         return $this->codReferenciaSreci;
     }
+    /**
+     * @var string
+     */
+    private $temaComunicacion;
+
+
+    /**
+     * Set temaComunicacion
+     *
+     * @param string $temaComunicacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setTemaComunicacion($temaComunicacion)
+    {
+        $this->temaComunicacion = $temaComunicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get temaComunicacion
+     *
+     * @return string
+     */
+    public function getTemaComunicacion()
+    {
+        return $this->temaComunicacion;
+    }
+    /**
+     * @var string
+     */
+    private $tipoCom;
+
+
+    /**
+     * Set tipoCom
+     *
+     * @param string $tipoCom
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setTipoCom($tipoCom)
+    {
+        $this->tipoCom = $tipoCom;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCom
+     *
+     * @return string
+     */
+    public function getTipoCom()
+    {
+        return $this->tipoCom;
+    }
 }

@@ -11,7 +11,7 @@
         <strong>Que mal!</strong> {{ mensajes }}
       </div>
 
-		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(ingresoComunicacionForm)" name="ingresoComunicacionForm" role="form">
+		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
       <div class="panel-heading">
@@ -23,7 +23,7 @@
       <div class="panel-collapse collapse" id="datosGen">
 
         <div class="row">
-  				<div class="col-xs-12 col-sm-6 col-md-6">
+  				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group" >
                <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
                     ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci"
@@ -33,22 +33,35 @@
   					</div>
   				</div>
 
+          <!-- Tema de la Comunicacion -->
+          <div class="col-xs-12 col-sm-6 col-md-8">
+  					<div class="form-group" >
+               <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia"
+                    ngControl="temaCorrespondencia" [(ngModel)]="comunicacion.temaCorrespondencia"
+                   class="form-control input-lg" required placeholder="Tema de la Comunicacion" tabindex="1" minlength="7">
+                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Ingresa el Tema de la Comunicacion</small>
+                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
+  					</div>
+  				</div>
+
           <div class="col-xs-12 col-sm-6 col-md-12">
             <div class="form-group">
                 <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="3"
                     placeholder="Ingresa la Descripcion de la Comunicacion" ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
-                <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
-                <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
+                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Codigo de Referencia</small>
+                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
-                <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega</label>
-                <input class="form-control" type="date" [value]=" fechaHoy " id="example-date-input">
+                <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega </label>
+                <input class="form-control" type="date" value="{{ fechaHoy | date: 'dd/MM/yyyy' }}" id="example-date-input">
             </div>
           </div>
+
+
   			</div>
       </div>
 
@@ -64,20 +77,32 @@
       <div class="panel-collapse collapse in" id="demo">
 
   			<div class="row">
-  				<div class="col-xs-12 col-sm-6 col-md-6">
+          <!-- Lista de Paises -->
+  				<div class="col-xs-12 col-sm-6 col-md-3">
   					<div class="form-group">
               <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
-                    ngControl="idPais" [(ngModel)]="comunicacion.idPais"  >
-                  <option value="0">Selecciona un Pais</option>
+                    ngControl="idPais" [(ngModel)]="comunicacion.idPais" >
+                  <option value="0">Selecciona un País</option>
                   <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
               </select>
-              <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un Pais</small>
+              <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
   					</div>
   				</div>
 
+          <!-- Tipo de Institucion -->
+          <div class="col-xs-12 col-sm-6 col-md-4">
+  					<div class="form-group">
+              <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+                    ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" (change)="getlistaInstituciones()" >
+                  <option value="0">Tipo de Institución</option>
+                  <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
+  					</div>
+  				</div>
 
           <!-- Estado de la Comunicacion -->
-          <div class="col-xs-12 col-sm-6 col-md-6">
+          <!-- <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="form-group">
               <select #idEstado="ngModel" class="form-control" name="idEstado" id="idEstado"
                     ngControl="idEstado" [(ngModel)]="comunicacion.idEstado"  >
@@ -86,25 +111,51 @@
               </select>
               <small class="form-text text-muted" *ngIf="idEstado.value == 0 || idEstado.value == null " >Debes Seleccionar un Estado</small>
             </div>
+          </div> -->
+
+          <!-- Instituciones de la Comunicacion -->
+          <div class="col-xs-12 col-sm-6 col-md-5">
+            <div class="form-group">
+              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  >
+                  <option value="0">Selecciona una Institución</option>
+                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
+            </div>
           </div>
 
   			</div>
-      </div>
 
+            <div class="row">
+              <!-- Direccion Encargada del tema de la Comunicacion -->
+              <div class="col-xs-12 col-sm-6 col-md-5">
+                <div class="form-group">
+                  <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional"
+                        ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  >
+                      <option value="0">Selecciona una Dirección SRECI</option>
+                      <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Dirección SRECI</small>
+                </div>
+             </div>
+
+          </div>
+      </div>
       <hr>
 
 			<div class="row">
 				<div class="col-xs-8 col-sm-9 col-md-9">
-					 Cuando pulsas <strong class="label label-primary">Registrarse</strong>, estas aceptando los <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terminos y Condiciones</a> que tiene este sistema.
+					 Para saber mas de utilidad de esta aplicacion, verifica los <a href="#" data-toggle="modal" data-target="#t_and_c_m"> manuales de usuario </a> que tiene este sistema.
 				</div>
 			</div>
 
 			<hr class="colorgraph">
 			<div class="row">
-				<div class="col-xs-12 col-md-6">
-            <input type="submit" value="Registrarse" class="btn btn-primary btn-block btn-lg" tabindex="17" onclick="validCampo(passwordConfirmation)">
+				<div class="col-xs-12 col-md-3">
+            <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" onclick="validCampo(passwordConfirmation)">
         </div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-3">
             <a [routerLink]="['/login']" class="btn btn-success btn-block btn-lg" disabled
               ng-disabled="passwordUsuairo.errors?.minlength" >Ingresar</a>
         </div>
@@ -120,6 +171,9 @@
       <div class="card-block">
         <h4 class="card-title">Resumen</h4>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <li>Numero de Comunicaciones Ingresadas</li>
+        <input type="text" name="buscatexto"  value=""
+              (keyup)="buscarPais(buscatexto.value)"  #buscatexto>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
     </div>
@@ -151,6 +205,3 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <hr>
-
-
-</div>

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -22,7 +23,8 @@ export class ListasComunesService {
   // Funcion que llama las Lsitas de los Estados
   listasComunes( lista_comun, lista ){
       let json = JSON.stringify( lista_comun );
-      let params = "";
+
+      let params = "json=" + json;
       let listaIn = lista;
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 

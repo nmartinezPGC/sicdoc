@@ -29,29 +29,29 @@ export class IngresoComunicacionService {
   * Objetivo: Logearse a la Aplicacion
   *****************************************************/
   signUp( user_to_login ){
-      let json = JSON.stringify( user_to_login );
-      let params = "json=" + json;
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+      let json = JSON.stringify( user_to_login ); //Convertimos el Objeto a Json
+      let params = "json=" + json;                // Instanciamos los Valorrs del Json con sus parametros
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'}); // Declaramos las Cabezeras
 
-    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
-  }
+    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json()); 
+  } // FIN : FND-00001
 
 
   /****************************************************
   * Funcion: FND-00002
-  * Fecha: 28-07-2017
+  * Fecha: 31-08-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (usuario/new).
-  * Objetivo: Agregar nuevo Usuario
+  * a la API (correspondencia/new-correspondencia).
+  * Objetivo: Ingresar nueva correspondencia
   *****************************************************/
-  registerUser( user_to_register ){
-      let json = JSON.stringify( user_to_register );
+  registerComunicacion( correspondencia_to_register ){
+      let json = JSON.stringify( correspondencia_to_register );
       let params = "json=" + json;
       console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/usuario/new", params, { headers:headers }).map( res => res.json());
-  }
+    return this._http.post(this.url + "/correspondencia/new-correspondencia", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00002
 
 
   /****************************************************
@@ -71,7 +71,7 @@ export class IngresoComunicacionService {
       }
 
     return this.identity;
-  }
+  } // FIN : FND-00003
 
 
   /****************************************************
@@ -92,7 +92,7 @@ export class IngresoComunicacionService {
       }
 
     return this.token;
-  }
+  } // FIN : FND-00004
 
 
 }

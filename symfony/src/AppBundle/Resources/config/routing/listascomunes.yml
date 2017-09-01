@@ -17,31 +17,37 @@ listascomunes_estadosComunicacionList:
 
 # Lista de Tipo de Usuarios
 listascomunes_tipoUsuarioList:
-    path: /tipoUsuarioList
+    path: /tipo-usuario-list
     defaults: { _controller: "AppBundle:ListasComunes:tipoUsuarioList"}
     methods: POST
     
 # Lista de Tipo de Funcionario
 listascomunes_tipoFuncionarioList:
-    path: /tipoFuncionarioList
+    path: /tipo-funcionario-list
     defaults: { _controller: "AppBundle:ListasComunes:tipoFuncionarioList"}
     methods: POST
     
 # Lista de Departamento Funcional
 listascomunes_deptoFuncionalList:
-    path: /deptoFuncionalList
+    path: /depto-funcional-list
     defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
     methods: POST
     
 # Lista de Instituciones | 30-08-2017
-listascomunes_instituciones:
-    path: /instituciones
-    defaults: { _controller: "AppBundle:ListasComunes:instituciones"}
+listascomunes_institucionesSreci:
+    path: /instituciones-sreci-list
+    defaults: { _controller: "AppBundle:ListasComunes:institucionesSreci"}
+    methods: POST
+    
+# Lista de Tipo de Instituciones | 31-08-2017
+listascomunes_tipoInstituciones:
+    path: /tipo-instituciones-sreci-list
+    defaults: { _controller: "AppBundle:ListasComunes:tipoInstituciones"}
     methods: POST
     
 # Lista de Paises | 30-08-2017
 listascomunes_paisesList:
-    path: /lista-paises
+    path: /paises-list
     defaults: { _controller: "AppBundle:ListasComunes:paisesList"}
     methods: POST
         

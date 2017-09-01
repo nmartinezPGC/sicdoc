@@ -9,6 +9,8 @@ import { HttpModule,  Http } from '@angular/http';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 if (environment.production) {
   enableProdMode();
 }

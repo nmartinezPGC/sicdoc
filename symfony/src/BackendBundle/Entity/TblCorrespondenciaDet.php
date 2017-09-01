@@ -355,4 +355,33 @@ class TblCorrespondenciaDet
     {
         return $this->idCorrespondenciaEnc;
     }
+    /**
+     * @var string
+     */
+    private $codReferenciaSreci;
+
+
+    /**
+     * Set codReferenciaSreci
+     *
+     * @param string $codReferenciaSreci
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setCodReferenciaSreci($codReferenciaSreci)
+    {
+        $this->codReferenciaSreci = $codReferenciaSreci;
+
+        return $this;
+    }
+
+    /**
+     * Get codReferenciaSreci
+     *
+     * @return string
+     */
+    public function getCodReferenciaSreci()
+    {
+        return $this->codReferenciaSreci;
+    }
 }

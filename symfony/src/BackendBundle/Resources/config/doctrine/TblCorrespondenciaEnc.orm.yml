@@ -65,6 +65,20 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             options:
                 fixed: false
             column: cod_referencia_sreci
+        temaComunicacion:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+            column: tema_comunicacion
+        tipoCom:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: tipo_com
     manyToOne:
         idEstado:
             targetEntity: TblEstados

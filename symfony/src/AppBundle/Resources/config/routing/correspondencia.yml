@@ -4,15 +4,15 @@
 ---
 # Ruta para Ingresar la Correspondencia de la API
 # Nuevo Ingreso de Correspondencia
-correspondencia_new:
-    path: /new
-    defaults: { _controller: "AppBundle:IngresoCorrespondencia:new" }
+correspondencia_newCorrespondencia:
+    path: /new-correspondencia
+    defaults: { _controller: "AppBundle:IngresoCorrespondencia:newCorrespondencia" }
     methods: POST
 
 # Editar Correspondencia Existente
-correspondencia_edit:
-    path: /edit/{id}
-    defaults: { _controller: "AppBundle:IngresoCorrespondencia:edit", id:null }
+correspondencia_editCorrespondencia:
+    path: /edit-correspondencia/{id}
+    defaults: { _controller: "AppBundle:IngresoCorrespondencia:editCorrespondencia", id:null }
     methods: POST
     
 correspondencia_upload_image:

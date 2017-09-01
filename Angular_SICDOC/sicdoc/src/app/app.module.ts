@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 //Libreria para poder Usar los Formularios de Html y Indexarlos con Angular (uso del #)
 import { FormsModule, ReactiveFormsModule  }   from '@angular/forms';
 import { NgForm }    from '@angular/forms';
+// Import your library
+import { AutocompleteModule } from 'ng2-input-autocomplete';
 
 //Libreria para usar Rutas
 import { APP_ROUTING } from './app.routes';

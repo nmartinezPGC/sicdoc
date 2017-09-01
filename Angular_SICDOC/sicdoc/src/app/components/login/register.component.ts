@@ -90,8 +90,8 @@ export class RegisterComponent implements OnInit{
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
-      console.log(this.user);
-      // parseInt(this.user.idTipoUsuario);ssss
+      //console.log(this.user);
+      // parseInt(this.user.idTipoUsuario);
       this._loginService.registerUser(this.user).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
@@ -141,11 +141,11 @@ export class RegisterComponent implements OnInit{
   * Descripcion: Carga la Lista de los Estados de la BD
   * Objetivo: Obtener la lista de los Estados de los
   * Usurios de la BD, Llamando a la API, por su metodo
-  * (estadosUsuarioList).
+  * (estados-user-list).
   ******************************************************/
   getlistaEstados() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","estadosUsuarioList").subscribe(
+    this._listasComunes.listasComunes("","estados-user-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
@@ -170,11 +170,11 @@ export class RegisterComponent implements OnInit{
   * Funcionarios.
   * Objetivo: Obtener la lista de los Tipos de Funciona.
   * de la BD, Llamando a la API, por su metodo
-  * (tipoFuncionarioList).
+  * (tipo-funcionario-list).
   *******************************************************/
   getlistaTipoFuncionario() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","tipoFuncionarioList").subscribe(
+    this._listasComunes.listasComunes("","tipo-funcionario-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
@@ -200,11 +200,11 @@ export class RegisterComponent implements OnInit{
   * Funcionales de la SRECI.
   * Objetivo: Obtener la lista de los Departamentos Func.
   * de la BD, Llamando a la API, por su metodo
-  * (deptoFuncionalList).
+  * (depto-funcional-list).
   ******************************************************/
   getlistaDeptosFuncionales() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","deptoFuncionalList").subscribe(
+    this._listasComunes.listasComunes("","depto-funcional-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
@@ -229,11 +229,11 @@ export class RegisterComponent implements OnInit{
   * Descripcion: Carga la Lsita de los Tipos de Usuarios
   * Objetivo: Obtener la lista de los Tipos de usuarios
   * de la BD, Llamando a la API, por su metodo
-  * (tipoUsuarioList).
+  * (tipo-usuario-list).
   ******************************************************/
   getlistaTipoUsuarios() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","tipoUsuarioList").subscribe(
+    this._listasComunes.listasComunes("","tipo-usuario-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);

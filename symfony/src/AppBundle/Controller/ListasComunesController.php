@@ -17,7 +17,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/estadosUsuarioList", name="estadosUsuarioList")
+     * @Route("/estados-user-list", name="estados-user-list")
      * Creacion del Controlador: Estados
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -56,7 +56,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/tipoFuncionarioList", name="tipoFuncionarioList")
+     * @Route("/tipo-funcionario-list", name="tipo-funcionario-list")
      * Creacion del Controlador: Tipo Funcionario
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -92,7 +92,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/deptoFuncionalList", name="deptoFuncionalList")
+     * @Route("/depto-funcional-list", name="depto-funcional-list")
      * Creacion del Controlador: Departamentos Funcionales
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -170,13 +170,13 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/instituciones", name="instituciones")
+     * @Route("/instituciones-sreci", name="/instituciones-sreci")
      * Creacion del Controlador: Instituciones
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00005
      */
-    public function institucionesAction(Request $request)
+    public function institucionesSreciAction(Request $request)
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
@@ -197,37 +197,70 @@ class ListasComunesController extends Controller {
         if ($json != null) {
             //Variables que vienen del Json ***********************************************
             ////Recogemos el Pais y el Tipo de Institucion ********************************
-            $pais_institucion      = (isset($params->codUsuario)) ? $params->codUsuario : null;
-            $tipo_institucion      = (isset($params->inicialesUsuario)) ? $params->inicialesUsuario : null;
+            $pais_institucion    = (isset($params->idPais)) ? $params->idPais : null;
+            $tipo_institucion    = (isset($params->idTipoInstitucion)) ? $params->idTipoInstitucion : null;
             
-            
+            // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
+            $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
+                    array(
+                        "idTipoInstitucion" => $tipo_institucion, //Tipo de Institucion
+                        "idPais"            => $pais_institucion //Pais de la Institucion
+                    ));
+
+            // Condicion de la Busqueda
+            if (count($institucionesSreci) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $institucionesSreci
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Instituciones, comuniquese con el Administrador !!"
+                );
+            }
         }
+        return $helpers->parserJson($data);
+    }//FIN | FND00005
+    
+    
+    /**
+     * @Route("/tipo-instituciones-sreci", name="tipo-instituciones-sreci")
+     * Creacion del Controlador: Tipo de Instirucion
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00005.1
+     */
+    public function tipoInstitucionesAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
         
-             
+        $em = $this->getDoctrine()->getManager();
+        
         
         // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipoFunc = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
-                array(
-                    "idInstitucion" => ""//Excluimos el Administrador
-                ));
+        $tipoInstitucion = $em->getRepository("BackendBundle:TblTipoInstitucion")->findAll();
         
         // Condicion de la Busqueda
-        if (count($tipoFunc) >= 1 ) {
+        if (count( $tipoInstitucion ) >= 1 ) {
             $data = array(
                 "status" => "success",
                 "code"   => 200,
-                "data"   => $tipoFunc
+                "data"   => $tipoInstitucion
             );
         }else {
             $data = array(
                 "status" => "error",
                 "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Tipo Usuarios !!"
+                "msg"    => "No existe Datos en la Tabla de Tipo de Instiucion !!"
             );
         }
         
         return $helpers->parserJson($data);
-    }//FIN | FND00005
+    }//FIN | FND00005.1
     
     
     /**
@@ -304,6 +337,9 @@ class ListasComunesController extends Controller {
         
         return $helpers->parserJson($data);
     }//FIN | FND00007
+    
+    
+    
     
     
     

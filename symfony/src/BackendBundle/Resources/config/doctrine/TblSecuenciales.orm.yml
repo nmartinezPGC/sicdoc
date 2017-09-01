@@ -1,0 +1,46 @@
+BackendBundle\Entity\TblSecuenciales:
+    type: entity
+    table: tbl_secuenciales
+    uniqueConstraints:
+        tbl_secuenciales_cod_secuencial_key:
+            columns:
+                - cod_secuencial
+    id:
+        idSecuencial:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_secuencial
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codSecuencial:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: cod_secuencial
+        valor1:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: valor_1
+        valor2:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: valor_2
+        tablaSecuencia:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: tabla_secuencia
+    lifecycleCallbacks: {  }

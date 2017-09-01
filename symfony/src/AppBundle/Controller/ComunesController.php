@@ -99,4 +99,43 @@ class ComunesController extends Controller {
     } // FIN FND00001
     
     
+    /**
+     * @Route("/gen-secuencia-comunicacion-in", name="gen-secuencia-comunicacion-in")
+     * Creacion del Controlador: Secuenciales
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00002
+     */
+    public function genSecuenciaComInAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $estados = $em->getRepository("BackendBundle:TblEstados")->findBy(
+                array(
+                    "grupoEstado" => "USR"
+                ));
+        
+        // Condicion de la Busqueda
+        if (count($estados) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $estados
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Estados !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00002
+    
+    
 }
