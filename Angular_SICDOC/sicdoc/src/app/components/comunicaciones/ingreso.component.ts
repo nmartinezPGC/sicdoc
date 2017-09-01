@@ -39,6 +39,8 @@ export class IngresoComunicacionComponent implements OnInit{
   public titulo:string = "Ingreso de Comunicación";
   public fechaHoy:Date = new Date();
   private params;
+  private paramsSecuencia;
+  private paramsSubDir;
 
   // Instacia de la variable del Modelo
   public user:Usuarios;
@@ -64,6 +66,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaTipoInstitucion:any[];
   public JsonOutgetlistaInstitucion:any[];
   public JsonOutgetlistaDireccionSRECI:any[];
+  public JsonOutgetlistaSubDireccionSRECI:any[];
+
+  public JsonOutgetCodigoSecuenciaNew:any[];
 
 
   // Ini | Definicion del Constructor
@@ -85,24 +90,45 @@ export class IngresoComunicacionComponent implements OnInit{
       "idPais"  : "",
       "idTipoInstitucion"  : ""
     };
+
+    // Iniciamos los Parametros de Secuenciales
+    this.paramsSecuencia = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
+    // Iniciamos los Parametros de Sub Direcciones
+    this.paramsSubDir = {
+      "idDireccionSreci"  : ""
+    };
+
     // Inicializacion de las Listas
     this.getlistaEstadosComunicacion();
     this.getlistaPaises();
     this.getlistaTipoInstituciones();
     this.getlistaDireccionesSRECI();
-    // this.getlistaInstituciones();
+
+    // Generar la Lista de Secuenciales
+    this.listarCodigoCorrespondencia();
+    // this.generarCodigoCorrespondencia( this.JsonOutgetCodigoSecuenciaNew );
+
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.comunicacion = new Comunicaciones(1, "", "", "", "",  0, 0, 0, 0,  this.fechaHoy, this.fechaHoy,  0, 0,  0);
+    this.comunicacion = new Comunicaciones(1, "COD-COM", "", "", "",  0, 0, 7, 0, 1,  "", "",  0, 0,  0, "gfgddfg");
     //this.loadScript('../assets/js/register.component.js');
   } // Fin | Metodo ngOnInit
 
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
+      // parseInt(this.user.idTipoUsuario);
+      // this.comunicacion.idUsuario = this._ingresoComunicacion.getIdentity().sub;
+      // this.comunicacion.secuenciaComunicacionIn = this.listarCodigoCorrespondencia().codSecuencial;
+      let token1 = this._ingresoComunicacion.getToken();
       console.log(this.comunicacion);
-      // parseInt(this.user.idTipoUsuario);ssss
-      this._ingresoComunicacion.registerComunicacion(this.comunicacion).subscribe(
+
+      this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
             this.status = response.status;
@@ -111,6 +137,7 @@ export class IngresoComunicacionComponent implements OnInit{
             // Condicionamos la Respuesta
             if(this.status != "success"){
                 this.status = "error";
+                this.mensajes = response.msg;
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -157,7 +184,7 @@ export class IngresoComunicacionComponent implements OnInit{
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
+            this.JsonOutgetlistaEstados = response.data;
             alert(response.msg);
           }else{
             this.JsonOutgetlistaEstados = response.data;
@@ -180,7 +207,7 @@ export class IngresoComunicacionComponent implements OnInit{
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
+            this.JsonOutgetlistaPaises = response.data;
             alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -206,7 +233,7 @@ export class IngresoComunicacionComponent implements OnInit{
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
+            this.JsonOutgetlistaTipoInstitucion = response.data;
             alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -230,7 +257,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.params.idPais = this.comunicacion.idPais;
     this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
     //Llamar al metodo, de Login para Obtener la Identidad
-    console.log(this.params);
+    //console.log(this.params);
 
     this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
         response => {
@@ -280,31 +307,53 @@ export class IngresoComunicacionComponent implements OnInit{
 
   /*****************************************************
   * Funcion: FND-00006
-  * Fecha: 31-08-2017
+  * Fecha: 01-09-2017
   * Descripcion: Carga la Imagen de usuario desde el File
   * Objetivo: Obtener la imagen que se carga desde el
   * control File de HTML
-  * (fileChangeEvent).
+  * (gen-secuencia-comunicacion-in).
   ******************************************************/
+   listarCodigoCorrespondencia(){
+    this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
+    this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuencia.idTipoDocumento = "1";
+    let nextCodComunicacion:string = "";
+    //Llamar al metodo, de Login para Obtener la Identidad
+    //console.log(this.params);
+    this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaInstitucion = response.data;
+            alert(response.msg);
 
-  /*generarCodigoCorrespondencia(){
-    //console.log('Evento Chge Lanzado');
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-
-    let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comu/upload-image-user";
-
-    this._uploadService.makeFileRequest( token, url, ['image'], this.filesToUpload ).then(
-        ( result ) => {
-          this.resultUpload = result;
-          console.log(this.resultUpload);
-        },
-        ( error ) => {
-          alert("error");
-          console.log(error);
+          }else{
+            this.JsonOutgetCodigoSecuenciaNew = response.data;
+            console.log(response.data);
+          }
         });
-  } // FIN : FND-00006*/
+        // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
+        // console.log( this.nextCodComunicacion );
+        // return this.nextCodComunicacion;
+  } // FIN : FND-00006
 
+
+  /*****************************************************
+  * Funcion: FND-00006.1
+  * Fecha: 01-09-2017
+  * Descripcion: Ejecutamos la logica, para concatenar,
+  * el Nuevo Codigo de la Comunicacion
+  * Objetivo: Concannnntenar el Nuevo Codigo y usarlo
+  * (gen-secuencia-comunicacion-in).
+  ******************************************************/
+   generarCodigoCorrespondencia( cadenaCodigoConverir ){
+    //Llamar al metodo, de Login para Obtener la Identidad
+    //console.log(this.params);
+    let json = JSON.stringify( cadenaCodigoConverir );
+    console.log(cadenaCodigoConverir);
+
+  } // FIN : FND-00006.1
 
   /*****************************************************
   * Funcion: FND-00007
@@ -313,16 +362,15 @@ export class IngresoComunicacionComponent implements OnInit{
   * SRECI
   * Objetivo: Obtener la lista de las Direcciones SRECI
   * de la BD, Llamando a la API, por su metodo
-  * (depto-funcional-list).
+  * (dir-sreci-list).
   ******************************************************/
   getlistaDireccionesSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","depto-funcional-list").subscribe(
+    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
             alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -330,6 +378,34 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-00007
+
+
+  /*****************************************************
+  * Funcion: FND-00007.1
+  * Fecha: 31-08-2017
+  * Descripcion: Carga la Lista de las Sub Direcciones de
+  * SRECI
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (subdir-sreci-list).
+  ******************************************************/
+  getlistaSubDireccionesSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsSubDir.idDireccionSreci = this.comunicacion.idDireccionSreci;
+
+    this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionSRECI = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaSubDireccionSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007.1
 
 
 } // // FIN : export class IngresoComunicacionComponent

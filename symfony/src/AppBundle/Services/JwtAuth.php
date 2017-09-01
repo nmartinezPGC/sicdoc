@@ -43,6 +43,7 @@ class JwtAuth {
                 "email" => $user->getEmailUsuario(),
                 "nombre" => $user->getNombre1Usuario(),
                 "apellido" => $user->getApellido1Usuario(),
+                "idDepto" => $user->getIdDeptoFuncional(),
                 "iat" => time(),
                 "exp" => time() + (7 * 24 * 60 * 60)                
             );

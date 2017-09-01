@@ -1,0 +1,40 @@
+BackendBundle\Entity\TblTipoDocumento:
+    type: entity
+    table: tbl_tipo_documento
+    uniqueConstraints:
+        tbl_tipo_documento_cod_tipo_documento_key:
+            columns:
+                - cod_tipo_documento
+    id:
+        idTipoDocumento:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_documento
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codTipoDocumento:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: cod_tipo_documento
+        descTipoDocumento:
+            type: string
+            nullable: true
+            length: 40
+            options:
+                fixed: false
+            column: desc_tipo_documento
+        inicialesTipoDocumento:
+            type: string
+            nullable: true
+            length: 5
+            options:
+                fixed: false
+            column: iniciales_tipo_documento
+    lifecycleCallbacks: {  }

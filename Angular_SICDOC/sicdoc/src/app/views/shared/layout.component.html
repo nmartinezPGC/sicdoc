@@ -9,17 +9,44 @@
     <a class="navbar-brand" [routerLink]="['index']" >Dashboard</a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-      <!-- Menu de Ingreso y Mantenimiento de Comunicacion -->
+      <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Comunicaciones
+          Oficios
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Entrada de Comunicacion</a>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Comunicacion</a>
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Oficios</a>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Oficios</a>
+          <hr>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Oficios</a>
         </div>
       </li>
+
+
+      <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Memos -->
+      <!-- <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Memoramdums
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Memo</a>
+          <hr>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Memos</a>
+        </div>
+      </li> -->
+
+      <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Notas Verbales -->
+      <!-- <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Notas Verbales
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Nota Verbal</a>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Nota Verbal</a>
+          <hr>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Nota Verbal</a>
+        </div>
+      </li> -->
 
       <!-- Menu de Seguimiento -->
       <li class="nav-item dropdown" >

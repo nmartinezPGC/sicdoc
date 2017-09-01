@@ -136,19 +136,21 @@ class ComunesController extends Controller {
             ////Recogemos el Pais y el Tipo de Institucion ********************************
             $codigo_secuencia = (isset($params->codSecuencial)) ? $params->codSecuencial : null;
             $tabla_secuencia  = (isset($params->tablaSecuencia)) ? $params->tablaSecuencia : null;
+            $tipo_documento   = (isset($params->idTipoDocumento)) ? $params->idTipoDocumento : null;
             
             // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
             $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findBy(
                     array(
                         "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
-                        "tablaSecuencia"  => $tabla_secuencia // Tabla de la Secuencia a Obtener
+                        "tablaSecuencia"  => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento" => $tipo_documento // Tipo de Documento (Oficio)
                     ));
 
             // Condicion de la Busqueda
             if (count($secuencias) >= 1 ) {
                 $data = array(
                     "status" => "success",
-                    "code"   => 200,
+                    "code"   => 200,                    
                     "data"   => $secuencias
                 );
             }else {

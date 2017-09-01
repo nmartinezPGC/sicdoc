@@ -2,21 +2,27 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        fki_enc_estado:
-            columns:
-                - id_estado
         fki_enc_user:
             columns:
                 - id_usuario
+        fki_comu_docu:
+            columns:
+                - id_tipo_documento
+        fki_enc_direccion:
+            columns:
+                - id_direccion_sreci
         fki_enc_inst:
             columns:
                 - id_institucion
         tbl_correspondencia_enc_cod_correspondencia_enc_idx:
             columns:
                 - cod_correspondencia_enc
-        fki_enc_direccion:
+        fki_corr_depto:
             columns:
-                - id_direccion_sreci
+                - id_depto_funcional
+        fki_enc_estado:
+            columns:
+                - id_estado
     uniqueConstraints:
         tbl_correspondencia_enc_cod_correspondencia_enc_key:
             columns:
@@ -72,13 +78,6 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             options:
                 fixed: false
             column: tema_comunicacion
-        tipoCom:
-            type: string
-            nullable: true
-            length: 5
-            options:
-                fixed: false
-            column: tipo_com
     manyToOne:
         idEstado:
             targetEntity: TblEstados
@@ -119,5 +118,25 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             joinColumns:
                 id_direccion_sreci:
                     referencedColumnName: id_direccion_sreci
+            orphanRemoval: false
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
+            orphanRemoval: false
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
             orphanRemoval: false
     lifecycleCallbacks: {  }

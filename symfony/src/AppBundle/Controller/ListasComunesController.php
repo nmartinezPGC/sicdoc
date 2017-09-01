@@ -92,7 +92,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/depto-funcional-list", name="depto-funcional-list")
+     * @Route("/subdir-sreci-list", name="subdir-sreci-list")
      * Creacion del Controlador: Departamentos Funcionales
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -105,27 +105,43 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
-                array(
-                    "idDireccionSreci" => 1
-                ));
+        $json = $request->get("json", null);
+        $params = json_decode($json);
         
-        // Condicion de la Busqueda
-        if (count($tipoFunc) >= 1 ) {
-            $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "data"   => $tipoFunc
-            );
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ***********************************************
+            ////Recogemos el la Direccion ********************************
+            $direccion_sreci    = (isset($params->idDireccionSreci)) ? $params->idDireccionSreci : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblEstados
+            $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
+                    array(
+                        "idDireccionSreci" => $direccion_sreci
+                    ));
+
+            // Condicion de la Busqueda
+            if (count($tipoFunc) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $tipoFunc
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Sub Direcciones !!"
+                );
+            }
         }else {
             $data = array(
                 "status" => "error",
                 "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Departamentos Funcionales !!"
+                "msg"    => "No existe Datos en la Tabla de Sub Direcciones, comuniquese con el Administrador !!"
             );
         }
-        
+               
         return $helpers->parserJson($data);
     }//FIN | FND00003
     
@@ -338,6 +354,136 @@ class ListasComunesController extends Controller {
         return $helpers->parserJson($data);
     }//FIN | FND00007
     
+    
+    /**
+     * @Route("/tipo-documento-list", name="tipo-documento-list")
+     * Creacion del Controlador: Tipo de Documentos
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00008
+     */
+    public function tipoDocumentoListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findAll();
+        
+        // Condicion de la Busqueda
+        if (count($tipo_documento) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $tipo_documento
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Tipo de Documentos !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00008
+    
+    
+    /**
+     * @Route("/depto-funcional-user-list", name="depto-funcional-user-list")
+     * Creacion del Controlador: Depto. Funcional por usuario
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00009
+     */
+    public function deptoFuncionalUserListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        
+        $identity = $helpers->authCheck($hash, true);
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        
+        // Query para Obtener los Datos del usuario: TblUsusarios
+        $cred_user = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
+                array(
+                    "idUsuario" => $identity->sub
+                ));
+        
+        // Query para Obtener el Departamento al que corresponde de la Tabla: TblDepartamentosFuncionales
+        $depto_user = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
+                array(
+                    "idDeptoFuncional" => $cred_user
+                ));
+        
+        // Query para Obtener la Direccion que corresponde de la Tabla: TblDireccionesSreci
+        $direccion_user = $em->getRepository("BackendBundle:TblDireccionesSreci")->findBy(
+                array(
+                    "idDireccionSreci" => $depto_user
+                ));
+        
+        // Condicion de la Busqueda
+        if (count($direccion_user) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $direccion_user
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Deparmentos Funcionales !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00009
+    
+    
+    /**
+     * @Route("/dir-sreci-list", name="dir-sreci-list")
+     * Creacion del Controlador: Direcciones de SRECI
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00010
+     */
+    public function direccionSreciListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $direccion_sreci = $em->getRepository("BackendBundle:TblDireccionesSreci")->findAll();
+        
+        // Condicion de la Busqueda
+        if (count($direccion_sreci) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $direccion_sreci
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Departamentos Funcionales !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00010
     
     
     

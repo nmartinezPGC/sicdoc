@@ -33,7 +33,7 @@ export class IngresoComunicacionService {
       let params = "json=" + json;                // Instanciamos los Valorrs del Json con sus parametros
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'}); // Declaramos las Cabezeras
 
-    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json()); 
+    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00001
 
 
@@ -44,10 +44,10 @@ export class IngresoComunicacionService {
   * a la API (correspondencia/new-correspondencia).
   * Objetivo: Ingresar nueva correspondencia
   *****************************************************/
-  registerComunicacion( correspondencia_to_register ){
+  registerComunicacion( token, correspondencia_to_register ){
       let json = JSON.stringify( correspondencia_to_register );
-      let params = "json=" + json;
-      console.log(json);
+      let params = "json=" + json + "&authorization=" + token;      
+      //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
     return this._http.post(this.url + "/correspondencia/new-correspondencia", params, { headers:headers }).map( res => res.json());

@@ -49,6 +49,7 @@ class IngresoCorrespondenciaController extends Controller{
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
         //Recogemos el Hash y la Autrizacion del Mismo
+        
         $hash = $request->get("authorization", null);
         //Se Chekea el Token
         $checkToken = $helpers->authCheck($hash);
@@ -69,7 +70,8 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
                 $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
-                $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;                
+                $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
+                
                 $fecha_ingreso        = new \DateTime('now');
                 $fecha_maxima_entrega = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
                 
@@ -85,6 +87,12 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
                 $cod_direccion_sreci  = ($params->idDireccionSreci != null) ? $params->idDireccionSreci : null ;
+                
+                // Envio por Json el Codigo de Tipo de Documento | Buscar en la Tabla: TblTipoDocumento
+                $cod_depto_funcional   = ($params->idDeptoFuncional != null) ? $params->idDeptoFuncional : null ;
+                
+                // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosFuncionales
+                $cod_tipo_documento  = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;
                 
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
@@ -103,7 +111,8 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
-                    $correspondenciaNew->setCodReferenciaSreci($cod_referencia_sreci);
+                    $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
+                    
                     
                     //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                     //Instanciamos de la Clase TblInstituciones
@@ -116,7 +125,7 @@ class IngresoCorrespondenciaController extends Controller{
                     //Instanciamos de la Clase TblUsuario
                     $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(
-                           "idUsuario" => $identity->sub                           
+                           "idUsuario" => $cod_usuario                           
                         ));                    
                     $correspondenciaNew->setIdUsuario($usuario); //Set de Codigo de Usuario
                     
@@ -133,6 +142,21 @@ class IngresoCorrespondenciaController extends Controller{
                            "idDireccionSreci" => $cod_direccion_sreci
                         ));                    
                     $correspondenciaNew->setIdDireccionSreci($direccion); //Set de Codigo de Dreicciones Sreci 
+                    
+                    //Instanciamos de la Clase TblDireccionesSreci                        
+                    $depto_funcional = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(                            
+                        array(
+                           "idDeptoFuncional" => $cod_depto_funcional
+                        ));                    
+                    $correspondenciaNew->setIdDeptoFuncional($depto_funcional); //Set de Codigo de Dreicciones Sreci 
+                    
+                    //Instanciamos de la Clase TblTipoDocumentos
+                    $tipo_documento_in = $em->getRepository("BackendBundle:TblTipoDocumento")->findOneBy(                            
+                        array(
+                           "idTipoDocumento" => $cod_tipo_documento
+                        ));                    
+                    $correspondenciaNew->setIdTipoDocumento($tipo_documento_in); //Set de Codigo de Tipo de Documentos 
+                                                         
                     //Finaliza Busqueda de Integridad entre Tablas
                     
                     
@@ -146,6 +170,7 @@ class IngresoCorrespondenciaController extends Controller{
                     if(count($isset_corresp_cod) == 0){                    
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaNew);
+                        
                         $em->flush();                                          
 
                         //Consulta de esa Correspondencia recien Ingresada

@@ -500,4 +500,62 @@ class TblCorrespondenciaEnc
     {
         return $this->tipoCom;
     }
+    /**
+     * @var \BackendBundle\Entity\TblTipoDocumento
+     */
+    private $idTipoDocumento;
+
+
+    /**
+     * Set idTipoDocumento
+     *
+     * @param \BackendBundle\Entity\TblTipoDocumento $idTipoDocumento
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdTipoDocumento(\BackendBundle\Entity\TblTipoDocumento $idTipoDocumento = null)
+    {
+        $this->idTipoDocumento = $idTipoDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoDocumento
+     *
+     * @return \BackendBundle\Entity\TblTipoDocumento
+     */
+    public function getIdTipoDocumento()
+    {
+        return $this->idTipoDocumento;
+    }
+    /**
+     * @var \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    private $idDeptoFuncional;
+
+
+    /**
+     * Set idDeptoFuncional
+     *
+     * @param \BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdDeptoFuncional(\BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional = null)
+    {
+        $this->idDeptoFuncional = $idDeptoFuncional;
+
+        return $this;
+    }
+
+    /**
+     * Get idDeptoFuncional
+     *
+     * @return \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    public function getIdDeptoFuncional()
+    {
+        return $this->idDeptoFuncional;
+    }
 }

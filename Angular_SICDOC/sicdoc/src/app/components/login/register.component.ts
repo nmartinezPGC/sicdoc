@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit{
     // Inicializacion de las Listas
     // this.getlistaEstados();
     this.getlistaTipoFuncionario();
-    this.getlistaDeptosFuncionales();
+    // this.getlistaDeptosFuncionales();
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
@@ -200,11 +200,11 @@ export class RegisterComponent implements OnInit{
   * Funcionales de la SRECI.
   * Objetivo: Obtener la lista de los Departamentos Func.
   * de la BD, Llamando a la API, por su metodo
-  * (depto-funcional-list).
+  * (depto-funcional-user-list).
   ******************************************************/
   getlistaDeptosFuncionales() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","depto-funcional-list").subscribe(
+    this._listasComunes.listasComunes("","depto-funcional-user-list").subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);

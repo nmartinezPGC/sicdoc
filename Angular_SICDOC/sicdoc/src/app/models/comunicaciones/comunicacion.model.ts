@@ -4,7 +4,7 @@ export class Comunicaciones{
     constructor(
       public id:number,
       // Datos Generales
-      public codCorrespondencia:string,
+      public codCorrespondencia:string, // Se da por La AutoSecuencia
       public descCorrespondencia:string,
       public temaCorrespondencia:string,
       public codReferenciaSreci:string,
@@ -14,17 +14,21 @@ export class Comunicaciones{
       public idUsuario:number,
       public idEstado:number,
       public idDireccionSreci:number,
+      public idTipoDocumento:number,
 
       // Datos de fechas
-      public fechaMaxEntrega:Date,
-      public fechaModificacion:Date,
+      public fechaMaxEntrega:string,
+      public fechaModificacion:string,
 
       // Datos Externos a la Tablas
       public idPais:number,
       public idTipoInstitucion:number,
 
       //Datos para Ingresar la Primera Accion
-      public idDeptoFuncional:number
+      public idDeptoFuncional:number,
+
+      // Secuenciales de Tablas
+      public secuenciaComunicacionIn:string
 
 
     ){}

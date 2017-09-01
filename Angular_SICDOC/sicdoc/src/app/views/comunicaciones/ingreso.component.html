@@ -4,7 +4,7 @@
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
       <!-- Div que representan las Acciones al Ingresar un Usuario -->
       <div class="alert alert-success" role="alert" *ngIf="status == 'success' " >
-        <strong>Bien echo!</strong> {{ mensajes }} <a [routerLink]="['/login']" >Pulsa aqui ...</a>.
+        <strong>Bien echo!</strong> {{ mensajes }} 
       </div>
 
       <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
@@ -21,13 +21,19 @@
       </div>
       <hr>
       <div class="panel-collapse collapse" id="datosGen">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-4">
+            Nuevo Oficio: <small *ngFor="let list of JsonOutgetCodigoSecuenciaNew" name="secuenciaComunicacionIn"
+             for="secuenciaComunicacionIn">{{list.codSecuencial}} - {{list.valor2 + 1}}</small>
+          </div>
+        </div>
 
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group" >
                <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
                     ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci"
-                   class="form-control input-lg" required placeholder="Codigo de Referencia en SRECI" tabindex="1" maxlength="13" minlength="5">
+                   class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="13" minlength="5">
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
   					</div>
@@ -40,7 +46,7 @@
                     ngControl="temaCorrespondencia" [(ngModel)]="comunicacion.temaCorrespondencia"
                    class="form-control input-lg" required placeholder="Tema de la Comunicacion" tabindex="1" minlength="7">
                   <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Ingresa el Tema de la Comunicacion</small>
-                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
+                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
   					</div>
   				</div>
 
@@ -82,7 +88,7 @@
   					<div class="form-group">
               <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
                     ngControl="idPais" [(ngModel)]="comunicacion.idPais" >
-                  <option value="0">Selecciona un País</option>
+                  <option value="0">País</option>
                   <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
@@ -117,7 +123,7 @@
           <div class="col-xs-12 col-sm-6 col-md-5">
             <div class="form-group">
               <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
-                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  >
+                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  (change)="getlistaInstituciones()" >
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
               </select>
@@ -129,16 +135,28 @@
 
             <div class="row">
               <!-- Direccion Encargada del tema de la Comunicacion -->
-              <div class="col-xs-12 col-sm-6 col-md-5">
+              <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional"
-                        ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  >
+                  <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci"
+                        ngControl="idDireccionSreci" [(ngModel)]="comunicacion.idDireccionSreci"  (change)="getlistaSubDireccionesSRECI()" >
                       <option value="0">Selecciona una Dirección SRECI</option>
-                      <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                      <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
                   </select>
-                  <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Dirección SRECI</small>
+                  <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Dirección SRECI</small>
                 </div>
              </div>
+
+             <!-- Direccion Encargada del tema de la Comunicacion -->
+             <div class="col-xs-12 col-sm-6 col-md-6">
+               <div class="form-group">
+                 <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional"
+                       ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  >
+                     <option value="0">Selecciona una Sub Dirección SRECI</option>
+                     <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECI" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                 </select>
+                 <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null " >Debes Seleccionar una Sub Dirección SRECI</small>
+               </div>
+            </div>
 
           </div>
       </div>
@@ -153,7 +171,7 @@
 			<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-md-3">
-            <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" onclick="validCampo(passwordConfirmation)">
+            <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" >
         </div>
 				<div class="col-xs-12 col-md-3">
             <a [routerLink]="['/login']" class="btn btn-success btn-block btn-lg" disabled

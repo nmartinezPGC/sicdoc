@@ -1,6 +1,10 @@
 BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
+    indexes:
+        fki_secuncia_doc:
+            columns:
+                - id_tipo_documento
     uniqueConstraints:
         tbl_secuenciales_cod_secuencial_key:
             columns:
@@ -43,4 +47,15 @@ BackendBundle\Entity\TblSecuenciales:
             options:
                 fixed: false
             column: tabla_secuencia
+    manyToOne:
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
+            orphanRemoval: false
     lifecycleCallbacks: {  }
