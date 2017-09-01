@@ -109,31 +109,63 @@ class ComunesController extends Controller {
     public function genSecuenciaComInAction(Request $request)
     {
         //Instanciamos el Servicio Helpers y Jwt
-        $helpers = $this->get("app.helpers");
+        $helpers = $this->get("app.helpers");        
         
-        $em = $this->getDoctrine()->getManager();
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evaluamos la Autoriuzacion del Token
+        if($checkToken == true){
+            $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $estados = $em->getRepository("BackendBundle:TblEstados")->findBy(
-                array(
-                    "grupoEstado" => "USR"
-                ));
+        $json = $request->get("json", null);
+        $params = json_decode($json);
         
-        // Condicion de la Busqueda
-        if (count($estados) >= 1 ) {
-            $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "data"   => $estados
-            );
-        }else {
-            $data = array(
-                "status" => "error",
-                "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Estados !!"
-            );
+        //Array de Mensajes
+        $data = $data = array(
+                "status" => "error",                
+                "code" => "400",                
+                "msg" => "No se ha podido obtener los Datos, los parametros son erroneos !!"                
+        ); 
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ***********************************************
+            ////Recogemos el Pais y el Tipo de Institucion ********************************
+            $codigo_secuencia = (isset($params->codSecuencial)) ? $params->codSecuencial : null;
+            $tabla_secuencia  = (isset($params->tablaSecuencia)) ? $params->tablaSecuencia : null;
+            
+            // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
+            $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findBy(
+                    array(
+                        "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"  => $tabla_secuencia // Tabla de la Secuencia a Obtener
+                    ));
+
+            // Condicion de la Busqueda
+            if (count($secuencias) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $secuencias
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Secuencias, comuniquese con el Administrador !!"
+                );
+            }
         }
-        
+        }else{
+            $data = array(
+               "status" => "error",
+               "code" => 400,
+               "msg" => "Autorización no valida !!"
+            );  
+        }
         return $helpers->parserJson($data);
     }//FIN | FND00002
     
