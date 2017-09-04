@@ -106,6 +106,10 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_correspondencia_det  = ($params->codCorrespondenciaDet != null) ? $params->codCorrespondenciaDet : null ;
                 
                 
+                // Informacion para el envio de los correos a las Direcciones
+                $email_direccion  = ($params->emailDireccion != null) ? $params->emailDireccion : null ;
+                
+                
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null){
                     //La condicion fue Exitosa
@@ -249,37 +253,49 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         
                         // Envio de Correo despues de la Granacion de Datos
-                        // ************************************************
+                        // *****************************************************
                         
-                        try{ 
-                       //require_once(__DIR__.'/sicdoc/symfony/vendor/swiftmailer/swiftmailer/lib/swift_required.php');
+                        //try{
+                        // echo "Paso 1.0";
+                       //require_once './swiftmailer/lib/swift_required.php';
+                      // echo "Paso 1.02";
                        //require __DIR__.'/classes/Swift.php';
                        //require_once '/PATH/library/SwiftMailer/swift_required.php'; 
                             //    C:\wamp64\www\sicdoc\symfony\vendor\swiftmailer\swiftmailer\lib
+                            //$mailer = $this->container->get('mailer');
                             //Creamos la instancia con la configuración 
-                            $transport = \Swift_SmtpTransport::newInstance() 
+                            $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
-                               ->setEncryption('ssl')
                                ->setPort(587)
+                               ->setEncryption('tls')
                                ->setUsername('nahum.sreci@gmail.com')
                                ->setPassword('1897Juve');
-
+                           //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
-
+                           //echo "Paso 2";
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Es una prueba de envío')
-                               ->setFrom(array('nahum.sreci@gmail.com' => 'Nahum Martinez'))
-                               ->setTo('nmartinez.salgado@yahoo.com')
-                               ->setBody('Este es el cuerpo de mi mensaje', 'text/html');
-
+                               ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
+                               ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
+                               ->setTo($email_direccion)
+                               ->setBody('Estimado(a) Sr. Direcctor(a) <br> Se notifica el ingreso del oficio: ' . $cod_correspondencia . 
+                                         ' <br> <b>Tema</b>: ' . $tema_correspondencia . 
+                                         ' <br> <b>Descripción</b>: ' . $desc_correspondencia , 'text/html');
+                           
+                            $target_path = "uploads/users/1503335120.png";
+                            $mail->attach(\Swift_Attachment::fromPath($target_path));
+                            
+                                         
+                               //->attach(Swift_Attachment::fromPath('../../../web/uploads/users/1503335120.png'));
+                           //echo "Paso 3";
                            //Enviamos el correo
-                           $mailer->send($mail);
-
-                       } catch(Exception $e) {
+                           //$this->get('mailer')->send($mail);
+                           $resuly = $mailer->send($mail);
+                           //echo "Paso 4  " ;
+                       /*} catch(Swift_TransportException  $e) {
                            echo ("Error al enviar mensaje: " + $e->getMessage());
-                       }
+                       }*/
                         
                         // ***** Fin de Envio de Correo ************************
                         // 

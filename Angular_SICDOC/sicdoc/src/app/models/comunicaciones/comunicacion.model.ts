@@ -30,7 +30,10 @@ export class Comunicaciones{
 
       // Secuenciales de Tablas
       public secuenciaComunicacionIn:string,
-      public secuenciaComunicacionDet:string
+      public secuenciaComunicacionDet:string,
+
+      //Envio de correos
+      public emailDireccion:string
 
 
     ){}

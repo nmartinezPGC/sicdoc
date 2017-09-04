@@ -124,7 +124,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, "1",  null, null,  0, 0,  0,  "","");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, "1",  null, null,  0, 0,  0,  "","",  "");
     //this.loadScript('../assets/js/register.component.js');
   } // Fin | Metodo ngOnInit
 
@@ -137,6 +137,8 @@ export class IngresoComunicacionComponent implements OnInit{
       let codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
       let valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
 
+      let emailDireccionIN  = this.JsonOutgetlistaSubDireccionSRECI[0].emailDireccion;
+
       // Secuenciales de la Tabla correspondencia Encabenzado
       this.comunicacion.codCorrespondencia = codigoSecuencia + "-" + valorSecuencia;
       this.comunicacion.secuenciaComunicacionIn = valorSecuencia;
@@ -144,6 +146,9 @@ export class IngresoComunicacionComponent implements OnInit{
       // Secuenciales de la Tabla correspondencia detalle
       this.comunicacion.codCorrespondenciaDet = codigoSecuenciaDet + "-" + valorSecuenciaDet;
       this.comunicacion.secuenciaComunicacionDet = valorSecuenciaDet;
+
+      //Parametros para el envio de correos
+      this.comunicacion.emailDireccion = emailDireccionIN;
 
 
       let token1 = this._ingresoComunicacion.getToken();
@@ -158,8 +163,9 @@ export class IngresoComunicacionComponent implements OnInit{
             if(this.status != "success"){
                 this.status = "error";
                 this.mensajes = response.msg;
+                alert(this.mensajes);
             }else{
-              this.resetForm();
+              //this.resetForm();
               this.ngOnInit();
             }
         }, error => {
@@ -224,7 +230,7 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, "1",  "", "",  0, 0,  0,  "","");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, "1",  "", "",  0, 0,  0,  "","",  "");
   } // FIN : FND-00001.1
 
 
@@ -389,7 +395,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            console.log(response.data);
+            //console.log(response.data);
           }
         });
         // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
@@ -423,7 +429,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
-            console.log(response.data);
+            //console.log(response.data);
           }
         });
         // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
