@@ -40,12 +40,13 @@ export class IngresoComunicacionComponent implements OnInit{
   public fechaHoy:Date = new Date();
   private params;
   private paramsSecuencia;
+  private paramsSecuenciaDet;
   private paramsSubDir;
 
   // Instacia de la variable del Modelo
   public user:Usuarios;
   public comunicacion: Comunicaciones;
-
+//
   // Objeto que Controlara la Forma
   forma:FormGroup;
 
@@ -69,6 +70,7 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaSubDireccionSRECI:any[];
 
   public JsonOutgetCodigoSecuenciaNew:any[];
+  public JsonOutgetCodigoSecuenciaDet:any[];
 
 
   // Ini | Definicion del Constructor
@@ -98,6 +100,13 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoDocumento" : ""
     };
 
+    // Iniciamos los Parametros de Secuenciales
+    this.paramsSecuenciaDet = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
     // Iniciamos los Parametros de Sub Direcciones
     this.paramsSubDir = {
       "idDireccionSreci"  : ""
@@ -111,22 +120,33 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondencia();
-    // this.generarCodigoCorrespondencia( this.JsonOutgetCodigoSecuenciaNew );
+    this.listarCodigoCorrespondenciaDet();
 
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.comunicacion = new Comunicaciones(1, "COD-COM", "", "", "",  0, 0, 7, 0, 1,  "", "",  0, 0,  0, "gfgddfg");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, "1",  null, null,  0, 0,  0,  "","");
     //this.loadScript('../assets/js/register.component.js');
   } // Fin | Metodo ngOnInit
 
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
-      // parseInt(this.user.idTipoUsuario);
-      // this.comunicacion.idUsuario = this._ingresoComunicacion.getIdentity().sub;
-      // this.comunicacion.secuenciaComunicacionIn = this.listarCodigoCorrespondencia().codSecuencial;
+      // Parseo de parametros que no se seleccionan
+      let codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+      let valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+      let codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+      let valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+
+      // Secuenciales de la Tabla correspondencia Encabenzado
+      this.comunicacion.codCorrespondencia = codigoSecuencia + "-" + valorSecuencia;
+      this.comunicacion.secuenciaComunicacionIn = valorSecuencia;
+
+      // Secuenciales de la Tabla correspondencia detalle
+      this.comunicacion.codCorrespondenciaDet = codigoSecuenciaDet + "-" + valorSecuenciaDet;
+      this.comunicacion.secuenciaComunicacionDet = valorSecuenciaDet;
+
+
       let token1 = this._ingresoComunicacion.getToken();
-      console.log(this.comunicacion);
 
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
@@ -138,6 +158,9 @@ export class IngresoComunicacionComponent implements OnInit{
             if(this.status != "success"){
                 this.status = "error";
                 this.mensajes = response.msg;
+            }else{
+              this.resetForm();
+              this.ngOnInit();
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -167,6 +190,42 @@ export class IngresoComunicacionComponent implements OnInit{
     node.type = 'text/javascript';
     document.getElementsByTagName('head')[0].appendChild(node);
   } // FIN : FND-00001
+
+
+  /****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 01-09-2017
+  * Descripcion: Limpia todo el Fomulario, las variables
+  * Objetivo: Resetear el Formulario uso de la pagina
+  *****************************************************/
+  public resetForm() {
+    // Iniciamos los Parametros de Instituciones
+    this.params = {
+      "idPais"  : "",
+      "idTipoInstitucion"  : ""
+    };
+
+    // Iniciamos los Parametros de Secuenciales
+    this.paramsSecuencia = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
+    // Iniciamos los Parametros de Secuenciales
+    this.paramsSecuenciaDet = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
+    // Iniciamos los Parametros de Sub Direcciones
+    this.paramsSubDir = {
+      "idDireccionSreci"  : ""
+    };
+
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, "1",  "", "",  0, 0,  0,  "","");
+  } // FIN : FND-00001.1
 
 
   /*****************************************************
@@ -308,9 +367,9 @@ export class IngresoComunicacionComponent implements OnInit{
   /*****************************************************
   * Funcion: FND-00006
   * Fecha: 01-09-2017
-  * Descripcion: Carga la Imagen de usuario desde el File
-  * Objetivo: Obtener la imagen que se carga desde el
-  * control File de HTML
+  * Descripcion: Obtiene la siguiente secuencia
+  * Objetivo: Obtener el secuencial de la tabla
+  * indicada con su cosigo
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    listarCodigoCorrespondencia(){
@@ -325,7 +384,7 @@ export class IngresoComunicacionComponent implements OnInit{
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            this.JsonOutgetlistaInstitucion = response.data;
+            this.JsonOutgetCodigoSecuenciaNew = response.data;
             alert(response.msg);
 
           }else{
@@ -337,6 +396,40 @@ export class IngresoComunicacionComponent implements OnInit{
         // console.log( this.nextCodComunicacion );
         // return this.nextCodComunicacion;
   } // FIN : FND-00006
+
+
+  /*****************************************************
+  * Funcion: FND-00006.1
+  * Fecha: 03-09-2017
+  * Descripcion: Obtiene la siguiente secuencia
+  * Objetivo: Obtener el secuencial de la tabla
+  * indicada con su cosigo
+  * (gen-secuencia-comunicacion-in).
+  ******************************************************/
+   listarCodigoCorrespondenciaDet(){
+    this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
+    this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+    this.paramsSecuenciaDet.idTipoDocumento = "1";
+    let nextCodComunicacion:string = "";
+    //Llamar al metodo, de Login para Obtener la Identidad
+    //console.log(this.params);
+    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetCodigoSecuenciaDet = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetCodigoSecuenciaDet = response.data;
+            console.log(response.data);
+          }
+        });
+        // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
+        // console.log( this.nextCodComunicacion );
+        // return this.nextCodComunicacion;
+  } // FIN : FND-00006.1
 
 
   /*****************************************************

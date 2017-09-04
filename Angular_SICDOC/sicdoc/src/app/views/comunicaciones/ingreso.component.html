@@ -3,8 +3,8 @@
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
       <!-- Div que representan las Acciones al Ingresar un Usuario -->
-      <div class="alert alert-success" role="alert" *ngIf="status == 'success' " >
-        <strong>Bien echo!</strong> {{ mensajes }} 
+      <div name="alert" class="alert alert-success" role="alert" *ngIf="status == 'success' " >
+        <strong>Bien echo!</strong> {{ mensajes }}
       </div>
 
       <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
@@ -21,19 +21,19 @@
       </div>
       <hr>
       <div class="panel-collapse collapse" id="datosGen">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-4">
             Nuevo Oficio: <small *ngFor="let list of JsonOutgetCodigoSecuenciaNew" name="secuenciaComunicacionIn"
              for="secuenciaComunicacionIn">{{list.codSecuencial}} - {{list.valor2 + 1}}</small>
           </div>
-        </div>
+        </div> -->
 
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group" >
                <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
                     ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci"
-                   class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="13" minlength="5">
+                   class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="30" minlength="5">
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
   					</div>
@@ -44,7 +44,7 @@
   					<div class="form-group" >
                <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia"
                     ngControl="temaCorrespondencia" [(ngModel)]="comunicacion.temaCorrespondencia"
-                   class="form-control input-lg" required placeholder="Tema de la Comunicacion" tabindex="1" minlength="7">
+                   class="form-control input-lg" required placeholder="Tema de la Comunicacion" tabindex="2" minlength="7">
                   <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Ingresa el Tema de la Comunicacion</small>
                   <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
   					</div>
@@ -53,7 +53,8 @@
           <div class="col-xs-12 col-sm-6 col-md-12">
             <div class="form-group">
                 <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="3"
-                    placeholder="Ingresa la Descripcion de la Comunicacion" ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
+                    placeholder="Ingresa la Descripcion de la Comunicacion" tabindex="3"
+                    ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
                 <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Codigo de Referencia</small>
                 <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
             </div>
@@ -63,7 +64,8 @@
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
                 <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega </label>
-                <input class="form-control" type="date" value="{{ fechaHoy | date: 'dd/MM/yyyy' }}" id="example-date-input">
+                <input #fechaMaxEntrega class="form-control" type="date" data-date-format="DD MMMM YYYY" value="{{date | date: 'ddMMyyyy'}}" tabindex="4"
+                name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" [(ngModel)]="comunicacion.fechaMaxEntrega" >
             </div>
           </div>
 
@@ -100,7 +102,7 @@
   					<div class="form-group">
               <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
                     ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" (change)="getlistaInstituciones()" >
-                  <option value="0">Tipo de Institución</option>
+                  <option value="0" >Tipo de Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
@@ -174,8 +176,9 @@
             <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" >
         </div>
 				<div class="col-xs-12 col-md-3">
-            <a [routerLink]="['/login']" class="btn btn-success btn-block btn-lg" disabled
-              ng-disabled="passwordUsuairo.errors?.minlength" >Ingresar</a>
+          
+            <a [routerLink]="['/ingreso-comunicacion']" class="btn btn-success btn-block btn-lg"
+               (onclick)="resetForm()" >Ingresar</a>
         </div>
 			</div>
 		</form>

@@ -46,7 +46,7 @@ export class IngresoComunicacionService {
   *****************************************************/
   registerComunicacion( token, correspondencia_to_register ){
       let json = JSON.stringify( correspondencia_to_register );
-      let params = "json=" + json + "&authorization=" + token;      
+      let params = "json=" + json + "&authorization=" + token;
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 

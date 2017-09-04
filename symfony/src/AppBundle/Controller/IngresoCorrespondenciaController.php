@@ -9,11 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\JsonResponse;
 //Importamos las Tablas a Relacionar
 use BackendBundle\Entity\TblCorrespondenciaEnc;
+use BackendBundle\Entity\TblCorrespondenciaDet;
 use BackendBundle\Entity\TblUsuarios;
 use BackendBundle\Entity\TblDocumentos;
 use BackendBundle\Entity\TblInstituciones;
 use BackendBundle\Entity\TblEstados;
 use BackendBundle\Entity\TblDireccionesSreci;
+use BackendBundle\Entity\TblSecuenciales;
+use Swift_MessageAcceptanceTest;
+
 
 
 /********************************************************************
@@ -65,8 +69,9 @@ class IngresoCorrespondenciaController extends Controller{
                 //Decodificamos el Json
                 $params = json_decode($json);
 
-                //Parametros a Convertir                                
+                //Parametros a Convertir                           
                 //Datos generales de la Tabla                
+                $new_secuencia        = ($params->secuenciaComunicacionIn != null) ? $params->secuenciaComunicacionIn : null ;
                 $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
                 $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
@@ -74,6 +79,8 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 $fecha_ingreso        = new \DateTime('now');
                 $fecha_maxima_entrega = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
+                // Seteo de la Fecha, viene en Json (String) se tiene que convertir a su dato Nativo (Date)
+                $fecha_maxima_entrega_date = new \DateTime($fecha_maxima_entrega);
                 
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
@@ -94,6 +101,10 @@ class IngresoCorrespondenciaController extends Controller{
                 // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosFuncionales
                 $cod_tipo_documento  = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;
                 
+                // Relacion con la Tabla Correspondencia Detalle | Proceso de Respuesta
+                $new_secuencia_det        = ($params->secuenciaComunicacionDet != null) ? $params->secuenciaComunicacionDet : null ;
+                $cod_correspondencia_det  = ($params->codCorrespondenciaDet != null) ? $params->codCorrespondenciaDet : null ;
+                
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null){
@@ -102,17 +113,19 @@ class IngresoCorrespondenciaController extends Controller{
                     $em = $this->getDoctrine()->getManager();
                     
                     //Seteo de Datos Generales de la tabla: TblCorrespondenciaEnc
-                    $correspondenciaNew = new TblCorrespondenciaEnc();
+                    $correspondenciaNew = new TblCorrespondenciaEnc();                   
                     
-                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia);
+                    
+                    // Buscamos el Id de la Secuencia y Generamos el Codigo
+                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia);                    
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
-                    $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega);
+                    $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
                     $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
-                    
+                    $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
                     
                     //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                     //Instanciamos de la Clase TblInstituciones
@@ -160,20 +173,118 @@ class IngresoCorrespondenciaController extends Controller{
                     //Finaliza Busqueda de Integridad entre Tablas
                     
                     
-                    //Verificacion del Codigo del Documentos *******************
+                    //Verificacion del Codigo de la Correspondenia *******************
                     $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                         array(
                           "codCorrespondenciaEnc" => $cod_correspondencia
                         ));
                     
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
-                    if(count($isset_corresp_cod) == 0){                    
+                    if(count($isset_corresp_cod) == 0){
+                        //Instanciamos de la Clase TblSecuenciales
+                        //Seteo del nuevo secuencial de la tabla: TblSecuenciales
+                        $secuenciaNew = new TblSecuenciales();
+                        
+                        
+                        // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
+                        $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
+                            array(
+                                "codSecuencial"  => "COM-IN-OFI"
+                            ));                    
+                        $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
+                        
+                        
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaNew);
                         
-                        $em->flush();                                          
+                        $em->persist($secuenciaNew);
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+                        
+                        
+                        // Ingresamos los Datos a la Tabla TblEncabezadosDet **********
+                        //Seteo del nuevo secuencial de la tabla: TblCorrespondenciaDet
+                        // *****************************************************
+                        $correspondenciaDet = new TblCorrespondenciaDet();
+                        
+                        //Ingresamos un valor en la Tabla **********************
+                        //Correspondencia Enc **********************************                        
+                        $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det); //Set de Codigo Correspondencia
+                        $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
+                        
+                        //$correspondenciaDet->setDescCorrespondenciaDet($cod_correspondencia); //Set de Fecha Ingreso
+                        
+                       
+                        //Verificacion del Codigo de la Correspondenia *********
+                        $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                            array(
+                                "codCorrespondenciaEnc" => $cod_correspondencia
+                            ));
+                        $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
+                        
+                        //Instanciamos de la Clase TblEstados                        
+                        $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                            array(
+                                "idEstado" => 7
+                            ));                    
+                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados
+                        //$correspondenciaDet->setIdCorrespondenciaEnc($isset_corresp_cod);
+                        
+                        
+                        // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Det
+                        $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
+                            array(
+                                "codSecuencial"  => "COM-IN-DET-OFI"
+                            ));                    
+                        $secuenciaNew->setValor2($new_secuencia_det); //Set de valor2 de Secuencia de Oficios
+                        
+                        // Relizamos la persistencia de Datos de las Comunicaciones
+                        $em->persist($correspondenciaDet);
+                        
+                        // Realizamos la persistencia de la Secuencia
+                        $em->persist($secuenciaNew);
+                        
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+                        
+                        
+                        // Envio de Correo despues de la Granacion de Datos
+                        // ************************************************
+                        
+                        try{ 
+                       //require_once(__DIR__.'/sicdoc/symfony/vendor/swiftmailer/swiftmailer/lib/swift_required.php');
+                       //require __DIR__.'/classes/Swift.php';
+                       //require_once '/PATH/library/SwiftMailer/swift_required.php'; 
+                            //    C:\wamp64\www\sicdoc\symfony\vendor\swiftmailer\swiftmailer\lib
+                            //Creamos la instancia con la configuración 
+                            $transport = \Swift_SmtpTransport::newInstance() 
+                               ->setHost('smtp.gmail.com')
+                               ->setEncryption('ssl')
+                               ->setPort(587)
+                               ->setUsername('nahum.sreci@gmail.com')
+                               ->setPassword('1897Juve');
 
-                        //Consulta de esa Correspondencia recien Ingresada
+                           //Creamos la instancia del envío
+                           $mailer = \Swift_Mailer::newInstance($transport);
+
+                           //Creamos el mensaje
+                           $mail = \Swift_Message::newInstance()
+                               ->setSubject('Es una prueba de envío')
+                               ->setFrom(array('nahum.sreci@gmail.com' => 'Nahum Martinez'))
+                               ->setTo('nmartinez.salgado@yahoo.com')
+                               ->setBody('Este es el cuerpo de mi mensaje', 'text/html');
+
+                           //Enviamos el correo
+                           $mailer->send($mail);
+
+                       } catch(Exception $e) {
+                           echo ("Error al enviar mensaje: " + $e->getMessage());
+                       }
+                        
+                        // ***** Fin de Envio de Correo ************************
+                        // 
+                        // 
+                        //Consulta de esa Correspondencia recien Ingresada *****
                         $correspondenciaConsulta = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                             array(                                
                                 "codCorrespondenciaEnc" => $cod_correspondencia 
@@ -183,6 +294,7 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
+                                "msg"    => "Se ha ingresado el Oficio No. " . $cod_correspondencia,
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{
@@ -190,7 +302,8 @@ class IngresoCorrespondenciaController extends Controller{
                             "status" => "error",
                             "desc"   => "Ya existe un codigo",
                             "code"   => 400, 
-                            "data"   => "Error al registrar, ya existe una correspondencia con ese código, por favor ingrese otro !!"
+                            "msg"   => "Error al registrar, ya existe una correspondencia con este código, ". $cod_correspondencia . 
+                                       " por favor ingrese otro !!"
                         );                       
                     }//Finaliza el Bloque de la validadacion de la Data en la Tabla
                     // TblCorrespondenciaEnc
@@ -381,4 +494,6 @@ class IngresoCorrespondenciaController extends Controller{
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
     } //Fin de la Funcion Editar Correspondencia *******************************
+
+    
 }
