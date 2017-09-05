@@ -208,7 +208,7 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         // Ingresamos los Datos a la Tabla TblEncabezadosDet **********
                         //Seteo del nuevo secuencial de la tabla: TblCorrespondenciaDet
-                        // *****************************************************
+                        // ************************************************************
                         $correspondenciaDet = new TblCorrespondenciaDet();
                         
                         //Ingresamos un valor en la Tabla **********************
@@ -242,7 +242,7 @@ class IngresoCorrespondenciaController extends Controller{
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia_det); //Set de valor2 de Secuencia de Oficios
                         
-                        // Relizamos la persistencia de Datos de las Comunicaciones
+                        // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                         $em->persist($correspondenciaDet);
                         
                         // Realizamos la persistencia de la Secuencia
@@ -252,9 +252,33 @@ class IngresoCorrespondenciaController extends Controller{
                         $em->flush();
                         
                         
-                        // Envio de Correo despues de la Granacion de Datos
-                        // *****************************************************
                         
+                        // Ingresamos los Datos a la Tabla TblDocumentos *******
+                        //Seteo del nuevo documentos de la tabla: TblDocumentos
+                        // *****************************************************
+                        $documentosIn = new TblDocumentos();
+                        
+                        $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
+                        $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
+                        
+                        //Instanciamos de la Clase TblUsuario
+                        $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                            array(
+                               "idUsuario" => $cod_usuario                           
+                            ));                    
+                        $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario                        
+                        //$documentosIn->setIdUsuario($identity->sub); //Set Fecha Ingreso
+                        
+                        // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                        $em->persist($documentosIn); 
+                        
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+                        
+                        
+                        
+                        // Envio de Correo despues de la Granacion de Datos
+                        // *****************************************************                        
                         //try{
                         // echo "Paso 1.0";
                        //require_once './swiftmailer/lib/swift_required.php';
@@ -283,8 +307,12 @@ class IngresoCorrespondenciaController extends Controller{
                                          ' <br> <b>Tema</b>: ' . $tema_correspondencia . 
                                          ' <br> <b>Descripción</b>: ' . $desc_correspondencia , 'text/html');
                            
-                            $target_path = "uploads/users/1503335120.png";
-                            $mail->attach(\Swift_Attachment::fromPath($target_path));
+                            
+                                         
+                            $target_path1 = "uploads/users/1503335120.png";
+                            $target_path2 = "uploads/users/1503335511.jpeg";
+                            $mail->attach(\Swift_Attachment::fromPath($target_path1));
+                            $mail->attach(\Swift_Attachment::fromPath($target_path2));
                             
                                          
                                //->attach(Swift_Attachment::fromPath('../../../web/uploads/users/1503335120.png'));
