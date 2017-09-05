@@ -279,7 +279,8 @@ class IngresoCorrespondenciaController extends Controller{
                                ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
                                ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
                                ->setTo($email_direccion)
-                               ->setBody('Estimado(a) Sr. Direcctor(a) <br> Se notifica el ingreso del oficio: ' . $cod_correspondencia . 
+                               ->setBody('Estimado(a) Sr. Direcctor(a) <br> '
+                                       . '<b> Se notifica el ingreso del oficio: </b>' . $cod_correspondencia . 
                                          ' <br> <b>Tema</b>: ' . $tema_correspondencia . 
                                          ' <br> <b>Descripción</b>: ' . $desc_correspondencia , 'text/html');
                            
