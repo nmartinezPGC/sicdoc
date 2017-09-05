@@ -356,7 +356,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comu/upload-image-user";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-image-user";
 
     this._uploadService.makeFileRequest( token, url, ['image'], this.filesToUpload ).then(
         ( result ) => {
