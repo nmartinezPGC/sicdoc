@@ -1,9 +1,15 @@
 ## YAML Template.
 ---
-## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
 comunes_upload_image:
     path: /upload-image
     defaults: { _controller: "AppBundle:Comunes:uploadImage" }
+    methods: POST
+
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
+comunes_upload_documento:
+    path: /upload-documento
+    defaults: { _controller: "AppBundle:Comunes:uploadDocumento" }
     methods: POST
     
 ## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios

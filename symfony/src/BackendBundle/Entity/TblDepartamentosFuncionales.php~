@@ -180,4 +180,33 @@ class TblDepartamentosFuncionales
     {
         return $this->idDireccionSreci;
     }
+    /**
+     * @var string
+     */
+    private $emailDireccion;
+
+
+    /**
+     * Set emailDireccion
+     *
+     * @param string $emailDireccion
+     *
+     * @return TblDepartamentosFuncionales
+     */
+    public function setEmailDireccion($emailDireccion)
+    {
+        $this->emailDireccion = $emailDireccion;
+
+        return $this;
+    }
+
+    /**
+     * Get emailDireccion
+     *
+     * @return string
+     */
+    public function getEmailDireccion()
+    {
+        return $this->emailDireccion;
+    }
 }

@@ -24,6 +24,7 @@ import { NgForm }    from '@angular/forms';
 import { Usuarios } from '../../models/usuarios/usuarios.model'; // Servico del Login
 import { Comunicaciones } from '../../models/comunicaciones/comunicacion.model'; // Modelo a Utilizar
 
+declare var $:any;
 
 //Importamos los Javascript
 //import '../../views/login/register.component';
@@ -42,22 +43,34 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSecuencia;
   private paramsSecuenciaDet;
   private paramsSubDir;
+  private paramsSubDirAcom;
 
-  // Instacia de la variable del Modelo
+  // Instacia de la variable del Modelo | Json de Parametros
   public user:Usuarios;
   public comunicacion: Comunicaciones;
 //
   // Objeto que Controlara la Forma
   forma:FormGroup;
 
+ // Variables de Mensajeria y Informaicon
   public data;
   public errorMessage;
   public status;
   public mensajes;
 
+  public pdfUpLoad;
+
+  // variables de Identificacion
   public identity;
   public token;
-  // public passwordConfirmation:string;
+
+  // Variables de Secuencias
+  public codigoSecuencia; // Secuencia en Texto del Oficio
+  public valorSecuencia; // Secuencial del Oficio
+  public codigoSecuenciaDet; // Secuencia en Texto del Oficio
+  public valorSecuenciaDet; // Secuencial del Oficio
+  public emailDireccionIN; // Correo de la Direccion
+
 
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
@@ -67,7 +80,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaTipoInstitucion:any[];
   public JsonOutgetlistaInstitucion:any[];
   public JsonOutgetlistaDireccionSRECI:any[];
+  public JsonOutgetlistaDireccionSRECIAcom:any[];
   public JsonOutgetlistaSubDireccionSRECI:any[];
+  public JsonOutgetlistaSubDireccionSRECIAcom:any[];
 
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
@@ -112,11 +127,17 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
+    // Iniciamos los Parametros de Sub Direcciones Acompañantes
+    this.paramsSubDirAcom = {
+      "idDireccionSreci"  : ""
+    };
+
     // Inicializacion de las Listas
     this.getlistaEstadosComunicacion();
     this.getlistaPaises();
     this.getlistaTipoInstituciones();
     this.getlistaDireccionesSRECI();
+    this.getlistaDireccionesSRECIAcom();
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondencia();
@@ -124,32 +145,36 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, "1",  null, null,  0, 0,  0,  "","",  "");
-    //this.loadScript('../assets/js/register.component.js');
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, 0,"1",  null, null,  0, 0,  0, 0,  "","",  "", "");
+    this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
 
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
       // Parseo de parametros que no se seleccionan
-      let codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-      let valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-      let codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-      let valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+      this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+      this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+      this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+      this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
 
-      let emailDireccionIN  = this.JsonOutgetlistaSubDireccionSRECI[0].emailDireccion;
+      this.emailDireccionIN  = this.JsonOutgetlistaSubDireccionSRECI[0].emailDireccion;
 
       // Secuenciales de la Tabla correspondencia Encabenzado
-      this.comunicacion.codCorrespondencia = codigoSecuencia + "-" + valorSecuencia;
-      this.comunicacion.secuenciaComunicacionIn = valorSecuencia;
+      this.comunicacion.codCorrespondencia = this.codigoSecuencia + "-" + this.valorSecuencia;
+      this.comunicacion.secuenciaComunicacionIn = this.valorSecuencia;
 
       // Secuenciales de la Tabla correspondencia detalle
-      this.comunicacion.codCorrespondenciaDet = codigoSecuenciaDet + "-" + valorSecuenciaDet;
-      this.comunicacion.secuenciaComunicacionDet = valorSecuenciaDet;
+      this.comunicacion.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
+      this.comunicacion.secuenciaComunicacionDet = this.valorSecuenciaDet;
 
       //Parametros para el envio de correos
-      this.comunicacion.emailDireccion = emailDireccionIN;
+      this.comunicacion.emailDireccion = this.emailDireccionIN;
 
+      // Parametro para documento Seleccionado
+      // this.comunicacion.pdfDocumento = "";
+
+      //alert(this.comunicacion.pdfDocumento);
 
       let token1 = this._ingresoComunicacion.getToken();
 
@@ -163,7 +188,7 @@ export class IngresoComunicacionComponent implements OnInit{
             if(this.status != "success"){
                 this.status = "error";
                 this.mensajes = response.msg;
-                alert(this.mensajes);
+                //alert(this.mensajes);
             }else{
               //this.resetForm();
               this.ngOnInit();
@@ -230,7 +255,7 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, "1",  "", "",  0, 0,  0,  "","",  "");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, 0, "1",  "", "",  0, 0,  0, 0,  "","",  "", "");
   } // FIN : FND-00001.1
 
 
@@ -352,19 +377,41 @@ export class IngresoComunicacionComponent implements OnInit{
   public resultUpload;
 
   fileChangeEvent(fileInput: any){
-    //console.log('Evento Chge Lanzado');
+    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-image-user";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/documentos/upload-image/DOC-EEH-100012";
 
-    this._uploadService.makeFileRequest( token, url, ['image'], this.filesToUpload ).then(
+    // Variables del Metodo
+    let  error:string;
+    let  status:string;
+    let  codigoSec:string;
+
+    // Parametros de las Secuencias
+    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+
+    // Parametro para documento Seleccionado
+    this.comunicacion.pdfDocumento = codigoSec;
+
+    // Ejecutamos el Servicio con los Parametros
+    this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
+          status = this.resultUpload.status;
           console.log(this.resultUpload);
+          if(status === "error"){
+            console.log(this.resultUpload);
+            alert(this.resultUpload.msg);
+          }
+
+          // this.mensajes = this.resultUpload.msg;
         },
         ( error ) => {
-          alert("error");
+          alert(error);
           console.log(error);
         });
   } // FIN : FND-00005
@@ -480,6 +527,31 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
+  * Funcion: FND-00007.1.1
+  * Fecha: 31-08-2017
+  * Descripcion: Carga la Lista de las Direcciones de
+  * SRECI Acompañantes del Tema
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (dir-sreci-list).
+  ******************************************************/
+  getlistaDireccionesSRECIAcom() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaDireccionSRECIAcom = response.data;
+          }
+        });
+  } // FIN : FND-00007.1.1
+
+
+  /*****************************************************
   * Funcion: FND-00007.1
   * Fecha: 31-08-2017
   * Descripcion: Carga la Lista de las Sub Direcciones de
@@ -506,6 +578,67 @@ export class IngresoComunicacionComponent implements OnInit{
         });
   } // FIN : FND-00007.1
 
+
+  /*****************************************************
+  * Funcion: FND-00007.1.2
+  * Fecha: 31-08-2017
+  * Descripcion: Carga la Lista de las Sub Direcciones de
+  * SRECI Acompañantes
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (subdir-sreci-list).
+  ******************************************************/
+  getlistaSubDireccionesSRECIAcom() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsSubDirAcom.idDireccionSreci = this.comunicacion.idDireccionSreciAcom;
+
+    this._listasComunes.listasComunes( this.paramsSubDirAcom,"subdir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
+          }
+        });
+  } // FIN : FND-00007.1.2
+
+
+public fnd(){
+  var valueData = "{{ list.idDeptoFuncional }}";
+  // let list;
+  // let data = list of JsonOutgetlistaDireccionSRECI;
+  let data = [{"1":"1asas", "2":"2sss"}];
+  let JsonOut:any[] = data;
+  let list;
+  // let veri:any[] = let list of JsonOut;
+  // let ff:any[] =  list of JsonOutgetlistaSubDireccionSRECI;
+
+  // console.log(JsonOutgetlistaSubDireccionSRECI);
+
+  var newDirAcompanate = '<select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" '
+        + 'ngControl="idDireccionSreci" [(ngModel)]="comunicacion.idDireccionSreci"  (change)="getlistaSubDireccionesSRECI()" > '
+      + '<option value="0">Dirección SRECI Responsable </option> '
+      + '<option *ngFor=" ' + list  + ' " value=" valueDatas "> '
+      + ' " ' +  list  + ' " </option> </select>'
+      + '<small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " > '
+      + ' Debes Seleccionar una Dirección SRECI responsable</small> ';
+
+
+  var newSubDirAcompanante = '<select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional" '
+        + ' ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  > '
+        + '<option value="0">Sub Dirección SRECI Acompañante</option> '
+        + '<option *ngFor="let list of JsonOutgetlistaSubDireccionSRECI" value="">{{ list.descDeptoFuncional }}</option> '
+        + '</select> <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null" > '
+        + 'Debes Seleccionar una Sub Dirección SRECI acompañante</small>';
+
+    $( "#newDirAcom" ).append( newDirAcompanate );
+    $( "#newSubDirAcom" ).append( newSubDirAcompanante );
+
+}
 
 } // // FIN : export class IngresoComunicacionComponent
 

@@ -5,12 +5,12 @@ BackendBundle\Entity\TblDocumentos:
         tbl_documentos_cod_documento_idx:
             columns:
                 - cod_documento
-        fki_det_corr:
-            columns:
-                - id_correspondencia_det
         fki_doc_user:
             columns:
                 - id_usuario
+        fki_det_corr:
+            columns:
+                - id_correspondencia_det
     uniqueConstraints:
         tbl_documentos_cod_documento_key:
             columns:

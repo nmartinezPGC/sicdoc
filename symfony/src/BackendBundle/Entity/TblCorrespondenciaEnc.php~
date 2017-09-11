@@ -558,4 +558,33 @@ class TblCorrespondenciaEnc
     {
         return $this->idDeptoFuncional;
     }
+    /**
+     * @var integer
+     */
+    private $idDeptoAcomp;
+
+
+    /**
+     * Set idDeptoAcomp
+     *
+     * @param integer $idDeptoAcomp
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdDeptoAcomp($idDeptoAcomp)
+    {
+        $this->idDeptoAcomp = $idDeptoAcomp;
+
+        return $this;
+    }
+
+    /**
+     * Get idDeptoAcomp
+     *
+     * @return integer
+     */
+    public function getIdDeptoAcomp()
+    {
+        return $this->idDeptoAcomp;
+    }
 }

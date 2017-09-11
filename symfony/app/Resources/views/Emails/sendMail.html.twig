@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Estimado(a) Sr(a) Director(a): {{ name }}  {{ apellidoOficio }} </h1>
+            <p class="lead">Se ha ingresado un Oficio con la siguiente informacion: </p>
+            <hr class="my-4">
+            <ul>
+                <li> Numero de Oficio Externo: {{ oficioExtNo }} </li>
+                <li> Numero de Oficio Interno: {{ oficioInNo }} </li>
+                <li> Tema: {{ temaOficio }} </li>
+                <li> Contenido: {{ descOficio }} </li>
+                <li> Fecha Entrega: {{ fechaIngresoOfi }} </li>
+                <li> Fecha Creacion: </li>                
+            </ul>
+            
+            <h4> Saludos cordiales </h4>
+        </div>
+    </div>
+</body>
+</html>

@@ -15,6 +15,7 @@ export class Comunicaciones{
       public idUsuario:string, // Tipo de Dato String, porque no se selecciona
       public idEstado:string, // Tipo de Dato String, porque no se selecciona
       public idDireccionSreci:number,
+      public idDireccionSreciAcom:number,
       public idTipoDocumento:string, // Tipo de Dato String, porque no se selecciona
 
       // Datos de fechas
@@ -27,13 +28,15 @@ export class Comunicaciones{
 
       //Datos para Ingresar la Primera Accion
       public idDeptoFuncional:number,
+      public idDeptoFuncionalAcom:number,
 
       // Secuenciales de Tablas
       public secuenciaComunicacionIn:string,
       public secuenciaComunicacionDet:string,
 
       //Envio de correos
-      public emailDireccion:string
+      public emailDireccion:string,
+      public pdfDocumento:string
 
 
     ){}

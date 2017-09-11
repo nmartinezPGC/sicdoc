@@ -52,8 +52,7 @@ class IngresoCorrespondenciaController extends Controller{
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
-        //Recogemos el Hash y la Autrizacion del Mismo
-        
+        //Recogemos el Hash y la Autorizacion del Mismo        
         $hash = $request->get("authorization", null);
         //Se Chekea el Token
         $checkToken = $helpers->authCheck($hash);
@@ -95,8 +94,11 @@ class IngresoCorrespondenciaController extends Controller{
                 // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
                 $cod_direccion_sreci  = ($params->idDireccionSreci != null) ? $params->idDireccionSreci : null ;
                 
-                // Envio por Json el Codigo de Tipo de Documento | Buscar en la Tabla: TblTipoDocumento
+                // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosSreci
                 $cod_depto_funcional   = ($params->idDeptoFuncional != null) ? $params->idDeptoFuncional : null ;
+                
+                // Envio por Json el Codigo de Depto Acompañante | Buscar en la Tabla: TblDepartamentosSreci
+                $cod_depto_acomp   = ($params->idDeptoFuncionalAcom != null) ? $params->idDeptoFuncionalAcom : null ;
                 
                 // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosFuncionales
                 $cod_tipo_documento  = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;
@@ -108,6 +110,9 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Informacion para el envio de los correos a las Direcciones
                 $email_direccion  = ($params->emailDireccion != null) ? $params->emailDireccion : null ;
+                
+                // Ruta del Pdf a Subir
+                $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
                 
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
@@ -131,6 +136,8 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
                     $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
                     
+                    $correspondenciaNew->setIdDeptoAcomp($cod_depto_acomp);
+                    
                     //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                     //Instanciamos de la Clase TblInstituciones
                     $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
@@ -142,7 +149,7 @@ class IngresoCorrespondenciaController extends Controller{
                     //Instanciamos de la Clase TblUsuario
                     $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(
-                           "idUsuario" => $cod_usuario                           
+                           "idUsuario" => $cod_usuario                         
                         ));                    
                     $correspondenciaNew->setIdUsuario($usuario); //Set de Codigo de Usuario
                     
@@ -183,8 +190,15 @@ class IngresoCorrespondenciaController extends Controller{
                           "codCorrespondenciaEnc" => $cod_correspondencia
                         ));
                     
+                    //Verificacion del Codigo de Referencia de la Correspondenia *******************
+                    $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+                        array(
+                          "codReferenciaSreci" => $cod_referenciaSreci
+                        ));
+                    
+                    
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
-                    if(count($isset_corresp_cod) == 0){
+                    if(count($isset_corresp_cod) == 0 && count($isset_referencia_cod) == 0 ){
                         //Instanciamos de la Clase TblSecuenciales
                         //Seteo del nuevo secuencial de la tabla: TblSecuenciales
                         $secuenciaNew = new TblSecuenciales();
@@ -215,6 +229,8 @@ class IngresoCorrespondenciaController extends Controller{
                         //Correspondencia Enc **********************************                        
                         $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det); //Set de Codigo Correspondencia
                         $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
+                        
+                        $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
                         //$correspondenciaDet->setDescCorrespondenciaDet($cod_correspondencia); //Set de Fecha Ingreso
                         
@@ -249,8 +265,7 @@ class IngresoCorrespondenciaController extends Controller{
                         $em->persist($secuenciaNew);
                         
                         //Realizar la actualizacion en el storage de la BD
-                        $em->flush();
-                        
+                        $em->flush();                        
                         
                         
                         // Ingresamos los Datos a la Tabla TblDocumentos *******
@@ -267,7 +282,8 @@ class IngresoCorrespondenciaController extends Controller{
                                "idUsuario" => $cod_usuario                           
                             ));                    
                         $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario                        
-                        //$documentosIn->setIdUsuario($identity->sub); //Set Fecha Ingreso
+                        
+                        $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
                         
                         // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                         $em->persist($documentosIn); 
@@ -275,24 +291,16 @@ class IngresoCorrespondenciaController extends Controller{
                         //Realizar la actualizacion en el storage de la BD
                         $em->flush();
                         
-                        
+                        // Fin de Comunicacion Detalle *************************
                         
                         // Envio de Correo despues de la Granacion de Datos
                         // *****************************************************                        
-                        //try{
-                        // echo "Paso 1.0";
-                       //require_once './swiftmailer/lib/swift_required.php';
-                      // echo "Paso 1.02";
-                       //require __DIR__.'/classes/Swift.php';
-                       //require_once '/PATH/library/SwiftMailer/swift_required.php'; 
-                            //    C:\wamp64\www\sicdoc\symfony\vendor\swiftmailer\swiftmailer\lib
-                            //$mailer = $this->container->get('mailer');
                             //Creamos la instancia con la configuración 
                             $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
-                               ->setEncryption('tls')
-                               ->setUsername('nahum.sreci@gmail.com')
+                               ->setEncryption('tls')                               
+                               ->setUsername( $identity->email )
                                ->setPassword('1897Juve');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
@@ -302,30 +310,24 @@ class IngresoCorrespondenciaController extends Controller{
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
                                ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
-                               ->setTo($email_direccion)
-                               ->setBody('Estimado(a) Sr. Direcctor(a) <br> '
-                                       . '<b> Se notifica el ingreso del oficio: </b>' . $cod_correspondencia . 
-                                         ' <br> <b>Tema</b>: ' . $tema_correspondencia . 
-                                         ' <br> <b>Descripción</b>: ' . $desc_correspondencia , 'text/html');
+                               ->setTo($email_direccion)                               
+                               ->setBody(
+                                    $this->renderView(
+                                    // app/Resources/views/Emails/registration.html.twig
+                                        'Emails/sendMail.html.twig',
+                                        array( 'name' => $identity->nombre, 'apellidoOficio' => $identity->apellido,
+                                               'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia,
+                                               'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
+                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega) )
+                                    ), 'text/html' );                           
                            
+                            $target_path1 = "uploads/users/user_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";
                             
-                                         
-                            $target_path1 = "uploads/users/1503335120.png";
-                            $target_path2 = "uploads/users/1503335511.jpeg";
                             $mail->attach(\Swift_Attachment::fromPath($target_path1));
-                            $mail->attach(\Swift_Attachment::fromPath($target_path2));
+                            //$mail->attach(\Swift_Attachment::fromPath($target_path2));
                             
-                                         
-                               //->attach(Swift_Attachment::fromPath('../../../web/uploads/users/1503335120.png'));
-                           //echo "Paso 3";
-                           //Enviamos el correo
-                           //$this->get('mailer')->send($mail);
-                           $resuly = $mailer->send($mail);
-                           //echo "Paso 4  " ;
-                       /*} catch(Swift_TransportException  $e) {
-                           echo ("Error al enviar mensaje: " + $e->getMessage());
-                       }*/
-                        
+                            $resuly = $mailer->send($mail);
+                                                  
                         // ***** Fin de Envio de Correo ************************
                         // 
                         // 
@@ -347,7 +349,7 @@ class IngresoCorrespondenciaController extends Controller{
                             "status" => "error",
                             "desc"   => "Ya existe un codigo",
                             "code"   => 400, 
-                            "msg"   => "Error al registrar, ya existe una correspondencia con este código, ". $cod_correspondencia . 
+                            "msg"   => "Error al registrar, ya existe una correspondencia con este código, ". $cod_referenciaSreci . 
                                        " por favor ingrese otro !!"
                         );                       
                     }//Finaliza el Bloque de la validadacion de la Data en la Tabla

@@ -24,18 +24,22 @@ class ComunesController extends Controller {
     //put your code here
     
     /**
-     * @Route("/uploadImage", name="uploadImage")
-     * Creacion del Controlador: Comunes
+     * @Route("/upload-documento", name="upload-documento")
+     * Creacion del Controlador: Comunes PDF
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00001
      */
-    public function uploadImageAction(Request $request) {
+    public function uploadDocumentoAction(Request $request) {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");        
         //Recoger el Hash
         //Recogemos el Hash y la Autrizacion del Mismo
         $hash = $request->get("authorization", null);
+        
+        // Nombre del Documento
+        $file_nameIn = $request->get("name_pdf");
+        
         //Se Chekea el Token
         $checkToken = $helpers->authCheck($hash);
         //Evaluamos la Autoriuzacion del Token
@@ -49,22 +53,26 @@ class ComunesController extends Controller {
                "idUsuario" => $identity->sub
             ));
             //Recoger el Fichero que viene por el POST y lo guardamos el HD
-            $file = $request->files->get("image");
+            $file      = $request->files->get("image");
+            
+            
             //Se verifica que el fichero no venga Null
             if (!empty($file) && $file != null) {
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "jpeg" || $ext == "jpg" || $ext == "png" || $ext == "gif") {                   
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
-                    $file_name = time().".".$ext;
+                    //$file_name = time().".".$ext;
+                    $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
-                    $file->move("uploads/users", $file_name);
+                    $path_of_file = "uploads/users/user_".date('Y-m-d');
+                    $file->move($path_of_file, $file_name);
 
                     //Seteamos el valor de la Imagen dentro de la Tabla:Tblusuarios+
-                    $usuario->setImagenUsuario($file_name);
-                    $em->persist($usuario);
-                    $em->flush();
+                    //$usuario->setImagenUsuario($file_name);
+                    //$em->persist($usuario);
+                    //$em->flush();
                 
                     // Devolvemos el Mensaje de Array
                     $data = array(

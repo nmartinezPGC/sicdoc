@@ -2,12 +2,12 @@ BackendBundle\Entity\TblCorrespondenciaDet:
     type: entity
     table: tbl_correspondencia_det
     indexes:
-        fki_det_user:
-            columns:
-                - id_usuario
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
+        fki_det_user:
+            columns:
+                - id_usuario
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
@@ -39,7 +39,7 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         descCorrespondenciaDet:
             type: string
             nullable: true
-            length: 200
+            length: 1500
             options:
                 fixed: false
             column: desc_correspondencia_det
