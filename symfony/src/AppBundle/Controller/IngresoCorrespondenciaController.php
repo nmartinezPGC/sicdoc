@@ -116,7 +116,8 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
-                if($cod_correspondencia != null && $desc_correspondencia != null){
+                if($cod_correspondencia != null && $desc_correspondencia != null && $cod_referenciaSreci != null &&
+                   $tema_correspondencia != null && $cod_depto_funcional != 0 ){
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
@@ -247,8 +248,14 @@ class IngresoCorrespondenciaController extends Controller{
                             array(
                                 "idEstado" => 7
                             ));                    
-                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados
-                        //$correspondenciaDet->setIdCorrespondenciaEnc($isset_corresp_cod);
+                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados                        
+                        
+                        //Instanciamos de la Clase TblUsuario
+                        $usuarioDetalle = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                            array(
+                               "idUsuario" => $cod_usuario                           
+                            ));                    
+                        $correspondenciaDet->setIdUsuario($usuarioDetalle); //Set de Codigo de Usuario
                         
                         
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Det
@@ -276,14 +283,31 @@ class IngresoCorrespondenciaController extends Controller{
                         $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
                         $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
                         
+                        $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
+                        $documentosIn->setStatus("LOAD"); //Set Documento Desc
+                        
                         //Instanciamos de la Clase TblUsuario
                         $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                             array(
                                "idUsuario" => $cod_usuario                           
                             ));                    
-                        $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario                        
+                        $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
                         
-                        $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                        
+                        // Verificacion del Codigo de la Correspondenia  *******
+                        // Detalle  ********************************************
+                        $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                            array(
+                                "codCorrespondenciaDet" => $cod_correspondencia_det
+                            ));
+                        $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+                         
+                        
+                        // Pdf que se Agrega
+                        // validamos que se adjunta pdf
+                        if( $pdf_send != null ){
+                            $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                        }
                         
                         // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                         $em->persist($documentosIn); 
@@ -305,7 +329,7 @@ class IngresoCorrespondenciaController extends Controller{
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
-                           //echo "Paso 2";
+                           
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
@@ -321,11 +345,13 @@ class IngresoCorrespondenciaController extends Controller{
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega) )
                                     ), 'text/html' );                           
                            
-                            $target_path1 = "uploads/users/user_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";
-                            
-                            $mail->attach(\Swift_Attachment::fromPath($target_path1));
-                            //$mail->attach(\Swift_Attachment::fromPath($target_path2));
-                            
+                            // validamos que se adjunta pdf
+                            if( $pdf_send != null ){
+                              $target_path1 = "uploads/users/user_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                              $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
+                            }
+                                                        
+                            // Envia el Correo con todos los Parametros
                             $resuly = $mailer->send($mail);
                                                   
                         // ***** Fin de Envio de Correo ************************
@@ -360,7 +386,7 @@ class IngresoCorrespondenciaController extends Controller{
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, faltan parametros",
                        "code"   => 400, 
-                       "msg"   => "No se ha podido crear la correspondencia, error en los parametros !!"
+                       "msg"   => "No se ha podido crear la correspondencia, falta ingresar información para continuar !!"
                     );
                 }                
             } else {
@@ -542,5 +568,35 @@ class IngresoCorrespondenciaController extends Controller{
         return $helpers->parserJson($data);
     } //Fin de la Funcion Editar Correspondencia *******************************
 
+    
+    /**
+     * @Route("/valid-form", name="valid-form")
+     * Creacion del Controlador: Ingreso Comunicacion
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00001
+     */
+    public function validCampoAction($campoValid)
+    {
+        //Instanciamos el Servicio Helpers
+        if($campoValid != null){
+          $data = array(
+                "status" => "success",
+                "desc"   => "Camo valid",    
+                "code"   => "200",                
+                "msg"    => "has ingresado bien el campo"
+            );
+        }else{
+            $data = array(
+                "status" => "error",
+                "desc"   => "Faltaingresar el campo",    
+                "code"   => "400",                
+                "msg"    => "Falta ingresar el campo " .$campoValid                
+            );
+        }        
+        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    }//FIN | FND00001
     
 }

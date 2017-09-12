@@ -486,8 +486,151 @@ class ListasComunesController extends Controller {
     }//FIN | FND00010
     
     
+     /**
+     * @Route("/com-ingresadas-list", name="com-ingresadas-list")
+     * Creacion del Controlador: Comunicaciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00011
+     */
+    public function comIngresadasListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+               
+        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+        // Busqueda a la BD  ***************************************************
+        $em = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
+                
+        // Declaracion del Alias de la tabla
+        $qb = $em->createQueryBuilder('a');
+        
+        // Query a la BD
+        $qb->select('COUNT(a)');
+        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
+        $qb->setParameter('validEstado', 7 )->setParameter('validDocumento', 1 )  ;
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+        
+        
+        // Condicion de la Busqueda
+        if ( $count >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $count
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00011
     
     
+    /**
+     * @Route("/com-pendiente-list", name="com-pendiente-list")
+     * Creacion del Controlador: Comunicaciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00012
+     */
+    public function comPendientesListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+               
+        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+        // Busqueda a la BD  ***************************************************
+        $em = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
+                
+        // Declaracion del Alias de la tabla
+        $qb = $em->createQueryBuilder('a');
+        
+        // Query a la BD
+        $qb->select('COUNT(a)');
+        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
+        $qb->setParameter('validEstado', 3 )->setParameter('validDocumento', 1 )  ;
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+        
+        
+        // Condicion de la Busqueda
+        if ( $count >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $count
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00012
+    
+    
+    /**
+     * @Route("/com-finalizadas-list", name="com-finalizadas-list")
+     * Creacion del Controlador: Comunicaciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00013
+     */
+    public function comFinalizadasListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+               
+        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+        // Busqueda a la BD  ***************************************************
+        $em = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
+                
+        // Declaracion del Alias de la tabla
+        $qb = $em->createQueryBuilder('a');
+        
+        // Query a la BD
+        $qb->select('COUNT(a)');
+        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
+        $qb->setParameter('validEstado', 5 )->setParameter('validDocumento', 1 )  ;
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+        
+        
+        // Condicion de la Busqueda
+        if ( $count >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $count
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00013
     
     
 }

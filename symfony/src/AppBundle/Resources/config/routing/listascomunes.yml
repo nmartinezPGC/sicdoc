@@ -63,9 +63,27 @@ listascomunes_paisesList:
     defaults: { _controller: "AppBundle:ListasComunes:paisesList"}
     methods: POST
     
-# Lista de Paises | 01-09-2017
+# Lista de Tipo de Documento | 01-09-2017
 listascomunes_tipoDocumentoList:
     path: /tipo-documento-list
     defaults: { _controller: "AppBundle:ListasComunes:tipoDocumentoList"}
-    methods: POST    
-        
+    methods: POST
+    
+ # Lista de Comunicaciones Ingresadas | 11-09-2017
+listascomunes_comIngresadasList:
+    path: /com-ingresadas-list
+    defaults: { _controller: "AppBundle:ListasComunes:comIngresadasList"}
+    methods: POST
+ 
+ # Lista de Comunicaciones Pendientes | 11-09-2017
+listascomunes_comPendientesList:
+    path: /com-pendientes-list
+    defaults: { _controller: "AppBundle:ListasComunes:comPendientesList"}
+    methods: POST
+    
+ # Lista de Comunicaciones Finzalizadas | 11-09-2017
+listascomunes_comFinalizadasList:
+    path: /com-finazalizadas-list
+    defaults: { _controller: "AppBundle:ListasComunes:comFinalizadasList"}
+    methods: POST
+    

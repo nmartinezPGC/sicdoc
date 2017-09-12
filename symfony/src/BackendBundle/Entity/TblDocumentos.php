@@ -297,40 +297,12 @@ class TblDocumentos
     {
         return $this->status;
     }
-    /**
-     * @var integer
-     */
-    private $idCorrespondenciaDet;
+    
 
     /**
      * @var \BackendBundle\Entity\TblUsuarios
      */
     private $idUsuario;
-
-
-    /**
-     * Set idCorrespondenciaDet
-     *
-     * @param integer $idCorrespondenciaDet
-     *
-     * @return TblDocumentos
-     */
-    public function setIdCorrespondenciaDet($idCorrespondenciaDet)
-    {
-        $this->idCorrespondenciaDet = $idCorrespondenciaDet;
-
-        return $this;
-    }
-
-    /**
-     * Get idCorrespondenciaDet
-     *
-     * @return integer
-     */
-    public function getIdCorrespondenciaDet()
-    {
-        return $this->idCorrespondenciaDet;
-    }
 
     /**
      * Set idUsuario
@@ -354,5 +326,34 @@ class TblDocumentos
     public function getIdUsuario()
     {
         return $this->idUsuario;
+    }
+    /**
+     * @var \BackendBundle\Entity\TblCorrespondenciaDet
+     */
+    private $idCorrespondenciaDet;
+
+
+    /**
+     * Set idCorrespondenciaDet
+     *
+     * @param \BackendBundle\Entity\TblCorrespondenciaDet $idCorrespondenciaDet
+     *
+     * @return TblDocumentos
+     */
+    public function setIdCorrespondenciaDet(\BackendBundle\Entity\TblCorrespondenciaDet $idCorrespondenciaDet = null)
+    {
+        $this->idCorrespondenciaDet = $idCorrespondenciaDet;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaDet
+     *
+     * @return \BackendBundle\Entity\TblCorrespondenciaDet
+     */
+    public function getIdCorrespondenciaDet()
+    {
+        return $this->idCorrespondenciaDet;
     }
 }

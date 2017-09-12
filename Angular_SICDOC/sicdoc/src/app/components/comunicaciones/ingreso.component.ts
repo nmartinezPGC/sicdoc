@@ -37,13 +37,23 @@ declare var $:any;
 })
 
 export class IngresoComunicacionComponent implements OnInit{
-  public titulo:string = "Ingreso de Comunicación";
+  public titulo:string = "Ingreso de Oficios";
   public fechaHoy:Date = new Date();
+  public fechafin:string;
+
   private params;
   private paramsSecuencia;
   private paramsSecuenciaDet;
   private paramsSubDir;
   private paramsSubDirAcom;
+
+  // Propiedad de Loader
+  public loading      = 'show';
+  public alertSuccess = 'show';
+  public alertError   = 'show';
+
+  // Propiedades de los Resumenes
+  public countOficios;
 
   // Instacia de la variable del Modelo | Json de Parametros
   public user:Usuarios;
@@ -86,6 +96,9 @@ export class IngresoComunicacionComponent implements OnInit{
 
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
+
+  // Json del Recuento de Datos
+  public JsonOutgetListaOficiosIngresados:any[];
 
 
   // Ini | Definicion del Constructor
@@ -137,21 +150,40 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaPaises();
     this.getlistaTipoInstituciones();
     this.getlistaDireccionesSRECI();
+
+    // Direcciones Acompañantes
     this.getlistaDireccionesSRECIAcom();
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondencia();
     this.listarCodigoCorrespondenciaDet();
 
+    // Convertimos las Fechas a una Default
+    this.convertirFecha();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 0, 0,"1",  null, null,  0, 0,  0, 0,  "","",  "", "");
-    this.loadScript('../assets/js/ingreso.comunicacion.component.js');
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","",  "", "",  "");
+
+    // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
+    this.getlistaSubDireccionesSRECI();
+
+    // Resumenes de la Pantalla
+    this.getlistaOficosIngresados();
+
+    // Eventos de Señaloizacion
+    this.status = "hide";
+    this.loading = "hide";
+    // this.getlistaSubDireccionesSRECIAcom();
+
+    // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
+
 
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
+      //this.validCampos();
+
       // Parseo de parametros que no se seleccionan
       this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
       this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
@@ -177,7 +209,7 @@ export class IngresoComunicacionComponent implements OnInit{
       //alert(this.comunicacion.pdfDocumento);
 
       let token1 = this._ingresoComunicacion.getToken();
-
+      this.loading = 'show';
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
@@ -188,9 +220,15 @@ export class IngresoComunicacionComponent implements OnInit{
             if(this.status != "success"){
                 this.status = "error";
                 this.mensajes = response.msg;
+                if(this.loading = 'show'){
+                  this.loading = 'hidden';
+                }
+
                 //alert(this.mensajes);
             }else{
               //this.resetForm();
+              this.loading = 'hidden';
+
               this.ngOnInit();
             }
         }, error => {
@@ -202,6 +240,11 @@ export class IngresoComunicacionComponent implements OnInit{
               console.log(this.errorMessage);
               this.mensajes = this.errorMessage;
               alert("Error en la Petición !!" + this.errorMessage);
+
+              if(this.loading = 'show'){
+                this.loading = 'hidden';
+              }
+
             }
         });
   } // Fin | Metodo onSubmit
@@ -255,8 +298,59 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 0, 0, "1",  "", "",  0, 0,  0, 0,  "","",  "", "");
+    // Iniciamos los Parametros de Sub Direcciones Acompañantes
+    this.paramsSubDirAcom = {
+      "idDireccionSreci"  : ""
+    };
+
+    this.status = "hide";
+    this.loading = "hide";
+
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","",  "", "",  "");
   } // FIN : FND-00001.1
+
+
+  /****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 11-09-2017
+  * Descripcion: Funcion que convierte las fechas a
+  * String y le suma 5 dias
+  * Objetivo: Sumar 5 dias a la fecha Maxima de entrega
+  *****************************************************/
+  convertirFecha() {
+    let day = String(this.fechaHoy.getDate() + 5 );
+    let month = String(this.fechaHoy.getMonth() + 1 );
+    const year = String(this.fechaHoy.getFullYear() );
+
+    if(day.length < 2  ){
+      //alert("Dia Falta el 0");
+      day = "0" + day;
+    }else if(month.length < 2){
+      //alert("Mes Falta el 0");
+      month = "0" + month;
+    }
+    this.fechafin = year + "-" + month + "-" + day ;
+    //alert("Dia " + day + " Mes " + month + " Año " + year);
+  } // FIN : FND-00001.2
+
+
+  /****************************************************
+  * Funcion: FND-00001.3
+  * Fecha: 11-09-2017
+  * Descripcion: Funcion que valida los Campos
+  * del Formulario de ingreso de Oficios
+  *****************************************************/
+  validCampos() {
+    // Definicion de las variables del Formulario
+    let codigoRefIn = this.comunicacion.codCorrespondencia;
+
+    if( codigoRefIn.length < 5 ){
+      alert("Falta Ingresar el Codigo de Referencia del Oficio.");
+      this.mensajes = "Falta Ingresar el Codigo de Referencia del Oficio";
+      return false;
+    }
+    //alert("Dia " + day + " Mes " + month + " Año " + year);
+  } // FIN : FND-00001.3
 
 
   /*****************************************************
@@ -607,38 +701,33 @@ export class IngresoComunicacionComponent implements OnInit{
   } // FIN : FND-00007.1.2
 
 
-public fnd(){
-  var valueData = "{{ list.idDeptoFuncional }}";
-  // let list;
-  // let data = list of JsonOutgetlistaDireccionSRECI;
-  let data = [{"1":"1asas", "2":"2sss"}];
-  let JsonOut:any[] = data;
-  let list;
-  // let veri:any[] = let list of JsonOut;
-  // let ff:any[] =  list of JsonOutgetlistaSubDireccionSRECI;
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaOficosIngresados() {
+    //Llamar al metodo, de Login para Obtener la Identidad
 
-  // console.log(JsonOutgetlistaSubDireccionSRECI);
-
-  var newDirAcompanate = '<select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" '
-        + 'ngControl="idDireccionSreci" [(ngModel)]="comunicacion.idDireccionSreci"  (change)="getlistaSubDireccionesSRECI()" > '
-      + '<option value="0">Dirección SRECI Responsable </option> '
-      + '<option *ngFor=" ' + list  + ' " value=" valueDatas "> '
-      + ' " ' +  list  + ' " </option> </select>'
-      + '<small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " > '
-      + ' Debes Seleccionar una Dirección SRECI responsable</small> ';
-
-
-  var newSubDirAcompanante = '<select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional" '
-        + ' ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  > '
-        + '<option value="0">Sub Dirección SRECI Acompañante</option> '
-        + '<option *ngFor="let list of JsonOutgetlistaSubDireccionSRECI" value="">{{ list.descDeptoFuncional }}</option> '
-        + '</select> <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null" > '
-        + 'Debes Seleccionar una Sub Dirección SRECI acompañante</small>';
-
-    $( "#newDirAcom" ).append( newDirAcompanate );
-    $( "#newSubDirAcom" ).append( newSubDirAcompanante );
-
-}
+    this._listasComunes.listasComunes( "", "com-ingresada-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            this.countOficios = this.JsonOutgetListaOficiosIngresados;
+            alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00008
 
 } // // FIN : export class IngresoComunicacionComponent
 
