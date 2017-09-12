@@ -21,7 +21,13 @@ import { AppComponent } from './app.component';
 import { DefaultComponent } from "./components/login/default.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/login/register.component";
+
+// Area de Ingreso de Oficios
 import { IngresoComunicacionComponent } from "./components/comunicaciones/ingreso.component";
+
+// Area de Seguimiento
+import { IngresoActividadComponent } from "./components/seguimiento/agregar.actividad.component";
+
 
 import { NavbarComponent } from "./components/shared/navbar.component"; //NavBar de Tareas del Proyecto
 import { HeaderComponent } from "./components/shared/header.component"; //Header de Tareas del Proyecto
@@ -34,6 +40,7 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     LoginComponent,
     RegisterComponent,
     IngresoComunicacionComponent,
+    IngresoActividadComponent,
     NavbarComponent,
     HeaderComponent
 
@@ -49,7 +56,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
   providers: [
     UsuariosService,
     LoginService,
-    IngresoComunicacionService
+    IngresoComunicacionService,
+    IngresoActividadComponent
   ],
   bootstrap: [AppComponent]
 })

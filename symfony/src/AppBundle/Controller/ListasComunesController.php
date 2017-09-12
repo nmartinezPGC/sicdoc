@@ -633,4 +633,61 @@ class ListasComunesController extends Controller {
     }//FIN | FND00013
     
     
+    /**
+     * @Route("/asignar-oficios-list", name="asignar-oficios-list")
+     * Creacion del Controlador: Comunicaciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00014
+     */
+    public function asignarOficiosListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+               
+        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+        // Busqueda a la BD  ***************************************************
+        $em = $this
+                ->getDoctrine()
+                ->getManager();
+                
+        $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v ORDER BY V.idCorrespondenciaEnc DESC";
+        $query = $em->createQuery($dql);
+        
+        $page = $request->query->getInt("page", 1);
+        $paginator = $this->get("knp_paginator");
+        $item_per_page = 6;
+        
+        $pagination = $paginator->paginate($query, $page, $itema_per_page);
+        $total_items_count = $pagination->getTotalItemCount();
+        
+        $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "total_items_count"   => $total_items_count,
+                "page_actual"   => $page,
+                "items_per_page"   => $item_per_page,
+                "total_page"   => ceil( $total_items_count / $item_per_page ),
+                "data"   => $pagination
+            );
+        
+        /*// Condicion de la Busqueda
+        if ( $count >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $count
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+            );
+        }*/
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00014
+    
+    
 }

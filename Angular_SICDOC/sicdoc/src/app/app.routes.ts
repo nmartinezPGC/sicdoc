@@ -5,17 +5,22 @@ import { RouterModule, Routes, ActivatedRoute, Router, ROUTER_CONFIGURATION } fr
 import { LoginComponent } from './components/login/login.component';
 import { DefaultComponent } from './components/login/default.component';
 import { RegisterComponent } from './components/login/register.component';
+// Menu de Oficios
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
+// Menu de Seguimiento
+import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
 
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
-
   { path: 'index', component: DefaultComponent },
   { path: 'login', component: LoginComponent },
   { path: 'login/:id', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
   // Mapeo del Menu de Comunicaciones
   { path: 'ingreso-comunicacion', component: IngresoComunicacionComponent },
+
+  // Mapeo de Menu de Seguimiento
+  { path: 'agregar-actividad', component: IngresoActividadComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];

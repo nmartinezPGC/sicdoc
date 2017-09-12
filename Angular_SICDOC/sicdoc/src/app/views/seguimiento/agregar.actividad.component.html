@@ -1,0 +1,56 @@
+<div class="container">
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+  <div class="row">
+
+    <div class="col-md-1-12">
+      <h4>Area de Busqueda</h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- <div class="col-md-1-12"> -->
+
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>No. Oficio</th>
+            <th>Nombre Institución</th>
+            <th>Tema Oficio</th>
+            <th>Fecha Ingreso</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of usuarios">
+          <tr  *ngIf=" item.casa == 'DC' ">
+            <th > {{ item.nombre }} </th>
+            <th> {{ item.bio }} </th>
+            <th> {{ item.aparicion }} </th>
+            <th> {{ item.casa }} </th>
+          </tr>
+          <!-- <tr>
+            <th class="bg-success"> Ingresado </th>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th class="table-danger"> Pendiente </th>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th class="table-warning"> Finalizado </th>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr> -->
+        </tbody>
+    </table>
+    <!-- </div> -->
+  </div>
+
+</div>

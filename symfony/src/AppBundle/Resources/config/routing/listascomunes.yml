@@ -87,3 +87,9 @@ listascomunes_comFinalizadasList:
     defaults: { _controller: "AppBundle:ListasComunes:comFinalizadasList"}
     methods: POST
     
+ # Listado de Oficios a Asignar | 12-09-2017
+listascomunes_asignarOficiosList:
+    path: /asignar-oficios-list
+    defaults: { _controller: "AppBundle:ListasComunes:asignarOficiosList"}
+    methods: GET
+    
