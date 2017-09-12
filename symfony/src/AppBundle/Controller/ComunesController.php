@@ -66,7 +66,7 @@ class ComunesController extends Controller {
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
-                    $path_of_file = "uploads/users/user_".date('Y-m-d');
+                    $path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
                     $file->move($path_of_file, $file_name);
 
                     //Seteamos el valor de la Imagen dentro de la Tabla:Tblusuarios+

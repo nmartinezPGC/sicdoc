@@ -5,11 +5,25 @@
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
       <!-- Div que representan las Acciones al Ingresar un Usuario -->
       <br>
-      <div name="alert" class="alert alert-success" role="alert" *ngIf="status == 'success' " >
+      <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status == 'success'" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <strong>Bien hecho!</strong> {{ mensajes }}
       </div>
 
-      <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
+      <!-- <div name="alert" class="alert alert-success" role="alert" *ngIf="status == 'success' " >
+        <strong>Bien hecho!</strong> {{ mensajes }}
+      </div> -->
+
+      <!-- <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
+        <strong>Que mal!</strong> {{ mensajes }}
+      </div> -->
+
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status == 'error'" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <strong>Que mal!</strong> {{ mensajes }}
       </div>
 
@@ -270,20 +284,24 @@
   <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
   <div class="col-2">
     <div class="card" style="width: 16rem; margin-top:5px">
-      <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-      <div class="card-block">
-        <h4 class="card-title"> Resumen</h4>
-        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-         <p> <i class="material-icons">assignment</i> Oficios Ingresados {{ countOficios }} </p>
-         <p>  <i class="material-icons">assignment_late</i> Oficos Pendientes </p>
-         <p> <i class="material-icons">assignment_turned_in</i> Oficios Finalizadas </p>
-
-        <input type="text" name="buscatexto"  value="" placeholder="Ingresa Oficio"
-              (keyup)="buscarPais(buscatexto.value)"  #buscatexto>
-        <a href="#" class="btn btn-primary">Ver listado</a>
-
+      <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
+      <div class="card-block" style="margin-left:8px">
+        <h4 class="card-title">Resumen</h4>
+        <p class="card-text">Resumen de la informacion registrada de los Oficios.</p>
       </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados     - <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficos Pendientes      -- <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados     - <span class="badge badge-pill badge-danger"> {{ countOficiosFinalizados }} </span> </li>
+      </ul>
+        <div class="card-block" style="margin-left:8px">
+          <a href="#" class="card-link">Ver tablero</a>
+          <a [routerLink]="['/index']" class="card-link">Ir a Dashboard</a>
+        </div>
     </div>
+
+    <!-- <div class="card" style="width: 16rem; margin-top:5px">
+
   </div>
 <!-- Columna de las Tarjetas -->
 

@@ -83,7 +83,7 @@ listascomunes_comPendientesList:
     
  # Lista de Comunicaciones Finzalizadas | 11-09-2017
 listascomunes_comFinalizadasList:
-    path: /com-finazalizadas-list
+    path: /com-finalizados-list
     defaults: { _controller: "AppBundle:ListasComunes:comFinalizadasList"}
     methods: POST
     

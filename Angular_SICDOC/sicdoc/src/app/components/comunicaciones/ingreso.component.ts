@@ -53,7 +53,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public alertError   = 'show';
 
   // Propiedades de los Resumenes
-  public countOficios;
+  public countOficiosIngresados;
+  public countOficiosPendientes;
+  public countOficiosFinalizados;
 
   // Instacia de la variable del Modelo | Json de Parametros
   public user:Usuarios;
@@ -99,6 +101,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // Json del Recuento de Datos
   public JsonOutgetListaOficiosIngresados:any[];
+  public JsonOutgetListaOficiosPendientes:any[];
+  public JsonOutgetListaOficiosFinalizados:any[];
 
 
   // Ini | Definicion del Constructor
@@ -169,10 +173,14 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Resumenes de la Pantalla
     this.getlistaOficosIngresados();
+    this.getlistaOficosPendientes();
+    this.getlistaOficosFinalizados();
 
     // Eventos de Señaloizacion
-    this.status = "hide";
+
     this.loading = "hide";
+
+
     // this.getlistaSubDireccionesSRECIAcom();
 
     // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
@@ -228,8 +236,8 @@ export class IngresoComunicacionComponent implements OnInit{
             }else{
               //this.resetForm();
               this.loading = 'hidden';
-
               this.ngOnInit();
+              // this.alertShow();
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -247,6 +255,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
             }
         });
+
   } // Fin | Metodo onSubmit
 
 
@@ -350,6 +359,21 @@ export class IngresoComunicacionComponent implements OnInit{
       return false;
     }
     //alert("Dia " + day + " Mes " + month + " Año " + year);
+  } // FIN : FND-00001.3
+
+
+  /****************************************************
+  * Funcion: FND-00001.3
+  * Fecha: 11-09-2017
+  * Descripcion: Funcion que valida los Campos
+  * del Formulario de ingreso de Oficios
+  *****************************************************/
+  alertShow() {
+    // Definicion de las variables del Formulario
+    //setTimeout(this.status = "hide", 3000);
+    // this.status = "hide";
+    setTimeout(function(){ alert("Hello"); }, 3000);
+    setTimeout(function(){ this.status = "hide"; }, 3000);
   } // FIN : FND-00001.3
 
 
@@ -713,21 +737,83 @@ export class IngresoComunicacionComponent implements OnInit{
   getlistaOficosIngresados() {
     //Llamar al metodo, de Login para Obtener la Identidad
 
-    this._listasComunes.listasComunes( "", "com-ingresada-list").subscribe(
+    this._listasComunes.listasComunes( "", "com-ingresadas-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosIngresados = response.data;
-            alert(response.msg);
+            this.countOficiosIngresados = "0";
+            //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetListaOficiosIngresados = response.data;
-            this.countOficios = this.JsonOutgetListaOficiosIngresados;
-            alert(this.countOficios);
+            this.countOficiosIngresados = this.JsonOutgetListaOficiosIngresados;
+            //alert(this.countOficios);
           }
         });
   } // FIN : FND-00008
+
+
+  /*****************************************************
+  * Funcion: FND-00009
+  * Fecha: 12-09-2017
+  * Descripcion: Carga de los Oficios que se estan Pend.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Pendientes
+  * de la BD, Llamando a la API, por su metodo
+  * (com-pendientes-list).
+  ******************************************************/
+  getlistaOficosPendientes() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+
+    this._listasComunes.listasComunes( "", "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = this.JsonOutgetListaOficiosPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00009
+
+
+  /*****************************************************
+  * Funcion: FND-00010
+  * Fecha: 12-09-2017
+  * Descripcion: Carga de los Oficios que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Finalizados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaOficosFinalizados() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+
+    this._listasComunes.listasComunes( "", "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosFinalizados = response.data;
+            this.countOficiosFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosFinalizados = response.data;
+            this.countOficiosFinalizados = this.JsonOutgetListaOficiosFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00010
+
 
 } // // FIN : export class IngresoComunicacionComponent
 

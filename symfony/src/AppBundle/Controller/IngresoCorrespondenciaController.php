@@ -117,7 +117,7 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null && $cod_referenciaSreci != null &&
-                   $tema_correspondencia != null && $cod_depto_funcional != 0 ){
+                   $tema_correspondencia != null && $cod_depto_funcional != 0 && $cod_institucion != 0 ){
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
@@ -325,7 +325,9 @@ class IngresoCorrespondenciaController extends Controller{
                                ->setPort(587)
                                ->setEncryption('tls')                               
                                ->setUsername( $identity->email )
+                               //->setUsername( 'gcallejas.sreci@gmail.com')
                                ->setPassword('1897Juve');
+                               //->setPassword('gec2017*');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -347,10 +349,11 @@ class IngresoCorrespondenciaController extends Controller{
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
-                              $target_path1 = "uploads/users/user_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                              $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                              //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
                             }
-                                                        
+                                 
                             // Envia el Correo con todos los Parametros
                             $resuly = $mailer->send($mail);
                                                   
@@ -386,7 +389,7 @@ class IngresoCorrespondenciaController extends Controller{
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, faltan parametros",
                        "code"   => 400, 
-                       "msg"   => "No se ha podido crear la correspondencia, falta ingresar información para continuar !!"
+                       "msg"   => "No se ha podido crear la correspondencia, falta ingresar información  !!"
                     );
                 }                
             } else {

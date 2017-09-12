@@ -536,7 +536,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/com-pendiente-list", name="com-pendiente-list")
+     * @Route("/com-pendientes-list", name="com-pendientes-list")
      * Creacion del Controlador: Comunicaciones
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -585,7 +585,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/com-finalizadas-list", name="com-finalizadas-list")
+     * @Route("/com-finalizados-list", name="com-finalizados-list")
      * Creacion del Controlador: Comunicaciones
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
