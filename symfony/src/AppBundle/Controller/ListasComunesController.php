@@ -442,7 +442,7 @@ class ListasComunesController extends Controller {
             $data = array(
                 "status" => "error",
                 "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Deparmentos Funcionales !!"
+                "msg"    => "No existe Datos en la Tabla de Departamentos Funcionales !!"
             );
         }
         
@@ -644,6 +644,42 @@ class ListasComunesController extends Controller {
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        $com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findAll();
+        
+        // Condicion de la Busqueda
+        if (count($com_enc) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "data"   => $com_enc
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencias !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }//FIN | FND00014
+    
+    
+    /**
+     * @Route("/asignar-oficios-page-list", name="asignar-oficios-page-list")
+     * Creacion del Controlador: Comunicaciones
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00015
+     */
+    public function asignarOficiosPageListAction(Request $request )
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
                
         // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
         // Busqueda a la BD  ***************************************************
@@ -656,7 +692,7 @@ class ListasComunesController extends Controller {
         
         $page = $request->query->getInt("page", 1);
         $paginator = $this->get("knp_paginator");
-        $item_per_page = 6;
+        $item_per_page = 5 ;
         
         $pagination = $paginator->paginate($query, $page, $item_per_page);
         $total_items_count = $pagination->getTotalItemCount();
@@ -672,7 +708,7 @@ class ListasComunesController extends Controller {
             );
                 
         return $helpers->parserJson($data);
-    }//FIN | FND00014
+    }//FIN | FND00015
     
     
 }

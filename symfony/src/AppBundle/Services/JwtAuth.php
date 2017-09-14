@@ -19,6 +19,9 @@ class JwtAuth {
     }
     
     public function signUp($email, $passwod, $getHash = null) {
+        //Instanciamos el Servicio Helpers y Jwt
+        //$helpers = $this->get("app.helpers");
+        
         $key = $this->key;
         
         //Seteo de los Campos Email y Password de la Tabla TblUsuarios
@@ -28,6 +31,15 @@ class JwtAuth {
                         "passwordUsuario" => $passwod
                     )                
                 );
+        
+        
+        // Obtenemos el tipo de Usuario de la BD
+        // Query para Obtener el Departamento al que corresponde de la Tabla: TblDepartamentosFuncionales
+        $depto_user = $this->manager->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
+                array(
+                    "idDeptoFuncional" => $user
+                ));
+        
         //Variable de Registro y la validacion
         $signup = false;
         if (is_object($user)) {
@@ -39,13 +51,16 @@ class JwtAuth {
             $token = array(           
                 "sub" => $user->getIdUsuario(),
                 "codUser" => $user->getCodUsuario(),
+                "iniUser" => $user->getInicialesUsuario(),
                 "password" => $user->getPasswordUsuario(),
                 "email" => $user->getEmailUsuario(),
                 "nombre" => $user->getNombre1Usuario(),
                 "apellido" => $user->getApellido1Usuario(),
-                "idDepto" => $user->getIdDeptoFuncional(),
+                "idDeptoFuncional" => $user->getIdTipoFuncionario(),
+                "idTipoUser" => $depto_user,
                 "iat" => time(),
-                "exp" => time() + (7 * 24 * 60 * 60)                
+                "exp" => time() + (7 * 24 * 60 * 60)
+                //"data" => $helpers->parserJson($user)
             );
             //Definicion de la Salida del Token
             $jwt = JWT::encode($token, $key, 'HS256') ;

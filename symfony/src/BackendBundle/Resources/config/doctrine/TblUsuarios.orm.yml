@@ -2,25 +2,21 @@ BackendBundle\Entity\TblUsuarios:
     type: entity
     table: tbl_usuarios
     indexes:
-        fki_estados_user:
+        fki_estado_user:
             columns:
                 - id_estado
         fki_tipo_user:
             columns:
                 - id_tipo_usuario
-        fki_deptos_user:
+        fki_funcionario_user:
             columns:
-                - id_depto_funcional
+                - id_tipo_funcionario
         idx_cod_user:
             columns:
                 - cod_usuario
-        fki_tipo_funcionario_user:
+        fki_depto_user:
             columns:
-                - id_tipo_funcionario
-    uniqueConstraints:
-        tbl_usuarios_cod_usuario_key:
-            columns:
-                - cod_usuario
+                - id_depto_funcional
     id:
         idUsuario:
             type: integer
@@ -100,16 +96,6 @@ BackendBundle\Entity\TblUsuarios:
             nullable: true
             column: fecha_creacion
     manyToOne:
-        idDeptoFuncional:
-            targetEntity: TblDepartamentosFuncionales
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_depto_funcional:
-                    referencedColumnName: id_depto_funcional
-            orphanRemoval: false
         idEstado:
             targetEntity: TblEstados
             cascade: {  }
@@ -129,6 +115,16 @@ BackendBundle\Entity\TblUsuarios:
             joinColumns:
                 id_tipo_funcionario:
                     referencedColumnName: id_tipo_funcionario
+            orphanRemoval: false
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
             orphanRemoval: false
         idTipoUsuario:
             targetEntity: TblTipoUsuario

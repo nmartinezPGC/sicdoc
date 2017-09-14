@@ -165,7 +165,7 @@ export class IngresoComunicacionComponent implements OnInit{
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
-    // Definicion de la Insercion de los Datos de Nuevo Usuario
+    // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","",  "", "",  "");
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default

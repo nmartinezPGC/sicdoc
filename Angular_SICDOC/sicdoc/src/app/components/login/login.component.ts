@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
         // Quitamos las variables del Storage
         localStorage.removeItem('identity');
         localStorage.removeItem('token');
+        localStorage.removeItem('JsonPar');
 
         // Seteamos las variables a null
         this.identity = null;
