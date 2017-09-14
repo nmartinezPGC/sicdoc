@@ -23,7 +23,7 @@ export class ListasComunesService {
   /*****************************************************
   * Funcion: FND-00001
   * Fecha: 01-09-2017
-  * Descripcion: Carga la lista con Paramtros de Token
+  * Descripcion: Carga la lista con Paramtros Json
   * Objetivo: Obtener la lista serializada, con autoriza-
   * cion del Token (tiene que estar logeado)
   * (listascomunes).
@@ -37,6 +37,40 @@ export class ListasComunesService {
 
     return this._http.post(this.url + "/listas/"+listaIn, params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00001
+
+
+  /*****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 13-09-2017
+  * Descripcion: Carga la lista sin Paramtros de Json
+  * Objetivo: Obtener la lista serializada
+  * (listascomunes).
+  ******************************************************/
+  listasComunesGet( lista_comun, lista ){
+      let json = JSON.stringify( lista_comun );
+
+      let params = "json=" + json;
+      let listaIn = lista;
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.get(this.url + "/listas/" + listaIn, params).map( res => res.json());
+  } // FIN : FND-00001.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 13-09-2017
+  * Descripcion: Carga la lista sin Paramtros de Json
+  * Objetivo: Obtener la lista serializada
+  * (listascomunes).
+  ******************************************************/
+  listasOficiosDir( page = null ){
+      if( page == null ){
+        page = 1;
+      }
+
+    return this._http.get(this.url + "/listas/asignar-oficios-list?page=" + page).map( res => res.json());
+  } // FIN : FND-00001.2
 
 
   /*****************************************************

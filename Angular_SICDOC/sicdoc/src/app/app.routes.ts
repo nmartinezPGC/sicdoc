@@ -21,6 +21,7 @@ export const APP_ROUTES: Routes = [
 
   // Mapeo de Menu de Seguimiento
   { path: 'agregar-actividad', component: IngresoActividadComponent },
+  { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];

@@ -1,56 +1,117 @@
 <div class="container">
+  <!-- Loader de Carga de los Datos -->
+  <div id="loader-2" *ngIf="loading == 'show'">
+    <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+  </div>
+
   <h2> {{ titulo }} <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
+  <!-- Fila para el Area de Busqueda de los Oficios -->
   <div class="row">
-
     <div class="col-md-1-12">
       <h4>Area de Busqueda</h4>
+      <input class="form-control"  type="search" name="" value="">
     </div>
   </div>
+  <hr>
 
   <div class="row">
     <!-- <div class="col-md-1-12"> -->
-
       <table class="table table-hover table-responsive">
         <thead>
-          <tr>
+          <tr class="table-dark">
             <th>Estado</th>
             <th>No. Oficio</th>
             <th>Nombre Institución</th>
             <th>Tema Oficio</th>
             <th>Fecha Ingreso</th>
+            <th>Accion</th>
           </tr>
         </thead>
-        <tbody *ngFor="let item of usuarios">
-          <tr  *ngIf=" item.casa == 'DC' ">
-            <th > {{ item.nombre }} </th>
-            <th> {{ item.bio }} </th>
-            <th> {{ item.aparicion }} </th>
-            <th> {{ item.casa }} </th>
+        <tbody *ngFor="let item of JsonOutgetlistaOficiosAll">
+          <tr >
+            <th > {{ item.idEstado.descripcionEstado }} </th>
+            <th> {{ item.codReferenciaSreci }} </th>
+            <th> {{ item.idInstitucion.descInstitucion }} </th>
+            <th> {{ item.temaComunicacion }} </th>
+            <th> {{ timeConverter(item.fechaMaxEntrega.timestamp )  }} </th>
+            <th> <a href="#" (click)="datoOficio( item.codReferenciaSreci )" data-toggle="modal" data-target="#t_and_c_m"  > <i class="material-icons">assignment_ind</i> </a>  <a href="#"> <i class="material-icons">search </i></a>  </th>
           </tr>
-          <!-- <tr>
-            <th class="bg-success"> Ingresado </th>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th class="table-danger"> Pendiente </th>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th class="table-warning"> Finalizado </th>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr> -->
         </tbody>
     </table>
     <!-- </div> -->
   </div>
+
+
+   <div class="clearfix"></div>
+
+  <ul class="pagination">
+    <!-- Boton de Previous -->
+    <li>
+       <a  [routerLink]="['/agregar-actividad', pagePrev]" aria-label="Previous" >
+          <i class="material-icons">skip_previous</i>
+       </a>
+    </li>
+    <!-- Boton de Next -->
+    <li>
+       <a  [routerLink]="['/agregar-actividad', pageNext]" aria-label="Next" >
+          <i class="material-icons">skip_next</i>
+       </a>
+    </li>
+  </ul>
+
+  <!-- Modal -->
+  <div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-lg">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  				<h4 class="modal-title" id="myModalLabel">Oficio: {{ tableAgregarActividadCodOficio }} </h4>
+  			</div>
+  			<div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="validationDefault01">Codigo Oficio</label>
+                  <input type="text" class="form-control" id="validationDefault01" placeholder="First name" value="{{ codOficioModal }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="validationDefault02">Last name</label>
+                  <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" value="Otto" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="validationDefault03">City</label>
+                  <input type="text" class="form-control" id="validationDefault03" placeholder="City" required>
+                  <div class="invalid-feedback">
+                    Please provide a valid city.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="validationDefault04">State</label>
+                  <input type="text" class="form-control" id="validationDefault04" placeholder="State" required>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="validationDefault05">Zip</label>
+                  <input type="text" class="form-control" id="validationDefault05" placeholder="Zip" required>
+                  <div class="invalid-feedback">
+                    Please provide a valid zip.
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" type="submit">Submit form</button>
+          </form>
+  			</div>
+  			<div class="modal-footer">
+  				<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
+  			</div>
+  		</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 </div>
