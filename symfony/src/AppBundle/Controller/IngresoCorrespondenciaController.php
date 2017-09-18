@@ -106,18 +106,19 @@ class IngresoCorrespondenciaController extends Controller{
                 // Relacion con la Tabla Correspondencia Detalle | Proceso de Respuesta
                 $new_secuencia_det        = ($params->secuenciaComunicacionDet != null) ? $params->secuenciaComunicacionDet : null ;
                 $cod_correspondencia_det  = ($params->codCorrespondenciaDet != null) ? $params->codCorrespondenciaDet : null ;
-                
-                
-                // Informacion para el envio de los correos a las Direcciones
-                $email_direccion  = ($params->emailDireccion != null) ? $params->emailDireccion : null ;
+               
                 
                 // Ruta del Pdf a Subir
                 $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
                 
+                // idUsario que tendra asignado el Oficio
+                $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
+                
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null && $cod_referenciaSreci != null &&
-                   $tema_correspondencia != null && $cod_depto_funcional != 0 && $cod_institucion != 0 ){
+                   $tema_correspondencia != null && $cod_depto_funcional != 0 && $cod_institucion != 0 &&
+                   $id_usuario_asignado != 0 ){
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
@@ -181,6 +182,14 @@ class IngresoCorrespondenciaController extends Controller{
                            "idTipoDocumento" => $cod_tipo_documento
                         ));                    
                     $correspondenciaNew->setIdTipoDocumento($tipo_documento_in); //Set de Codigo de Tipo de Documentos 
+                    
+                    
+                    //Instanciamos de la Clase TblFuncionarios
+                    $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                        array(
+                           "idFuncionario" => $id_usuario_asignado                
+                        ));                    
+                    $correspondenciaNew->setIdFuncionarioAsignado($usuario_asignado); //Set de Codigo de Funcionario Asignado
                                                          
                     //Finaliza Busqueda de Integridad entre Tablas
                     
@@ -257,6 +266,13 @@ class IngresoCorrespondenciaController extends Controller{
                             ));                    
                         $correspondenciaDet->setIdUsuario($usuarioDetalle); //Set de Codigo de Usuario
                         
+                        //Instanciamos de la Clase TblFuncionarios
+                        $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                        array(
+                           "idFuncionario" => $id_usuario_asignado                
+                        ));                    
+                        $correspondenciaDet->setIdFuncionarioAsignado($usuario_asignado); 
+                        
                         
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Det
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
@@ -318,7 +334,18 @@ class IngresoCorrespondenciaController extends Controller{
                         // Fin de Comunicacion Detalle *************************
                         
                         // Envio de Correo despues de la Granacion de Datos
-                        // *****************************************************                        
+                        // *****************************************************
+                        //Instanciamos de la Clase TblFuncionarios, para Obtener
+                        // los Datos de envio de Mail **************************
+                        $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                            array(
+                                "idFuncionario" => $id_usuario_asignado                
+                            ));
+                        // Parametros de Salida
+                        $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
+                        $nombreSend = $usuario_asignado_send->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
+                        $apellidoSend = $usuario_asignado_send->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
+                                                
                             //Creamos la instancia con la configuración 
                             $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
@@ -336,12 +363,12 @@ class IngresoCorrespondenciaController extends Controller{
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
                                ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
-                               ->setTo($email_direccion)                               
+                               ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
                                     // app/Resources/views/Emails/registration.html.twig
                                         'Emails/sendMail.html.twig',
-                                        array( 'name' => $identity->nombre, 'apellidoOficio' => $identity->apellido,
+                                        array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega) )

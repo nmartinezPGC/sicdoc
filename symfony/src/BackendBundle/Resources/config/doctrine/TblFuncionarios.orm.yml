@@ -1,0 +1,97 @@
+BackendBundle\Entity\TblFuncionarios:
+    type: entity
+    table: tbl_funcionarios
+    indexes:
+        fki_tipo_func:
+            columns:
+                - id_tipo_funcionario
+        fki_depto_func:
+            columns:
+                - id_depto_funcional
+    id:
+        idFuncionario:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_funcionario
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codFuncionario:
+            type: string
+            nullable: true
+            length: 13
+            options:
+                fixed: false
+            column: cod_funcionario
+        nombre1Funcionario:
+            type: string
+            nullable: true
+            length: 25
+            options:
+                fixed: false
+            column: nombre1_funcionario
+        nombre2Funcionario:
+            type: string
+            nullable: true
+            length: 25
+            options:
+                fixed: false
+            column: nombre2_funcionario
+        apellido1Funcionario:
+            type: string
+            nullable: true
+            length: 25
+            options:
+                fixed: false
+            column: apellido1_funcionario
+        apellido2Funcionario:
+            type: string
+            nullable: true
+            length: 25
+            options:
+                fixed: false
+            column: apellido2_funcionario
+        emailFuncionario:
+            type: string
+            nullable: true
+            length: 80
+            options:
+                fixed: false
+            column: email_funcionario
+        telefonoFuncionario:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: telefono_funcionario
+        celularFuncionario:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: celular_funcionario
+    manyToOne:
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+        idTipoFuncionario:
+            targetEntity: TblTiposFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_funcionario:
+                    referencedColumnName: id_tipo_funcionario
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

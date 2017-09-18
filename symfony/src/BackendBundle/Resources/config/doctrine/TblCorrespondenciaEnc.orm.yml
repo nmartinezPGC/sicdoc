@@ -2,27 +2,30 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        fki_corr_depto:
+        fki_enc_inst:
             columns:
-                - id_depto_funcional
+                - id_institucion
+        fki_funcionario_asig:
+            columns:
+                - id_funcionario_asignado
+        fki_enc_direccion:
+            columns:
+                - id_direccion_sreci
         tbl_correspondencia_enc_cod_correspondencia_enc_idx:
             columns:
                 - cod_correspondencia_enc
         fki_enc_user:
             columns:
                 - id_usuario
-        fki_enc_direccion:
-            columns:
-                - id_direccion_sreci
-        fki_comu_docu:
-            columns:
-                - id_tipo_documento
         fki_enc_estado:
             columns:
                 - id_estado
-        fki_enc_inst:
+        fki_comu_docu:
             columns:
-                - id_institucion
+                - id_tipo_documento
+        fki_corr_depto:
+            columns:
+                - id_depto_funcional
     uniqueConstraints:
         tbl_correspondencia_enc_cod_correspondencia_enc_key:
             columns:
@@ -144,5 +147,15 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             joinColumns:
                 id_usuario:
                     referencedColumnName: id_usuario
+            orphanRemoval: false
+        idFuncionarioAsignado:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario_asignado:
+                    referencedColumnName: id_funcionario
             orphanRemoval: false
     lifecycleCallbacks: {  }

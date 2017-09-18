@@ -2,6 +2,12 @@ BackendBundle\Entity\TblCorrespondenciaDet:
     type: entity
     table: tbl_correspondencia_det
     indexes:
+        fki_fk-det_estado:
+            columns:
+                - id_estado
+        fki_func_det_asignado:
+            columns:
+                - id_funcionario_asignado
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
@@ -11,9 +17,6 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
-        fki_fk-det_estado:
-            columns:
-                - id_estado
     uniqueConstraints:
         tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:
@@ -95,5 +98,15 @@ BackendBundle\Entity\TblCorrespondenciaDet:
             joinColumns:
                 id_usuario:
                     referencedColumnName: id_usuario
+            orphanRemoval: false
+        idFuncionarioAsignado:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario_asignado:
+                    referencedColumnName: id_funcionario
             orphanRemoval: false
     lifecycleCallbacks: {  }

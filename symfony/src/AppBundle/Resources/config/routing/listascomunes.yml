@@ -37,7 +37,13 @@ listascomunes_direccionSreciList:
 listascomunes_deptoFuncionalList:
     path: /subdir-sreci-list
     defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
-    methods: POST   
+    methods: POST
+    
+# Lista de Sub Direcciones por Usuario Logeado | 2017-09-15
+listascomunes_deptoFuncionalUser:
+    path: /depto-func-user
+    defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalUser"}
+    methods: POST
    
 # Lista de Departamento Funcional
 listascomunes_deptoFuncionalUserList:
@@ -99,3 +105,20 @@ listascomunes_asignarOficiosPageList:
     defaults: { _controller: "AppBundle:ListasComunes:asignarOficiosPageList"}
     methods: GET
     
+# Listado de Tipos de Funcionarios | 15-09-2017
+listascomunes_tipoFuncionariosList:
+    path: /tipo-funcionarios-list
+    defaults: { _controller: "AppBundle:ListasComunes:tipoFuncionariosList"}
+    methods: POST
+    
+# Listado de Funcionarios | 15-09-2017
+listascomunes_funcionariosList:
+    path: /funcionarios-list
+    defaults: { _controller: "AppBundle:ListasComunes:funcionariosList"}
+    methods: POST
+
+# Listado de Funcionarios po Depto Funcional | 15-09-2017
+listascomunes_funcionariosAsignadosList:
+    path: /funcionarios-depto-list
+    defaults: { _controller: "AppBundle:ListasComunes:funcionariosAsignadosList"}
+    methods: POST

@@ -118,7 +118,7 @@
             </div>
          </div>
 
-         <!-- Direccion Encargada del tema de la Comunicacion -->
+         <!-- SubDireccion Encargada del tema de la Comunicacion -->
          <div class="col-xs-12 col-sm-6 col-md-6">
            <div class="form-group">
              <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional" required
@@ -131,6 +131,38 @@
            </div>
          </div>
        </div>
+
+      <!-- Fila de los Funcionarios -->
+      <div class="row" >
+        <!-- Tipo Funcionario Encargado de la Comunicacion -->
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <div class="form-group">
+            <select #idTipoFuncionario="ngModel" class="form-control" name="idTipoFuncionario" id="idTipoFuncionario" required
+                  ngControl="idTipoFuncionario" [(ngModel)]="comunicacion.idTipoFuncionario"  (change)="getlistaUsuariosAsinadosSRECI()" >
+                <option value="0">Tipo de Funcionario </option>
+                <option *ngFor="let list of JsonOutgetlistaTipoFuncionariosSRECI" value="{{ list.idTipoFuncionario }}">{{ list.descTipoFuncionario }}</option>
+            </select>
+            <small class="form-text text-muted" *ngIf="idTipoFuncionario.value == 0 || idTipoFuncionario.value == null " >Debes Seleccionar un Tipo de Funcionario</small>
+            <small class="form-text text-muted" *ngIf="idTipoFuncionario.errors?.required" >Debes Seleccionar un Tipo de Funcionario</small>
+          </div>
+       </div>
+
+
+       <!-- Funcionario Encargado de la Comunicacion -->
+       <div class="col-xs-12 col-sm-6 col-md-6">
+         <div class="form-group">
+           <select #idUsuarioAsaignado="ngModel" class="form-control" name="idUsuarioAsaignado" id="idUsuarioAsaignado" required
+                 ngControl="idUsuarioAsaignado" [(ngModel)]="comunicacion.idUsuarioAsaignado"  >
+               <option value="0">Funcionario SRECI</option>
+               <option *ngFor="let list of JsonOutgetlistaFuncionariosSRECI" value="{{ list.idFuncionario }}">{{ list.nombre1Funcionario }} {{ list.nombre2Funcionario }}
+                 , {{ list.apellido1Funcionario }} {{ list.apellido2Funcionario }}</option>
+           </select>
+           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.value == 0 || idUsuarioAsaignado.value == null " >Debes Seleccionar Funcionario</small>
+           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.errors?.required" >Debes Seleccionar un Funcionario</small>
+         </div>
+      </div>
+
+      </div>
 
         <!-- Boton de Agregar Nueva Direcion Acompañante -->
         <!-- <input type="button" id="btAdd" value="Añadir Elemento" class="bt" (click)="fnd()" /> -->

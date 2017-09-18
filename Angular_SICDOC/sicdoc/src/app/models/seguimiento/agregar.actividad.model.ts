@@ -6,7 +6,10 @@ export class AgregarActividad{
       public codOficio:string,
 
       //Datos de la Busqueda
-      public buscadorOficio:string
+      public buscadorOficio:string,
+
+      //Datos de la Tabla
+      public idDeptoFuncional:number
 
     ){}
 

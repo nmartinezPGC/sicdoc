@@ -147,6 +147,62 @@ class ListasComunesController extends Controller {
     
     
     /**
+     * @Route("/depto-func-user", name="depto-func-user")
+     * Creacion del Controlador: Depto. Funcionales de User
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003.1
+     */
+    public function deptoFuncionalUserAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            ////Recogemos el ID del Usuario ************************************
+            $id_usuario   = (isset($params->idUser)) ? $params->idUser : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblUsuarios
+            $userFunc = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                    array(
+                        "idUsuario" => $id_usuario
+                    ));
+            
+
+            // Condicion de la Busqueda
+            if (count($userFunc) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $userFunc
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos de Funcionario para este Usuario !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00003.1
+    
+    
+    /**
      * @Route("/tipoUsuarioList", name="tipoUsuarioList")
      * Creacion del Controlador: Tipos de Usuarios
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
@@ -464,7 +520,7 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
+        // Query para Obtener la Direccion del Funcionario de la Tabla: TblDireccionesSreci
         $direccion_sreci = $em->getRepository("BackendBundle:TblDireccionesSreci")->findAll();
         
         // Condicion de la Busqueda
@@ -676,39 +732,221 @@ class ListasComunesController extends Controller {
      * @since 1.0
      * Funcion: FND00015
      */
-    public function asignarOficiosPageListAction(Request $request )
+    public function asignarOficiosPageListAction(Request $request, $search = null )
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
+        
+        //Recogemos el Hash y la Autorizacion del Mismo        
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Variables que vienen del Json ************************************
+        //Recogemos el ID del Depto. Funcional *****************************
+        //$page = (isset($params->page)) ? $params->page : 1;
                
         // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
         // Busqueda a la BD  ***************************************************
+        $identity = $helpers->authCheck($hash, true);
         $em = $this
                 ->getDoctrine()
                 ->getManager();
-                
-        $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v ORDER BY v.idCorrespondenciaEnc DESC";
-        $query = $em->createQuery($dql);
         
-        $page = $request->query->getInt("page", 1);
-        $paginator = $this->get("knp_paginator");
-        $item_per_page = 5 ;
+        // Recogemos los Parametros de la URL vi GET, esto con el Fin de *******
+        // Incluirlos en el Query        
+        $idDeptoFuncional = $request->query->getInt("idDeptoFuncional", null);
+        $idFuncionarioAsignado = $request->query->getInt("idFuncionarioAsignado", null);
+        $idUsuario = $request->query->getInt("idUsuario", null);
         
-        $pagination = $paginator->paginate($query, $page, $item_per_page);
-        $total_items_count = $pagination->getTotalItemCount();
-        
-        $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "total_items_count"   => $total_items_count,
-                "page_actual"   => $page,
-                "items_per_page"   => $item_per_page,
-                "total_page"   => ceil( $total_items_count / $item_per_page ),
-                "data"   => $pagination
-            );
-                
+        // Query para Obtener  de la Tabla: TblUsuarios ************************
+        // Utilizamos esta seccion para Obtener el Perfil del Funcionario ******
+        $tipo_usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+            array(
+                "idUsuario" => $idUsuario
+            ));
+            
+        // Parametro de Tipo de Funcionario | Director ID (6)
+        $tipo_funcionario_entitie = $tipo_usuario->getIdTipoFuncionario(); // Obtenemos la Entidad Completa
+        $tipo_funcionario = $tipo_funcionario_entitie->getIdTipoFuncionario(); // Obtenemos el Tipo de Funcionario
+        // Es Director y solo el Puede Asignar Oficios
+        if ( $tipo_funcionario === 6 ) {        
+            // Evaluamos si si hizo una consulta desde la caja Search
+            if ( $search != null ) {
+               $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
+                    . "WHERE v.idDeptoFuncional = :search "                
+                    . "ORDER BY v.idCorrespondenciaEnc DESC";
+
+               $query = $em->createQuery($dql)
+                        ->setParameter("search", "%$search%");
+            }else{
+                $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
+                    . "WHERE v.idDeptoFuncional = '". $idDeptoFuncional ."' "
+                    . "ORDER BY v.idCorrespondenciaEnc DESC";
+
+                $query = $em->createQuery($dql);
+            }        
+
+            // Parametros de la Paginacion
+            $page = $request->query->getInt("page", 1);
+            $paginator = $this->get("knp_paginator");
+            $item_per_page = 10;
+
+            $pagination = $paginator->paginate($query, $page, $item_per_page);
+            $total_items_count = $pagination->getTotalItemCount();
+
+            $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "total_items_count"   => $total_items_count,
+                    "page_actual"   => $page,
+                    "items_per_page"   => $item_per_page,
+                    "total_page"   => ceil( $total_items_count / $item_per_page ),
+                    "data"   => $pagination
+                );
+        }else{
+            // Lanzamos la Consulta Errornea para Llenar la Condicion
+            $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
+                    . "WHERE v.idDeptoFuncional = 100000 "
+                    . "ORDER BY v.idCorrespondenciaEnc DESC";
+
+            $query = $em->createQuery($dql);
+            $paginator = $this->get("knp_paginator");
+            $pagination = $paginator->paginate($query, 1, 1);
+            $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "total_items_count"   => 0,
+                    "page_actual"   => 1,
+                    "items_per_page"   => 0,
+                    "total_page"   => 0,
+                    "data"   => $pagination
+                );
+        }
+
         return $helpers->parserJson($data);
     }//FIN | FND00015
+    
+    
+    /**
+     * @Route("/funcionarios-depto-list", name="funcionarios-depto-list")
+     * Creacion del Controlador: Funcionario a Asignar
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00016
+     */
+    public function funcionariosAsignadosListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_funcionario = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null;
+            
+            // Query para Obtener todos Deptos. Funcionales de la Tabla: TblDepartamentosFuncionales
+            /*$depto_func = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
+                    array(
+                        "idDeptoFuncional" => $tipo_funcionario
+                    )); */
+            
+            // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
+            $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                    array(
+                        "idDeptoFuncional" => $tipo_funcionario
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $usuario_asignado ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $usuario_asignado
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Funcionarios asociados al Departamento, "
+                                . "comuniquese con el Administrador !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00016
+    
+    
+    /**
+     * @Route("/funcionarios-list", name="funcionarios-list")
+     * Creacion del Controlador: Funcionarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00017
+     */
+    public function funcionariosListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Tipo de Funcionario***************************
+            $tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblUsuarios
+            $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                    array(
+                        "idTipoFuncionario" => $tipo_funcionario
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $usuario_asignado ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $usuario_asignado
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Funcionarios !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00017
     
     
 }

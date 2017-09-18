@@ -384,4 +384,33 @@ class TblCorrespondenciaDet
     {
         return $this->codReferenciaSreci;
     }
+    /**
+     * @var \BackendBundle\Entity\TblFuncionarios
+     */
+    private $idFuncionarioAsignado;
+
+
+    /**
+     * Set idFuncionarioAsignado
+     *
+     * @param \BackendBundle\Entity\TblFuncionarios $idFuncionarioAsignado
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setIdFuncionarioAsignado(\BackendBundle\Entity\TblFuncionarios $idFuncionarioAsignado = null)
+    {
+        $this->idFuncionarioAsignado = $idFuncionarioAsignado;
+
+        return $this;
+    }
+
+    /**
+     * Get idFuncionarioAsignado
+     *
+     * @return \BackendBundle\Entity\TblFuncionarios
+     */
+    public function getIdFuncionarioAsignado()
+    {
+        return $this->idFuncionarioAsignado;
+    }
 }

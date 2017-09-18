@@ -22,6 +22,10 @@ import { NgForm }    from '@angular/forms';
 // Importamos la CLase Usuarios del Modelo
 import { AgregarActividad } from '../../models/seguimiento/agregar.actividad.model'; // Modelo a Utilizar
 
+// Importamos los Pipes de la Forma
+import { GenerateDatePipe } from '../../pipes/common/generate.date.pipe';
+import { SearchFilterPipe } from '../../pipes/common/generate.search.pipe';
+
 // Importamos Jquery
 // Declaramos las variables para jQuery
 declare var jQuery:any;
@@ -35,9 +39,11 @@ declare var $:any;
 })
 
 export class IngresoActividadComponent implements OnInit{
-  public titulo:string = "Agregar Actividad";
+  public titulo:string = "Asignar Actividad";
   public fechaHoy:Date = new Date();
   public fechafin:string;
+
+  public txtFname;
 
   // Instacia del Modelo
   public asignarOficios: AgregarActividad;
@@ -45,9 +51,12 @@ export class IngresoActividadComponent implements OnInit{
   // Objeto que Controlara la Forma
   forma:FormGroup;
 
+  public checkWork = 0;
+
   // Campos de la tabla
   private tableAgregarActividad;
-  private tableAgregarActividadCodOficio:any[];
+  // private tableAgregarActividadCodOficio:any[];
+  private tableAgregarActividadCodOficio;
   private tableAgregarActividadFechamaxima;
 
   // variables del Paginador
@@ -55,12 +64,25 @@ export class IngresoActividadComponent implements OnInit{
   public pagePrev = 1;
   public pageNext = 1;
 
-
+  public identity;
 
   // Campos del Modal PopUp
   private codOficioModal:string;
+  private idDeptoFuncionalModal:string;
   private temaOficioModal:string;
   private institucionOficioModal:string;
+  private nombreFuncModal:string;
+  private apellidoFuncModal:string;
+  private idFuncModal:string;
+
+  public paramsTable;
+
+  // Parametro de Depto. Funcional del User
+  public deptoUser;
+  private deptoFuncionalUser:number;
+  public deptoUserParse;
+  public idFuncionarioParse;
+  public deptoUserJson;
 
 
   // parametros multimedia
@@ -71,7 +93,7 @@ export class IngresoActividadComponent implements OnInit{
 
   // Json de los listas de los Oficios por usuario
   public JsonOutgetlistaOficiosAll:any[];
-  // public JsonOutgetlistaEstados:any[];
+  public JsonOutgetlistaFuncionariosDisponibles:any[];
   // public JsonOutgetlistaEstados:any[];
 
 
@@ -84,114 +106,31 @@ export class IngresoActividadComponent implements OnInit{
   ){}
 
 
-  // Json de Muestra la hacer el Component
-  public usuarios:Usuario[] = [{
-      nombre: "Aquaman",
-      bio: "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
-      img: "assets/img/aquaman.png",
-      aparicion: "1941-11-01",
-      casa:"DC"
-    },
-    {
-      nombre: "Batman",
-      bio: "Los rasgos principales de Batman se resumen en «destreza física, habilidades deductivas y obsesión». La mayor parte de las características básicas de los cómics han variado por las diferentes interpretaciones que le han dado al personaje.",
-      img: "assets/img/batman.png",
-      aparicion: "1939-05-01",
-      casa:"DC"
-    }];
-
   // INI | Metodo OnInit
   ngOnInit(){
     // Iniciamos los Parametros de Instituciones
-    this.tableAgregarActividad = [
-      ["Ingresado", "", "", "","",""],
-      ["121212" ,"", "", "","",""],
-      ["SRECI", "", "", "","",""],
-      ["Tema 1" , "", "", "","",""],
-      ["2017-09-12", "", "", "","",""],
-      ["dsd" , "", "", "","",""]
-    ];
+    this.tableAgregarActividad = {
+      "codOficio":"",
+      "idDeptoFunc":"",
+      "nombreFuncAsig":"",
+      "apellidoFuncAsig":"",
+      "idFuncionarioModal":""
+    };
 
-    this.getlistaAsinarOficios();
+    // Iniciamos los Parametros de Usuarios a Depto Funcionales
+    this.deptoUserJson = {
+      "idUser":""
+    };
+
+    // Inicializamos las Listas del Formulario
+    //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.asignarOficios = new AgregarActividad(null, null);
+    this.asignarOficios = new AgregarActividad(null, null, null);
 
-    // ejecucion de la Tabla
-    //$('#example').dataTable();
-    // $('#example').dataTable( {
-    //     "ajax": function (data, callback, settings) {
-    //       callback(
-    //         JSON.parse( localStorage.getItem('JsonPar') )
-    //   );
-    // }
-    // } );
+    // Lista de la tabla de Funcionarios
+    this.deptoFuncional();
 
-
-//     var dataSet = [
-//     [ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
-//     [ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
-//     [ "Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000" ],
-//     [ "Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060" ],
-//     [ "Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700" ],
-//     [ "Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000" ],
-//     [ "Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500" ],
-//     [ "Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900" ],
-//     [ "Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500" ],
-//     [ "Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600" ],
-//     [ "Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560" ],
-//     [ "Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000" ],
-//     [ "Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600" ],
-//     [ "Haley Kennedy", "Senior Marketing Designer", "London", "3597", "2012/12/18", "$313,500" ],
-//     [ "Tatyana Fitzpatrick", "Regional Director", "London", "1965", "2010/03/17", "$385,750" ],
-//     [ "Michael Silva", "Marketing Designer", "London", "1581", "2012/11/27", "$198,500" ],
-//     [ "Paul Byrd", "Chief Financial Officer (CFO)", "New York", "3059", "2010/06/09", "$725,000" ],
-//     [ "Gloria Little", "Systems Administrator", "New York", "1721", "2009/04/10", "$237,500" ],
-//     [ "Bradley Greer", "Software Engineer", "London", "2558", "2012/10/13", "$132,000" ],
-//     [ "Dai Rios", "Personnel Lead", "Edinburgh", "2290", "2012/09/26", "$217,500" ],
-//     [ "Jenette Caldwell", "Development Lead", "New York", "1937", "2011/09/03", "$345,000" ],
-//     [ "Yuri Berry", "Chief Marketing Officer (CMO)", "New York", "6154", "2009/06/25", "$675,000" ],
-//     [ "Caesar Vance", "Pre-Sales Support", "New York", "8330", "2011/12/12", "$106,450" ],
-//     [ "Doris Wilder", "Sales Assistant", "Sidney", "3023", "2010/09/20", "$85,600" ],
-//     [ "Angelica Ramos", "Chief Executive Officer (CEO)", "London", "5797", "2009/10/09", "$1,200,000" ],
-//     [ "Gavin Joyce", "Developer", "Edinburgh", "8822", "2010/12/22", "$92,575" ],
-//     [ "Jennifer Chang", "Regional Director", "Singapore", "9239", "2010/11/14", "$357,650" ],
-//     [ "Brenden Wagner", "Software Engineer", "San Francisco", "1314", "2011/06/07", "$206,850" ],
-//     [ "Fiona Green", "Chief Operating Officer (COO)", "San Francisco", "2947", "2010/03/11", "$850,000" ],
-//     [ "Shou Itou", "Regional Marketing", "Tokyo", "8899", "2011/08/14", "$163,000" ],
-//     [ "Michelle House", "Integration Specialist", "Sidney", "2769", "2011/06/02", "$95,400" ],
-//     [ "Suki Burks", "Developer", "London", "6832", "2009/10/22", "$114,500" ],
-//     [ "Prescott Bartlett", "Technical Author", "London", "3606", "2011/05/07", "$145,000" ],
-//     [ "Gavin Cortez", "Team Leader", "San Francisco", "2860", "2008/10/26", "$235,500" ],
-//     [ "Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050" ],
-//     [ "Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675" ]
-// ];
-//
-// let serial = JSON.stringify( this.JsonOutgetlistaOficiosAll );
-// console.log(dataSet);
-// $(document).ready(function() {
-//     $('#example').DataTable( {
-//         data: dataSet,
-//         columns: [
-//             { title: "Name" },
-//             { title: "Position" },
-//             { title: "Office" },
-//             { title: "Extn." },
-//             { title: "Start date" },
-//             { title: "Salary" }
-//         ]
-//     } );
-// } );
-
-
-
-
-
-  }
-
-  //Metodo para Obtener el Array
-  getUsuarios():Usuario[]{
-    return this.usuarios;
   }
 
 
@@ -202,7 +141,7 @@ export class IngresoActividadComponent implements OnInit{
   * que pertenecen al usaurio Logeado
   * Objetivo: Obtener la lista de los Oficios de las
   * Comunicaciones de la BD, Llamando a la API, por su
-  * metodo (asignar-oficios-list).
+  * metodo (asignar-oficios-page-list).
   ******************************************************/
   getlistaAsinarOficios() {
     this._route.params.subscribe( params => {
@@ -232,9 +171,11 @@ export class IngresoActividadComponent implements OnInit{
     //       }
     //     });
 
-
+    // console.log( this.idFuncModal );
     //Llamar al metodo, de Listado de Funcionarios
-    this._listasComunes.listasComunesGet("",  "asignar-oficios-page-list?page=" + page ).subscribe(
+    this._listasComunes.listasComunesGet("",  "asignar-oficios-page-list?page=" + page +
+                                              "&idDeptoFuncional=" + this.deptoFuncionalUser +
+                                              "&idUsuario=" + this.deptoUserJson.idUser ).subscribe(
         response => {
             this.status = response.status;
 
@@ -245,8 +186,8 @@ export class IngresoActividadComponent implements OnInit{
               // this.tableAgregarActividadCodOficio = this.JsonOutgetlistaOficiosAll[0].codReferenciaSreci;
               // this.tableAgregarActividadFechamaxima = this.JsonOutgetlistaOficiosAll[0].fechaMaxEntrega;
               this.loading = 'hidden';
-              console.log( this.JsonOutgetlistaOficiosAll );
 
+              // Array de las Paginas
               this.pages = [];
 
                 // Llenamos el numero de paginas a Mostrar
@@ -309,6 +250,7 @@ export class IngresoActividadComponent implements OnInit{
        // Agrupamos las secciones de las Fechas
        let time = diaFechamaxima + '-' + mesFechamaxima + '-' + anioFechamaxima ;
        // retorna la fecha convertida
+       //console.log(UNIX_timestamp);
        return time;
    } // FIN : FND-00001.1
 
@@ -316,17 +258,76 @@ export class IngresoActividadComponent implements OnInit{
    /****************************************************
    * Funcion: FND-00001.2
    * Fecha: 13-09-2017
-   * Descripcion: Funcion que ejecuta la conulta a la BD
+   * Descripcion: Funcion que ejecuta la consulta a la BD
    * para obtener la informacion de los Funcionarios a
    * cargo de la Directora
    * Objetivo: Obtener funcionarios que estan a cargo de
    * la Directora
+   * ( funcionarios-depto-list )
    *****************************************************/
-   funcionariosListDir( idSubDireccionSreci ){
-    //  alert(codOficio);
-     this.codOficioModal = idSubDireccionSreci;
-     this.tableAgregarActividadCodOficio = idSubDireccionSreci;
+   funcionariosListDir( idDeptoFuncIn ){
+    // Parametros de la Lista de los Funcionarios
+    this.tableAgregarActividad.idDeptoFunc = idDeptoFuncIn;
+    // console.log( this.tableAgregarActividad);
+    this._listasComunes.listasComunes( this.tableAgregarActividad ,"funcionarios-depto-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionariosDisponibles = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaFuncionariosDisponibles = response.data;
+          }
+        });
+
+    //  this.codOficioModal = idSubDireccionSreci;
+    //  this.tableAgregarActividadCodOficio = idSubDireccionSreci;
    } // FIN : FND-00001.2
+
+
+   /****************************************************
+   * Funcion: FND-00001.3
+   * Fecha: 15-09-2017
+   * Descripcion: Funcion que ejecuta la consulta a la BD
+   * para obtener la informacion del Depto. Funcinal del
+   * Usuario que tiene activa la sesion
+   * Objetivo: Obtener el Depto Funcinal del Usuario
+   *****************************************************/
+   deptoFuncional(){
+    // Parametros de la Lista de los Funcionarios
+    // Variable del localStorage, para obtener el Id del Usuario (sub) y luego
+    // la parseamos a Objeto Javascript
+    this.identity = JSON.parse(localStorage.getItem('identity'));
+    this.deptoUserJson.idUser = this.identity.sub;
+    // console.log( this.deptoUserJson.idUser );
+    // Llamado al Metodo ajax de la Lista del Depto. Funcional del user
+    this._listasComunes.listasComunes( this.deptoUserJson ,"depto-func-user").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.deptoUser = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.deptoUser = response.data;
+            // Parseamos la data del response
+            this.deptoUserParse = this.deptoUser.idDeptoFuncional.idDeptoFuncional;
+            // console.log( this.deptoUserParse );
+            this.deptoFuncionalUser = this.deptoUserParse;
+
+            // Ejecutamos la Funcion que carga la tabla de los Oficios Ingresados
+            // listos para poder ser Asignados
+            this.getlistaAsinarOficios()
+
+            // Ejecutamos la Funcion que carga la tabla de los Funcionarios Disponibles
+            this.funcionariosListDir( this.deptoUserParse );
+
+          }
+        });
+  } // FIN : FND-00001.3
 
 
    /****************************************************
@@ -335,10 +336,23 @@ export class IngresoActividadComponent implements OnInit{
    * Descripcion: Funcion que convierte las fechas
    * Objetivo: Obtener las fechas para la tabla
    *****************************************************/
-   datoOficio( codOficio ){
+   datoOficio( codOficio, idDepto, nombrefuncionarioAsignado, apellidofuncionarioAsignado,
+              idFuncionarioModal ){
     //  alert(codOficio);
      this.codOficioModal = codOficio;
-     this.tableAgregarActividadCodOficio = codOficio;
+     this.idDeptoFuncionalModal = idDepto;
+     this.nombreFuncModal = nombrefuncionarioAsignado;
+     this.apellidoFuncModal = apellidofuncionarioAsignado;
+     this.idFuncModal = idFuncionarioModal;
+
+    // Asigna los Valores al Json de Modal
+     this.tableAgregarActividad.codOficio = codOficio;
+     this.tableAgregarActividad.idDeptoFunc = idDepto;
+     this.tableAgregarActividad.nombreFuncAsig = nombrefuncionarioAsignado;
+     this.tableAgregarActividad.apellidoFuncAsig = apellidofuncionarioAsignado;
+     this.tableAgregarActividad.idFuncAsig = idFuncionarioModal;
+    //  this.funcionariosListDir( idDepto );
+
    } // FIN : FND-00001.3
 
 
@@ -350,11 +364,33 @@ export class IngresoActividadComponent implements OnInit{
    * Objetivo: Obtener los oficios de la BD
    *****************************************************/
    buscarOficio( codOficio:string ){
-    console.log( codOficio );
+    //console.log( codOficio );
     //  this.codOficioModal = codOficio;
     //  this.tableAgregarActividadCodOficio = codOficio;
   } // FIN : FND-00001.4
 
+
+  /****************************************************
+  * Funcion: FND-00001.5
+  * Fecha: 16-09-2017
+  * Descripcion: Funcion para Asignar el Oficio al Fun-
+  * cionario seleccionado
+  * Objetivo: Asignar el Oficio al Funcionario
+  *****************************************************/
+  asignarOficioFuncionario( codOficioIn:string, idFuncionarioIn:number ){
+   // Confirmamos que el Usuario acepte el Cambio
+   let confirma = confirm('Estas seguro de Asignar este Oficio a este Funcionario ?');
+   if( confirma == true){
+      alert( 'Ejecucion de Funcion: ' + codOficioIn + ' idFuncionarioIn ' + idFuncionarioIn);
+   }else{
+     alert( 'No has Aceptado el Cambio ' );
+     this.checkWork = 0;
+   }
+
+
+   //  this.codOficioModal = codOficio;
+   //  this.tableAgregarActividadCodOficio = codOficio;
+ } // FIN : FND-00001.5
 
 
 } // Fin del Component

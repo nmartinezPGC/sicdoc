@@ -587,4 +587,62 @@ class TblCorrespondenciaEnc
     {
         return $this->idDeptoAcomp;
     }
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuarioAsignado;
+
+
+    /**
+     * Set idUsuarioAsignado
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuarioAsignado
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdUsuarioAsignado(\BackendBundle\Entity\TblUsuarios $idUsuarioAsignado = null)
+    {
+        $this->idUsuarioAsignado = $idUsuarioAsignado;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuarioAsignado
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuarioAsignado()
+    {
+        return $this->idUsuarioAsignado;
+    }
+    /**
+     * @var \BackendBundle\Entity\TblFuncionarios
+     */
+    private $idFuncionarioAsignado;
+
+
+    /**
+     * Set idFuncionarioAsignado
+     *
+     * @param \BackendBundle\Entity\TblFuncionarios $idFuncionarioAsignado
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdFuncionarioAsignado(\BackendBundle\Entity\TblFuncionarios $idFuncionarioAsignado = null)
+    {
+        $this->idFuncionarioAsignado = $idFuncionarioAsignado;
+
+        return $this;
+    }
+
+    /**
+     * Get idFuncionarioAsignado
+     *
+     * @return \BackendBundle\Entity\TblFuncionarios
+     */
+    public function getIdFuncionarioAsignado()
+    {
+        return $this->idFuncionarioAsignado;
+    }
 }

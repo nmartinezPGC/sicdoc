@@ -8,6 +8,13 @@ import { NgForm }    from '@angular/forms';
 // Import your library
 // import { AutocompleteModule } from 'ng2-input-autocomplete';
 
+// Importamos la Libreria del Pipe
+import { Pipe, PipeTransform } from '@angular/core';
+
+// Pipes Personalizados de uso Comun
+import { GenerateDatePipe } from './pipes/common/generate.date.pipe';
+import { SearchFilterPipe } from './pipes/common/generate.search.pipe';
+
 //Libreria para usar Rutas
 import { APP_ROUTING } from './app.routes';
 
@@ -42,8 +49,9 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     IngresoComunicacionComponent,
     IngresoActividadComponent,
     NavbarComponent,
-    HeaderComponent
-
+    HeaderComponent,
+    GenerateDatePipe,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,

@@ -46,6 +46,7 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSecuenciaDet;
   private paramsSubDir;
   private paramsSubDirAcom;
+  private paramsTipoFuncionario; // Parametros para el Filtro de Funcionarios
 
   // Propiedad de Loader
   public loading      = 'show';
@@ -83,6 +84,11 @@ export class IngresoComunicacionComponent implements OnInit{
   public valorSecuenciaDet; // Secuencial del Oficio
   public emailDireccionIN; // Correo de la Direccion
 
+  // Datos del Funcionario
+  public emailDireccionFuncionarioIN; // Correo del Funcionario
+  public nombreFuncionarioIN; // Nombre Funcionario
+  public apellidoFuncionarioIN; // Apellido Funcionario
+
 
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
@@ -95,6 +101,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaDireccionSRECIAcom:any[];
   public JsonOutgetlistaSubDireccionSRECI:any[];
   public JsonOutgetlistaSubDireccionSRECIAcom:any[];
+
+  public JsonOutgetlistaTipoFuncionariosSRECI:any[];
+  public JsonOutgetlistaFuncionariosSRECI:any[];
 
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
@@ -149,6 +158,11 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
+    // Iniciamos los Parametros de Usuarios a Asignar el Oficio
+    this.paramsTipoFuncionario = {
+      "idTipoFuncionario"  : ""
+    };
+
     // Inicializacion de las Listas
     this.getlistaEstadosComunicacion();
     this.getlistaPaises();
@@ -162,14 +176,20 @@ export class IngresoComunicacionComponent implements OnInit{
     this.listarCodigoCorrespondencia();
     this.listarCodigoCorrespondenciaDet();
 
+    // Tipo Funcionarios de la SRECI
+    this.getlistaTipoFuncionariosSRECI();
+
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","",  "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","",  "", "",  "");
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
+
+    // Llenamos la Lsita Funcionarios despues de los Campos Default
+    // this.getlistaUsuariosAsinadosSRECI();
 
     // Resumenes de la Pantalla
     this.getlistaOficosIngresados();
@@ -198,8 +218,6 @@ export class IngresoComunicacionComponent implements OnInit{
       this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
       this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
 
-      this.emailDireccionIN  = this.JsonOutgetlistaSubDireccionSRECI[0].emailDireccion;
-
       // Secuenciales de la Tabla correspondencia Encabenzado
       this.comunicacion.codCorrespondencia = this.codigoSecuencia + "-" + this.valorSecuencia;
       this.comunicacion.secuenciaComunicacionIn = this.valorSecuencia;
@@ -207,9 +225,6 @@ export class IngresoComunicacionComponent implements OnInit{
       // Secuenciales de la Tabla correspondencia detalle
       this.comunicacion.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
       this.comunicacion.secuenciaComunicacionDet = this.valorSecuenciaDet;
-
-      //Parametros para el envio de correos
-      this.comunicacion.emailDireccion = this.emailDireccionIN;
 
       // Parametro para documento Seleccionado
       // this.comunicacion.pdfDocumento = "";
@@ -312,10 +327,15 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
+    // Iniciamos los Parametros de Usuarios a Asignar Oficios
+    this.paramsTipoFuncionario = {
+      "idTipoFuncionario"  : ""
+    };
+
     this.status = "hide";
     this.loading = "hide";
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", "7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","",  "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","",  "", "",  "");
   } // FIN : FND-00001.1
 
 
@@ -695,6 +715,63 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-00007.1
+
+
+  /*****************************************************
+  * Funcion: FND-00007.1.1.2
+  * Fecha: 15-09-2017
+  * Descripcion: Carga la Lista de las Tipos de Funciona-
+  * rios de la SRECI, para poder filtrar Usuarios
+  * Objetivo: Obtener la lista de Tipos de Funcionario
+  * SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * ( tipo-funcionario-list ).
+  ******************************************************/
+  getlistaTipoFuncionariosSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+
+    this._listasComunes.listasComunes( "","tipo-funcionario-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaTipoFuncionariosSRECI = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaTipoFuncionariosSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007.1.1.2
+
+
+  /*****************************************************
+  * Funcion: FND-00007.1.1.3
+  * Fecha: 15-09-2017
+  * Descripcion: Carga la Lista de las Funcionaios de
+  * la SRECI, para poder asignarles el Oficios a Ingresar
+  * Objetivo: Obtener la lista de Funcionarios SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * ( funcionarios-list ).
+  * Params = paramsTipoFuncionario
+  ******************************************************/
+  getlistaUsuariosAsinadosSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsTipoFuncionario.idTipoFuncionario = this.comunicacion.idTipoFuncionario;
+
+    this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionariosSRECI = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaFuncionariosSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007.1.1.3
 
 
   /*****************************************************
