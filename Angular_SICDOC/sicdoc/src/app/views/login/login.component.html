@@ -9,7 +9,7 @@
 				<hr class="colorgraph">
 				<div class="form-group " >
                     <input type="email" name="email" id="email" #email="ngModel" ngControl="email" [(ngModel)]="user.email"
-                    class="form-control input-lg" required minlength=10 placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                    class="form-control input-lg" required minlength=10 placeholder="nombre@dominio.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
 
                     <span *ngIf="email.errors?.pattern" >El campo no tiene formato de Correo</span>
                     <span *ngIf="email.errors?.required" >El email es obligatorio</span>

@@ -1,0 +1,7 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
+seguimiento_asignarOficio:
+    path: /asignar-oficio
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:asignarOficio" }
+    methods: POST

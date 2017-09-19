@@ -22,6 +22,7 @@ import { APP_ROUTING } from './app.routes';
 import { UsuariosService }  from "./services/usuarios/usuarios.service";
 import { LoginService } from './services/login/login.service';
 import { IngresoComunicacionService } from './services/comunicaciones/ingreso.service';
+import { AgregarActividadService } from './services/seguimiento/agregar.actividad.service';
 
 //Compoenentes *****************************************************************
 import { AppComponent } from './app.component';
@@ -65,7 +66,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     UsuariosService,
     LoginService,
     IngresoComunicacionService,
-    IngresoActividadComponent
+    IngresoActividadComponent,
+    AgregarActividadService
   ],
   bootstrap: [AppComponent]
 })

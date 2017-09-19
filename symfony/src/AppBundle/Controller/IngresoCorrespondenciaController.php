@@ -48,7 +48,8 @@ class IngresoCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      ***************************************************************************/
-    public function newCorrespondenciaAction(Request $request) {
+    public function newCorrespondenciaAction(Request $request) 
+    {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -438,7 +439,7 @@ class IngresoCorrespondenciaController extends Controller{
         }        
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } //Fin de la Funcion New Correspondencia **********************************
+    } //Fin de la Funcion New Correspondencia ********************
     
     
     /* Funcion de Editar Correspondencia****************************************
@@ -447,7 +448,8 @@ class IngresoCorrespondenciaController extends Controller{
      *     Informacion.                                                        * 
      * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
      ***************************************************************************/
-    public function editCorrespondenciaAction(Request $request, $id = null) {
+    public function editCorrespondenciaAction(Request $request, $id = null) 
+    {
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -596,7 +598,7 @@ class IngresoCorrespondenciaController extends Controller{
         }        
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } //Fin de la Funcion Editar Correspondencia *******************************
+    } //Fin de la Funcion Editar Correspondencia ****************
 
     
     /**

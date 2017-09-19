@@ -44,6 +44,9 @@ export class RegisterComponent implements OnInit{
 
   public identity;
   public token;
+
+  // Array de SubDirecciones
+  private paramsSubDir;
   // public passwordConfirmation:string;
 
   // Variables de Generacion de las Listas de los Dropdow
@@ -52,6 +55,8 @@ export class RegisterComponent implements OnInit{
   public JsonOutgetlistaTipoFuncionario:any[];
   public JsonOutgetlistaDeptosFuncionales:any[];
   public JsonOutgetlistaTipoUsuario:any[];
+  public JsonOutgetlistaDireccionSRECI:any[];
+  public JsonOutgetlistaSubDireccionSRECI:any[];
   // public JsonOut:any[];
 
 
@@ -76,14 +81,20 @@ export class RegisterComponent implements OnInit{
 
   // Metodo OnInit
   ngOnInit(){
+    // Iniciamos los Parametros de Sub Direcciones
+    this.paramsSubDir = {
+      "idDireccionSreci"  : ""
+    };
+
     // Inicializacion de las Listas
+    this.getlistaDireccionesSRECI();
     // this.getlistaEstados();
     this.getlistaTipoFuncionario();
     // this.getlistaDeptosFuncionales();
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0,  "");
+    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "");
     this.loadScript('../assets/js/register.component.js');
   }
 
@@ -278,6 +289,62 @@ export class RegisterComponent implements OnInit{
           alert("error");
           console.log(error);
         });
-  }
+  } // FIN : FND-00006
+
+
+  /*****************************************************
+  * Funcion: FND-00007
+  * Fecha: 18-09-2017
+  * Descripcion: Carga la Lista de las Direcciones de
+  * SRECI
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (dir-sreci-list).
+  ******************************************************/
+  getlistaDireccionesSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaDireccionSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007
+
+
+  /*****************************************************
+  * Funcion: FND-00007.1
+  * Fecha: 18-09-2017
+  * Descripcion: Carga la Lista de las Sub Direcciones de
+  * SRECI
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (subdir-sreci-list).
+  ******************************************************/
+  getlistaSubDireccionesSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsSubDir.idDireccionSreci = this.user.idDireccionSreci;
+
+    this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionSRECI = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaSubDireccionSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007.1
+
+
+
 
 }

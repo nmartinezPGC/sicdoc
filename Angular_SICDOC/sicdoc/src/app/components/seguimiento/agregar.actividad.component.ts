@@ -11,8 +11,8 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
 //Importamos los Servicios
-import { LoginService } from '../../services/login/login.service'; //Servico del Login
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
+import { AgregarActividadService } from '../../services/seguimiento/agregar.actividad.service'; //Servico Listas Comunes
 
 import { AppComponent } from '../../app.component'; //Servico del Principal
 
@@ -35,7 +35,7 @@ declare var $:any;
   selector: 'app-agregar-actividad',
   templateUrl: '../../views/seguimiento/agregar.actividad.component.html',
   styleUrls: ['../../views/seguimiento/agregar.actividad.component.css'],
-  providers: [ LoginService, ListasComunesService ]
+  providers: [ AgregarActividadService, ListasComunesService ]
 })
 
 export class IngresoActividadComponent implements OnInit{
@@ -53,11 +53,18 @@ export class IngresoActividadComponent implements OnInit{
 
   public checkWork = 0;
 
+  // Variables de Mensajeria y Informaicon
+   public data;
+   public errorMessage;
+   public status;
+   public mensajes;
+
   // Campos de la tabla
   private tableAgregarActividad;
   // private tableAgregarActividadCodOficio:any[];
   private tableAgregarActividadCodOficio;
   private tableAgregarActividadFechamaxima;
+  private asignaFuncionarioSend; // Json de Datos de Envio a Asignar
 
   // variables del Paginador
   public pages;
@@ -67,13 +74,16 @@ export class IngresoActividadComponent implements OnInit{
   public identity;
 
   // Campos del Modal PopUp
-  private codOficioModal:string;
-  private idDeptoFuncionalModal:string;
+  private codOficioIntModal:string;
+  private codOficioRefModal:string;
+  private idDeptoFuncionalModal:number;
   private temaOficioModal:string;
   private institucionOficioModal:string;
-  private nombreFuncModal:string;
-  private apellidoFuncModal:string;
-  private idFuncModal:string;
+  private nombre1FuncModal:string;
+  private nombre2FuncModal:string;
+  private apellido1FuncModal:string;
+  private apellido2FuncModal:string;
+  private idFuncModal:number;
 
   public paramsTable;
 
@@ -87,8 +97,9 @@ export class IngresoActividadComponent implements OnInit{
 
   // parametros multimedia
   public loading  = 'show';
-  public status;
-  public errorMessage;
+  public loading_table  = 'hide';
+  public loading_tr  = 'hide';
+
 
 
   // Json de los listas de los Oficios por usuario
@@ -99,6 +110,7 @@ export class IngresoActividadComponent implements OnInit{
 
   // Definicion del constructor
   constructor( private _listasComunes: ListasComunesService,
+              private _asignaOficio: AgregarActividadService,
               private _router: Router,
               private _route: ActivatedRoute,
               private _appComponent: AppComponent,
@@ -110,7 +122,8 @@ export class IngresoActividadComponent implements OnInit{
   ngOnInit(){
     // Iniciamos los Parametros de Instituciones
     this.tableAgregarActividad = {
-      "codOficio":"",
+      "codOficioInt":"",
+      "codOficioRef":"",
       "idDeptoFunc":"",
       "nombreFuncAsig":"",
       "apellidoFuncAsig":"",
@@ -122,16 +135,27 @@ export class IngresoActividadComponent implements OnInit{
       "idUser":""
     };
 
+
+    // Iniciamos los Parametros de Envio para la Asignacion del Oficio
+    this.asignaFuncionarioSend = {
+      "codOficio":"",
+      "codOficioRef":"",
+      "idDeptoFunc":"",
+      "nombreFuncAsig":"",
+      "apellidoFuncAsig":"",
+      "idFuncionarioModal":""
+    }
+
     // Inicializamos las Listas del Formulario
     //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.asignarOficios = new AgregarActividad(null, null, null);
+    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null);
 
     // Lista de la tabla de Funcionarios
     this.deptoFuncional();
 
-  }
+  } // Fin de Metodo ngOnInit()
 
 
   /*****************************************************
@@ -227,7 +251,6 @@ export class IngresoActividadComponent implements OnInit{
   } // FIN : FND-00001
 
 
-
   /****************************************************
   * Funcion: FND-00001.1
   * Fecha: 13-09-2017
@@ -282,8 +305,6 @@ export class IngresoActividadComponent implements OnInit{
           }
         });
 
-    //  this.codOficioModal = idSubDireccionSreci;
-    //  this.tableAgregarActividadCodOficio = idSubDireccionSreci;
    } // FIN : FND-00001.2
 
 
@@ -336,38 +357,33 @@ export class IngresoActividadComponent implements OnInit{
    * Descripcion: Funcion que convierte las fechas
    * Objetivo: Obtener las fechas para la tabla
    *****************************************************/
-   datoOficio( codOficio, idDepto, nombrefuncionarioAsignado, apellidofuncionarioAsignado,
-              idFuncionarioModal ){
+   datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
+              nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
+              nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
+              idFuncionarioIn:number ){
     //  alert(codOficio);
-     this.codOficioModal = codOficio;
-     this.idDeptoFuncionalModal = idDepto;
-     this.nombreFuncModal = nombrefuncionarioAsignado;
-     this.apellidoFuncModal = apellidofuncionarioAsignado;
-     this.idFuncModal = idFuncionarioModal;
+     this.codOficioIntModal = codOficioIntIn;
+     this.codOficioRefModal = codOficioRefIn;
+     this.idDeptoFuncionalModal = idDeptoIn;
+     this.nombre1FuncModal = nombre1funcionarioAsignadoIn;
+     this.nombre2FuncModal = nombre2funcionarioAsignadoIn;
+     this.apellido1FuncModal = apellido1funcionarioAsignadoIn;
+     this.apellido2FuncModal = apellido2funcionarioAsignadoIn;
+     this.idFuncModal = idFuncionarioIn;
 
     // Asigna los Valores al Json de Modal
-     this.tableAgregarActividad.codOficio = codOficio;
-     this.tableAgregarActividad.idDeptoFunc = idDepto;
-     this.tableAgregarActividad.nombreFuncAsig = nombrefuncionarioAsignado;
-     this.tableAgregarActividad.apellidoFuncAsig = apellidofuncionarioAsignado;
-     this.tableAgregarActividad.idFuncAsig = idFuncionarioModal;
+     this.tableAgregarActividad.codOficioInt = codOficioIntIn;
+     this.tableAgregarActividad.codOficioRef = codOficioRefIn;
+     this.tableAgregarActividad.idDeptoFunc = idDeptoIn;
+     this.tableAgregarActividad.nombreFuncAsig = nombre1funcionarioAsignadoIn;
+     this.tableAgregarActividad.nombreFuncAsig = nombre2funcionarioAsignadoIn;
+     this.tableAgregarActividad.apellidoFuncAsig = apellido1funcionarioAsignadoIn;
+     this.tableAgregarActividad.apellidoFuncAsig = apellido2funcionarioAsignadoIn;
+     this.tableAgregarActividad.idFuncAsig = idFuncionarioIn;
     //  this.funcionariosListDir( idDepto );
 
    } // FIN : FND-00001.3
 
-
-   /****************************************************
-   * Funcion: FND-00001.4
-   * Fecha: 14-09-2017
-   * Descripcion: Funcion busca los Oficios desde la caja
-   * de texto arriba de la Caja
-   * Objetivo: Obtener los oficios de la BD
-   *****************************************************/
-   buscarOficio( codOficio:string ){
-    //console.log( codOficio );
-    //  this.codOficioModal = codOficio;
-    //  this.tableAgregarActividadCodOficio = codOficio;
-  } // FIN : FND-00001.4
 
 
   /****************************************************
@@ -376,20 +392,87 @@ export class IngresoActividadComponent implements OnInit{
   * Descripcion: Funcion para Asignar el Oficio al Fun-
   * cionario seleccionado
   * Objetivo: Asignar el Oficio al Funcionario
+  * Metodo API: ( seguimiento/asignar-oficio )
+  * Params: Codigo Oficio Interno, Externo (Referencia)
+  *         Id Funcionario, Nombre y Apellido Funcionario
   *****************************************************/
-  asignarOficioFuncionario( codOficioIn:string, idFuncionarioIn:number ){
-   // Confirmamos que el Usuario acepte el Cambio
-   let confirma = confirm('Estas seguro de Asignar este Oficio a este Funcionario ?');
+  asignarOficioFuncionario( codOficioInternoIn:string, codOficioReferenciaIn:string, idFuncionarioAsignIn:number,
+                          nombre1FuncionarioAsign:string, apellido1FuncionarioAsign:string,
+                          nombre2FuncionarioAsign:string, apellido2FuncionarioAsign:string){
+   // Recolectamos los Parametros de la Pagina que envia la Funcion
+   // 1 ) Preguntamos por si esta escogiendo el Mismo Funionario
+   if( this.idFuncModal == idFuncionarioAsignIn ){
+     alert(nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', ya tiene este Oficio asignado.');
+     return;
+   }
+   // 2 ) Si la Condicion retorna verdadero, Obtenmos los valores de la Funcion
+   this.asignarOficios.codOficioInterno  = codOficioInternoIn;
+   this.asignarOficios.codOficioExterno  = codOficioReferenciaIn;
+   this.asignarOficios.idFuncionarioAsigmado  = idFuncionarioAsignIn;
+   this.asignarOficios.nombre1FuncionarioAsigmado  = nombre1FuncionarioAsign;
+   this.asignarOficios.nombre2FuncionarioAsigmado  = nombre2FuncionarioAsign;
+   this.asignarOficios.apellido1FuncionarioAsigmado  = apellido1FuncionarioAsign;
+   this.asignarOficios.apellido2FuncionarioAsigmado  = apellido2FuncionarioAsign;
+
+   // 3 ) Confirmamos que el Usuario acepte el Cambio
+   let confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ' ?');
    if( confirma == true){
-      alert( 'Ejecucion de Funcion: ' + codOficioIn + ' idFuncionarioIn ' + idFuncionarioIn);
+   // 4 ) Ejecutamos el llamado al Metodo de la API ( /seguimiento/asignar-oficio )
+      let token1 = this._asignaOficio.getToken();
+      this.loading_table = 'show';
+      this._asignaOficio.asignarOficio( token1, this.asignarOficios ).subscribe(
+        response => {
+            // Obtenemos el Status de la Peticion
+            this.status = response.status;
+            this.mensajes = response.msg;
+
+            // Condicionamos la Respuesta
+            if(this.status != "success"){
+                this.status = "error";
+                this.mensajes = response.msg;
+                if(this.loading_table = 'show'){
+                  this.loading_table = 'hidden';
+                }
+
+                //alert(this.mensajes);
+            }else{
+              //this.resetForm();
+              this.loading_table = 'hidden';
+
+              // Asignamos los Nuevo Valores sin salir del PopUp Modal
+              this.codOficioIntModal = codOficioInternoIn;
+              this.codOficioRefModal = codOficioReferenciaIn;
+              // this.idDeptoFuncionalModal = idFuncionarioAsignIn;
+              this.nombre1FuncModal = nombre1FuncionarioAsign;
+              this.nombre2FuncModal = nombre2FuncionarioAsign;
+              this.apellido1FuncModal = apellido1FuncionarioAsign;
+              this.apellido2FuncModal = apellido2FuncionarioAsign;
+              this.idFuncModal = idFuncionarioAsignIn;
+
+              this.ngOnInit();
+              // this.alertShow();
+            }
+        }, error => {
+            //Regisra cualquier Error de la Llamada a la API
+            this.errorMessage = <any>error;
+
+            //Evaluar el error
+            if(this.errorMessage != null){
+              console.log(this.errorMessage);
+              this.mensajes = this.errorMessage;
+              alert("Error en la Petición !!" + this.errorMessage);
+
+              if(this.loading_table = 'show'){
+                this.loading_table = 'hidden';
+              }
+
+            }
+        });// FIN de Llamado Ajax | Peticion a la API
    }else{
      alert( 'No has Aceptado el Cambio ' );
      this.checkWork = 0;
    }
 
-
-   //  this.codOficioModal = codOficio;
-   //  this.tableAgregarActividadCodOficio = codOficio;
  } // FIN : FND-00001.5
 
 

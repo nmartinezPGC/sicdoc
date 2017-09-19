@@ -31,24 +31,7 @@ class JwtAuth {
                         "passwordUsuario" => $passwod
                     )                
                 );
-        
-        
-        // Obtenemos el tipo de Usuario de la BD
-        // Query para Obtener el Departamento al que corresponde de la Tabla: TblTipoUsuario
-        $tipo_user = $this->manager->getRepository("BackendBundle:TblTipoUsuario")->findOneBy(
-                array(
-                    "idTipoUsuario" => $user
-                ));
-        
-        
-        
-        // Query para Obtener el Departamento al que corresponde de la Tabla: TblDepartamentosFuncionales
-        $depto_user = $this->manager->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
-                array(
-                    "idDeptoFuncional" => $user
-                ));
-        
-        
+                
         //Variable de Registro y la validacion
         $signup = false;
         if (is_object($user)) {
@@ -56,6 +39,19 @@ class JwtAuth {
         }
         //Evalua el valor de la variable $signup
         if ($signup == true ) {
+            // Obtenemos el tipo de Usuario de la BD
+            // Query para Obtener el Departamento al que corresponde de la Tabla: TblTipoUsuario
+            $tipo_user = $this->manager->getRepository("BackendBundle:TblTipoUsuario")->findOneBy(
+                array(
+                    "idTipoUsuario" => $user->getIdTipoUsuario()
+                ));        
+        
+            // Query para Obtener el Departamento al que corresponde de la Tabla: TblDepartamentosFuncionales
+            $depto_user = $this->manager->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                array(
+                    "idDeptoFuncional" => $user->getIdDeptoFuncional()
+                ));
+            
             //Generamos el Token
             $token = array(           
                 "sub" => $user->getIdUsuario(),
@@ -65,8 +61,8 @@ class JwtAuth {
                 "email" => $user->getEmailUsuario(),
                 "nombre" => $user->getNombre1Usuario(),
                 "apellido" => $user->getApellido1Usuario(),
-                "idDeptoFuncional" => $user->getIdDeptoFuncional(),
-                "idTipoUser" => $tipo_user,
+                "idDeptoFuncional" => $depto_user->getIdDeptoFuncional(),
+                "idTipoUser" => $tipo_user->getIdTipoUsuario(),
                 "iat" => time(),
                 "exp" => time() + (7 * 24 * 60 * 60)
                 //"data" => $helpers->parserJson($user)
@@ -84,7 +80,7 @@ class JwtAuth {
             }            
             //return array("status" => "success", "data" => "Login success!!");
         } else {
-            return array("status" => "error", "data" => "Login failed, try again !!");
+            return array("status" => "error", "data" => "Usuario o Contraseña invalidas, revisa los datos otra ves!!");
         }
     }//FIN | signUp
         //

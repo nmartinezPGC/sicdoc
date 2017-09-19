@@ -21,10 +21,13 @@ export class Usuarios{
       public idEstado:string,
       public idTipoFuncionario:number,
       public idDeptoFuncional:number,
+      public idDireccionSreci:number,
       public idTipoUsuario:number,
 
       //Variables de Validacion
       public passwordConfirmation:string
+
+      // Variables para la Direccion
 
 
     ){}

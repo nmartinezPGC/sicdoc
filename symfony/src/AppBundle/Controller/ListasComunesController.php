@@ -864,7 +864,7 @@ class ListasComunesController extends Controller {
             // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
             $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
                     array(
-                        "idDeptoFuncional" => $tipo_funcionario
+                        "idDeptoFuncional" => $tipo_funcionario                        
                     ));
 
             // Condicion de la Busqueda
