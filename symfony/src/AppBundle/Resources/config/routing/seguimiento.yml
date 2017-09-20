@@ -1,7 +1,13 @@
 ## YAML Template.
 ---
-## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
+## Redireccionamiento de las Ruta por Defecto | Modulo Seguimiento
 seguimiento_asignarOficio:
     path: /asignar-oficio
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:asignarOficio" }
+    methods: POST
+
+## Transformacion de la Fechas TimeStamp | Modulo Seguimiento
+seguimiento_convertirFechasTimeStamp:
+    path: /convertir-fechas-timestamp
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:convertirFechasTimeStamp" }
     methods: POST

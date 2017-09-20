@@ -57,7 +57,12 @@
         </tfoot>
         <tbody >
             <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search ">
-              <td > {{ item.idEstado.descripcionEstado }} </td>
+              <td [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3, 'text-danger' : item.idEstado.idEstado == 6,
+                                'text-primary' : item.idEstado.idEstado == 7, 'text-success' : item.idEstado.idEstado == 5 }" >
+                <!-- <p class="alert alert-primary"> -->
+                  {{ item.idEstado.descripcionEstado }}
+                <!-- </p> -->
+              </td>
               <td> {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
               <td> {{ item.idInstitucion.descInstitucion }} </td>
@@ -69,8 +74,8 @@
                       item.idDeptoFuncional.idDeptoFuncional,
                       item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
                       item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
-                      item.idFuncionarioAsignado.idFuncionario)"
-                    data-toggle="modal" data-target="#t_and_c_m"  >
+                      item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado )"
+                    data-toggle="modal" data-target="#t_and_c_m" >
                     <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Asignar Oficio" >assignment_ind</i>
                   </a> </td>
             </tr>
@@ -107,7 +112,7 @@
   </ul>
 
   <!-- Modal -->
-  <div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  <div *ngIf="idEstadoModal != 5 " class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
         data-backdrop="static" data-keyboard="false">
   	<div class="modal-dialog modal-lg">
   		<div class="modal-content">
@@ -153,7 +158,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of JsonOutgetlistaFuncionariosDisponibles | searchfilter:'nombre1Funcionario':search2 " >
-                  <td> {{ item.nombre1Funcionario }} {{ item.nombre2Funcionario }} </td>
+                  <td [ngClass]="{ 'text-warning': item.nombre1Funcionario == nombre1FuncModal }" >
+                       {{ item.nombre1Funcionario }} {{ item.nombre2Funcionario }}
+                  </td>
                   <td> {{ item.apellido1Funcionario }} {{ item.apellido2Funcionario }} </td>
                   <td> {{ item.idTipoFuncionario.descTipoFuncionario }} </td>
                   <td> {{ item.emailFuncionario }} </td>
@@ -162,7 +169,9 @@
                       (click)="asignarOficioFuncionario( codOficioIntModal, codOficioRefModal, item.idFuncionario,
                             item.nombre1Funcionario, item.apellido1Funcionario,
                             item.nombre2Funcionario, item.apellido2Funcionario )" >
-                    <span class="badge badge-pill badge-primary"  data-toggle="tooltip" data-placement="top" title="Asigna Oficio al Funcionario seleccionado" >Asignar</span></a>
+                    <span [ngClass]="{ 'badge badge-pill badge-warning': item.nombre1Funcionario == nombre1FuncModal,
+                                        'badge badge-pill badge-primary': item.nombre1Funcionario != nombre1FuncModal}"
+                          data-toggle="tooltip" data-placement="top" title="Asigna Oficio al Funcionario seleccionado" > {{ descEstadoModal }} </span></a>
                   </td>
                 </tr>
 

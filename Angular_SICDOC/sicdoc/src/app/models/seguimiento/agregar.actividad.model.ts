@@ -17,7 +17,9 @@ export class AgregarActividad{
       public buscadorOficio:string,
 
       //Datos de la Tabla
-      public idDeptoFuncional:number
+      public idDeptoFuncional:number,
+      public idEstadoAsigna:number
+
 
     ){}
 

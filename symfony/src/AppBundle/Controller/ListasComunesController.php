@@ -785,7 +785,7 @@ class ListasComunesController extends Controller {
                         ->setParameter("search", "%$search%");
             }else{
                 $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
-                    . "WHERE v.idDeptoFuncional = '". $idDeptoFuncional ."' "
+                    . "WHERE v.idDeptoFuncional = '". $idDeptoFuncional ."' AND v.idEstado IN (7) "
                     . "ORDER BY v.idCorrespondenciaEnc DESC";
 
                 $query = $em->createQuery($dql);

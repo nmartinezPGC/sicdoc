@@ -67,9 +67,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                 $id_funcionario_asignado   = ($params->idFuncionarioAsigmado != null) ? $params->idFuncionarioAsigmado : null ;
                 $nombre1_funcionario_asignado   = ($params->nombre1FuncionarioAsigmado != null) ? $params->nombre1FuncionarioAsigmado : null ;
                 $nombre2_funcionario_asignado   = ($params->nombre2FuncionarioAsigmado != null) ? $params->nombre2FuncionarioAsigmado : null ;
-                $apellido1_funcionario_asignado   = ($params->apellido1FuncionarioAsigmado != null) ? $params->apellido1FuncionarioAsigmado : null ;
-                $apellido2_funcionario_asignado   = ($params->apellido2FuncionarioAsigmado != null) ? $params->apellido2FuncionarioAsigmado : null ;
+                $apellido1_funcionario_asignado = ($params->apellido1FuncionarioAsigmado != null) ? $params->apellido1FuncionarioAsigmado : null ;
+                $apellido2_funcionario_asignado = ($params->apellido2FuncionarioAsigmado != null) ? $params->apellido2FuncionarioAsigmado : null ;
                 
+                $estado_asignado = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
+                                
                 $fecha_modifcacion        = new \DateTime('now');
                 
                 //Evaluamos que los Campos del Json  no sean Null ni 0. ********
@@ -90,6 +92,17 @@ class SeguimientoCorrespondenciaController extends Controller {
                         ));
                     
                     $correspondenciaAsigna->setFechaModificacion( $fecha_modifcacion );
+                    
+                    
+                    // Verificacion del Estado de la Correspondenia ************
+                    $estadoAsigna = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                        array(
+                          "idEstado" => $estado_asignado
+                        ));
+                    
+                    $correspondenciaAsigna->setIdestado( $estadoAsigna );
+                    
+                    //$correspondenciaAsigna->setIdEstado( 3 );
                     
                     // ---------------------------------------------------------
                     //Instanciamos de la Clase TblFuncionarios
@@ -152,16 +165,20 @@ class SeguimientoCorrespondenciaController extends Controller {
                         // FIN de Actualizacion a Tabla Detalle de Comunicacion
                         
                         
-                        // Envio de Correo despues de la Granacion de Datos
+                        // Llamamo a la Funcion Interna para que nos convierta *
+                        // La Fecha a Calendario Gregoriano ********************
+                        $fecha_maxima_entrega_time_stamp = json_encode($correspondenciaAsigna->getFechaMaxEntrega()->getTimestamp(), true ); 
+                        // Ejecucion de la Funcion *****************************
+                        $fecha_maxima_entrega_convert = $this->convertirFechasTimeStampAction( $fecha_maxima_entrega_time_stamp );
+                                                
+                        $fecha_creacion_time_stamp  = json_encode( $correspondenciaAsigna->getFechaIngreso()->getTimestamp(), true );
+                        $fecha_creacion_convert  = $this->convertirFechasTimeStampAction( $fecha_creacion_time_stamp );
+                                                                       
+                        // Fin de la Funcion ( convertirFechasTimeStampAction )* 
                         // *****************************************************
-                        //Instanciamos de la Clase TblFuncionarios, para Obtener
-                        // los Datos de envio de Mail **************************
-                        /*$oficio_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
-                            array(
-                                "idFuncionario" => $id_funcionario_asignado                
-                            ));*/
                         
-                        $fecha_maxima_entrega = $correspondenciaAsigna->getFechaMaxEntrega();
+                        // Parametros del Oficio nesearios para enviar por *****
+                        // Mail ************************************************
                         $tema_correspondencia = $correspondenciaAsigna->getTemaComunicacion();
                         $desc_correspondencia = $correspondenciaAsigna->getDescCorrespondenciaEnc();
                         
@@ -169,6 +186,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                         $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                         $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
+                        
+                        // Fin de Envio de Parametros para el Mail *************
                                                 
                             //Creamos la instancia con la configuración 
                             $transport = \Swift_SmtpTransport::newInstance()
@@ -196,7 +215,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => "2017-09-19" )
+                                               'fechaIngresoOfi' => strval($fecha_creacion_convert), 
+                                               'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
                                     ), 'text/html' );                           
                            
                             /*// validamos que se adjunta pdf
@@ -217,8 +237,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                             "status" => "success", 
                             "code"   => 200, 
                             "msg"    => "El Oficio: " . $codgio_oficio_interno . " se ha Asignado al Funcinario: " . 
-                                        $nombre1_funcionario_asignado . ", " .  $apellido1_funcionario_asignado,
-                            "data"   => "Datos"
+                                        $nombre1_funcionario_asignado . ", " .  $apellido1_funcionario_asignado . ""
+                                      . " con fecha de entrga el : " . $fecha_maxima_entrega_convert ,
+                            "data"   => $correspondenciaAsigna
                         );                        
                     } else{
                         $data = array(
@@ -257,6 +278,34 @@ class SeguimientoCorrespondenciaController extends Controller {
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
     } // FIN | FND00001
+    
+    
+    
+    /**
+     * Creacion del Controlador: Transforma Fechas Time Stamp
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00002
+     */
+    public function convertirFechasTimeStampAction( $fecha_time_stamp )
+    {
+        // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
+        $fecha_time_stamp_In = $fecha_time_stamp;
+        
+        // Decodificamos el Json con su Campo de Fechas | es nesesario que se **
+        // haga la Consulta a la BD por medio de Doctrine( getFechaConsulta())**
+        //$fecha_transformar = json_encode($correspondenciaAsigna->getFechaMaxEntrega()->getTimestamp(), true );
+        
+        // Itaciamosla fecha y le Seteamos el valor TimeStamp del campo de la **
+        // Consulta del Doctrine (getFechaConsulta()) **************************
+        $fecha_set = new \DateTime();
+        $fecha_set->setTimestamp( $fecha_time_stamp_In );
+        
+        //Salida del Formato a la fecha Convertida *****************************
+        $fecha_salida =  $fecha_set->format('Y-m-d');
+        
+        return $fecha_salida;
+    } // FIN | FND00002
     
     
 } // FIN Clase

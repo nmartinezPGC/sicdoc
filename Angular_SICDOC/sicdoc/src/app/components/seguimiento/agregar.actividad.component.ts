@@ -84,6 +84,8 @@ export class IngresoActividadComponent implements OnInit{
   private apellido1FuncModal:string;
   private apellido2FuncModal:string;
   private idFuncModal:number;
+  private idEstadoModal:number;
+  private descEstadoModal:string = "Asignar";
 
   public paramsTable;
 
@@ -99,6 +101,14 @@ export class IngresoActividadComponent implements OnInit{
   public loading  = 'show';
   public loading_table  = 'hide';
   public loading_tr  = 'hide';
+
+  // Parametros para aplicar a los Estilos
+  public colorestado:number = 1;
+  public itemEstado:number = 0;
+  public strEstadoOficio:string = "text-primary";
+  // public strEstadoAsignado:string = "badge badge-pill badge-warning";
+  // public strEstadoFinzalizado:string = "badge badge-pill badge-warning";
+  // public strEstadoVencido:string = "badge badge-pill badge-warning";
 
 
 
@@ -150,7 +160,7 @@ export class IngresoActividadComponent implements OnInit{
     //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null);
+    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null, 3);
 
     // Lista de la tabla de Funcionarios
     this.deptoFuncional();
@@ -360,8 +370,18 @@ export class IngresoActividadComponent implements OnInit{
    datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
               nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
               nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
-              idFuncionarioIn:number ){
-    //  alert(codOficio);
+              idFuncionarioIn:number, idEstadoAsign:number  ){
+    // Previa validacion de los Datos por el Estado del Oficio
+    this.idEstadoModal = idEstadoAsign;
+    if( idEstadoAsign == 5 ){ // Oficio esta Finalizado
+      alert('El Oficio no puede ser Asignado; ya que esta en un estado Finalizado.');
+      this.descEstadoModal = "Finalizado";
+      return;
+    }else if( idEstadoAsign == 3 ){
+        this.descEstadoModal = "Asignado";
+    }
+
+    // Seteo de las varibles de la Funcion
      this.codOficioIntModal = codOficioIntIn;
      this.codOficioRefModal = codOficioRefIn;
      this.idDeptoFuncionalModal = idDeptoIn;
@@ -370,6 +390,7 @@ export class IngresoActividadComponent implements OnInit{
      this.apellido1FuncModal = apellido1funcionarioAsignadoIn;
      this.apellido2FuncModal = apellido2funcionarioAsignadoIn;
      this.idFuncModal = idFuncionarioIn;
+
 
     // Asigna los Valores al Json de Modal
      this.tableAgregarActividad.codOficioInt = codOficioIntIn;
@@ -398,11 +419,11 @@ export class IngresoActividadComponent implements OnInit{
   *****************************************************/
   asignarOficioFuncionario( codOficioInternoIn:string, codOficioReferenciaIn:string, idFuncionarioAsignIn:number,
                           nombre1FuncionarioAsign:string, apellido1FuncionarioAsign:string,
-                          nombre2FuncionarioAsign:string, apellido2FuncionarioAsign:string){
+                          nombre2FuncionarioAsign:string, apellido2FuncionarioAsign:string  ){
    // Recolectamos los Parametros de la Pagina que envia la Funcion
    // 1 ) Preguntamos por si esta escogiendo el Mismo Funionario
    if( this.idFuncModal == idFuncionarioAsignIn ){
-     alert(nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', ya tiene este Oficio asignado.');
+     alert('No puedes asignar este oficio a ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', porque ya lo tiene asignado.');
      return;
    }
    // 2 ) Si la Condicion retorna verdadero, Obtenmos los valores de la Funcion
@@ -438,7 +459,7 @@ export class IngresoActividadComponent implements OnInit{
             }else{
               //this.resetForm();
               this.loading_table = 'hidden';
-
+              this.strEstadoOficio = "text-warning";
               // Asignamos los Nuevo Valores sin salir del PopUp Modal
               this.codOficioIntModal = codOficioInternoIn;
               this.codOficioRefModal = codOficioReferenciaIn;
@@ -450,7 +471,7 @@ export class IngresoActividadComponent implements OnInit{
               this.idFuncModal = idFuncionarioAsignIn;
 
               this.ngOnInit();
-              // this.alertShow();
+              alert( response.msg );
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -469,7 +490,7 @@ export class IngresoActividadComponent implements OnInit{
             }
         });// FIN de Llamado Ajax | Peticion a la API
    }else{
-     alert( 'No has Aceptado el Cambio ' );
+    //  alert( 'No has Aceptado el Cambio ' );
      this.checkWork = 0;
    }
 
