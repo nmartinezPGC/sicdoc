@@ -15,7 +15,6 @@
     <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codReferenciaSreci" checked="checked" >No. Oficio Ingresado
     </h4>
       <input class="form-control" type="text" name="search"  [(ngModel)]="search" placeholder="Buscar" >
-
     </div>
   </div>
 
@@ -157,10 +156,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of JsonOutgetlistaFuncionariosDisponibles | searchfilter:'nombre1Funcionario':search2 " >
-                  <td [ngClass]="{ 'text-warning': item.nombre1Funcionario == nombre1FuncModal }" >
-                       {{ item.nombre1Funcionario }} {{ item.nombre2Funcionario }}
-                  </td>
+                <tr *ngFor="let item of JsonOutgetlistaFuncionariosDisponibles | searchfilter:'nombre1Funcionario':search2 "
+                      [ngClass]="{ 'text-warning': item.nombre1Funcionario == nombre1FuncModal }" >
+                  <td> {{ item.nombre1Funcionario }} {{ item.nombre2Funcionario }} </td>
                   <td> {{ item.apellido1Funcionario }} {{ item.apellido2Funcionario }} </td>
                   <td> {{ item.idTipoFuncionario.descTipoFuncionario }} </td>
                   <td> {{ item.emailFuncionario }} </td>
