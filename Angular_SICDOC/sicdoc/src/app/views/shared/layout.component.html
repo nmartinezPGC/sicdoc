@@ -54,8 +54,9 @@
           Seguimiento
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Asignar Actividad</a>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Finalizar Actividad</a>
+          <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Actividad</a>
+          <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a>
+          <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Finalizar Actividad</a>
           <a class="dropdown-item"  routerLinkActive="active">Agregar Documentos / Actividad</a>
         </div>
       </li>
@@ -76,12 +77,12 @@
          </a>
          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
            <a class="dropdown-item" [routerLink]="['/index']">
-               <img src="../assets/img/file.svg" alt="Editar Perfil">Editar Perfil</a>
+               <i class="material-icons">border_color</i> Editar Perfil</a>
            <a class="dropdown-item" [routerLink]="['/index']">
-             <img src="../assets/img/file.svg" alt="Cambiar Contraseña"> Cambiar Contraseña</a>
+             <i class="material-icons">security</i> Cambiar Contraseña</a>
            <hr>
            <a class="dropdown-item" [routerLink]="['/login/1']">
-             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Cerrar sesion</a><span class="glyphicons glyphicons-leaf"></span>
+             <i class="material-icons">exit_to_app</i> Cerrar sesion</a>
          </div>
        </li>
    </ul>

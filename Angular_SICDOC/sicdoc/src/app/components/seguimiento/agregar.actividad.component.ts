@@ -130,7 +130,7 @@ export class IngresoActividadComponent implements OnInit{
 
   // INI | Metodo OnInit
   ngOnInit(){
-    // Iniciamos los Parametros de Instituciones
+    // Iniciamos los Parametros de Asignar Actividad
     this.tableAgregarActividad = {
       "codOficioInt":"",
       "codOficioRef":"",
@@ -159,7 +159,7 @@ export class IngresoActividadComponent implements OnInit{
     // Inicializamos las Listas del Formulario
     //this.getlistaAsinarOficios();
 
-    // Definicion de la Insercion de los Datos de Nuevo Usuario
+    // Definicion de la Insercion de los Datos de Oficio Asignado
     this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null, 3);
 
     // Lista de la tabla de Funcionarios
@@ -364,8 +364,9 @@ export class IngresoActividadComponent implements OnInit{
    /****************************************************
    * Funcion: FND-00001.3
    * Fecha: 13-09-2017
-   * Descripcion: Funcion que convierte las fechas
-   * Objetivo: Obtener las fechas para la tabla
+   * Descripcion: Funcion que Obtiene los Datos del Oficio
+   * Utilizando parametros del Json de la tabla
+   * Objetivo: Obtener los Datos del Oficio seleccionado
    *****************************************************/
    datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
               nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,

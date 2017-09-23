@@ -23,12 +23,14 @@ import { UsuariosService }  from "./services/usuarios/usuarios.service";
 import { LoginService } from './services/login/login.service';
 import { IngresoComunicacionService } from './services/comunicaciones/ingreso.service';
 import { AgregarActividadService } from './services/seguimiento/agregar.actividad.service';
+import { FinalizarActividadService } from './services/seguimiento/finalizar.actividad.service';
 
 //Compoenentes *****************************************************************
 import { AppComponent } from './app.component';
 import { DefaultComponent } from "./components/login/default.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/login/register.component";
+import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
 
 // Area de Ingreso de Oficios
 import { IngresoComunicacionComponent } from "./components/comunicaciones/ingreso.component";
@@ -39,6 +41,7 @@ import { IngresoActividadComponent } from "./components/seguimiento/agregar.acti
 
 import { NavbarComponent } from "./components/shared/navbar.component"; //NavBar de Tareas del Proyecto
 import { HeaderComponent } from "./components/shared/header.component"; //Header de Tareas del Proyecto
+
 
 @NgModule({
   declarations: [
@@ -52,7 +55,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     NavbarComponent,
     HeaderComponent,
     GenerateDatePipe,
-    SearchFilterPipe
+    SearchFilterPipe,
+    FinalizarActividadComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     LoginService,
     IngresoComunicacionService,
     IngresoActividadComponent,
-    AgregarActividadService
+    AgregarActividadService,
+    FinalizarActividadService
   ],
   bootstrap: [AppComponent]
 })

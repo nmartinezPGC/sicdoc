@@ -312,4 +312,33 @@ class TblFuncionarios
     {
         return $this->idTipoFuncionario;
     }
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblFuncionarios
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
 }

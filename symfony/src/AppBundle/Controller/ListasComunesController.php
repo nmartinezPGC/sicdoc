@@ -544,7 +544,7 @@ class ListasComunesController extends Controller {
     
      /**
      * @Route("/com-ingresadas-list", name="com-ingresadas-list")
-     * Creacion del Controlador: Comunicaciones
+     * Creacion del Controlador: Total de Oficios Ingresados
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00011
@@ -593,7 +593,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/com-pendientes-list", name="com-pendientes-list")
-     * Creacion del Controlador: Comunicaciones
+     * Creacion del Controlador: Total de Oficios Pendientes
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00012
@@ -642,7 +642,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/com-finalizados-list", name="com-finalizados-list")
-     * Creacion del Controlador: Comunicaciones
+     * Creacion del Controlador: Total de Oficios Finalizados
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00013
@@ -691,7 +691,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/asignar-oficios-list", name="asignar-oficios-list")
-     * Creacion del Controlador: Comunicaciones
+     * Creacion del Controlador: Listado de Todos Ofcios a Asignar, All
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00014
@@ -727,7 +727,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/asignar-oficios-page-list", name="asignar-oficios-page-list")
-     * Creacion del Controlador: Comunicaciones
+     * Creacion del Controlador: Listado de Todos Ofcios a Asignar, por Page
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00015
@@ -834,7 +834,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/funcionarios-depto-list", name="funcionarios-depto-list")
-     * Creacion del Controlador: Funcionario a Asignar
+     * Creacion del Controlador: Funcionario a Asignar Oficio
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00016
@@ -853,13 +853,7 @@ class ListasComunesController extends Controller {
         if ($json != null) {
             //Variables que vienen del Json ************************************
             //Recogemos el ID del Depto. Funcional *****************************
-            $tipo_funcionario = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null;
-            
-            // Query para Obtener todos Deptos. Funcionales de la Tabla: TblDepartamentosFuncionales
-            /*$depto_func = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
-                    array(
-                        "idDeptoFuncional" => $tipo_funcionario
-                    )); */
+            $tipo_funcionario = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null;                       
             
             // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
             $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
@@ -896,7 +890,7 @@ class ListasComunesController extends Controller {
     
     /**
      * @Route("/funcionarios-list", name="funcionarios-list")
-     * Creacion del Controlador: Funcionarios
+     * Creacion del Controlador: Funcionarios Listado Completo
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00017
@@ -947,6 +941,83 @@ class ListasComunesController extends Controller {
                
         return $helpers->parserJson($data);
     }//FIN | FND00017
+    
+    
+    /**
+     * @Route("/finalizar-oficios-list", name="finalizar-oficios-list")
+     * Creacion del Controlador: Finalizar Oficio asignado
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Fecha: 2017-09-21
+     * Objetivo: Mostrar el listado de los Oficios que fueron asignados
+     * y trabajar con ellos, luego Finzalizar la Actividad
+     * @param number $idDeptoFunc Departaento Funcional que pertenece el Func.
+     * @param number $idTipoFuncionario Tipo Funcionario que accede al sistema
+     * @param number $idFuncionario Funcionario que accede al sistema
+     * Funcion: FND00018
+     */
+    public function finalizarOficiosListAction(Request $request )
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        //Recogemos el Hash y la Autorizacion del Mismo        
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            $identity = $helpers->authCheck($hash, true);
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+            
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID Funcionario , Depto Func *************************
+            $depto_funcional = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null;
+            //$tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            $id_funcionario = $identity->sub;
+            
+            
+            // Query para Obtener todos los Oficios de ese Funcionario de la ***
+            // Tabla: TblCorrespondenciaEnc ************************************
+            $usuario_asignado = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+                    array(
+                        "idDeptoFuncional"      => $depto_funcional,                        
+                        "idFuncionarioAsignado" => $id_funcionario,
+                        "idEstado"              => 3
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $usuario_asignado ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $usuario_asignado
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos de Oficios Asignados en la Tabla de Correspondencia para usted !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00018
+    
     
     
 }

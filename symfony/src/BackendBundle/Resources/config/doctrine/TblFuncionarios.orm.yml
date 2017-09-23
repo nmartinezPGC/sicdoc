@@ -2,12 +2,15 @@ BackendBundle\Entity\TblFuncionarios:
     type: entity
     table: tbl_funcionarios
     indexes:
-        fki_tipo_func:
+        fki_user_funci:
             columns:
-                - id_tipo_funcionario
+                - id_usuario
         fki_depto_func:
             columns:
                 - id_depto_funcional
+        fki_tipo_func:
+            columns:
+                - id_tipo_funcionario
     id:
         idFuncionario:
             type: integer
@@ -93,5 +96,15 @@ BackendBundle\Entity\TblFuncionarios:
             joinColumns:
                 id_tipo_funcionario:
                     referencedColumnName: id_tipo_funcionario
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

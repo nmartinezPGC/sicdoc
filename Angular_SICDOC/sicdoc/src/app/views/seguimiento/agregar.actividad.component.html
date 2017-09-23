@@ -1,11 +1,12 @@
 <div class="container">
+
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+
   <!-- Loader de Carga de los Datos -->
   <div id="loader-2" *ngIf="loading == 'show'">
     <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
   </div>
-
-  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
-  <hr class="colorgraph">
   <!-- Fila para el Area de Busqueda de los Oficios -->
   <div class="row">
     <div class="col-md-1-12">
@@ -80,11 +81,7 @@
             </tr>
         </tbody>
     </table>
-
-
     <!-- <table id="example" class="display" width="100%"></table> -->
-
-
   </div>
 
    <div class="clearfix"></div>

@@ -122,3 +122,9 @@ listascomunes_funcionariosAsignadosList:
     path: /funcionarios-depto-list
     defaults: { _controller: "AppBundle:ListasComunes:funcionariosAsignadosList"}
     methods: POST
+    
+ ## Listado de Los Oficios Asignados por Usuario (Funcionario) | Modulo Seguimiento
+seguimiento_finalizarOficiosList:
+    path: /finalizar-oficios-list
+    defaults: { _controller: "AppBundle:ListasComunes:finalizarOficiosList" }
+    methods: POST

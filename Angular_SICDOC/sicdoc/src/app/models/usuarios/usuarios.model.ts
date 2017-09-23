@@ -25,10 +25,11 @@ export class Usuarios{
       public idTipoUsuario:number,
 
       //Variables de Validacion
-      public passwordConfirmation:string
+      public passwordConfirmation:string,
 
-      // Variables para la Direccion
-
+      // Variables Telefonos
+      public celularFuncionario:number,
+      public telefonoFuncionario:number,
 
     ){}
 

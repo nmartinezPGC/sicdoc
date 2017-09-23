@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
   public identity;
   public token;
 
+  // Variables para Perfiles
+  public idTipoUsuario;
+
   //Url de Respuesta
   public returnUrl: string;
 
@@ -57,6 +60,7 @@ export class LoginComponent implements OnInit {
         // Seteamos las variables a null
         this.identity = null;
         this.token = null;
+        this.idTipoUsuario = null;
 
         //Se ejecuta la Funcion de Inicio del Componente de
         // AppComponent, para actualizar el Menu
@@ -78,6 +82,9 @@ export class LoginComponent implements OnInit {
       //Local Storage de la API
       let identity = this._loginService.getIdentity();
       let token = this._loginService.getToken();
+
+      // this.idTipoUsuario = identity.idTipoUser;
+      // alert( this.idTipoUsuario );
 
       // Evaluamos que no tengamos variables de LocalStorage, asi si existe una
       // se redirige a la Index

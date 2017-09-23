@@ -2,21 +2,24 @@ BackendBundle\Entity\TblCorrespondenciaDet:
     type: entity
     table: tbl_correspondencia_det
     indexes:
-        fki_fk-det_estado:
-            columns:
-                - id_estado
-        fki_func_det_asignado:
-            columns:
-                - id_funcionario_asignado
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
-        fki_det_user:
+        cod_oficio_respuesta:
             columns:
-                - id_usuario
+                - cod_oficio_respuesta
+        fki_fk-det_estado:
+            columns:
+                - id_estado
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
+        fki_det_user:
+            columns:
+                - id_usuario
+        fki_func_det_asignado:
+            columns:
+                - id_funcionario_asignado
     uniqueConstraints:
         tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:
@@ -68,6 +71,13 @@ BackendBundle\Entity\TblCorrespondenciaDet:
             options:
                 fixed: false
             column: cod_referencia_sreci
+        codOficioRespuesta:
+            type: string
+            nullable: true
+            length: 40
+            options:
+                fixed: false
+            column: cod_oficio_respuesta
     manyToOne:
         idEstado:
             targetEntity: TblEstados

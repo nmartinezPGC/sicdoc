@@ -645,4 +645,33 @@ class TblCorrespondenciaEnc
     {
         return $this->idFuncionarioAsignado;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fechaFinalizacion;
+
+
+    /**
+     * Set fechaFinalizacion
+     *
+     * @param \DateTime $fechaFinalizacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setFechaFinalizacion($fechaFinalizacion)
+    {
+        $this->fechaFinalizacion = $fechaFinalizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinalizacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaFinalizacion()
+    {
+        return $this->fechaFinalizacion;
+    }
 }

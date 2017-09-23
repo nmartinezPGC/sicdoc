@@ -92,6 +92,25 @@ export class ListasComunesService {
   }
 
 
+  /*****************************************************
+  * Funcion: FND-00002.1
+  * Fecha: 21-09-2017
+  * Descripcion: Carga la lista de Parametros con Token
+  * Objetivo: Obtener la lista segun autiriztion del
+  * Token y el servicio invocado
+  * ( listas/ ).
+  ******************************************************/
+  listasComunesTokenListas( lista_comun_token, lista ){
+      let json = JSON.stringify( lista_comun_token );
+
+      let params  = "json=" + json + "&authorization=" + this.getToken();
+      let listaIn = lista;
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/listas/" + listaIn, params, { headers:headers }).map( res => res.json());
+  }
+
+
   /****************************************************
   * Funcion: FND-00003
   * Fecha: 28-07-2017

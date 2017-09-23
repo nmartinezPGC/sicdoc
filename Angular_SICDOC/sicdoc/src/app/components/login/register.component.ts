@@ -94,8 +94,8 @@ export class RegisterComponent implements OnInit{
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "");
-    this.loadScript('../assets/js/register.component.js');
+    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
+    //this.loadScript('../assets/js/register.component.js');
   }
 
 
@@ -112,8 +112,9 @@ export class RegisterComponent implements OnInit{
             // Condicionamos la Respuesta
             if(this.status != "success"){
                 this.status = "error";
+            }else{
+              this.ngOnInit();
             }
-
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
             this.errorMessage = <any>error;

@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/login/register.component';
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
 // Menu de Seguimiento
 import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
+import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
 
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
@@ -20,8 +21,12 @@ export const APP_ROUTES: Routes = [
   { path: 'ingreso-comunicacion', component: IngresoComunicacionComponent },
 
   // Mapeo de Menu de Seguimiento
+  { path: 'asignar-actividad', component: IngresoActividadComponent },
+  { path: 'asignar-actividad/:page', component: IngresoActividadComponent },
   { path: 'agregar-actividad', component: IngresoActividadComponent },
   { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
+  { path: 'finalizar-actividad', component: FinalizarActividadComponent },
+  { path: 'finalizar-actividad/:page', component: IngresoActividadComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];

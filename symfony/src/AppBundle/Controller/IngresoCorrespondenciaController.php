@@ -243,7 +243,8 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
-                        //$correspondenciaDet->setDescCorrespondenciaDet($cod_correspondencia); //Set de Fecha Ingreso
+                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Oficio: " . $cod_correspondencia); //Set de Descripcion Inicial
+                        $correspondenciaDet->setActividadRealizar("Pendiente de Crear Oficio de respuesta"); //Set de Actividad Inicial
                         
                        
                         //Verificacion del Codigo de la Correspondenia *********
@@ -295,43 +296,44 @@ class IngresoCorrespondenciaController extends Controller{
                         // Ingresamos los Datos a la Tabla TblDocumentos *******
                         //Seteo del nuevo documentos de la tabla: TblDocumentos
                         // *****************************************************
-                        $documentosIn = new TblDocumentos();
-                        
-                        $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
-                        $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
-                        
-                        $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
-                        $documentosIn->setStatus("LOAD"); //Set Documento Desc
-                        
-                        //Instanciamos de la Clase TblUsuario
-                        $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
-                            array(
-                               "idUsuario" => $cod_usuario                           
-                            ));                    
-                        $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
-                        
-                        
-                        // Verificacion del Codigo de la Correspondenia  *******
-                        // Detalle  ********************************************
-                        $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
-                            array(
-                                "codCorrespondenciaDet" => $cod_correspondencia_det
-                            ));
-                        $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
-                         
-                        
-                        // Pdf que se Agrega
-                        // validamos que se adjunta pdf
                         if( $pdf_send != null ){
-                            $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                            $documentosIn = new TblDocumentos();
+
+                            $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
+                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
+
+                            $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
+                            $documentosIn->setStatus("LOAD"); //Set Documento Desc
+
+                            //Instanciamos de la Clase TblUsuario
+                            $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                array(
+                                   "idUsuario" => $cod_usuario                           
+                                ));                    
+                            $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
+
+
+                            // Verificacion del Codigo de la Correspondenia  *******
+                            // Detalle  ********************************************
+                            $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                                array(
+                                    "codCorrespondenciaDet" => $cod_correspondencia_det
+                                ));
+                            $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+
+
+                            // Pdf que se Agrega
+                            // validamos que se adjunta pdf
+
+                                $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+
+
+                            // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                            $em->persist($documentosIn); 
+
+                            //Realizar la actualizacion en el storage de la BD
+                            $em->flush();
                         }
-                        
-                        // Relizamos la persistencia de Datos de las Comunicaciones Detalle
-                        $em->persist($documentosIn); 
-                        
-                        //Realizar la actualizacion en el storage de la BD
-                        $em->flush();
-                        
                         // Fin de Comunicacion Detalle *************************
                         
                         // Envio de Correo despues de la Granacion de Datos

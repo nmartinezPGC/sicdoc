@@ -12,6 +12,7 @@ use BackendBundle\Entity\TblUsuarios;
 use BackendBundle\Entity\TblEstados;
 use BackendBundle\Entity\TblTipoUsuario;
 use BackendBundle\Entity\TblTiposFuncionarios;
+use BackendBundle\Entity\TblFuncionarios;
 use BackendBundle\Entity\TblDepartamentosFuncionales;
 
 /**
@@ -65,6 +66,8 @@ class UsuarioController extends Controller{
             $createdAt        = new \DateTime("now");
             $image            = "";
             $password         = (isset($params->passwordUsuairo)) ? $params->passwordUsuairo : null;
+            $celular          = (isset($params->celularFuncionario)) ? $params->celularFuncionario : null;
+            $telefono         = (isset($params->telefonoFuncionario)) ? $params->telefonoFuncionario : null;
             
             //Validamos el Email ************************************************************************************
             $emailConstraint = new Assert\Email();
@@ -74,8 +77,8 @@ class UsuarioController extends Controller{
             //Entitie Manager Definition ****************************************************************************
             $em = $this->getDoctrine()->getManager();
             
-            if ($email != null && count($valid_email) == 0 &&
-                $password != null && $nombre1 != null && $apellido1 != null ){
+            if ($email != null && count($valid_email) == 0 && $cod_usuario != null &&
+                $password != null && $nombre1 != null && $apellido1 != null && $celular != 0 ){
                 //Instanciamos la Entidad TblUsuario *****************************************                
                 $usuario = new TblUsuarios();                
                 //Seteamos los valores de Identificacion ***********************
@@ -120,35 +123,65 @@ class UsuarioController extends Controller{
                 //Seteamos los valores de la Bitacora **************************
                 $usuario->setFechaCreacion($createdAt);                
                 //Verificacion del Codigo y Email en la Tabla: TblUsuarios *****                
-                $isset_user_mail = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
+                $isset_user_mail = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(
                           "emailUsuario" => $email
                         ));
         
                 //Verificacion del Codigo del Usuario **************************
-                $isset_user_cod = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
+                $isset_user_cod = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(
                           "codUsuario" => $cod_usuario
                         ));
                 //Verificamos que el retorno de la Funcion sea = 0 *************                
-                if(count($isset_user_cod) == 0 || count($isset_user_mail) == 0){
-                    $em->persist($usuario);
-                    //$em->persist($estados);
-                    //$em->persist($tipoUsuario);
-                    //$em->persist($tiposFuncionarios);
-                    //$em->persist($deptosFuncionales);                    
+                if(count($isset_user_cod) == 0 && count($isset_user_mail) == 0){
+                    $em->persist($usuario);                                        
                     $em->flush();
+                    
+                    // Termina Tblusuarios *************************************
+                    
+                    
+                    //Instanciamos la Entidad TblUsuario ***********************
+                    // Objetivo: Igualar los usuarios a los Funcionarios *******
+                    $funcionario = new TblFuncionarios();
+                    
+                    //Seteamos los valores de Identificacion *******************
+                    $funcionario->setcodFuncionario($cod_usuario);                
+                    $funcionario->setNombre1Funcionario($nombre1);
+                    $funcionario->setNombre2Funcionario($nombre2);
+                    $funcionario->setApellido1Funcionario($apellido1);
+                    $funcionario->setApellido2Funcionario($apellido2);
+                    $funcionario->setCelularFuncionario($celular);
+                    $funcionario->setTelefonoFuncionario($telefono);
+                    $funcionario->setEmailFuncionario($email);                    
+                    // Tablas relacionales *************************************
+                    $funcionario->setIdTipoFuncionario($tipoFuncionario);
+                    $funcionario->setIdDeptoFuncional($deptoFuncional);
+                    
+                    //Instancia a la Tabla: TblUsuarios ************************                
+                    $id_user = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                        array(
+                            "codUsuario" => $cod_usuario
+                        )) ;
+                    $funcionario->setIdUsuario($id_user);
+                    
+                    $em->persist($funcionario);                                        
+                    $em->flush();
+                    
+                    // Termina TblFuncionarios *********************************                    
+                    
                     //Seteamos el array de Mensajes a enviar *******************
                     $data = array(
                         "status" => "success",                
                         "code" => "200",                
-                        "msg" => "Usuario creado !!"                
+                        "msg" => "El Usuario, " . " " . $nombre1 . " " . $apellido1 . " se ha creado satisfactoriamente."                 
                     );
                 } else {
                     $data = array(
                         "status" => "error",                
                         "code" => "400",                
-                        "msg" => "Error al registrar, el Usuario ya existe !!"                
+                        "msg" => "Error al registrar, el Usuario ya existe revise el "
+                                . "EMail o el No. de Identidad !!"                
                     );
                 }
             }
