@@ -46,10 +46,18 @@ class JwtAuth {
                     "idTipoUsuario" => $user->getIdTipoUsuario()
                 ));        
         
+            
             // Query para Obtener el Departamento al que corresponde de la Tabla: TblDepartamentosFuncionales
             $depto_user = $this->manager->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
                 array(
                     "idDeptoFuncional" => $user->getIdDeptoFuncional()
+                ));
+            
+        
+            // Query para Obtener el Departamento al que corresponde de la Tabla: TblDireccionesSreci
+            $direccion_user = $this->manager->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(
+                array(
+                    "idDireccionSreci" => $depto_user->getIdDireccionSreci()
                 ));
             
             
@@ -68,6 +76,7 @@ class JwtAuth {
                 "email" => $user->getEmailUsuario(),
                 "nombre" => $user->getNombre1Usuario(),
                 "apellido" => $user->getApellido1Usuario(),
+                "idDireccion" => $direccion_user->getIdDireccionSreci(),
                 "idDeptoFuncional" => $depto_user->getIdDeptoFuncional(),
                 "idTipoUser" => $tipo_user->getIdTipoUsuario(),
                 "idTipoFunc" => $func_user->getIdTipoFuncionario(),

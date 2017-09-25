@@ -442,4 +442,33 @@ class TblCorrespondenciaDet
     {
         return $this->codOficioRespuesta;
     }
+    /**
+     * @var string
+     */
+    private $temaComunicacion;
+
+
+    /**
+     * Set temaComunicacion
+     *
+     * @param string $temaComunicacion
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setTemaComunicacion($temaComunicacion)
+    {
+        $this->temaComunicacion = $temaComunicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get temaComunicacion
+     *
+     * @return string
+     */
+    public function getTemaComunicacion()
+    {
+        return $this->temaComunicacion;
+    }
 }

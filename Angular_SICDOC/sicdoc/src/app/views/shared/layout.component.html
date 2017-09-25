@@ -12,13 +12,13 @@
       <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Oficios
+          Comunicacion
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Oficios</a>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Oficios</a>
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Comunicacion</a>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Comunicacion</a>
           <hr>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Oficios</a>
+          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a>
         </div>
       </li>
 
@@ -54,10 +54,10 @@
           Seguimiento
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Actividad</a>
-          <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a>
-          <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Finalizar Actividad</a>
-          <a class="dropdown-item"  routerLinkActive="active">Agregar Documentos / Actividad</a>
+          <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Comunicacion</a>
+          <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
+          <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Finalizar Comunicacion</a>
+          <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a>
         </div>
       </li>
 

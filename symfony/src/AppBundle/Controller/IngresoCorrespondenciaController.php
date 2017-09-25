@@ -257,7 +257,7 @@ class IngresoCorrespondenciaController extends Controller{
                         //Instanciamos de la Clase TblEstados                        
                         $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
                             array(
-                                "idEstado" => 7
+                                "idEstado" => $estado
                             ));                    
                         $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados                        
                         

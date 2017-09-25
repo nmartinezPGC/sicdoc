@@ -48,6 +48,18 @@
              for="secuenciaComunicacionIn">{{list.codSecuencial}} - {{list.valor2 + 1}}</small>
           </div>
         </div> -->
+        <!-- Fila de Tipo de Documento -->
+        <!-- <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-4">
+  					<div class="form-group" >
+              <select #idTipoDocumento="ngModel" class="form-control" name="idTipoDocumento" id="idTipoDocumento" required
+                    ngControl="idTipoDocumento" [(ngModel)]="comunicacion.idTipoDocumento" >
+                  <option value="0">Tipo de Documento </option>
+                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}">{{ list.descTipoDocumento }}</option>
+              </select>
+  					</div>
+          </div>
+        </div> -->
 
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
@@ -74,9 +86,9 @@
           <div class="col-xs-12 col-sm-6 col-md-12">
             <div class="form-group">
                 <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="3"
-                    placeholder="Ingresa la Descripcion del Oficio" tabindex="3" required minlength="10"
+                    placeholder="Ingresa la Descripcion de la Comunicacion" tabindex="3" required minlength="10"
                     ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
-                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Descripcion del Oficio</small>
+                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Descripcion de la comunicacion</small>
                 <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
             </div>
           </div>
@@ -104,7 +116,7 @@
 
       <hr>
       <div class="panel-collapse collapse in" id="dirSreci">
-  			<div class="row">
+  			<div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoUser == 1 " >
           <!-- Direccion Encargada del tema de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="form-group">
@@ -133,7 +145,7 @@
        </div>
 
       <!-- Fila de los Funcionarios -->
-      <div class="row" >
+      <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoUser == 1" >
         <!-- Tipo Funcionario Encargado de la Comunicacion -->
         <div class="col-xs-12 col-sm-6 col-md-6">
           <div class="form-group">

@@ -426,7 +426,11 @@ class ListasComunesController extends Controller {
         $em = $this->getDoctrine()->getManager();
         
         // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findAll();
+        $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
+                array(
+                    "activo" => TRUE
+                )
+            );
         
         // Condicion de la Busqueda
         if (count($tipo_documento) >= 1 ) {

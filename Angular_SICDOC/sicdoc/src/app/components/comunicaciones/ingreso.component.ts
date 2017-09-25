@@ -104,6 +104,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
   public JsonOutgetlistaTipoFuncionariosSRECI:any[];
   public JsonOutgetlistaFuncionariosSRECI:any[];
+  public JsonOutgetlistaTiposDocumentos:any[];
 
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
@@ -128,6 +129,9 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // INI | Metodo OnInit
   ngOnInit(){
+    // Hacemos que la variable del Local Storge este en la API
+    this.identity = JSON.parse(localStorage.getItem('identity'));
+
     // Iniciamos los Parametros de Instituciones
     this.params = {
       "idPais"  : "",
@@ -163,6 +167,9 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoFuncionario"  : ""
     };
 
+    // Lsita de Tipo de Documentos
+    //this.getlistaTipoDocumentos();
+
     // Inicializacion de las Listas
     this.getlistaEstadosComunicacion();
     this.getlistaPaises();
@@ -196,6 +203,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaOficosPendientes();
     this.getlistaOficosFinalizados();
 
+
     // Eventos de Señaloizacion
 
     this.loading = "hide";
@@ -227,9 +235,21 @@ export class IngresoComunicacionComponent implements OnInit{
       this.comunicacion.secuenciaComunicacionDet = this.valorSecuenciaDet;
 
       // Parametro para documento Seleccionado
-      // this.comunicacion.pdfDocumento = "";
-
-      //alert(this.comunicacion.pdfDocumento);
+      // Evaluamos si el Tipo de User no es Administrador
+      if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 6){
+          this.comunicacion.idEstado = "3";
+          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+      }else if( this.identity.idTipoFunc == 6 ){
+        this.comunicacion.idEstado = "7";
+        this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+        this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+        this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+      }else
+      {
+        this.comunicacion.idEstado = "7";
+      }
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
@@ -479,9 +499,7 @@ export class IngresoComunicacionComponent implements OnInit{
   * de la BD, Llamando a la API, por su metodo
   * (instituciones-sreci-list).
   ******************************************************/
-  private parametros:paramsInstituciones[] = [{"idPais":"1", "idTipoInstitucion":"1" }];
-
-  getlistaInstituciones() {
+    getlistaInstituciones() {
     this.params.idPais = this.comunicacion.idPais;
     this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -501,6 +519,31 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-00004.1
+
+  /*****************************************************
+  * Funcion: FND-00004.2
+  * Fecha: 25-09-2017
+  * Descripcion: Carga la Lista de los Tipos de Documentos
+  * Objetivo: Obtener la lista de los Tipos de usuarios
+  * de la BD, Llamando a la API, por su metodo
+  * ( tipo-documento-list ).
+  ******************************************************/
+    getlistaTipoDocumentos() {
+
+    this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaTiposDocumentos = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaTiposDocumentos = response.data;
+            //console.log(response.data);
+          }
+        });
+  } // FIN : FND-00004.2
 
 
   /*****************************************************
@@ -583,9 +626,7 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-        // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
-        // console.log( this.nextCodComunicacion );
-        // return this.nextCodComunicacion;
+
   } // FIN : FND-00006
 
 
@@ -617,9 +658,7 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-        // this.JsonOutgetCodigoSecuenciaNew = response.data.descSecuencia;
-        // console.log( this.nextCodComunicacion );
-        // return this.nextCodComunicacion;
+
   } // FIN : FND-00006.1
 
 

@@ -37,4 +37,7 @@ BackendBundle\Entity\TblTipoDocumento:
             options:
                 fixed: false
             column: iniciales_tipo_documento
+        activo:
+            type: boolean
+            nullable: true
     lifecycleCallbacks: {  }
