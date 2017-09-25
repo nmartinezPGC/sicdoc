@@ -9,3 +9,5 @@ Revision de las Extensiones de PostgresSql en el Servidor
 # Cambiar la Direccion IP al momento de Realizar el Desarrollo en PC Local
 # Instalar Composer en el Servidor en el Directorio de PHP
 # Instalar las dependencias de PHP para Symfony
+
+Prueba 1
