@@ -990,7 +990,7 @@ class ListasComunesController extends Controller {
                     array(
                         "idDeptoFuncional"      => $depto_funcional,                        
                         "idFuncionarioAsignado" => $id_funcionario,
-                        "idEstado"              => 3
+                        "idEstado"              => [3,8]
                     ));
 
             // Condicion de la Busqueda
@@ -1017,6 +1017,82 @@ class ListasComunesController extends Controller {
                
         return $helpers->parserJson($data);
     }//FIN | FND00018
+    
+    
+    /**
+     * @Route("/finalizar-oficios-det-list", name="finalizar-oficios-det-list")
+     * Creacion del Controlador: Lista de Oficos en la Tabla Detalle
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Fecha: 2017-09-21
+     * Objetivo: Mostrar el listado de los Oficios que fueron asignados
+     * y trabajar con ellos, luego Finzalizar la Actividad
+     * @param number idCorrespondenciaEnc Id de la Correspodencia ENC.
+     * @param number idEstadoDet  Estado de la Correspondencia
+     * @param number $idFuncionario Funcionario que accede al sistema
+     * Funcion: FND00019
+     */
+    public function finalizarOficiosListDetAction(Request $request )
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        //Recogemos el Hash y la Autorizacion del Mismo        
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            $identity = $helpers->authCheck($hash, true);
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+            
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID Funcionario , Depto Func *************************
+            $id_corresp_enc = (isset($params->idCorrespondenciaEnc)) ? $params->idCorrespondenciaEnc : null;
+            $id_estado_det = (isset($params->idEstadoDet)) ? $params->idEstadoDet : null;
+            
+            $id_funcionario = $identity->sub;
+                        
+            // Query para Obtener todos los Oficios de ese Funcionario de la ***
+            // Tabla: TblCorrespondenciaDet ************************************
+            $detalle_corresp = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                    array(
+                        "idCorrespondenciaEnc"  => $id_corresp_enc,
+                        "idFuncionarioAsignado" => $id_funcionario,
+                        "idEstado"              => $id_estado_det
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $detalle_corresp ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $detalle_corresp
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos de Oficios en ese Estado !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Correspondencia, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00019
     
     
     

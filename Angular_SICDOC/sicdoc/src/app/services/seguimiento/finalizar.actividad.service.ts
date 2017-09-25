@@ -79,4 +79,23 @@ export class FinalizarActividadService {
       return this._http.post(this.url + "/seguimiento/finalizar-oficio-asignado", params, { headers:headers }).map( res => res.json());
     } // FIN : FND-00003
 
+
+    /****************************************************
+    * Funcion: FND-00003
+    * Fecha: 24-09-2017
+    * Descripcion: Metodo Ajax, para Invocar el servicio
+    * a la API ( creacion-oficio-asignado ).
+    * Objetivo: Finalizar Oficio - Asignado
+    * Parametros: Descripcion, Actividad y Documento de
+    *             Respuesta al Oficio Asignado.
+    *****************************************************/
+    creacionOficioAsignado( token, correspondencia_to_finally ){
+        let json = JSON.stringify( correspondencia_to_finally );
+        let params = "json=" + json + "&authorization=" + token;
+        //console.log(json);
+        let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+      return this._http.post(this.url + "/seguimiento/creacion-oficio-asignado", params, { headers:headers }).map( res => res.json());
+    } // FIN : FND-00004
+
 }

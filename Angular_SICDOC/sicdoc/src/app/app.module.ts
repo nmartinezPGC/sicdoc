@@ -40,7 +40,8 @@ import { IngresoActividadComponent } from "./components/seguimiento/agregar.acti
 
 
 import { NavbarComponent } from "./components/shared/navbar.component"; //NavBar de Tareas del Proyecto
-import { HeaderComponent } from "./components/shared/header.component"; //Header de Tareas del Proyecto
+import { HeaderComponent } from "./components/shared/header.component";
+import { PdfComponent } from './components/pdf/pdf.component'; //Header de Tareas del Proyecto
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { HeaderComponent } from "./components/shared/header.component"; //Header
     HeaderComponent,
     GenerateDatePipe,
     SearchFilterPipe,
-    FinalizarActividadComponent
+    FinalizarActividadComponent,
+    PdfComponent
   ],
   imports: [
     BrowserModule,

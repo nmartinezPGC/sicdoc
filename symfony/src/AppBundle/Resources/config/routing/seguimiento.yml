@@ -12,8 +12,14 @@ seguimiento_convertirFechasTimeStamp:
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:convertirFechasTimeStamp" }
     methods: POST
     
-## Listado de Los Oficios Asignados por Usuario (Funcionario) | Modulo Seguimiento
+## Finalizacion de Comunicacion | Modulo Seguimiento
 seguimiento_finalizarOficio:
     path: /finalizar-oficio-asignado
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:finalizarOficio" }
+    methods: POST
+    
+## Creacion de Oficio de Respuesta | Modulo Seguimiento
+seguimiento_creacionOficioResp:
+    path: /creacion-oficio-asignado
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:creacionOficioResp" }
     methods: POST

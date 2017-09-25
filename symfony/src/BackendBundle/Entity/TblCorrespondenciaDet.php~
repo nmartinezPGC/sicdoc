@@ -413,4 +413,33 @@ class TblCorrespondenciaDet
     {
         return $this->idFuncionarioAsignado;
     }
+    /**
+     * @var string
+     */
+    private $codOficioRespuesta;
+
+
+    /**
+     * Set codOficioRespuesta
+     *
+     * @param string $codOficioRespuesta
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setCodOficioRespuesta($codOficioRespuesta)
+    {
+        $this->codOficioRespuesta = $codOficioRespuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get codOficioRespuesta
+     *
+     * @return string
+     */
+    public function getCodOficioRespuesta()
+    {
+        return $this->codOficioRespuesta;
+    }
 }

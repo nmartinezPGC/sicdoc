@@ -15,6 +15,7 @@ export class FinalizarActividad{
       public nombre2FuncionarioAsigmado:string,
       public apellido1FuncionarioAsigmado:string,
       public apellido2FuncionarioAsigmado:string,
+      public temaOficio:string,
 
       //Datos de la Busqueda
       public buscadorOficio:string,
@@ -26,7 +27,10 @@ export class FinalizarActividad{
       // Secuenciales
       public secuenciaComunicacionIn:string,
       public codCorrespondenciaDet:string,
-      public secuenciaComunicacionDet:number
+      public codCorrespondenciaNewOfi:string,
+      public secuenciaComunicacionDet:number,
+      public secuenciaComunicacionNewOfi:number,
+      public secuenciaComunicacionNewOfiAct:number
 
 
     ){}

@@ -2,13 +2,17 @@ BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
     indexes:
+        idx_cod_secuencia:
+            columns:
+                - cod_secuencial
         fki_secuncia_doc:
             columns:
                 - id_tipo_documento
     uniqueConstraints:
-        tbl_secuenciales_cod_secuencial_key:
+        Unique_cod_tipo_doc:
             columns:
                 - cod_secuencial
+                - id_tipo_documento
     id:
         idSecuencial:
             type: integer
