@@ -10,6 +10,7 @@ import { IngresoComunicacionComponent } from './components/comunicaciones/ingres
 // Menu de Seguimiento
 import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
 import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
+import { PdfComponent } from './components/pdf/pdf.component';
 
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
@@ -27,6 +28,7 @@ export const APP_ROUTES: Routes = [
   { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
   { path: 'finalizar-actividad', component: FinalizarActividadComponent },
   { path: 'finalizar-actividad/:page', component: IngresoActividadComponent },
+  { path: 'pdf', component: PdfComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];

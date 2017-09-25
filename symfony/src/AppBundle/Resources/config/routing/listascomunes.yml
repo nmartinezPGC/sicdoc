@@ -128,3 +128,9 @@ seguimiento_finalizarOficiosList:
     path: /finalizar-oficios-list
     defaults: { _controller: "AppBundle:ListasComunes:finalizarOficiosList" }
     methods: POST
+    
+ ## Listado de Los Oficios Asignados por Usuario (Funcionario) Detalle | Modulo Seguimiento
+seguimiento_finalizarOficiosListDet:
+    path: /finalizar-oficios-det-list
+    defaults: { _controller: "AppBundle:ListasComunes:finalizarOficiosListDet" }
+    methods: POST

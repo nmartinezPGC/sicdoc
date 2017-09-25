@@ -26,6 +26,9 @@ import { AppComponent } from '../../app.component'; //Servico del Principal
 
 import { NgForm }    from '@angular/forms'; // Para el uso del Formulario
 
+// Declaramos las variables para jQuery
+declare var jQuery:any;
+declare var $:any;
 
 @Component({
   selector: 'finalizar-actividad',
@@ -59,7 +62,9 @@ export class FinalizarActividadComponent implements OnInit {
 
   // Json de los listas de los Oficios por usuario
   public JsonOutgetlistaOficiosAll:any[];
+  public JsonOutgetlistaOficiosAllDet:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
+  public JsonOutgetCodigoSecuenciaOfiResp:any[];
 
   // Parametros del Modelo
   private tableFinalizarActividadList;
@@ -67,9 +72,11 @@ export class FinalizarActividadComponent implements OnInit {
   // Variables del localStorage
   public identity;
   public localStorageJSON;
+  public paramsDetalleJson;
 
   // Variables Modales
   public codOficioIntModal;
+  public codOficioActModal;
   public codOficioRefModal;
   public idDeptoFuncionalModal;
   public nombre1FuncModal;
@@ -77,14 +84,19 @@ export class FinalizarActividadComponent implements OnInit {
   public apellido1FuncModal;
   public apellido2FuncModal;
   public idFuncModal;
+  public idCorrepEncModal;
+
 
   // Instacia del Modelo
   public finalizarOficios: FinalizarActividad;
 
   // Propiedades de la Secuencial
   private paramsSecuenciaDet;
+  private paramsSecuenciaOficioRespuesta;
   public codigoSecuenciaDet; // Secuencia en Texto del Oficio
+  public codigoSecuenciaOficioRespuesta; // Secuencia en Texto del Oficio
   public valorSecuenciaDet; // Secuencial del Oficio
+  public valorSecuenciaOficioRespuesta; // Secuencial del Oficio
 
   constructor( private _listasComunes: ListasComunesService,
                private _finalizarOficio: FinalizarActividadService,
@@ -119,8 +131,21 @@ export class FinalizarActividadComponent implements OnInit {
       "idDeptoFunc":""
     };
 
-    // Iniciamos los Parametros de Secuenciales
+    // Iniciamos los Parametros para Dato de Detalle por Estado
+    this.paramsDetalleJson = {
+      "idCorrespondenciaEnc":"",
+      "idEstadoDet":""
+    };
+
+    // Iniciamos los Parametros de Secuenciales | Oficio Final
     this.paramsSecuenciaDet = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
+    // Iniciamos los Parametros de Secuenciales | Oficio de Respuesta
+    this.paramsSecuenciaOficioRespuesta = {
       "codSecuencial"  : "",
       "tablaSecuencia" : "",
       "idTipoDocumento" : ""
@@ -128,13 +153,14 @@ export class FinalizarActividadComponent implements OnInit {
 
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null, null, null, null,  null,  null, 5,  null, null, null);
+    this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null, null, null, null,  null,  null, null, 5,  null, null, null, null, null, null);
 
     // Inicializamos el Llenado de las Tablas
     this.getlistaFinalizarOficiosTable();
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondenciaDet();
+    this.listarCodigoCorrespondenciaOfiResp();
 
   }
 
@@ -148,22 +174,29 @@ export class FinalizarActividadComponent implements OnInit {
   * Objetivo: Actualizar datos de Fincalizacion de
   *           Ofico en la BD, Llamando a la API
   ******************************************************/
-  onSubmit(forma:NgForm){
+  onSubmit(forma:NgForm, opcion ){
     // Parametros de la Lista de los Funcionarios
     // Variable del localStorage, para obtener el Id del Usuario (sub) y luego
     // la parseamos a Objeto Javascript
+    let opcionExecute:string;
+
     this.identity = JSON.parse(localStorage.getItem('identity'));
     this.finalizarOficios.idDeptoFuncional = this.identity.idDeptoFuncional;
     this.finalizarOficios.idFuncionarioAsigmado = this.identity.sub;
 
     // Parametros de l Secuenciales
     this.codigoSecuenciaDet    = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+    this.codigoSecuenciaOficioRespuesta   = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
     this.valorSecuenciaDet     = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+    this.valorSecuenciaOficioRespuesta     = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
     //console.log( this.JsonOutgetCodigoSecuenciaDet );
 
     // Secuenciales de la Tabla correspondencia detalle
     this.finalizarOficios.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
+    this.finalizarOficios.codCorrespondenciaNewOfi = this.codigoSecuenciaOficioRespuesta;
     this.finalizarOficios.secuenciaComunicacionDet = this.valorSecuenciaDet;
+    this.finalizarOficios.secuenciaComunicacionNewOfi = this.valorSecuenciaOficioRespuesta;
+    this.finalizarOficios.secuenciaComunicacionNewOfiAct = this.valorSecuenciaOficioRespuesta - 1;
 
     // Asignamos los valores al JSON Principal
     this.finalizarOficios.codOficioInterno = this.codOficioIntModal;
@@ -172,50 +205,106 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.nombre2FuncionarioAsigmado = this.nombre2FuncModal;
     this.finalizarOficios.apellido1FuncionarioAsigmado = this.apellido1FuncModal;
     this.finalizarOficios.apellido2FuncionarioAsigmado = this.apellido2FuncModal;
+    this.finalizarOficios.codOficioRespuesta = this.idCorrepEncModal;
 
     // Inicializamos la Instacia al Metodo de la API
       let token1 = this._finalizarOficio.getToken();
       this.loading = 'show';
       this.loading_table = 'show';
-      console.log( this.finalizarOficios );
-      this._finalizarOficio.finalizarOficioAsignado(token1, this.finalizarOficios).subscribe(
-        response => {
-            // Obtenemos el Status de la Peticion
-            this.status = response.status;
-            this.mensajes = response.msg;
+      //console.log( this.finalizarOficios );
 
-            // Condicionamos la Respuesta
-            if(this.status != "success"){
-                this.status = "error";
-                this.mensajes = response.msg;
+      // Evalua que Opcion va a Enviar por el Formulario
+      if( opcion == 1 ){
+        opcionExecute = "finalizarOficioAsignado";
+        // Opcion de Finalizacion de Comunicacion
+        this._finalizarOficio.finalizarOficioAsignado(token1, this.finalizarOficios).subscribe(
+          response => {
+              // Obtenemos el Status de la Peticion
+              this.status = response.status;
+              this.mensajes = response.msg;
+
+              // Condicionamos la Respuesta
+              if(this.status != "success"){
+                  this.status = "error";
+                  this.mensajes = response.msg;
+                  if(this.loading = 'show'){
+                    this.loading = 'hidden';
+                    this.loading_table = 'hide';
+                  }
+                  alert(this.mensajes);
+              }else{
+                //this.resetForm();
+                this.loading = 'hidden';
+                this.loading_table = 'hide';
+                this.ngOnInit();
+                setTimeout(function() {
+                  $('#t_and_c_m').modal('hide');
+                }, 600);
+                // this.alertShow();
+              }
+          }, error => {
+              //Regisra cualquier Error de la Llamada a la API
+              this.errorMessage = <any>error;
+
+              //Evaluar el error
+              if(this.errorMessage != null){
+                console.log(this.errorMessage);
+                this.mensajes = this.errorMessage;
+                alert("Error en la Petición !!" + this.errorMessage);
+
                 if(this.loading = 'show'){
                   this.loading = 'hidden';
-                  this.loading_table = 'hide';
+                  this.loading_table = 'hidden';
                 }
-                alert(this.mensajes);
-            }else{
-              //this.resetForm();
-              this.loading = 'hidden';
-              this.loading_table = 'hide';
-              this.ngOnInit();
-              // this.alertShow();
-            }
-        }, error => {
-            //Regisra cualquier Error de la Llamada a la API
-            this.errorMessage = <any>error;
-
-            //Evaluar el error
-            if(this.errorMessage != null){
-              console.log(this.errorMessage);
-              this.mensajes = this.errorMessage;
-              alert("Error en la Petición !!" + this.errorMessage);
-
-              if(this.loading = 'show'){
-                this.loading = 'hidden';
-                this.loading_table = 'hidden';
               }
-            }
-        });
+          });
+      }else {
+        this.finalizarOficios.idEstadoAsigna = 8;
+        // Opcion de Creacion de Oficio de Respuesta
+        this._finalizarOficio.creacionOficioAsignado(token1, this.finalizarOficios).subscribe(
+          response => {
+              // Obtenemos el Status de la Peticion
+              this.status = response.status;
+              this.mensajes = response.msg;
+
+              // Condicionamos la Respuesta
+              if(this.status != "success"){
+                  this.status = "error";
+                  this.mensajes = response.msg;
+                  if(this.loading = 'show'){
+                    this.loading = 'hidden';
+                    this.loading_table = 'hide';
+                  }
+                  alert(this.mensajes);
+              }else{
+                //this.resetForm();
+                this.loading = 'hidden';
+                this.loading_table = 'hide';
+                this.ngOnInit();
+                setTimeout(function() {
+                  $('#t_and_c_m2').modal('hide');
+                }, 600);
+
+                // this.alertShow();
+              }
+          }, error => {
+              //Regisra cualquier Error de la Llamada a la API
+              this.errorMessage = <any>error;
+
+              //Evaluar el error
+              if(this.errorMessage != null){
+                console.log(this.errorMessage);
+                this.mensajes = this.errorMessage;
+                alert("Error en la Petición !!" + this.errorMessage);
+
+                if(this.loading = 'show'){
+                  this.loading = 'hidden';
+                  this.loading_table = 'hidden';
+                }
+              }
+          });
+      }
+
   } // Fin | Metodo onSubmit
 
 
@@ -254,10 +343,50 @@ export class FinalizarActividadComponent implements OnInit {
             this.JsonOutgetlistaOficiosAll = response.data;
 
             this.loading = 'hidden';
-            console.log(this.JsonOutgetlistaOficiosAll);
+            //console.log(this.JsonOutgetlistaOficiosAll);
           }
         });
   } // FIN | FND-00001
+
+
+  /*****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 24-09-2017
+  * Descripcion: Carga la Lista de los Oficios de la BD
+  * que pertenecen al usaurio Logeado por Estado
+  * Objetivo: Obtener la lista de los Oficios de las
+  * Comunicaciones de la BD, Llamando a la API, por su
+  * metodo ( finalizar-oficios-det-list ).
+  ******************************************************/
+  getlistaOficiosDetalle( idCorrespondenciaEncIn:number, idEstadoDetIn:number ) {
+    // Parametros de la Lista de los Funcionarios
+    // Variable del localStorage, para obtener el Id del Usuario (sub) y luego
+    // la parseamos a Objeto Javascript
+    this.paramsDetalleJson.idCorrespondenciaEnc = idCorrespondenciaEncIn;
+    this.paramsDetalleJson.idEstadoDet = idEstadoDetIn;
+    this.loading_table = 'show';
+    // Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunesTokenListas( this.paramsDetalleJson ,"finalizar-oficios-det-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaOficiosAllDet = response.data;
+            if( this.loading = 'show' ){
+              this.loading = 'hidden';
+              this.loading_table = 'hide';
+            }
+            alert(response.msg);
+          }else{
+            this.JsonOutgetlistaOficiosAllDet = response.data;
+
+            this.loading = 'hidden';
+            this.loading_table = 'hide';
+            this.idCorrepEncModal = response.data.codCorrespondenciaDet;
+            //console.log( response.data.codCorrespondenciaDet );
+          }
+        });
+  } // FIN | FND-00001.1
 
 
   /****************************************************
@@ -270,7 +399,7 @@ export class FinalizarActividadComponent implements OnInit {
   datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
              nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
              nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
-             idFuncionarioIn:number, idEstadoAsign:number  ){
+             idFuncionarioIn:number, idEstadoAsign:number, idOficioEnc:number ){
    // Seteo de las varibles de la Funcion
     this.codOficioIntModal = codOficioIntIn;
     this.codOficioRefModal = codOficioRefIn;
@@ -284,6 +413,10 @@ export class FinalizarActividadComponent implements OnInit {
     // Limpia los Campos de las Descripciones
     this.finalizarOficios.descripcionOficio = "";
     this.finalizarOficios.actividadOficio = "";
+    this.idCorrepEncModal = "";
+
+    // Llamamos el Oficio Detalle que tiene el estado Asignado
+    this.getlistaOficiosDetalle( idOficioEnc, idEstadoAsign );
 
     // Cambia el valor de optionModal
     this.optionModal = 2;
@@ -343,5 +476,36 @@ export class FinalizarActividadComponent implements OnInit {
          }
        });
  } // FIN : FND-00004
+
+
+ /*****************************************************
+ * Funcion: FND-00005
+ * Fecha: 23-09-2017
+ * Descripcion: Obtiene la siguiente secuencia
+ * Objetivo: Obtener el secuencial de la tabla
+ * indicada con su cosigo
+ * (gen-secuencia-comunicacion-in).
+ ******************************************************/
+  listarCodigoCorrespondenciaOfiResp(){
+   this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+   this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+   this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
+   let nextCodComunicacion:string = "";
+   //Llamar al metodo, de Login para Obtener la Identidad
+   //console.log(this.params);
+   this._listasComunes.listasComunesToken( this.paramsSecuenciaOficioRespuesta, "gen-secuencia-comunicacion-in" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
+           alert(response.msg);
+
+         }else{
+           this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
+           //console.log( this.JsonOutgetCodigoSecuenciaDet );
+         }
+       });
+ } // FIN : FND-00005
 
 }
