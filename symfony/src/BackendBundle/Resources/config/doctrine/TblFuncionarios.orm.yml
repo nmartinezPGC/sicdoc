@@ -2,7 +2,6 @@ BackendBundle\Entity\TblFuncionarios:
     type: entity
     table: tbl_funcionarios
     indexes:
-<<<<<<< HEAD
         fki_tipo_func:
             columns:
                 - id_tipo_funcionario
@@ -12,7 +11,6 @@ BackendBundle\Entity\TblFuncionarios:
         fki_depto_func:
             columns:
                 - id_depto_funcional
-=======
         fki_depto_func:
             columns:
                 - id_depto_funcional
@@ -22,7 +20,6 @@ BackendBundle\Entity\TblFuncionarios:
         fki_tipo_func:
             columns:
                 - id_tipo_funcionario
->>>>>>> 7a8ac46d17f32333379e10aea421983b1c4ff5ee
     id:
         idFuncionario:
             type: integer

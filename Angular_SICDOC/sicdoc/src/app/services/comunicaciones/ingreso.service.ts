@@ -55,6 +55,23 @@ export class IngresoComunicacionService {
 
 
   /****************************************************
+  * Funcion: FND-00002.1
+  * Fecha: 25-09-2017
+  * Descripcion: Metodo Ajax, para Invocar el servicio
+  * a la API (correspondencia/new-correspondencia-tipo).
+  * Objetivo: Ingresar nueva correspondencia
+  *****************************************************/
+  registerTipoComunicacion( token, correspondencia_to_register ){
+      let json = JSON.stringify( correspondencia_to_register );
+      let params = "json=" + json + "&authorization=" + token;
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/correspondencia/new-correspondencia-tipo", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00002.1
+
+
+  /****************************************************
   * Funcion: FND-00003
   * Fecha: 28-07-2017
   * Descripcion: Metodo para obtener los Datos de la

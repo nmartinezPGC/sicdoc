@@ -34,7 +34,9 @@ export class Comunicaciones{
 
       // Secuenciales de Tablas
       public secuenciaComunicacionIn:string,
+      public secuenciaComunicacionInAct:string,
       public secuenciaComunicacionDet:string,
+      public secuenciaComunicacionDetAct:string,
 
       //Envio de correos
       public emailDireccion:string,

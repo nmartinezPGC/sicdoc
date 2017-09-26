@@ -12,14 +12,6 @@
         <strong>Bien hecho!</strong> {{ mensajes }}
       </div>
 
-      <!-- <div name="alert" class="alert alert-success" role="alert" *ngIf="status == 'success' " >
-        <strong>Bien hecho!</strong> {{ mensajes }}
-      </div> -->
-
-      <!-- <div class="alert alert-danger" role="alert" *ngIf="status == 'error' " >
-        <strong>Que mal!</strong> {{ mensajes }}
-      </div> -->
-
       <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status == 'error'" >
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -32,7 +24,7 @@
         <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
       </div>
 
-		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
+		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerTipoComunicacion)" name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
       <div class="panel-heading">
@@ -42,24 +34,23 @@
       </div>
       <hr>
       <div class="panel-collapse collapse" id="datosGen">
-        <!-- <div class="row">
+
+        <!-- Fila de Tipo de Comunicaciones -->
+        <div class="row">
+          <!-- Direccion Encargada del tema de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-4">
-            Nuevo Oficio: <small *ngFor="let list of JsonOutgetCodigoSecuenciaNew" name="secuenciaComunicacionIn"
-             for="secuenciaComunicacionIn">{{list.codSecuencial}} - {{list.valor2 + 1}}</small>
-          </div>
-        </div> -->
-        <!-- Fila de Tipo de Documento -->
-        <!-- <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-4">
-  					<div class="form-group" >
+            <div class="form-group">
               <select #idTipoDocumento="ngModel" class="form-control" name="idTipoDocumento" id="idTipoDocumento" required
-                    ngControl="idTipoDocumento" [(ngModel)]="comunicacion.idTipoDocumento" >
-                  <option value="0">Tipo de Documento </option>
-                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}">{{ list.descTipoDocumento }}</option>
+                    ngControl="idTipoDocumento" [(ngModel)]="comunicacion.idTipoDocumento" (change)="getCodigoCorrespondencia()" >
+                  <option value="0">Tipo de comunicación </option>
+                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > {{ list.descTipoDocumento }}</option>
               </select>
-  					</div>
-          </div>
-        </div> -->
+              <small class="form-text text-muted" *ngIf="idTipoDocumento.value == 0 || idTipoDocumento.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
+              <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicacion</small>
+            </div>
+         </div>
+        </div>
+
 
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
@@ -116,65 +107,6 @@
 
       <hr>
       <div class="panel-collapse collapse in" id="dirSreci">
-  			<div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1 " >
-          <!-- Direccion Encargada del tema de la Comunicacion -->
-          <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
-                    ngControl="idDireccionSreci" [(ngModel)]="comunicacion.idDireccionSreci"  (change)="getlistaSubDireccionesSRECI()" >
-                  <option value="0">Dirección SRECI Responsable </option>
-                  <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
-              </select>
-              <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Dirección SRECI responsable</small>
-              <small class="form-text text-muted" *ngIf="idDireccionSreci.errors?.required" >Debes Seleccionar una Dirección SRECI responsable</small>
-            </div>
-         </div>
-
-         <!-- SubDireccion Encargada del tema de la Comunicacion -->
-         <div class="col-xs-12 col-sm-6 col-md-6">
-           <div class="form-group">
-             <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional" required
-                   ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional"  >
-                 <option value="0">Sub Dirección SRECI Responsable</option>
-                 <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECI" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
-             </select>
-             <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null " >Debes Seleccionar una Sub Dirección SRECI responsable</small>
-             <small class="form-text text-muted" *ngIf="idDeptoFuncional.errors?.required" >Debes Seleccionar una Sub Dirección SRECI responsable</small>
-           </div>
-         </div>
-       </div>
-
-      <!-- Fila de los Funcionarios -->
-      <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1" >
-        <!-- Tipo Funcionario Encargado de la Comunicacion -->
-        <div class="col-xs-12 col-sm-6 col-md-6">
-          <div class="form-group">
-            <select #idTipoFuncionario="ngModel" class="form-control" name="idTipoFuncionario" id="idTipoFuncionario" required
-                  ngControl="idTipoFuncionario" [(ngModel)]="comunicacion.idTipoFuncionario"  (change)="getlistaUsuariosAsinadosSRECI()" >
-                <option value="0">Tipo de Funcionario </option>
-                <option *ngFor="let list of JsonOutgetlistaTipoFuncionariosSRECI" value="{{ list.idTipoFuncionario }}">{{ list.descTipoFuncionario }}</option>
-            </select>
-            <small class="form-text text-muted" *ngIf="idTipoFuncionario.value == 0 || idTipoFuncionario.value == null " >Debes Seleccionar un Tipo de Funcionario</small>
-            <small class="form-text text-muted" *ngIf="idTipoFuncionario.errors?.required" >Debes Seleccionar un Tipo de Funcionario</small>
-          </div>
-       </div>
-
-
-       <!-- Funcionario Encargado de la Comunicacion -->
-       <div class="col-xs-12 col-sm-6 col-md-6">
-         <div class="form-group">
-           <select #idUsuarioAsaignado="ngModel" class="form-control" name="idUsuarioAsaignado" id="idUsuarioAsaignado" required
-                 ngControl="idUsuarioAsaignado" [(ngModel)]="comunicacion.idUsuarioAsaignado"  >
-               <option value="0">Funcionario SRECI</option>
-               <option *ngFor="let list of JsonOutgetlistaFuncionariosSRECI" value="{{ list.idFuncionario }}">{{ list.nombre1Funcionario }} {{ list.nombre2Funcionario }}
-                 , {{ list.apellido1Funcionario }} {{ list.apellido2Funcionario }}</option>
-           </select>
-           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.value == 0 || idUsuarioAsaignado.value == null " >Debes Seleccionar Funcionario</small>
-           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.errors?.required" >Debes Seleccionar un Funcionario</small>
-         </div>
-      </div>
-
-      </div>
 
         <!-- Boton de Agregar Nueva Direcion Acompañante -->
         <!-- <input type="button" id="btAdd" value="Añadir Elemento" class="bt" (click)="fnd()" /> -->
@@ -244,24 +176,11 @@
   					</div>
   				</div>
 
-
-          <!-- Estado de la Comunicacion -->
-          <!-- <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <select #idEstado="ngModel" class="form-control" name="idEstado" id="idEstado"
-                    ngControl="idEstado" [(ngModel)]="comunicacion.idEstado"  >
-                  <option value="0">Selecciona un Estado</option>
-                  <option *ngFor="let list of JsonOutgetlistaEstados" value="{{ list.idEstado }}">{{ list.descripcionEstado }}</option>
-              </select>
-              <small class="form-text text-muted" *ngIf="idEstado.value == 0 || idEstado.value == null " >Debes Seleccionar un Estado</small>
-            </div>
-          </div> -->
-
           <!-- Instituciones de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-5">
             <div class="form-group">
               <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
-                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  (change)="getlistaInstituciones()" >
+                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion" >
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
               </select>
@@ -301,15 +220,8 @@
 
           </div>
       </div>
-      <hr>
 
-			<div class="row">
-				<div class="col-xs-8 col-sm-9 col-md-9">
-					 Para saber mas de utilidad de esta aplicacion, verifica los <a href="#" data-toggle="modal" data-target="#t_and_c_m"> manuales de usuario </a> que tiene este sistema.
-				</div>
-			</div>
-
-			<hr class="colorgraph">
+		<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-md-3">
             <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" [disabled]="!ingresoComunicacionForm.valid"  >
@@ -325,52 +237,6 @@
 
   <!-- Columna del formulario -->
 
-  <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
-  <div class="col-2">
-    <div class="card" style="width: 16rem; margin-top:5px">
-      <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
-      <div class="card-block" style="margin-left:8px">
-        <h4 class="card-title">Resumen</h4>
-        <p class="card-text">Resumen de la informacion registrada de los Oficios.</p>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li>
-        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes -- <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
-        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados -- <span class="badge badge-pill badge-danger"> {{ countOficiosFinalizados }} </span> </li>
-      </ul>
-        <div class="card-block" style="margin-left:8px">
-          <a href="#" class="card-link">Ver tablero</a>
-          <a [routerLink]="['/index']" class="card-link">Ir a Dashboard</a>
-        </div>
-    </div>
-
-    <!-- <div class="card" style="width: 16rem; margin-top:5px">
-
-  </div>
-<!-- Columna de las Tarjetas -->
-
 </div>
-<!-- Modal -->
-<div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Terminos & Condiciones</h4>
-			</div>
-			<div class="modal-body">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
 <hr>

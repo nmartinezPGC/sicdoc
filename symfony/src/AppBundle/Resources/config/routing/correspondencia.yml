@@ -8,6 +8,12 @@ correspondencia_newCorrespondencia:
     path: /new-correspondencia
     defaults: { _controller: "AppBundle:IngresoCorrespondencia:newCorrespondencia" }
     methods: POST
+    
+# Nuevo Ingreso de Correspondencia por Tipo
+correspondencia_newCorrespondenciaTipo:
+    path: /new-correspondencia-tipo
+    defaults: { _controller: "AppBundle:IngresoCorrespondencia:newCorrespondenciaTipo" }
+    methods: POST
 
 # Editar Correspondencia Existente
 correspondencia_editCorrespondencia:

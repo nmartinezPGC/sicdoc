@@ -5,8 +5,9 @@ import { RouterModule, Routes, ActivatedRoute, Router, ROUTER_CONFIGURATION } fr
 import { LoginComponent } from './components/login/login.component';
 import { DefaultComponent } from './components/login/default.component';
 import { RegisterComponent } from './components/login/register.component';
-// Menu de Oficios
+// Menu de comunicaciones
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
+import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component';
 // Menu de Seguimiento
 import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
 import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
@@ -20,6 +21,7 @@ export const APP_ROUTES: Routes = [
   { path: 'registro', component: RegisterComponent },
   // Mapeo del Menu de Comunicaciones
   { path: 'ingreso-comunicacion', component: IngresoComunicacionComponent },
+  { path: 'ingreso-comunicacion-tipo', component: IngresoComunicacionPorTipoComponent },
 
   // Mapeo de Menu de Seguimiento
   { path: 'asignar-actividad', component: IngresoActividadComponent },

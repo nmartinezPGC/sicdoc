@@ -995,6 +995,7 @@ class ListasComunesController extends Controller {
                         "idDeptoFuncional"      => $depto_funcional,                        
                         "idFuncionarioAsignado" => $id_funcionario,
                         "idEstado"              => [3,8]
+                        //"idTipoDocumento"       => [1]
                     ));
 
             // Condicion de la Busqueda

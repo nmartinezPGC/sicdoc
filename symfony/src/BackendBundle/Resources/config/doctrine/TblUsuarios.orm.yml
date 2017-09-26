@@ -2,15 +2,12 @@ BackendBundle\Entity\TblUsuarios:
     type: entity
     table: tbl_usuarios
     indexes:
-<<<<<<< HEAD
-=======
         fki_estado_user:
             columns:
                 - id_estado
         fki_tipo_user:
             columns:
                 - id_tipo_usuario
->>>>>>> 7a8ac46d17f32333379e10aea421983b1c4ff5ee
         idx_cod_user:
             columns:
                 - cod_usuario
@@ -19,7 +16,6 @@ BackendBundle\Entity\TblUsuarios:
                 - id_depto_funcional
         fki_funcionario_user:
             columns:
-<<<<<<< HEAD
                 - id_tipo_usuario
         fki_funcionario_user:
             columns:
@@ -27,9 +23,7 @@ BackendBundle\Entity\TblUsuarios:
         fki_estado_user:
             columns:
                 - id_estado
-=======
                 - id_tipo_funcionario
->>>>>>> 7a8ac46d17f32333379e10aea421983b1c4ff5ee
     id:
         idUsuario:
             type: integer
