@@ -37,6 +37,7 @@ export class Comunicaciones{
       public secuenciaComunicacionInAct:string,
       public secuenciaComunicacionDet:string,
       public secuenciaComunicacionDetAct:string,
+      public secuenciaComunicacionSCPI:string, // Secuencial SCPI
 
       //Envio de correos
       public emailDireccion:string,

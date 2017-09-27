@@ -994,9 +994,9 @@ class ListasComunesController extends Controller {
                     array(
                         "idDeptoFuncional"      => $depto_funcional,                        
                         "idFuncionarioAsignado" => $id_funcionario,
-                        "idEstado"              => [3,8]
+                        "idEstado"              => [3,8]                        
                         //"idTipoDocumento"       => [1]
-                    ));
+                    ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );
 
             // Condicion de la Busqueda
             if (count( $usuario_asignado ) >= 1 ) {

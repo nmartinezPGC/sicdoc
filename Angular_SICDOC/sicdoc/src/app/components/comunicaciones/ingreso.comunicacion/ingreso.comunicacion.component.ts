@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray,FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { LoginService } from '../../../services/login/login.service'; //Servico 
 import { IngresoComunicacionService } from '../../../services/comunicaciones/ingreso.service'; //Servico del Comunicaciones
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Carga de Arhcivos
+import { CreateDomService } from '../../../services/shared/createDom.service'; //Servico Creacion de DOM
 
 import { AppComponent } from '../../../app.component'; //Servico del Login
 
@@ -31,7 +32,7 @@ declare var $:any;
   selector: 'ingreso.comunicacion-tipo',
   templateUrl: './ingreso.comunicacion.component.html',
   styleUrls: ['./ingreso.comunicacion.component.css'],
-  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService]
+  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService, CreateDomService]
 })
 export class IngresoComunicacionPorTipoComponent implements OnInit {
   public titulo:string = "Salida de Comunicación";
@@ -48,10 +49,12 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   private paramsSecuenciaDet;
   private paramsSecuenciaIn;
   private paramsSecuenciaDetIn;
+  private paramsSecuenciaSCPI;
 
   // Instacia de la variable del Modelo | Json de Parametros
   public user:Usuarios;
   public comunicacion: Comunicaciones;
+  addForm: FormGroup; // form group instance
 
   // Propiedad de Loader
   public loading      = 'show';
@@ -74,12 +77,18 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   // Secuencias
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
+  public JsonOutgetCodigoSecuenciaSCPI:any[];
   public codigoSecuencia:string;
   public valorSecuencia;
   public valorSecuenciaAct;
   public codigoSecuenciaDet;
   public valorSecuenciaDet;
   public valorSecuenciaDetAct;
+
+  // Variabls para validaciones de Seleccionado
+  public maxlengthCodReferencia = "38"; // Defaul Correo
+  public minlengthCodReferencia = "5"; // Defaul Correo
+  public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
 
 
   // Objeto que Controlara la Forma
@@ -93,9 +102,61 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http){
+               private _http: Http,
+              private _createDomService: CreateDomService,){
   } // Fin | Definicion del Constructor
 
+
+  /****************************************************
+  * Funcion: FND-00001
+  * Fecha: 28-07-2017
+  * Descripcion: que Carga, Los Script de la Pagina
+  * Objetivo: cargar los scripts, nesesarios para el
+  * uso de la pagina
+  *****************************************************/
+  public loadScript(url) {
+    // console.log('preparing to load...')
+    let node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(node);
+  } // FIN : 00001
+
+
+  /****************************************************
+  * Funcion: FND-00002
+  * Fecha: 26-09-2017
+  * Descripcion: Crear Dinamicamente un File Upload
+  * Objetivo: Crear Dinamicamente un File Upload desde
+  * el Servicio crearDomService
+  *****************************************************/
+  createFileUploadDOM(){
+    this._createDomService.methodApped();
+
+  } // FIN : 00002
+
+
+  /****************************************************
+  * Funcion: FND-00003
+  * Fecha: 26-09-2017
+  * Descripcion: Remover Dinamicamente un File Upload
+  * Objetivo: Remover Dinamicamente un File Upload desde
+  * el Servicio crearDomService
+  *****************************************************/
+  removeFileUploadDOM( paramsId:string ){
+    this._createDomService.methodRemove( paramsId );
+  } // FIN : 00003
+
+
+  /****************************************************
+  * Funcion: FND-00004
+  * Fecha: 26-09-2017
+  * Descripcion: Obtener el Id seleccionado
+  * Objetivo: Obtener el Id seleccionado
+  *****************************************************/
+  idGetFileUploadDOM(){
+    this._createDomService.clickOn();
+  } // FIN : 00004
 
   // Metodod onInit de la Formulario
   ngOnInit() {
@@ -114,7 +175,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       "idTipoInstitucion"  : ""
     };
 
-    // Iniciamos los Parametros de Secuenciales
+    // Iniciamos los Parametros de Secuenciales | COM-OUT-*
     this.paramsSecuencia = {
       "codSecuencial"  : "",
       "tablaSecuencia"  : "",
@@ -122,8 +183,15 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     };
 
 
-    // Iniciamos los Parametros de Secuenciales
+    // Iniciamos los Parametros de Secuenciales | COM-OUT-*
     this.paramsSecuenciaDet = {
+      "codSecuencial"  : "",
+      "tablaSecuencia"  : "",
+      "idTipoDocumento"  : ""
+    };
+
+    // Iniciamos los Parametros de Secuenciales | SCPI
+    this.paramsSecuenciaSCPI = {
       "codSecuencial"  : "",
       "tablaSecuencia"  : "",
       "idTipoDocumento"  : ""
@@ -151,18 +219,20 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.getlistaDireccionesSRECIAcom();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,  "", "", "", "", "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,  "", "", "", "", "", "", "",  "");
 
     // Eventos de Señaloizacion
     this.loading = "hide";
 
-  } // Fin Metodo onInit()
+    // Carga el scrip Js, para crear componentes Dinamicos en el DOM
+    //this.loadScript('../assets/js/ingreso.comunicacion.component.js');
 
+  } // Fin Metodo onInit()
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
       // Parseo de parametros que no se seleccionan
-      // Parseo de parametros que no se seleccionan
+      // Secuenciales de Encabezado | COM-OUT-*  y COM-OUT-DET-*
       this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
       this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
       this.valorSecuenciaAct     = this.JsonOutgetCodigoSecuenciaNew[0].valor2;
@@ -419,19 +489,51 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
      if( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
        this.paramsSecuencia.codSecuencial = "COM-OUT-OFI";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento ;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-MAIL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Correo
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "10";
+       this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
+
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
        this.paramsSecuencia.codSecuencial = "COM-OUT-CALL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "8";
+       this.minlengthCodReferencia = "8";
+       this.pattern ="^([0-9])*$";
+
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 8 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-VERB";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_verb";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "15";
+       this.pattern ="";
+
      }// Fin de Condicion
 
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -445,7 +547,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            console.log(response.data);
+            //console.log(response.data);
+            // Ejecutamos la Funcion de Secuencia de Detalle
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
           }
         });
@@ -464,7 +567,6 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
    getCodigoCorrespondenciaDet( idTipoDocumentoIn:number ){
      //Llamar al metodo, de Login para Obtener la Identidad
     //  this.paramsSecuenciaDetIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
-     //alert(this.comunicacion.idTipoDocumento);
      //Evaluamos el valor del Tipo de Documento
      if( idTipoDocumentoIn == 1 ){
        this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-OFI";
@@ -496,11 +598,92 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
-            console.log(response.data);
+            //console.log(response.data);
           }
         });
 
   } // FIN : FND-00003.1
+
+
+  /*****************************************************
+  * Funcion: FND-00003.2
+  * Fecha: 27-09-2017
+  * Descripcion: Obtiene la siguiente secuencia
+  * Objetivo: Obtener el secuencial de la tabla
+  * indicada con su codigo
+  * (gen-secuencia-comunicacion-in).
+  ******************************************************/
+   listarCodigoCorrespondenciaOfiResp(){
+    this.paramsSecuenciaSCPI.codSecuencial = "SCPI";
+    this.paramsSecuenciaSCPI.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaSCPI.idTipoDocumento = "1";
+    //Llamar al metodo, de Login para Obtener Secuencia de SCPI | Oficio
+    //console.log(this.params);
+    this._listasComunes.listasComunesToken( this.paramsSecuenciaSCPI, "gen-secuencia-comunicacion-in" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetCodigoSecuenciaSCPI = response.data;
+            alert(response.msg);
+          }else{
+            this.JsonOutgetCodigoSecuenciaSCPI = response.data;
+            //console.log( this.JsonOutgetCodigoSecuenciaDet );
+          }
+        });
+  } // FIN : FND-00003.2
+
+
+  /*****************************************************
+  * Funcion: FND-00004
+  * Fecha: 25-09-2017
+  * Descripcion: Carga la Imagen de usuario desde el File
+  * Objetivo: Obtener la imagen que se carga desde el
+  * control File de HTML
+  * (fileChangeEvent).
+  ******************************************************/
+  public filesToUpload: Array<File>;
+  public resultUpload;
+
+  fileChangeEvent(fileInput: any){
+    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+
+    let token = this._loginService.getToken();
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/documentos/upload-image/DOC-EEH-100012";
+
+    // Variables del Metodo
+    let  error:string;
+    let  status:string;
+    let  codigoSec:string;
+
+    // Parametros de las Secuencias
+    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+
+    // Parametro para documento Seleccionado
+    this.comunicacion.pdfDocumento = codigoSec;
+
+    // Ejecutamos el Servicio con los Parametros
+    this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
+        ( result ) => {
+          this.resultUpload = result;
+          status = this.resultUpload.status;
+          console.log(this.resultUpload);
+          if(status === "error"){
+            console.log(this.resultUpload);
+            alert(this.resultUpload.msg);
+          }
+
+          // this.mensajes = this.resultUpload.msg;
+        },
+        ( error ) => {
+          alert(error);
+          console.log(error);
+        });
+  } // FIN : FND-00004
 
 
 }

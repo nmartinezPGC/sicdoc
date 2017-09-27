@@ -55,10 +55,11 @@
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group" >
-               <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
-                    ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci"
-                   class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="30" minlength="5">
+               <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci" value=""
+                    ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci" pattern="{{ pattern }}"
+                   class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="{{ maxlengthCodReferencia }}" minlength="5">
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
+                  <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.pattern" >El campo no tiene formato correcto</small>
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
   					</div>
   				</div>
@@ -202,7 +203,7 @@
                      ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
                      aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
-                 <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
+                 <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo a la Comunicacion.</small>
                 </div>
                 <!-- Barra de Progreso de Carga de la Imagen -->
                 <div class="progress">
@@ -217,9 +218,19 @@
                 <p id="status"></p>
             </div>
 
-
           </div>
       </div>
+
+      <!-- <p>This is a paragraph.</p>
+      <p>This is another paragraph.</p>
+
+      <ul id="listaComun">
+        <li id="lista1">List item 1</li>
+      </ul>
+
+    <a id="btn1" (click)="removeFileUploadDOM('item')" >Remove Li</a>
+    <a id="btn2" (click)="createFileUploadDOM()" >Append list items</a> -->
+
 
 		<hr class="colorgraph">
 			<div class="row">
@@ -228,7 +239,7 @@
         </div>
 				<div class="col-xs-12 col-md-3">
 
-            <a [routerLink]="['/ingreso-comunicacion']" class="btn btn-success btn-block btn-lg"
+            <a [routerLink]="['/ingreso-comunicacion-tipo']" class="btn btn-success btn-block btn-lg"
                (click)="resetForm()" >Limpiar</a>
         </div>
 			</div>

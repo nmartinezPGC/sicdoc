@@ -354,8 +354,16 @@ class IngresoCorrespondenciaController extends Controller{
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
                                ->setEncryption('tls')                               
-                               //->setUsername( $identity->email )
-                               ->setUsername("nahum.sreci@gmail.com")
+                                ->setStreamOptions(array(
+                                            'ssl' => array(
+                                                'allow_self_signed' => true, 
+                                                'verify_peer' => false, 
+                                                'verify_peer_name' => false
+                                                )
+                                            )
+                                         )
+                               ->setUsername( $identity->email )
+                               //->setUsername("nahum.sreci@gmail.com")
                                //->setUsername( 'gcallejas.sreci@gmail.com')
                                ->setPassword('1897Juve');
                                //->setPassword('gec2017*');
@@ -664,8 +672,9 @@ class IngresoCorrespondenciaController extends Controller{
                 //Parametros a Convertir                           
                 //Datos generales de la Tabla                
                 $new_secuencia        = ($params->secuenciaComunicacionIn != null) ? $params->secuenciaComunicacionIn : null ;
-                $act_secuencia_enc        = ($params->secuenciaComunicacionInAct != null) ? $params->secuenciaComunicacionInAct : null ;
-                $act_secuencia_det        = ($params->secuenciaComunicacionDetAct != null) ? $params->secuenciaComunicacionDetAct : null ;
+                $act_secuencia_enc    = ($params->secuenciaComunicacionInAct != null) ? $params->secuenciaComunicacionInAct : null ;
+                $act_secuencia_det    = ($params->secuenciaComunicacionDetAct != null) ? $params->secuenciaComunicacionDetAct : null ;
+                $act_secuencia_scpi   = ($params->secuenciaComunicacionSCPI != null) ? $params->secuenciaComunicacionSCPI : null ;
                 
                 $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
@@ -731,7 +740,35 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
-                    $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
+                                        
+                    //Preguntamos si Tipo Doc Es 1 | Oficio ********************
+                    if( $cod_tipo_documento === "1" ){
+                        // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
+                        $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
+                            array(
+                               "codSecuencial"  => "SCPI"
+                            ));
+                        $cod_referenciaSCPI = $secuenciaSCPI->getCodSecuencial();
+                        $valor2_secuenciaSCPI = $secuenciaSCPI->getValor2() + 1;
+                        $secuenciaSCPI->setValor2($valor2_secuenciaSCPI);
+
+                        $em->persist($secuenciaSCPI);
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+
+
+                        // Consulta a los Datos del Depto Funcional *************
+                        $deptoFuncConsulta = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                            array(
+                               "idDeptoFuncional" => $identity->idDeptoFuncional
+                            ));
+                        $inicialesDeptoFunc = $deptoFuncConsulta->getInicialesDeptoFuncional();
+                        
+                    $cod_referenciaSreci = $cod_referenciaSCPI . "-". $inicialesDeptoFunc . "-". $valor2_secuenciaSCPI;
+                    } // Fin Codicion de Oficio Secuencial SCPI ****************
+                    
+                    // Seteamos el Valor de Codigo de Referencia | SCPI-DEPTO-CORRELATIVO
+                    $correspondenciaNew->setCodReferenciaSreci( $cod_referenciaSreci );
                     $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
                     
                     $correspondenciaNew->setIdDeptoAcomp($cod_depto_acomp);
@@ -793,21 +830,21 @@ class IngresoCorrespondenciaController extends Controller{
                     //Verificacion del Codigo de la Correspondenia *******************
                     $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                         array(
-                          "codCorrespondenciaEnc" => $cod_correspondencia
+                          "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                         ));
                     
                     //Verificacion del Codigo de Referencia de la Correspondenia *******************
-                    if( $cod_tipo_documento == 1 ){
+                    //if( $cod_tipo_documento === "1" ){
                         $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                             array(
-                                "codReferenciaSreci" => $cod_referenciaSreci
-                            ));
-                    
-                    }else { $isset_referencia_cod = 0; }
+                                "codReferenciaSreci" => $cod_referenciaSreci,
+                                "idTipoDocumento"    => 1
+                            ));                    
+                    //}else { $isset_referencia_cod = 0; }
                     
                     
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
-                    if(count($isset_corresp_cod) == 0 && $isset_referencia_cod == 0){
+                    if(count($isset_corresp_cod) == 0 && count($isset_referencia_cod) == 0){
                         //Instanciamos de la Clase TblSecuenciales
                         //Seteo del nuevo secuencial de la tabla: TblSecuenciales
                         $secuenciaNew = new TblSecuenciales();
@@ -848,7 +885,7 @@ class IngresoCorrespondenciaController extends Controller{
                         //Verificacion del Codigo de la Correspondenia *********
                         $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                             array(
-                                "codCorrespondenciaEnc" => $cod_correspondencia
+                                "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                             ));
                         $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
                         
@@ -881,6 +918,13 @@ class IngresoCorrespondenciaController extends Controller{
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia_det); //Set de valor2 de Secuencia de Oficios
                         
+                        // Llamamo a la Funcion Interna para que nos convierta *
+                        // La Fecha a Calendario Gregoriano ********************
+                        
+                        $fecha_maxima_entrega_time_stamp = json_encode($correspondenciaDet->getFechaIngreso()->getTimestamp(), true ); 
+                        // Ejecucion de la Funcion *****************************
+                        $fecha_maxima_entrega_convert = $this->convertirFechasTimeStampAction( $fecha_maxima_entrega_time_stamp );
+                        
                         // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                         $em->persist($correspondenciaDet);
                         
@@ -897,7 +941,7 @@ class IngresoCorrespondenciaController extends Controller{
                         if( $pdf_send != null ){
                             $documentosIn = new TblDocumentos();
 
-                            $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
+                            $documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
                             $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
                             $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
@@ -915,15 +959,14 @@ class IngresoCorrespondenciaController extends Controller{
                             // Detalle  ********************************************
                             $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
                                 array(
-                                    "codCorrespondenciaDet" => $cod_correspondencia_det
+                                    "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
                                 ));
                             $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
 
 
                             // Pdf que se Agrega
                             // validamos que se adjunta pdf
-
-                                $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                            $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
 
 
                             // Relizamos la persistencia de Datos de las Comunicaciones Detalle
@@ -951,13 +994,25 @@ class IngresoCorrespondenciaController extends Controller{
                             //Creamos la instancia con la configuración 
                             $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
+                               //->setHost('smtp.mail.yahoo.com')
                                ->setPort(587)
-                               ->setEncryption('tls')                               
+                               //->setPort(465)
+                               ->setEncryption('tls')
+                               ->setStreamOptions(array(
+                                                    'ssl' => array(
+                                                        'allow_self_signed' => true, 
+                                                        'verify_peer' => false, 
+                                                        'verify_peer_name' => false
+                                                        )
+                                                    )
+                                                 )
+                               //->setEncryption('ssl')                               
                                ->setUsername( $identity->email )
+                               //->setUsername( 'nahum.sreci@gmail.com')
                                //->setUsername( 'gcallejas.sreci@gmail.com')
                                ->setPassword('1897Juve');
                                //->setPassword('gec2017*');
-                           //echo "Paso 1";
+                           
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            
@@ -973,7 +1028,7 @@ class IngresoCorrespondenciaController extends Controller{
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega) )
+                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => $fecha_maxima_entrega_convert )
                                     ), 'text/html' );                           
                            
                             // validamos que se adjunta pdf
@@ -985,7 +1040,7 @@ class IngresoCorrespondenciaController extends Controller{
                                  
                             // Envia el Correo con todos los Parametros
                             $resuly = $mailer->send($mail);
-                                                  
+                                                
                         // ***** Fin de Envio de Correo ************************
                         // 
                         // 
@@ -999,7 +1054,7 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
-                                "msg"    => "Se ha ingresado el Oficio No. " . $cod_correspondencia . "-" . $new_secuencia_det,
+                                "msg"    => "Se ha ingresado la comunicacion No. " . $cod_correspondencia . "-" . $new_secuencia_det,
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{
@@ -1008,7 +1063,7 @@ class IngresoCorrespondenciaController extends Controller{
                             "desc"   => "Ya existe un codigo",
                             "code"   => 400, 
                             "msg"   => "Error al registrar, ya existe una correspondencia con este código, ". $cod_referenciaSreci . 
-                                       " por favor ingrese otro !!"
+                                       " por favor ingrese otro !! "
                         );                       
                     }//Finaliza el Bloque de la validadacion de la Data en la Tabla
                     // TblCorrespondenciaEnc
@@ -1040,6 +1095,33 @@ class IngresoCorrespondenciaController extends Controller{
         }        
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
-    } //Fin de la Funcion New Correspondencia ********************
+    } //Fin de la Funcion New Correspondencia **********************************
+    
+    
+    /**
+     * Creacion del Controlador: Transforma Fechas Time Stamp
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00001
+     */
+    public function convertirFechasTimeStampAction( $fecha_time_stamp )
+    {
+        // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
+        $fecha_time_stamp_In = $fecha_time_stamp;
+        
+        // Decodificamos el Json con su Campo de Fechas | es nesesario que se **
+        // haga la Consulta a la BD por medio de Doctrine( getFechaConsulta())**
+        //$fecha_transformar = json_encode($correspondenciaAsigna->getFechaMaxEntrega()->getTimestamp(), true );
+        
+        // Itaciamosla fecha y le Seteamos el valor TimeStamp del campo de la **
+        // Consulta del Doctrine (getFechaConsulta()) **************************
+        $fecha_set = new \DateTime();
+        $fecha_set->setTimestamp( $fecha_time_stamp_In );
+        
+        //Salida del Formato a la fecha Convertida *****************************
+        $fecha_salida =  $fecha_set->format('Y-m-d');
+        
+        return $fecha_salida;
+    } // FIN | FND00001
     
 }
