@@ -64,98 +64,41 @@
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso.timestamp | generateDate }} </td>
               <td> {{ item.fechaMaxEntrega.timestamp | generateDate }} </td>
-              <td> <a *ngIf="item.idEstado.idEstado == 3" href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+              <td> <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento == 1"
+                    href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
                                                          item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
                                                          item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
-                                                         item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc )"
+                                                         item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );
+                                                         listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento);"
                      data-toggle="modal" data-target="#t_and_c_m2" >
-                    <i class="material-icons" data-placement="top" title="Oficio Respuesta">create_new_folder</i>
+                     <i class="material-icons" data-placement="top" title="Oficio Respuesta">create_new_folder</i>
+                  </a>
+                  <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento != 1"
+                     href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+                                                         item.idDeptoFuncional.idDeptoFuncional,
+                                                         item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
+                                                         item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
+                                                         item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );
+                                                         listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento);"
+                          data-toggle="modal" data-target="#t_and_c_m3" >
+                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Agregar Actividad a Comunicacion" >assignment</i>
                   </a>
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
                                                          item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
                                                          item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
-                                                         item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc )"
+                                                         item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );
+                                                         listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento);"
                           data-toggle="modal" data-target="#t_and_c_m" >
-                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Oficio" >assignment_turned_in</i>
+                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Oficio" >assignment_turned_in</i>
                   </a>
+
               </td>
             </tr>
         </tbody>
     </table>
 </div>
-
-    <!-- Modal de Oficio Respuesta Actividad -->
-    <div *ngIf="idEstadoModal != 5 " class="modal fade" id="t_and_c_m2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-          data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
-            <h4 class="modal-title" id="myModalLabel">Comunicacion No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
-            <!-- Loader de Carga de los Datos -->
-            <div id="loader-2" *ngIf="loading_table == 'show'" >
-              <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
-            </div>
-          </div>
-
-          <div class="modal-body">
-            <!-- Formulario del Oficio Asignado -->
-              <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(finalizarOficioAsignado, 2)" name="finalizarOficioForm" role="form">
-                <!-- fila 1 del Formulario -->
-                <h4>Creacion de Comunicacion de Respuesta | {{ idCorrepEncModal }}</h4>
-                <hr>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="validationDefault01">Funcionario Asignado</label>
-                    <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
-                           value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
-                  </div>
-
-                </div>
-
-                <!-- fila 2 del Formulario -->
-                <div class="row">
-                  <div class="col-md-12 mb-4">
-                    <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                    <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
-                            ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
-                            class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
-                    </textarea>
-                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripcion es obligatoria</small>
-                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
-                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.maxlength" >La capacidad maxima para la Descripcion es: 1400 caracteres</small>
-                  </div>
-                </div>
-
-                <!-- <div class="row">
-                  <div class="col-md-12 mb-3">
-                    <!-- <label for="validationDefault02">Actividad realizada</label> -->
-                    <!-- <input type="text" class="form-control" [(ngModel)]="finalizarOficios.actividadOficio" name="actividadOficio" id="actividadOficio"
-                        placeholder="Actividad realizada" required value="">
-                  </div>
-                </div> -->
-
-                <!-- <div class="row">
-                  <div class="col-md-12 mb-3">
-                    <!-- <label for="validationDefault02">Actividad realizada</label> -->
-                    <!-- <input type="text" class="form-control" [(ngModel)]="finalizarOficios.temaOficio" name="temaOficio" id="temaOficio"
-                        placeholder="Tema de Oficio" required value="">
-                  </div>
-                </div> -->
-                <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-                <button type="button" class="btn btn-primary">Limpiar</button>
-                <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
-                <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
-            </form>
-        </div>
-          <div class="modal-footer">
-
-          </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 
 <!-- Modal de Finalizar Actividad -->
@@ -228,5 +171,121 @@
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+    <!-- Modal de Oficio Respuesta Actividad -->
+    <div *ngIf="idEstadoModal != 5 " class="modal fade" id="t_and_c_m2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+          data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
+            <h4 class="modal-title" id="myModalLabel">Comunicacion No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+            <!-- Loader de Carga de los Datos -->
+            <div id="loader-2" *ngIf="loading_table == 'show'" >
+              <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <!-- Formulario del Oficio Asignado -->
+              <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(creacionOficioAsignado, 2)" name="finalizarOficioForm" role="form">
+                <!-- fila 1 del Formulario -->
+                <h4>Creacion de Comunicacion de Respuesta | {{ idCorrepEncModal }}</h4>
+                <hr>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="validationDefault01">Funcionario Asignado</label>
+                    <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                           value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
+                  </div>
+
+                </div>
+
+                <!-- fila 2 del Formulario -->
+                <div class="row">
+                  <div class="col-md-12 mb-4">
+                    <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
+                    <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                            ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
+                            class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                    </textarea>
+                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripcion es obligatoria</small>
+                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
+                    <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.maxlength" >La capacidad maxima para la Descripcion es: 1400 caracteres</small>
+                  </div>
+                </div>
+                <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+                <button type="button" class="btn btn-primary">Limpiar</button>
+                <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+                <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
+            </form>
+        </div>
+          <div class="modal-footer">
+
+          </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Modal de Agregar Actividad a Comunicacion-->
+<div *ngIf="idEstadoModal != 5 " class="modal fade" id="t_and_c_m3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
+        <h4 class="modal-title" id="myModalLabel">Comunicacion No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+        <!-- Loader de Carga de los Datos -->
+        <div id="loader-2" *ngIf="loading_table == 'show'" >
+          <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Formulario del Oficio Asignado -->
+          <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(agregarActividadResp, 3)" name="finalizarOficioForm" role="form">
+            <!-- fila 1 del Formulario -->
+            <h4>Agregar Actividad a Comunicacion | {{ idCorrepEncModal }}</h4>
+            <hr>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="validationDefault01">Funcionario Asignado</label>
+                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                       value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
+              </div>
+
+            </div>
+
+            <!-- fila 2 del Formulario -->
+            <div class="row">
+              <div class="col-md-12 mb-4">
+                <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
+                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                        ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
+                        class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                </textarea>
+                <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripcion es obligatoria</small>
+                <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
+                <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.maxlength" >La capacidad maxima para la Descripcion es: 1400 caracteres</small>
+              </div>
+            </div>
+
+            <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+            <button type="button" class="btn btn-primary">Limpiar</button>
+            <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+            <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
+        </form>
+    </div>
+      <div class="modal-footer">
+
+      </div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 
 </div> <!--  Fin de container -->

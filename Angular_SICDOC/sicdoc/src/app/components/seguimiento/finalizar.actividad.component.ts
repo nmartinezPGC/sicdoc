@@ -65,6 +65,7 @@ export class FinalizarActividadComponent implements OnInit {
   public JsonOutgetlistaOficiosAllDet:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
   public JsonOutgetCodigoSecuenciaOfiResp:any[];
+  public JsonOutgetCodigoSecuenciaActividadAgregar:any[];
 
   // Parametros del Modelo
   private tableFinalizarActividadList;
@@ -93,10 +94,13 @@ export class FinalizarActividadComponent implements OnInit {
   // Propiedades de la Secuencial
   private paramsSecuenciaDet;
   private paramsSecuenciaOficioRespuesta;
+  private paramsSecuenciaActividadAgregar;
   public codigoSecuenciaDet; // Secuencia en Texto del Oficio
   public codigoSecuenciaOficioRespuesta; // Secuencia en Texto del Oficio
+  public codigoSecuenciaRespActividad; // Secuencia en Texto del Oficio
   public valorSecuenciaDet; // Secuencial del Oficio
   public valorSecuenciaOficioRespuesta; // Secuencial del Oficio
+  public valorSecuenciaRespActividad; // Secuencial del Oficio
 
   constructor( private _listasComunes: ListasComunesService,
                private _finalizarOficio: FinalizarActividadService,
@@ -152,15 +156,23 @@ export class FinalizarActividadComponent implements OnInit {
     };
 
 
+    // Iniciamos los Parametros de Secuenciales | Agregar Actividad
+    this.paramsSecuenciaActividadAgregar = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null, null, null, null,  null,  null, null, 5,  null, null, null, null, null, null);
+    this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null,
+                               null, null, null,  null,  null, null, 5,  null, null, null, null, null, null, null, null);
 
     // Inicializamos el Llenado de las Tablas
     this.getlistaFinalizarOficiosTable();
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondenciaDet();
-    this.listarCodigoCorrespondenciaOfiResp();
+    //this.listarCodigoCorrespondenciaOfiResp();
 
   }
 
@@ -185,18 +197,25 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.idFuncionarioAsigmado = this.identity.sub;
 
     // Parametros de l Secuenciales
-    this.codigoSecuenciaDet    = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-    this.codigoSecuenciaOficioRespuesta   = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
-    this.valorSecuenciaDet     = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
-    this.valorSecuenciaOficioRespuesta     = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
+    this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+    this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
+    this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial;
+    this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+    this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
+    this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
     //console.log( this.JsonOutgetCodigoSecuenciaDet );
 
     // Secuenciales de la Tabla correspondencia detalle
+    // ----------- Codigos de las Secuencias --------------------
     this.finalizarOficios.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
     this.finalizarOficios.codCorrespondenciaNewOfi = this.codigoSecuenciaOficioRespuesta;
+    this.finalizarOficios.codCorrespondenciaRespAct = this.codigoSecuenciaRespActividad;
+
+    // -----------Valores de las Secuencias ----------------------
     this.finalizarOficios.secuenciaComunicacionDet = this.valorSecuenciaDet;
     this.finalizarOficios.secuenciaComunicacionNewOfi = this.valorSecuenciaOficioRespuesta;
     this.finalizarOficios.secuenciaComunicacionNewOfiAct = this.valorSecuenciaOficioRespuesta - 1;
+    this.finalizarOficios.secuenciaComunicacionNewRespActividad = this.valorSecuenciaRespActividad;
 
     // Asignamos los valores al JSON Principal
     this.finalizarOficios.codOficioInterno = this.codOficioIntModal;
@@ -213,7 +232,8 @@ export class FinalizarActividadComponent implements OnInit {
       this.loading_table = 'show';
       //console.log( this.finalizarOficios );
 
-      // Evalua que Opcion va a Enviar por el Formulario
+      // Evalua que Opcion va a Enviar por el Formulario ***********************
+      // Opcion de Finalizar Oficio ********************************************
       if( opcion == 1 ){
         opcionExecute = "finalizarOficioAsignado";
         // Opcion de Finalizacion de Comunicacion
@@ -237,6 +257,7 @@ export class FinalizarActividadComponent implements OnInit {
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
                 this.ngOnInit();
+                console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m').modal('hide');
                 }, 600);
@@ -258,8 +279,10 @@ export class FinalizarActividadComponent implements OnInit {
                 }
               }
           });
-      }else {
+      // Opcion de Oficio de respuesta *****************************************
+      }else if ( opcion == 2 ) {
         this.finalizarOficios.idEstadoAsigna = 8;
+        console.log(this.finalizarOficios);
         // Opcion de Creacion de Oficio de Respuesta
         this._finalizarOficio.creacionOficioAsignado(token1, this.finalizarOficios).subscribe(
           response => {
@@ -281,6 +304,7 @@ export class FinalizarActividadComponent implements OnInit {
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
                 this.ngOnInit();
+                console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m2').modal('hide');
                 }, 600);
@@ -303,8 +327,54 @@ export class FinalizarActividadComponent implements OnInit {
                 }
               }
           });
-      }
+      // Opcion de Agregar Actividad *******************************************
+    }else if ( opcion == 3 ){
+        opcionExecute = "finalizarOficioAsignado";
+        // Opcion de Finalizacion de Comunicacion
+        console.log(this.finalizarOficios);
+        this._finalizarOficio.agregarActividadResp(token1, this.finalizarOficios).subscribe(
+          response => {
+              // Obtenemos el Status de la Peticion
+              this.status = response.status;
+              this.mensajes = response.msg;
 
+              // Condicionamos la Respuesta
+              if(this.status != "success"){
+                  this.status = "error";
+                  this.mensajes = response.msg;
+                  if(this.loading = 'show'){
+                    this.loading = 'hidden';
+                    this.loading_table = 'hide';
+                  }
+                  alert(this.mensajes);
+              }else{
+                //this.resetForm();
+                this.loading = 'hidden';
+                this.loading_table = 'hide';
+                this.ngOnInit();
+                console.log(response.data);
+                setTimeout(function() {
+                  $('#t_and_c_m3').modal('hide');
+                }, 600);
+                // this.alertShow();
+              }
+          }, error => {
+              //Regisra cualquier Error de la Llamada a la API
+              this.errorMessage = <any>error;
+
+              //Evaluar el error
+              if(this.errorMessage != null){
+                console.log(this.errorMessage);
+                this.mensajes = this.errorMessage;
+                alert("Error en la Petición !!" + this.errorMessage);
+
+                if(this.loading = 'show'){
+                  this.loading = 'hidden';
+                  this.loading_table = 'hidden';
+                }
+              }
+          });
+      }
   } // Fin | Metodo onSubmit
 
 
@@ -456,10 +526,36 @@ export class FinalizarActividadComponent implements OnInit {
  * (gen-secuencia-comunicacion-in).
  ******************************************************/
   listarCodigoCorrespondenciaDet(){
+    //Llamar al metodo, de Login para Obtener la Identidad
+    let idTipoDocumentoFuc:number;
+    idTipoDocumentoFuc = this.paramsSecuenciaActividadAgregar.idTipoDocumento;
+    //alert(this.comunicacion.idTipoDocumento);
+    //Evaluamos el valor del Tipo de Documento
+    // if( idTipoDocumentoFuc == 1 ){
+    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-OFI";
+    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_enc";
+    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
+    //
+    // } else if ( idTipoDocumentoFuc == 5 ) {
+    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-MAIL";
+    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_mail";
+    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
+    //
+    // } else if ( idTipoDocumentoFuc == 7 ){
+    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-CALL";
+    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_call";
+    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
+    //
+    // } else if ( idTipoDocumentoFuc == 8 ) {
+    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-VERB";
+    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_verb";
+    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
+    //
+    // }// Fin de Condicion
    this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
    this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
    this.paramsSecuenciaDet.idTipoDocumento = "1";
-   let nextCodComunicacion:string = "";
+  //  let nextCodComunicacion:string = "";
    //Llamar al metodo, de Login para Obtener la Identidad
    //console.log(this.params);
    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
@@ -472,7 +568,10 @@ export class FinalizarActividadComponent implements OnInit {
 
          }else{
            this.JsonOutgetCodigoSecuenciaDet = response.data;
+           // Ejecutamos el llamado al la Segunda Secuencia
+           this.listarCodigoCorrespondenciaOfiResp();
            //console.log( this.JsonOutgetCodigoSecuenciaDet );
+           //this.listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoFuc );
          }
        });
  } // FIN : FND-00004
@@ -490,7 +589,6 @@ export class FinalizarActividadComponent implements OnInit {
    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
-   let nextCodComunicacion:string = "";
    //Llamar al metodo, de Login para Obtener la Identidad
    //console.log(this.params);
    this._listasComunes.listasComunesToken( this.paramsSecuenciaOficioRespuesta, "gen-secuencia-comunicacion-in" ).subscribe(
@@ -507,5 +605,53 @@ export class FinalizarActividadComponent implements OnInit {
          }
        });
  } // FIN : FND-00005
+
+
+ /*****************************************************
+ * Funcion: FND-00005
+ * Fecha: 23-09-2017
+ * Descripcion: Obtiene la siguiente secuencia
+ * Objetivo: Obtener el secuencial de la tabla
+ * indicada con su cosigo
+ * (gen-secuencia-comunicacion-in).
+ ******************************************************/
+  listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoIn:number ){
+    // Condicion del Secuencial Segun el Tipo de Documento
+    //Evaluamos el valor del Tipo de Documento
+    if( idTipoDocumentoIn == 1 ){
+      this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-OFI";
+      this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
+      this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn ;
+    } else if ( idTipoDocumentoIn == 5 ) {
+      this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-MAIL";
+      this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_mail";
+      this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
+    } else if ( idTipoDocumentoIn == 7 ){
+      this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-CALL";
+      this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_call";
+      this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
+    } else if ( idTipoDocumentoIn == 8 ) {
+      this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-VERB";
+      this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_verb";
+      this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
+    }// Fin de Condicion
+
+   //Llamar al metodo, de Login para Obtener la Identidad
+   //console.log(this.params);
+   this._listasComunes.listasComunesToken( this.paramsSecuenciaActividadAgregar, "gen-secuencia-comunicacion-in" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
+           alert(response.msg);
+
+         }else{
+           this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
+           console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
+         }
+       });
+ } // FIN : FND-00005
+
 
 }

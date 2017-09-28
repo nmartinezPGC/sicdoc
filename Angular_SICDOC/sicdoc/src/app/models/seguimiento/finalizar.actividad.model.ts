@@ -28,9 +28,11 @@ export class FinalizarActividad{
       public secuenciaComunicacionIn:string,
       public codCorrespondenciaDet:string,
       public codCorrespondenciaNewOfi:string,
+      public codCorrespondenciaRespAct:string,
       public secuenciaComunicacionDet:number,
       public secuenciaComunicacionNewOfi:number,
-      public secuenciaComunicacionNewOfiAct:number
+      public secuenciaComunicacionNewOfiAct:number,
+      public secuenciaComunicacionNewRespActividad:number
 
 
     ){}

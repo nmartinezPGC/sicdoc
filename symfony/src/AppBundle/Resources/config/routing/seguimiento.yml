@@ -23,3 +23,9 @@ seguimiento_creacionOficioResp:
     path: /creacion-oficio-asignado
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:creacionOficioResp" }
     methods: POST
+    
+## Creacion Actividad de Respuesta | Modulo Seguimiento
+seguimiento_creacionActividadResp:
+    path: /creacion-actividad-resp
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:creacionActividadResp" }
+    methods: POST
