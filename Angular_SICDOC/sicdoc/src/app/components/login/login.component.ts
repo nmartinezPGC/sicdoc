@@ -142,6 +142,7 @@ export class LoginComponent implements OnInit {
                         //Evaluar el error
                         if(this.errorMessage != null){
                           console.log(this.errorMessage);
+                          alert(response);
                           alert("Error en la Petición !!" + this.errorMessage);
                         }
                     }

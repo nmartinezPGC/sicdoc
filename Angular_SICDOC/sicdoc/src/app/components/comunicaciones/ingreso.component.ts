@@ -190,7 +190,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.convertirFecha();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","","","",  "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","","","",  "", "",  "", "");
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
@@ -355,7 +355,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.status = "hide";
     this.loading = "hide";
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","","","",  "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","","","",  "", "",  "", "");
   } // FIN : FND-00001.1
 
 
