@@ -11,6 +11,7 @@ export class LoginService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
   public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
+  //public url = "http://172.17.3.90/sicdoc/symfony/web/app.php";
 
   //Variables para el localStorage
   public identity;
