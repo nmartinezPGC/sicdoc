@@ -336,7 +336,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/paisesList", name="paisesList")
+     * @Route("/paises-list", name="paises-list")
      * Creacion del Controlador: Paises
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
