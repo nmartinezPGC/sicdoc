@@ -82,6 +82,9 @@ class IngresoCorrespondenciaController extends Controller{
                 // Seteo de la Fecha, viene en Json (String) se tiene que convertir a su dato Nativo (Date)
                 $fecha_maxima_entrega_date = new \DateTime($fecha_maxima_entrega);
                 
+                // Fechas Nulas
+                $fecha_null = new \DateTime('2999-12-31');
+                
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
                 $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
@@ -133,6 +136,10 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
+                    $correspondenciaNew->setFechaModificacion($fecha_null);
+                    $correspondenciaNew->setFechaFinalizacion($fecha_null);
+                    
+                    
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
@@ -240,6 +247,7 @@ class IngresoCorrespondenciaController extends Controller{
                         //Correspondencia Enc **********************************                        
                         $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det); //Set de Codigo Correspondencia
                         $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
+                        $correspondenciaDet->setFechaSalida($fecha_null); //Set de Fecha Salida
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
@@ -686,6 +694,9 @@ class IngresoCorrespondenciaController extends Controller{
                 // Seteo de la Fecha, viene en Json (String) se tiene que convertir a su dato Nativo (Date)
                 $fecha_maxima_entrega_date = new \DateTime($fecha_maxima_entrega);
                 
+                // Fechas Nulas
+                $fecha_null = new \DateTime('2999-12-31');
+                
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
                 $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
@@ -737,6 +748,10 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
+                    $correspondenciaNew->setFechaIngreso($fecha_ingreso);
+                    $correspondenciaNew->setFechaModificacion($fecha_null);
+                    $correspondenciaNew->setFechaFinalizacion($fecha_null);
+                    
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
@@ -875,6 +890,8 @@ class IngresoCorrespondenciaController extends Controller{
                         //Correspondencia Enc **********************************                        
                         $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Codigo Correspondencia
                         $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
+                        
+                        $correspondenciaDet->setFechasalida($fecha_null); //Set de Fecha Ingreso
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
@@ -1054,7 +1071,7 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
-                                "msg"    => "Se ha ingresado la comunicacion No. " . $cod_correspondencia . "-" . $new_secuencia_det,
+                                "msg"    => "Se ha ingresado la comunicacion No. " . $cod_correspondencia . "-" . $new_secuencia,
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{

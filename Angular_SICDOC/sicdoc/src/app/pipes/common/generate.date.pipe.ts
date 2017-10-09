@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class GenerateDatePipe implements PipeTransform{
   // Transformamos la fecha a Setear
   transform( value ): string {
+      // Parametro de convercion
       let date = new Date( value * 1000 );
       // Sacamos los valores de la fecha
       // Seteo del Dia

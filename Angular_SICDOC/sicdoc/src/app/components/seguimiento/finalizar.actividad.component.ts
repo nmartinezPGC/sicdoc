@@ -51,6 +51,9 @@ export class FinalizarActividadComponent implements OnInit {
   public loading_table  = 'hide';
   public loading_tr  = 'hide';
 
+  public loadTabla1:boolean = false;
+  public loadTabla2:boolean = false;
+
   // Variables de Mensajeria y Informaicon
    public data;
    public errorMessage;
@@ -174,7 +177,10 @@ export class FinalizarActividadComponent implements OnInit {
     this.listarCodigoCorrespondenciaDet();
     //this.listarCodigoCorrespondenciaOfiResp();
 
-  }
+    // Inicializamos laTabla
+    this.fillDataTable();
+
+  } // FIN | ngOnInit()
 
 
   /*****************************************************
@@ -390,6 +396,7 @@ export class FinalizarActividadComponent implements OnInit {
   getlistaFinalizarOficiosTable() {
     // Laoding
     this.loading = 'show';
+    this.loadTabla1 = false;
 
     // Parametros de la Lista de los Funcionarios
     // Variable del localStorage, para obtener el Id del Usuario (sub) y luego
@@ -413,7 +420,8 @@ export class FinalizarActividadComponent implements OnInit {
             this.JsonOutgetlistaOficiosAll = response.data;
 
             this.loading = 'hidden';
-            //console.log(this.JsonOutgetlistaOficiosAll);
+            this.loadTabla1 = true;
+            console.log(this.JsonOutgetlistaOficiosAll);
           }
         });
   } // FIN | FND-00001
@@ -529,36 +537,14 @@ export class FinalizarActividadComponent implements OnInit {
     //Llamar al metodo, de Login para Obtener la Identidad
     let idTipoDocumentoFuc:number;
     idTipoDocumentoFuc = this.paramsSecuenciaActividadAgregar.idTipoDocumento;
-    //alert(this.comunicacion.idTipoDocumento);
-    //Evaluamos el valor del Tipo de Documento
-    // if( idTipoDocumentoFuc == 1 ){
-    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-OFI";
-    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_enc";
-    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
-    //
-    // } else if ( idTipoDocumentoFuc == 5 ) {
-    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-MAIL";
-    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_mail";
-    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
-    //
-    // } else if ( idTipoDocumentoFuc == 7 ){
-    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-CALL";
-    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_call";
-    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
-    //
-    // } else if ( idTipoDocumentoFuc == 8 ) {
-    //   this.paramsSecuenciaDet.codSecuencial = "COM-OUT-VERB";
-    //   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_verb";
-    //   this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoFuc;
-    //
-    // }// Fin de Condicion
-   this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
-   this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
-   this.paramsSecuenciaDet.idTipoDocumento = "1";
-  //  let nextCodComunicacion:string = "";
-   //Llamar al metodo, de Login para Obtener la Identidad
-   //console.log(this.params);
-   this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
+
+    this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
+    this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+    this.paramsSecuenciaDet.idTipoDocumento = "1";
+    //  let nextCodComunicacion:string = "";
+    //Llamar al metodo, de Login para Obtener la Identidad
+    //console.log(this.params);
+    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
          // login successful so redirect to return url
          if(response.status == "error"){
@@ -648,10 +634,27 @@ export class FinalizarActividadComponent implements OnInit {
 
          }else{
            this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
-           console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
+           //console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
          }
        });
  } // FIN : FND-00005
+
+
+ /*****************************************************
+ * Funcion: FND-00006
+ * Fecha: 06-10-2017
+ * Descripcion: Realiza el llenado de la Tabla con Todos
+ * los Filtros
+ * Params: Array de los Estado y Tipos Comunicacion de
+ * los Checkbox
+ ******************************************************/
+ fillDataTable(){
+   setTimeout(function () {
+     $ (function () {
+         $('#example').DataTable();
+     });
+   }, 7000);
+ } // FIN | FND-00006
 
 
 }

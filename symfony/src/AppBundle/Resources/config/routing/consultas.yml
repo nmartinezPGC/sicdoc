@@ -1,0 +1,13 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Consultas Enc
+consultas_consultaGeneralEncList:
+    path: /consulta-general
+    defaults: { _controller: "AppBundle:Consultas:consultaGeneralEncList" }
+    methods: POST
+
+## Redireccionamiento de las Ruta por Defecto | Modulo Consultas Det
+consultas_consultaGeneralDetList:
+    path: /consulta-general-det
+    defaults: { _controller: "AppBundle:Consultas:consultaGeneralDetList" }
+    methods: POST

@@ -35,6 +35,9 @@ export class LoginComponent implements OnInit {
   // Variables para Perfiles
   public idTipoUsuario;
 
+  // Parametros de loader
+  public loading = 'false';
+
   //Url de Respuesta
   public returnUrl: string;
 
@@ -68,7 +71,7 @@ export class LoginComponent implements OnInit {
         //this._router.navigate(["/login"]);
         this._router.navigateByUrl('/login');
         // Redireccionamos a la Pagina Oficial
-        window.location.href= "/login";
+        //window.location.href= "/index";
       }
     });
 
@@ -96,6 +99,9 @@ export class LoginComponent implements OnInit {
 
   //Funcion que se lanza al Momento de enviar el Formulario de Login
   onSubmit(forma:NgForm){
+    // Cargamos el loader
+    this.loading = 'show';
+
     //Llamar al metodo, de Login para Obtener la Identidad
     this._loginService.signUp(this.user).subscribe(
         response => {
@@ -103,6 +109,7 @@ export class LoginComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             alert(response.data);
+            this.loading = 'hide';
           }else if (response.status == "success" ){
             //LocalStorage
             let identity = response.data;
@@ -131,6 +138,7 @@ export class LoginComponent implements OnInit {
                             // AppComponent, para actualizar el Menu
                             this._appComponent.ngOnInit();
                             //Redirecciona a la Pagina Oficial
+                            this.loading = 'hide';
                             this._router.navigateByUrl('/defautl');
                           }
                         }

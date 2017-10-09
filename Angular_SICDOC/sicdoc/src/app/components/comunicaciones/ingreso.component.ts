@@ -563,7 +563,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
     let token = this._loginService.getToken();
     let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
-    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/documentos/upload-image/DOC-EEH-100012";
+    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
     // Variables del Metodo
     let  error:string;

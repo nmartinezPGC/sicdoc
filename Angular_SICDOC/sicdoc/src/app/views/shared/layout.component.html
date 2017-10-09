@@ -16,37 +16,12 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Comunicacion</a>
-          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion-tipo']" routerLinkActive="active">Salida de Comunicacion</a>
           <hr>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a>
+          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion-tipo']" routerLinkActive="active">Salida de Comunicacion</a>
+
+          <!-- <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a> -->
         </div>
       </li>
-
-
-      <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Memos -->
-      <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Memoramdums
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Memo</a>
-          <hr>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Memos</a>
-        </div>
-      </li> -->
-
-      <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Notas Verbales -->
-      <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Notas Verbales
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Nota Verbal</a>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Salida de Nota Verbal</a>
-          <hr>
-          <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Nota Verbal</a>
-        </div>
-      </li> -->
 
       <!-- Menu de Seguimiento -->
       <li class="nav-item dropdown" >
@@ -56,39 +31,53 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Comunicacion</a>
           <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
-          <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Finalizar Comunicacion</a>
-          <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a>
+          <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Agregar / Finalizar Comunicacion</a>
+          <hr>
+          <a class="dropdown-item" [routerLink]="['seguimiento-actividad']" routerLinkActive="active">Seguimiento de Comunicacion</a>
+          <!-- <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a> -->
         </div>
       </li>
 
-      <!-- <li>
-        <a class="user-image" >
-          <img src="http://localhost/sicdoc/symfony/web/uploads/users/1505704804.jpeg" style="width:100px" alt="">
-        </a>
-      </li> -->
+    <!-- Menu de Consultas -->
+    <li class="nav-item dropdown" >
+      <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Consultas
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"
+             [routerLink]="['consulta-maestra-comunicacion']" routerLinkActive="active">Consulta General de Comunicaciones</a>
+      </div>
+    </li>
+  </ul>
 
-    </ul>
 
     <!-- Menu de Login Identificado -->
     <ul *ngIf="identity" class="nav navbar-nav navbar-right" id="credentials-top">
+      <li>
+        <a class="user-image" >
+          <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">
+          <!-- <img src="http://192.168.0.15/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">           -->
+        </a>
+      </li>
       <li class="nav-item dropdown">
          <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            {{ identity.nombre }} {{ identity.apellido }} <span class="caret" ></span>
          </a>
          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="dropdown-item" [routerLink]="['/index']">
-               <i class="material-icons">border_color</i> Editar Perfil</a>
-           <a class="dropdown-item" [routerLink]="['/index']">
+           <!-- <a class="dropdown-item" [routerLink]="['/index']">
+               <i class="material-icons">border_color</i> Editar Perfil</a> -->
+           <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="/#">
              <i class="material-icons">security</i> Cambiar Contraseña</a>
            <hr>
            <a class="dropdown-item" [routerLink]="['/login/1']">
              <i class="material-icons">exit_to_app</i> Cerrar sesion</a>
          </div>
        </li>
+
    </ul>
 
    <!-- Menu de Login No Identificado -->
-   <ul *ngIf="!identity" class="navbar-nav">
+   <ul *ngIf="!identity || identity == null" class="navbar-nav">
     <li class="nav-item">
      <a class="nav-link" [routerLink]="['/login']">Acceder</a>
    </li>
@@ -97,11 +86,55 @@
   </li>
   </ul>
 
-    <form class="form-inline my-2 my-lg-0">
+    <!-- <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Buscar" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-    </form>
+    </form> -->
   </div>
 </nav>
+
+<!-- Ventana Modal de Editar Usuario -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      data-keyboard="false" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Editar Usuario</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        ...
+      </div>
+    </div>
+  </div>
+</div> <!-- Fin de Modal Editar Usuario -->
+
+
+<!-- Ventana Modal de Cambio de Contraseña -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      data-keyboard="false" data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Cambio de Contraseña</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        ...
+      </div>
+    </div>
+  </div>
+</div> <!-- Fin de Modal Cambio de Contraseña -->
+
 
 <router-outlet></router-outlet>

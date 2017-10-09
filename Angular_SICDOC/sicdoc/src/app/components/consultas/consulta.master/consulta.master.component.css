@@ -24,3 +24,60 @@
   border-color:  #a94442 !important; /* red */
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(169,68,66,.6) !important;
 }
+
+
+.example-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-h2 {
+  margin: 1px;
+}
+
+/*******  Seccion para los Checkbox  *******/
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 25px;
+}
+
+.example-margin {
+  margin: 0 1px;
+}
+
+/******* Seccion de las Tablas  *************/
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 350px;
+  min-width: 300px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 350px;
+}

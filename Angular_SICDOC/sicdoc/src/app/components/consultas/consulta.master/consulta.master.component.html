@@ -1,0 +1,242 @@
+<div class="container">
+  <!-- Titulo y Barra separadora -->
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+  <!-- <div class="row"> -->
+    <!-- Segunda Columna -->
+    <!-- <div class="col-xs-12 col-sm-6 col-md-3" style="border:1px; height: 100px; "> -->
+      <!-- INI | Panel de Filtros de Busqueda -->
+      <!-- <md-expansion-panel>
+          <md-expansion-panel-header>
+            <md-panel-title>
+              Filtros
+            </md-panel-title>
+            <md-panel-description>
+              de busqueda
+            </md-panel-description>
+          </md-expansion-panel-header> -->
+
+          <!-- Opcion de Estados -->
+          <!-- <md-card>
+            <md-card-content>
+              <p class="example-h2">Estado | Comunicacion</p>
+                <table>
+                  <tr>
+                    <td>
+                      <md-checkbox id="chkIngresado" class="example-margin" [(ngModel)]="chkIngresado"
+                          value="3" (click)="checkIdEstadosSend(7)" >Ingresado</md-checkbox>
+                    </td>
+                    <td>
+                      <md-checkbox class="example-margin" [(ngModel)]="chkAsignado"
+                        (click)="checkIdEstadosSend(3)">Asignado</md-checkbox>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <md-checkbox class="example-margin" [(ngModel)]="chkRespuesta"
+                         (click)="checkIdEstadosSend(8)">En Respuesta</md-checkbox>
+                    </td>
+                    <td>
+                      <md-checkbox class="example-margin" [(ngModel)]="chkFinalizado"
+                         (click)="checkIdEstadosSend(5)">Finalizao</md-checkbox>
+                    </td>
+                  </tr>
+                </table>
+            </md-card-content>
+          </md-card> -->
+
+          <!-- Opcion de Tipo de Comunicacion -->
+          <!-- <md-card>
+            <md-card-content>
+              <p class="example-h2">Tipo | Comunicacion</p>
+              <table>
+                <tr>
+                  <td>
+                    <md-checkbox class="example-margin" [(ngModel)]="chkOficio"
+                      (click)="checkIdTipoComunicacionSend(1)" >Oficio</md-checkbox>
+                  </td>
+                  <td>
+                    <md-checkbox class="example-margin" [(ngModel)]="chkCorreo"
+                      (click)="checkIdTipoComunicacionSend(5)">Correo</md-checkbox>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <md-checkbox class="example-margin" [(ngModel)]="chkLlamada"
+                      (click)="checkIdTipoComunicacionSend(7)">Llamada</md-checkbox>
+                  </td>
+                  <td>
+                    <md-checkbox class="example-margin" [(ngModel)]="chkVerbal"
+                      (click)="checkIdTipoComunicacionSend(8)">Verbal</md-checkbox>
+                  </td>
+                </tr>
+              </table>
+            </md-card-content>
+          </md-card>
+      </md-expansion-panel>
+    </div> -->
+
+      <!-- Panel para las Fechas -->
+      <!-- <div class="col-xs-12 col-sm-6 col-md-3" style="border:1px; height: 100px; ">
+      <md-expansion-panel>
+        <md-expansion-panel-header>
+          <md-panel-title>
+            Fechas
+          </md-panel-title>
+          <md-panel-description>
+            de busqueda
+          </md-panel-description>
+        </md-expansion-panel-header>
+
+        <md-form-field>
+          <input type="date" mdInput [min]="minDate" [max]="maxDate" placeholder="Fecha Inicial">
+        </md-form-field>
+
+        <md-form-field>
+          <input type="date" mdInput [min]="minDate" [max]="maxDate" placeholder="Fecha Final">
+        </md-form-field>
+      </md-expansion-panel>
+    </div> -->
+    <!-- FIN | Panel de Filtros de Busqueda -->
+  <!-- </div> -->
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-12" >
+      <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status == 'success'" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Bien hecho!</strong> {{ mensajes }}
+      </div>
+
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status == 'error'" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Que mal!</strong> {{ mensajes }}
+      </div>
+
+      <!-- Loader de Carga de los Datos -->
+      <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:350px; margin-top:120px;">
+        <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+      </div>
+
+            <table id="example" class="display" cellspacing="0" style="font-size:15px;" *ngIf="loadTabla1 == true">
+              <thead>
+                  <tr>
+                      <th>No. Interno</th>
+                      <th>No. Referencia</th>
+                      <th>Tipo Comunicacion</th>
+                      <th>Fecha Creacion</th>
+                      <th>Fecha Entrega.</th>
+                      <th>Institucion</th>
+                      <th>Descripcion</th>
+                      <th>Tema</th>
+                      <th>Estado</th>
+                      <th>Ver</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc">
+                  <td style="width:80px">{{ item.codCorrespondenciaEnc }}</td>
+                  <td style="width:80px">{{ item.codReferenciaSreci }}</td>
+                  <td >{{ item.idTipoDocumento.descTipoDocumento }}</td>
+                  <td >{{ item.fechaIngreso.timestamp | generateDate  }}</td>
+                  <td >{{ item.fechaMaxEntrega.timestamp | generateDate }}</td>
+                  <td >{{ item.idInstitucion.descInstitucion }}</td>
+                  <td >{{ item.descCorrespondenciaEnc }}</td>
+                  <td >{{ item.temaComunicacion }}</td>
+                  <td style="width:10px"> <a style="cursor: pointer;" class="nav-link">
+                      <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
+                                      'text-primary': item.idEstado.idEstado == 5,
+                                      'text-success': item.idEstado.idEstado == 7,
+                                       'text-info': item.idEstado.idEstado == 8 }"
+                        data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
+                        {{ item.idEstado.descripcionEstado }} </span> </a>
+                  </td>
+                  <!-- <td style="width:20px"><a href="/#" data-toggle="modal" data-target="#t_and_c_m" ><i class="material-icons">pageview</i></a></td> -->
+                  <td> <a  href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+                                   item.idDeptoFuncional.idDeptoFuncional,
+                                   item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
+                                   item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
+                                   item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );"
+                         data-toggle="modal" data-target="#t_and_c_m" ><i class="material-icons">pageview</i> </a>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+            <!-- Modal Detalle de la Comunicacion Seleccionada -->
+            <div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                  data-backdrop="static" data-keyboard="false" >
+            	<div class="modal-dialog modal-lg">
+            		<div class="modal-content">
+            			<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="material-icons">close</i> </button>
+            				<h4 class="modal-title" id="myModalLabel">Oficio No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+
+                  </div>
+
+            			<div class="modal-body">
+                      <form>
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault01">Nombre de Funcionario Asignado</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="First name" value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Buscar por No. Interno</label>
+                            <input type="text" class="form-control" [(ngModel)]="search2" name="search2" id="search2" placeholder="Buscar" value="">
+                          </div>
+                        </div>
+                        <div class="row">
+                            <!-- fila 2 del Formulario -->
+                        </div>
+                        <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+                    </form>
+
+                    <!-- Tabla de Funcionarios disponibles para asignar -->
+                    <h4>Seguimiento</h4>
+                    <div class="table table-striped table-bordered" style="height: 300px; overflow: auto">
+                      <!-- Loader de Carga de los Datos -->
+                      <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:300px; margin-top:100px;" >
+                        <img src="assets/images/30.gif" alt="Cargando Tareas" >
+                      </div>
+                      <table class="example" style="font-size:15px" *ngIf="loadTabla2 == true">
+                        <thead>
+                          <tr>
+                            <th>No. Interno</th>
+                            <th>No. Referencia</th>
+                            <th>Fecha Creacion</th>
+                            <th>Actividad</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of JsonOutgetlistaComunicacionDet | searchfilter:'codCorrespondenciaDet':search2 ">
+                            <td style="width:80px"> {{ item.codCorrespondenciaDet }}  </td>
+                            <td style="width:80px"> {{ item.codReferenciaSreci }} </td>
+                            <td > {{ item.fechaIngreso.timestamp | generateDate }} </td>
+                            <td> {{ item.actividadRealizar }} </td>
+                            <td> {{ item.descCorrespondenciaDet }} </td>
+                            <!-- <td> {{ item.idEstado.descripcionEstado }} </td> -->
+                            <td *ngIf="loading_tr == 'hide'" > <a style="cursor: pointer;" class="nav-link">
+                              <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
+                                                  'text-primary': item.idEstado.idEstado == 5,
+                                                  'text-success': item.idEstado.idEstado == 7,
+                                                   'text-info': item.idEstado.idEstado == 8 }"
+                                    data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
+                                    {{ item.idEstado.descripcionEstado }} </span></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+            			</div>
+
+            		</div><!-- /.modal-content -->
+            	</div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+    </div>
+  </div>
+</div>

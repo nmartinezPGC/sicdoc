@@ -11,7 +11,11 @@ import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones
 // Menu de Seguimiento
 import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
 import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
+import { SeguimientoActividadComponent } from './components/seguimiento/seguimiento.actividad.component';
 import { PdfComponent } from './components/pdf/pdf.component';
+
+// Imports de las Consultas de la Aplicacion
+import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
 
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
@@ -30,10 +34,14 @@ export const APP_ROUTES: Routes = [
   { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
   { path: 'finalizar-actividad', component: FinalizarActividadComponent },
   { path: 'finalizar-actividad/:page', component: IngresoActividadComponent },
+  { path: 'seguimiento-actividad', component: SeguimientoActividadComponent },
   { path: 'pdf', component: PdfComponent },
+
+  // Mapeo de Menu de Consultas
+  { path: 'consulta-maestra-comunicacion', component: ConsultaMasterComponent },  
 
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];
 
-//export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash:true });
-export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);
+export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash:true });
+//export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

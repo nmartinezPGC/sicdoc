@@ -29,3 +29,15 @@ seguimiento_creacionActividadResp:
     path: /creacion-actividad-resp
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:creacionActividadResp" }
     methods: POST
+    
+## Listado de la Comunicacion Enc en Busqueda | Modulo Seguimiento
+seguimiento_seguimientoEncList:
+    path: /seguimiento-search-comunicacion-enc
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:seguimientoEncList" }
+    methods: POST
+    
+## Listado de la Comunicacion Det en Busqueda | Modulo Seguimiento
+seguimiento_seguimientoDetList:
+    path: /seguimiento-search-comunicacion-det
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:seguimientoDetList" }
+    methods: POST

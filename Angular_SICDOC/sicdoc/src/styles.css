@@ -30,3 +30,5 @@
 .fadeIn {
   animation-name: fadeIn;
 }
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';

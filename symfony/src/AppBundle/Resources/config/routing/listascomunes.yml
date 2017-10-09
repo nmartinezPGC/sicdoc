@@ -67,7 +67,7 @@ listascomunes_tipoInstituciones:
 listascomunes_paisesList:
     path: /paises-list
     defaults: { _controller: "AppBundle:ListasComunes:paisesList"}
-    methods: POST
+    methods: POST|GET
     
 # Lista de Tipo de Documento | 01-09-2017
 listascomunes_tipoDocumentoList:

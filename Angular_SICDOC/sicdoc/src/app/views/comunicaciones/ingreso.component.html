@@ -263,7 +263,7 @@
               <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  (change)="getlistaInstituciones()" >
                   <option value="0">Selecciona una Institución</option>
-                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
+                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }} - {{ list.perfilInstitucion }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
              <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->

@@ -1,0 +1,337 @@
+<div class="container">
+
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+
+  <!-- Loader de Carga de los Datos -->
+  <div id="loader-2" *ngIf="loading == 'show'">
+    <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ opcionSearch }}
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(1)">No. Interno Comunicacion</a>
+            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(2)">No. Referencia Comunicacion</a>
+            <!-- <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(3)">Tema Comunicacion</a> -->
+            <!-- <div role="separator" class="dropdown-divider"></div> -->
+            <!-- <a class="dropdown-item" href="#">Descipcion</a> -->
+          </div>
+        </div>
+
+        <input #searchValueSend type="text" class="form-control" name="searchValueSend" id="searchValueSend" [(ngModel)]="seguimientoActividad.searchValueSend"
+              aria-label="Search" placeholder="Ingresa criterio de busqueda" required maxlength="40" minlength="8">
+          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.required" >El creterio de busqueda es obligatorio</small>
+          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.minlength" >Se nesesita por lo menos {{ searchValueSend.errors.minlength.requiredLength }} caracteres</small>
+          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.maxlength" >La capacidad maxima para el criterio de busqueda es: 40 caracteres</small>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button"
+            (click)="getlistaComunicacionEncTableFind();" >Buscar</button>
+        <!-- Loader de Carga de los Datos -->
+        <!-- <div id="loader-2" *ngIf="loading_table == 'show'" >
+          <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12"><br>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs nav-justified indigo" role="tablist">
+          <li class="nav-item">
+              <h4><a class="nav-link active" data-toggle="tab" href="#panel5" role="tab">
+                <i class="fa fa-user"></i> Informacion de Ingreso
+              </a></h4>
+          </li>
+          <li class="nav-item">
+              <h4><a class="nav-link" data-toggle="tab" href="#panel6" role="tab">
+                <i class="fa fa-heart"></i> Informacion de Seguimiento
+              </a></h4>
+          </li>
+          <!-- <li class="nav-item">
+              <h4><a class="nav-link" data-toggle="tab" href="#panel7" role="tab">
+                <i class="fa fa-envelope"></i> Informacion de Finalizacion
+              </a></h4>
+          </li> -->
+      </ul>
+    <!-- Tab panels -->
+      <div class="tab-content">
+          <!--Panel 1-->
+          <div class="tab-pane fade in show active" id="panel5" role="tabpanel">
+              <br>
+              <form>
+              <!-- Codigos de la Comunicacion -->
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#demo1">Identificacion de Comunicacion</a>
+                </h4>
+              </div>
+                <hr>
+                <div class="panel-collapse collapse in" id="demo1">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="card-group">
+                      <div class="card">
+                        <h4 class="card-header">Codigo Interno</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.codComunicacionInterno }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                      <div class="card">
+                        <h4 class="card-header">Codigo Referencia</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.codComunicacionReferencia }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+              <hr>
+              <!-- Fechas de Comunicacion Encabezado -->
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#demo2">Fechas de Comunicacion</a>
+                </h4>
+              </div>
+              <hr>
+              <div class="panel-collapse collapse in" id="demo2">
+                <div class="row">
+                  <div class="col-lg-9">
+                    <div class="card-group">
+                      <div class="card">
+                        <h4 class="card-header">F. Ingreso</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaIngreso | generateDate }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                      <div class="card">
+                        <h4 class="card-header">F. Entrega</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaEntrega | generateDate }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                      <div class="card">
+                        <h4 class="card-header">F. Modificacion</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaModificacion | generateDate }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                      <div class="card">
+                        <h4 class="card-header">F. Finalizacion</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaFinalizacion | generateDate }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+              <!-- Seccion de Entidades relaciones -->
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#demo3">Informacion General</a>
+                </h4>
+              </div>
+                <hr>
+                <div class="panel-collapse collapse in" id="demo3">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card-group">
+                        <div class="card">
+                          <h4 class="card-header">Institucion Receptora</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.institucionReceptora }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                        <div class="card">
+                          <h4 class="card-header">Direccion SRECI</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.direccionSreci }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                        <div class="card">
+                          <h4 class="card-header">Sub Direccion SRECI</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.subDireccionSreci }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <!-- Fila de Estatus de Comunicacion -->
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="card-group">
+                        <div class="card">
+                          <h4 class="card-header">Tipo de Comunicacion</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.tipoComunicacion }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                        <div class="card">
+                          <h4 class="card-header">Estado de Comunicacion</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.estadoComunicacion }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <!-- Fila de Bitacora / usuarios -->
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="card-group">
+                        <div class="card">
+                          <h4 class="card-header">Usuario Creador</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.usuarioCreador }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                        <div class="card">
+                          <h4 class="card-header">Usuario Asignado</h4>
+                          <div class="card-block">
+                            <!-- <h4 class="card-title">Special title treatment</h4> -->
+                            <p style="margin-left:10px">{{ tableSeguimientoActividadList.usuarioAsignado }}</p>
+                            <!-- <br> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+                <!-- Seccion de Entidades relaciones -->
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#demo4">Descripcion de la Comunicacion</a>
+                  </h4>
+                </div>
+                <hr>
+                <div class="panel-collapse collapse in" id="demo4">
+                  <!-- Tema de la Comunicacion -->
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="card">
+                        <h4 class="card-header">Tema de la Comunicacion</h4>
+                        <div class="card-block">
+                          <!-- <h4 class="card-title">Special title treatment</h4> -->
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.temaComunicacion }}</p>
+                          <!-- <br> -->
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <br>
+                <!-- Descripcion de la Comunicacion -->
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card">
+                      <h4 class="card-header">Contenido de la Comunicacion</h4>
+                      <div class="card-block">
+                        <!-- <h4 class="card-title">Special title treatment</h4> -->
+                        <p style="margin-left:10px">{{ tableSeguimientoActividadList.contenidoComunicacion }}</p>
+                        <!-- <br> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </form>
+          <br>
+          </div>
+          <!--/.Panel 1-->
+          <!--Panel 2-->
+          <div class="tab-pane fade" id="panel6" role="tabpanel">
+            <br>
+            <!-- Fila de Actividades de la Comunicacion -->
+            <div class="row">
+              <!-- Loader de Carga de los Datos -->
+              <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:40%; margin-top:100px;" >
+                <img src="assets/images/30.gif" alt="Cargando Tareas" >
+              </div>
+              <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%"
+                  *ngIf="loadTabla2 == true">
+                  <thead >
+                      <tr>
+                        <th>Estado</th>
+                        <th>No.Interno</th>
+                        <th>No.Referencia</th>
+                        <th>F. Entrega</th>
+                        <th>Funcionario Asignado</th>
+                        <th>Actividad</th>
+                        <th>Descripcion</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let item of JsonOutgetlistaSeguimiento">
+                    <td [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3, 'text-info' : item.idEstado.idEstado == 8,
+                                     'text-primary' : item.idEstado.idEstado == 5 }">
+                      {{ item.idEstado.descripcionEstado }}</td>
+                    <td style="width:220px">{{ item.codCorrespondenciaDet }}</td>
+                    <td>{{ item.codReferenciaSreci }}</td>
+                    <td style="width:100px">{{ item.fechaSalida.timestamp | generateDate }}</td>
+                    <td>{{ item.idFuncionarioAsignado.nombre1Funcionario }} {{ item.idFuncionarioAsignado.apellido1Funcionario }}</td>
+                    <td>{{ item.actividadRealizar }}</td>
+                    <td>{{ item.descCorrespondenciaDet }}</td>
+                  </tr>
+              </table>
+
+            </div>
+          </div>
+          <!--/.Panel 2-->
+          <!--Panel 3-->
+          <!-- <div class="tab-pane fade" id="panel7" role="tabpanel">
+              <br>
+              <div class="card">
+                <h3 class="card-header">Featured</h3>
+                <div class="card-block">
+                  <h4 style="margin-left:10px">Special title treatment</h4>
+                  <p style="margin-left:10px">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+              </div>
+          </div> -->
+          <!--/.Panel 3-->
+      </div>
+    </div>
+  </div>
+
+</div> <!--  Fin de container -->

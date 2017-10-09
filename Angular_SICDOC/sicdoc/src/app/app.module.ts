@@ -24,6 +24,7 @@ import { LoginService } from './services/login/login.service';
 import { IngresoComunicacionService } from './services/comunicaciones/ingreso.service';
 import { AgregarActividadService } from './services/seguimiento/agregar.actividad.service';
 import { FinalizarActividadService } from './services/seguimiento/finalizar.actividad.service';
+import { SeguimientoActividadService } from './services/seguimiento/seguimiento.actividad.service';
 
 //Compoenentes *****************************************************************
 import { AppComponent } from './app.component';
@@ -31,6 +32,8 @@ import { DefaultComponent } from "./components/login/default.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/login/register.component";
 import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
+import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component';
+import { SeguimientoActividadComponent } from './components/seguimiento/seguimiento.actividad.component'; //Header de Tareas del Proyecto
 
 // Area de Ingreso de Oficios
 import { IngresoComunicacionComponent } from "./components/comunicaciones/ingreso.component";
@@ -38,12 +41,19 @@ import { IngresoComunicacionComponent } from "./components/comunicaciones/ingres
 // Area de Seguimiento
 import { IngresoActividadComponent } from "./components/seguimiento/agregar.actividad.component";
 
-
 import { NavbarComponent } from "./components/shared/navbar.component"; //NavBar de Tareas del Proyecto
 import { HeaderComponent } from "./components/shared/header.component";
 import { PdfComponent } from './components/pdf/pdf.component';
-import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component'; //Header de Tareas del Proyecto
+import { DatatablesActividadPendientesComponent } from './components/seguimiento/datatables-actividad-pendientes/datatables-actividad-pendientes.component';
 
+// import de Materialize
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule, MdMenuModule, MdSidenavModule, MdGridListModule, MdExpansionModule,
+       MdDatepickerModule, MdInputModule, MdCheckboxModule, MdNativeDateModule, MdTableModule} from '@angular/material';
+
+// Imports de las Consultas de la Aplicacion
+import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
+import { ConsultaMasterService } from './services/consultas/consulta.master.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +70,10 @@ import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones
     SearchFilterPipe,
     FinalizarActividadComponent,
     PdfComponent,
-    IngresoComunicacionPorTipoComponent
+    IngresoComunicacionPorTipoComponent,
+    SeguimientoActividadComponent,
+    DatatablesActividadPendientesComponent,
+    ConsultaMasterComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +81,11 @@ import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    APP_ROUTING
+    APP_ROUTING,
+    // importamos los Modules de Materialize
+    BrowserAnimationsModule, MdButtonModule, MdMenuModule, MdSidenavModule,
+    MdGridListModule, MdExpansionModule, MdDatepickerModule, MdInputModule,
+    MdCheckboxModule, MdNativeDateModule, MdTableModule
   ],
   providers: [
     UsuariosService,
@@ -76,7 +93,8 @@ import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones
     IngresoComunicacionService,
     IngresoActividadComponent,
     AgregarActividadService,
-    FinalizarActividadService
+    FinalizarActividadService,
+    SeguimientoActividadService
   ],
   bootstrap: [AppComponent]
 })

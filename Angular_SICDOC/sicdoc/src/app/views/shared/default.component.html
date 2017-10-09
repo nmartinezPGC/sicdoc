@@ -1,20 +1,22 @@
-<div class="col-md-12">
-  <hr>
+<div class="container" >
+    <div class="col-md-12">
+      <!-- <h1>{{ titulo }}</h1> -->
+      <hr class="colorgraph">
 
-  <h1>{{ titulo }}</h1>
-  <div *ngIf="!identity || identity == null">
-      Inicia sesion para acceder a mas opciones ...
-  </div>
+      <div *ngIf="!identity || identity == null">
+          Inicia sesion para acceder a mas opciones ...
+      </div>
 
-  <div *ngIf="identity && identity != null ">
-      Bienvenido {{ identity.nombre }} {{ identity.apellido }}
-  </div>
+      <div *ngIf="identity && identity != null ">
+          <!-- Bienvenido {{ identity.nombre }} {{ identity.apellido }} -->
+      </div>
 
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <h1 class="display-3">Ejemplo para el Dasboard</h1>
-      <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-3">Bienvenido: {{ identity.nombre }} {{ identity.apellido }} </h1>
+          <p class="lead">{{ identity.nombre }} {{ identity.apellido }}</p>
+        </div>
+      </div>
+
     </div>
-  </div>
-
 </div>

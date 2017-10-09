@@ -9,12 +9,16 @@ import { AppComponent } from '../../app.component'; //Servico del Login
 @Component({
   selector: 'app-default',
   templateUrl: '../../views/shared/default.component.html',
+  styleUrls: ['../../app.component.css'],
   providers: [LoginService, RouterModule]
 })
 export class DefaultComponent {
   public titulo = "Portada";
-  public identity ;
+  public identity;
   public token ;
+
+  // Imagen de Usuario
+  public imgUser;
 
   constructor( private _loginService: LoginService, private _router: Router,
                private _appComponent: AppComponent){
@@ -26,6 +30,7 @@ export class DefaultComponent {
     this.identity = this._loginService.getIdentity();
     this.token = this._loginService.getToken();
 
+    
     if(this.identity == null){
       //alert('Hola Mundo');
       //Se ejecuta la Funcion de Inicio del Componente de

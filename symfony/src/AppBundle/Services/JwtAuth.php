@@ -69,17 +69,18 @@ class JwtAuth {
             
             //Generamos el Token
             $token = array(           
-                "sub" => $user->getIdUsuario(),
-                "codUser" => $user->getCodUsuario(),
-                "iniUser" => $user->getInicialesUsuario(),
-                "password" => $user->getPasswordUsuario(),
-                "email" => $user->getEmailUsuario(),
-                "nombre" => $user->getNombre1Usuario(),
-                "apellido" => $user->getApellido1Usuario(),
-                "idDireccion" => $direccion_user->getIdDireccionSreci(),
+                "sub"              => $user->getIdUsuario(),
+                "codUser"          => $user->getCodUsuario(),
+                "iniUser"          => $user->getInicialesUsuario(),
+                "password"         => $user->getPasswordUsuario(),
+                "email"            => $user->getEmailUsuario(),
+                "nombre"           => $user->getNombre1Usuario(),
+                "apellido"         => $user->getApellido1Usuario(),
+                "imagenUsuario"    => $user->getImagenUsuario(),
+                "idDireccion"      => $direccion_user->getIdDireccionSreci(),
                 "idDeptoFuncional" => $depto_user->getIdDeptoFuncional(),
-                "idTipoUser" => $tipo_user->getIdTipoUsuario(),
-                "idTipoFunc" => $func_user->getIdTipoFuncionario(),
+                "idTipoUser"       => $tipo_user->getIdTipoUsuario(),
+                "idTipoFunc"       => $func_user->getIdTipoFuncionario(),
                 "iat" => time(),
                 "exp" => time() + (7 * 24 * 60 * 60)
                 //"data" => $helpers->parserJson($user)
