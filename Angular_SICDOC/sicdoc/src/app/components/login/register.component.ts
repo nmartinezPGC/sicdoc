@@ -16,7 +16,7 @@ import { NgForm }    from '@angular/forms';
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
 // Importamos la CLase Usuarios del Modelo
-import { Usuarios } from '../../models/usuarios/usuarios.model'; //Servico del Login
+import { Usuarios } from '../../models/usuarios/usuarios.model'; //Model del Login
 
 //Importamos los Javascript
 //import '../../views/login/register.component';

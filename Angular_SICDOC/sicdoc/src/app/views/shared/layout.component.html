@@ -39,12 +39,13 @@
       </li>
 
     <!-- Menu de Consultas -->
+    <!-- <li class="nav-item dropdown"  *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"> -->
     <li class="nav-item dropdown" >
       <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Consultas
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"
+        <a class="dropdown-item"
              [routerLink]="['consulta-maestra-comunicacion']" routerLinkActive="active">Consulta General de Comunicaciones</a>
       </div>
     </li>
@@ -94,7 +95,7 @@
 </nav>
 
 <!-- Ventana Modal de Editar Usuario -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
       data-keyboard="false" data-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -124,13 +125,47 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Cambio de Contraseña</h4>
-      </div>
-      <div class="modal-body">
+        <h4 class="modal-title" id="myModalLabel">Cambio de Contraseña <i class="material-icons">lock</i></h4>
 
       </div>
+      <div class="modal-body">
+        <!-- Loader de Carga de los Datos -->
+        <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:30%;">
+          <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+        </div>
+        <!-- Formulario de Cambio de Contraseña -->
+        <form #changePassForm="ngForm" (ngSubmit)="onSubmit(changePassForm)" name="changePassForm" role="form">
+            <div class="form-group">
+              <input #passwordUsuairoAct="ngModel" type="password" name="passwordUsuairoAct" id="passwordUsuairoAct" class="form-control input-lg"
+                  ngControl="passwordUsuairoAct" [(ngModel)]="jsonSendChangePass.passWordUserAct"
+                  placeholder="Contraseña Actual" tabindex="10" required minlength="5" maxlength="20">
+                  <small class="form-text text-muted" *ngIf="passwordUsuairoAct.errors?.minlength" >Se nesesita por lo menos {{ passwordUsuairoAct.errors.minlength.requiredLength }} caracteres</small>
+                  <small class="form-text text-muted" *ngIf="passwordUsuairoAct.errors?.required" >La Contraseña es obligatoria</small>
+            </div>
+            <hr>
+            <div class="form-group">
+              <input #passwordUsuairo="ngModel" type="password" name="passwordUsuairo" id="passwordUsuairo" class="form-control input-lg"
+                  ngControl="passwordUsuairo" [(ngModel)]="user.passwordUsuairo"
+                  placeholder="Nueva Contraseña" tabindex="10" required minlength="5" maxlength="20">
+                  <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.minlength" >Se nesesita por lo menos {{ passwordUsuairo.errors.minlength.requiredLength }} caracteres</small>
+                  <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.required" >La Contraseña es obligatoria</small>
+            </div>
+
+            <div class="form-group">
+              <input #passwordConfirmation="ngModel" type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control input-lg"
+                  ngControl="user.passwordConfirmation" [(ngModel)]="user.passwordConfirmation"
+                  placeholder="Confirma Contraseña" tabindex="11" required maxlength="20" >
+                  <small class="form-text text-muted" *ngIf=" user.passwordUsuairo != user.passwordConfirmation " >Las Contraseñas no son iguales</small>
+            </div>
+            <hr>
+            <!-- Botones de Accion del Formulario -->
+              <button type="button" class="btn btn-primary" (click)="cleanForm()" >Limpiar</button>
+              <button type="submit" class="btn btn-success" [disabled]="!changePassForm.valid">Enviar</button>
+        </form> <!-- Fin del Formulario -->
+      </div>
       <div class="modal-footer">
-        ...
+          <!-- Boton de Envio de Datos -->
+          ...
       </div>
     </div>
   </div>

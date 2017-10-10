@@ -2,18 +2,18 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        fki_enc_estado:
+        fki_comu_docu:
             columns:
-                - id_estado
-        fki_enc_inst:
-            columns:
-                - id_institucion
-        fki_funcionario_asig:
-            columns:
-                - id_funcionario_asignado
+                - id_tipo_documento
         fki_enc_direccion:
             columns:
                 - id_direccion_sreci
+        fki_enc_user:
+            columns:
+                - id_usuario
+        fki_funcionario_asig:
+            columns:
+                - id_funcionario_asignado
         tbl_correspondencia_enc_cod_correspondencia_enc_idx:
             columns:
                 - cod_correspondencia_enc
@@ -23,18 +23,6 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
         fki_enc_estado:
             columns:
                 - id_estado
-        fki_enc_user:
-            columns:
-                - id_usuario
-        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
-            columns:
-                - cod_correspondencia_enc
-        fki_comu_docu:
-            columns:
-                - id_tipo_documento
-        fki_funcionario_asig:
-            columns:
-                - id_funcionario_asignado
         fki_enc_inst:
             columns:
                 - id_institucion
@@ -70,14 +58,20 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
         fechaIngreso:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_ingreso
         fechaMaxEntrega:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_max_entrega
         fechaModificacion:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_modificacion
         codReferenciaSreci:
             type: string
@@ -102,6 +96,8 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
         fechaFinalizacion:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_finalizacion
     manyToOne:
         idTipoDocumento:

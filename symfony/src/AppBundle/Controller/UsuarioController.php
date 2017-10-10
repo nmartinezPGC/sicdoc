@@ -422,4 +422,206 @@ class UsuarioController extends Controller{
         return $helpers->parserJson($data);
     } // FIN FND00003
     
+    
+    /**
+     * @Route("/change-pass-user", name="change-pass-user")
+     * Creacion del Controlador: Usuarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00004
+     */
+    public function changePassUserAction(Request $request) {
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            //Ejecutamos todo el Codigo restante
+            $identity = $helpers->authCheck($hash, true);    
+            $em = $this->getDoctrine()->getManager();
+
+            $json = $request->get("json", null);
+            $params = json_decode($json);
+        
+        
+            //Evaluamos el Json
+            if ($json != null) {
+                //Variables que vienen del Json ********************************
+                //Seccion de Identificacion ************************************
+                //El ID no se incluye; ya que es un campo Serial            
+                $id_usuario = (isset($params->idUserChange)) ? $params->idUserChange : 0;
+
+                // Password a Cambiar
+                $password_actual   = (isset($params->passWordUserAct)) ? $params->passWordUserAct : null;
+                $password_actual_sha   = (isset($params->passWordUserAct)) ? $params->passWordUserActSha : null;
+                $password_new      = (isset($params->passWordUserNew)) ? $params->passWordUserNew : null;
+                $password_confirm  = (isset($params->passWordUserConfirm)) ? $params->passWordUserConfirm : null;
+                
+                $modifyAt = new \DateTime("now");
+
+                //Entitie Manager Definition ***********************************
+                $em = $this->getDoctrine()->getManager();
+
+                if ( $password_actual != null && $password_new != null && $id_usuario != 0 ){
+                    //Instanciamos la Entidad TblUsuario *****************************************                
+                    //$usuario = new TblUsuarios();                
+                    //Seteamos los valores de Identificacion ***********************
+                     $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                        array(
+                            "idUsuario" => $id_usuario
+                        ));   
+                    
+                    //Cifrar la Contraseña *************************************
+                    if ( $password_actual != null ) {                            
+                        $pwdAct = hash('sha256', $password_actual);
+                        $pwdNew = hash('sha256', $password_new);
+                        
+                        $compa = strcmp($pwdAct, $password_actual_sha);
+                        if( strcmp($pwdAct, $password_actual_sha) ){
+                            // Evaluamos que los Password sean Distintos
+                            if( $pwdAct != $pwdNew  ){
+                                //Actualizmos el password
+                                $usuario->setPasswordUsuario($pwdNew);
+                                $usuario->setFechaModificacion($modifyAt);
+                                //$usuario->setImagenUsuario($image);
+                                //Seteamos los valores de la Bitacora **************                            
+
+                                // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                                $em->persist($usuario); 
+
+                                //Realizar la actualizacion en el storage de la BD
+                                $em->flush();
+                                // Envio de Correo despues de la Grabacion de Datos
+                                // *************************************************
+                                //Instanciamos de la Clase TblFuncionarios, para Obtener
+                                // los Datos de envio de Mail **********************
+
+                                // Parametros de Salida
+                                // los Datos de envio de Mail **************************
+                                $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                                    array(
+                                        "idFuncionario" => $id_usuario                
+                                    ));
+                                // Parametros de Salida
+                                $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
+                                $nombreSend = $usuario_asignado_send->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
+                                $apellidoSend = $usuario_asignado_send->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
+
+                                    //Creamos la instancia con la configuración 
+                                    $transport = \Swift_SmtpTransport::newInstance()
+                                       ->setHost('smtp.gmail.com')
+                                       ->setPort(587)
+                                       ->setEncryption('tls')                               
+                                       ->setStreamOptions(array(
+                                                    'ssl' => array(
+                                                        'allow_self_signed' => true, 
+                                                        'verify_peer' => false, 
+                                                        'verify_peer_name' => false
+                                                        )
+                                                    )
+                                                 )                                   
+                                       ->setUsername("nahum.sreci@gmail.com")                                   
+                                       ->setPassword('1897Juve');                                   
+                                   //echo "Paso 1";
+                                   //Creamos la instancia del envío
+                                   $mailer = \Swift_Mailer::newInstance($transport);
+
+                                   //Creamos el mensaje
+                                   $mail = \Swift_Message::newInstance()
+                                       ->setSubject('Cambio de Contraseña | SICDOC')
+                                       ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
+                                       ->setTo($mailSend)                               
+                                       ->setBody(
+                                            $this->renderView(
+                                            // app/Resources/views/Emails/registration.html.twig
+                                                'Emails/changePassWord.html.twig',
+                                                array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
+                                                       'passAnterior' => $password_actual, 'passActual' => $password_new ,
+                                                       'fechaChange' => date_format($modifyAt, "Y/m/d") )
+                                            ), 'text/html' );                                
+
+                                    // Envia el Correo con todos los Parametros
+                                    $resuly = $mailer->send($mail);
+
+                                // ***** Fin de Envio de Correo ********************
+
+                                //Seteamos el array de Mensajes a enviar ***********
+                                $data = array(
+                                    "status" => "success",                
+                                    "code" => "200",                
+                                    "msg" => "Usuario actualizado, la contraseña se Actualizo !! "  . "  No   " . $compa              
+                                );
+                            } else {
+                                //Seteamos el array de Mensajes a enviar ***********
+                                $data = array(
+                                    "status" => "success",                
+                                    "code" => "400",                
+                                    "msg" => "El Usuario no se ha actualizado, la contraseña Actual es igual a la Anterior !!"                
+                                );
+                            } // FIN | Condicion    
+                        } else { 
+                            $data = array(
+                                "status" => "error",                
+                                "code" => "400",                
+                                "msg" => "La Contraseña Actual Ingresada no es igual que la registrada en la BD !!"                
+                            );
+                        } // FIN | Cifrado
+                        
+                    } // FIN | Passwor Null                                                                                         
+                } else {
+                    $data = array(
+                        "status" => "error",                
+                        "code" => "400",                
+                        "msg" => "Error al cambiar la contraseña, faltan campos por ingresar !!"                
+                    );            
+                }
+            } else {
+                    $data = array(
+                        "status" => "error",                
+                        "code" => "400",                
+                        "msg" => "Los parametros enviados son Nulos, por favor verificar la información, para continuar !!"                
+                    );
+            }
+        } else {
+            $data = array(
+                "status" => "error",                
+                "code" => "400",                
+                "msg" => "Autorizacion de Token no valida !!"                
+            );
+        }
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } // FIN FND00004
+    
+    
+    /**
+     * Creacion del Controlador: Transforma Fechas Time Stamp
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00005
+     */
+    public function convertirFechasTimeStampAction( $fecha_time_stamp )
+    {
+        // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
+        $fecha_time_stamp_In = $fecha_time_stamp;
+        
+        // Decodificamos el Json con su Campo de Fechas | es nesesario que se **
+        // haga la Consulta a la BD por medio de Doctrine( getFechaConsulta())**
+        //$fecha_transformar = json_encode($correspondenciaAsigna->getFechaMaxEntrega()->getTimestamp(), true );
+        
+        // Itaciamosla fecha y le Seteamos el valor TimeStamp del campo de la **
+        // Consulta del Doctrine (getFechaConsulta()) **************************
+        $fecha_set = new \DateTime();
+        $fecha_set->setTimestamp( $fecha_time_stamp_In );
+        
+        //Salida del Formato a la fecha Convertida *****************************
+        $fecha_salida =  $fecha_set->format('Y-m-d');
+        
+        return $fecha_salida;
+    } // FIN | FND00005
+    
 }

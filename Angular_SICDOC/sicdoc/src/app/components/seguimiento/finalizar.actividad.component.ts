@@ -263,7 +263,7 @@ export class FinalizarActividadComponent implements OnInit {
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
                 this.ngOnInit();
-                console.log(response.data);
+                //console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m').modal('hide');
                 }, 600);

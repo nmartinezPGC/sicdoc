@@ -2,15 +2,15 @@ BackendBundle\Entity\TblDocumentos:
     type: entity
     table: tbl_documentos
     indexes:
-        fki_doc_user:
-            columns:
-                - id_usuario
         fki_co_det_docum:
             columns:
                 - id_correspondencia_det
         tbl_documentos_cod_documento_idx:
             columns:
                 - cod_documento
+        fki_doc_user:
+            columns:
+                - id_usuario
     uniqueConstraints:
         tbl_documentos_cod_documento_key:
             columns:
@@ -50,10 +50,14 @@ BackendBundle\Entity\TblDocumentos:
         fechaIngreso:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_ingreso
         fechaModificacion:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_modificacion
         miniImagen:
             type: string

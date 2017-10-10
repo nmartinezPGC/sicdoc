@@ -15,3 +15,8 @@ usuario_upload_image:
     path: /upload-image-user
     defaults: { _controller: "AppBundle:Usuario:uploadImage" }
     methods: POST
+
+usuario_changePassUser:
+    path: /change-pass-user
+    defaults: { _controller: "AppBundle:Usuario:changePassUser" }
+    methods: POST

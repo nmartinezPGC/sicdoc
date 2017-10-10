@@ -5,25 +5,18 @@ BackendBundle\Entity\TblUsuarios:
         fki_estado_user:
             columns:
                 - id_estado
+        fki_funcionario_user:
+            columns:
+                - id_tipo_funcionario
         fki_tipo_user:
             columns:
                 - id_tipo_usuario
-        idx_cod_user:
-            columns:
-                - cod_usuario
         fki_depto_user:
             columns:
                 - id_depto_funcional
-        fki_funcionario_user:
+        idx_cod_user:
             columns:
-                - id_tipo_usuario
-        fki_funcionario_user:
-            columns:
-                - id_tipo_funcionario
-        fki_estado_user:
-            columns:
-                - id_estado
-                - id_tipo_funcionario
+                - cod_usuario
     id:
         idUsuario:
             type: integer
@@ -101,7 +94,15 @@ BackendBundle\Entity\TblUsuarios:
         fechaCreacion:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_creacion
+        fechaModificacion:
+            type: date
+            nullable: true
+            options:
+                default: '2999-12-31'
+            column: fecha_modificacion
     manyToOne:
         idDeptoFuncional:
             targetEntity: TblDepartamentosFuncionales

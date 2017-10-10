@@ -194,7 +194,15 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
-                               ->setEncryption('tls')                               
+                               ->setEncryption('tls')
+                               ->setStreamOptions(array(
+                                    'ssl' => array(
+                                    'allow_self_signed' => true, 
+                                    'verify_peer' => false, 
+                                    'verify_peer_name' => false
+                                        )
+                                      )
+                                   )
                                //->setUsername( $identity->email )
                                ->setUsername( "nahum.sreci@gmail.com" )
                                //->setUsername( 'gcallejas.sreci@gmail.com')
@@ -492,7 +500,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                                        
                         // Fin de la Funcion ( convertirFechasTimeStampAction )* 
                         // *****************************************************
-                        /*
+                        
                         // Parametros del Oficio nesearios para enviar por *****
                         // Mail ************************************************
                             $tema_correspondencia = $correspondenciaAsigna->getTemaComunicacion();
@@ -502,21 +510,27 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
-                         */
+                         
                         
                         // Fin de Envio de Parametros para el Mail *************
                                                 
                             //Creamos la instancia con la configuración 
-                        /*
+                        
                            $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
-                               ->setEncryption('tls')                               
+                               ->setEncryption('tls')
+                               ->setStreamOptions(array(
+                                            'ssl' => array(
+                                                'allow_self_signed' => true, 
+                                                'verify_peer' => false, 
+                                                'verify_peer_name' => false
+                                                )
+                                            )
+                                         )
                                //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                               ->setUsername( "nahum.sreci@gmail.com" )                               
+                               ->setPassword('1897Juve');                               
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -536,14 +550,14 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                'fechaIngresoOfi' => strval($fecha_creacion_convert), 
                                                'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
                                     ), 'text/html' );   
-                         */                        
+                                                
                            
-                            /*// validamos que se adjunta pdf
+                            // validamos que se adjunta pdf
                             if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }*/
+                            }
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);
@@ -774,8 +788,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         
                         
                         // Llamamo a la Funcion Interna para que nos convierta *
-                        // La Fecha a Calendario Gregoriano ********************
-                        
+                        // La Fecha a Calendario Gregoriano ********************                        
                             $fecha_maxima_entrega_time_stamp = json_encode($correspondenciaAsigna->getFechaMaxEntrega()->getTimestamp(), true ); 
                         // Ejecucion de la Funcion *****************************
                             $fecha_maxima_entrega_convert = $this->convertirFechasTimeStampAction( $fecha_maxima_entrega_time_stamp );
@@ -785,7 +798,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                                        
                         // Fin de la Funcion ( convertirFechasTimeStampAction )* 
                         // *****************************************************
-                        /*
+                        
                         // Parametros del Oficio nesearios para enviar por *****
                         // Mail ************************************************
                             $tema_correspondencia = $correspondenciaAsigna->getTemaComunicacion();
@@ -795,21 +808,26 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
-                         */
+                         
                         
                         // Fin de Envio de Parametros para el Mail *************
                                                 
                             //Creamos la instancia con la configuración 
-                        /*
+                        
                            $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
-                               ->setEncryption('tls')                               
-                               //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                               ->setEncryption('tls')
+                                ->setStreamOptions(array(
+                                             'ssl' => array(
+                                                 'allow_self_signed' => true, 
+                                                 'verify_peer' => false, 
+                                                 'verify_peer_name' => false
+                                                 )
+                                             )
+                                          )                                 
+                               ->setUsername( "nahum.sreci@gmail.com" )                               
+                               ->setPassword('1897Juve');                               
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -829,14 +847,14 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                'fechaIngresoOfi' => strval($fecha_creacion_convert), 
                                                'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
                                     ), 'text/html' );   
-                         */                        
+                                                
                            
-                            /*// validamos que se adjunta pdf
+                            // validamos que se adjunta pdf
                             if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }*/
+                            }
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);
@@ -1073,7 +1091,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                                        
                         // Fin de la Funcion ( convertirFechasTimeStampAction )* 
                         // *****************************************************
-                        /*
+                        
                         // Parametros del Oficio nesearios para enviar por *****
                         // Mail ************************************************
                             $tema_correspondencia = $correspondenciaAsigna->getTemaComunicacion();
@@ -1083,21 +1101,27 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
-                         */
+                         
                         
                         // Fin de Envio de Parametros para el Mail *************
                                                 
                             //Creamos la instancia con la configuración 
-                        /*
+                        
                            $transport = \Swift_SmtpTransport::newInstance()
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
-                               ->setEncryption('tls')                               
+                               ->setEncryption('tls')
+                               ->setStreamOptions(array(
+                                                'ssl' => array(
+                                                    'allow_self_signed' => true, 
+                                                    'verify_peer' => false, 
+                                                    'verify_peer_name' => false
+                                                    )
+                                                )
+                                             )
                                //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                               ->setUsername( "nahum.sreci@gmail.com" )                               
+                               ->setPassword('1897Juve');                               
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1117,14 +1141,14 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                'fechaIngresoOfi' => strval($fecha_creacion_convert), 
                                                'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
                                     ), 'text/html' );   
-                         */                        
+                                                
                            
-                            /*// validamos que se adjunta pdf
+                            // validamos que se adjunta pdf
                             if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }*/
+                            }
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);

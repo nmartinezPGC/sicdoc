@@ -118,7 +118,8 @@
 
   				<div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group">
-  						<input #passwordUsuairo="ngModel" type="password" name="passwordUsuairo" id="passwordUsuairo" class="form-control input-lg" ngControl="passwordUsuairo" [(ngModel)]="user.passwordUsuairo"
+  						<input #passwordUsuairo="ngModel" type="password" name="passwordUsuairo" id="passwordUsuairo" class="form-control input-lg" ngControl="passwordUsuairo"
+                    [(ngModel)]="user.passwordUsuairo"
                   placeholder="Contraseña" tabindex="10" required minlength="5" maxlength="20">
                   <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.minlength" >Se nesesita por lo menos {{ passwordUsuairo.errors.minlength.requiredLength }} caracteres</small>
                   <small class="form-text text-muted" *ngIf="passwordUsuairo.errors?.required" >La Contraseña es obligatoria</small>
@@ -126,7 +127,8 @@
   				</div>
   				<div class="col-xs-12 col-sm-6 col-md-6">
   					<div class="form-group">
-  						<input #passwordConfirmation="ngModel" type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control input-lg" ngControl="user.passwordConfirmation" [(ngModel)]="user.passwordConfirmation"
+  						<input #passwordConfirmation="ngModel" type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control input-lg"
+                    ngControl="user.passwordConfirmation" [(ngModel)]="user.passwordConfirmation"
                   placeholder="Confirma Contraseña" tabindex="11" required maxlength="20" >
                   <small class="form-text text-muted" *ngIf=" user.passwordUsuairo != user.passwordConfirmation " >Las Contraseñas no son iguales</small>
   					</div>

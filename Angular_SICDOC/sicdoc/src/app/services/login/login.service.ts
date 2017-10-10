@@ -49,11 +49,28 @@ export class LoginService {
   registerUser( user_to_register ){
       let json = JSON.stringify( user_to_register );
       let params = "json=" + json;
-      console.log(json);
+      //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
     return this._http.post(this.url + "/usuario/new", params, { headers:headers }).map( res => res.json());
   }
+
+
+  /****************************************************
+  * Funcion: FND-00002.1
+  * Fecha: 09-10-2017
+  * Descripcion: Metodo Ajax, para Invocar el servicio
+  * a la API ( usuario/change-pass-user ).
+  * Objetivo: Cambiar Password a Usuario
+  *****************************************************/
+  changePassUser( user_to_change_pass ){
+      let json = JSON.stringify( user_to_change_pass );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/usuario/change-pass-user", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002
 
 
   /****************************************************

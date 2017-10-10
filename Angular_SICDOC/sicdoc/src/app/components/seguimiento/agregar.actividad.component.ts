@@ -473,6 +473,9 @@ export class IngresoActividadComponent implements OnInit{
 
               this.ngOnInit();
               alert( response.msg );
+              setTimeout(function() {
+                $('#t_and_c_m').modal('hide');
+              }, 600);
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API

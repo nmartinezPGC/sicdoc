@@ -2,39 +2,24 @@ BackendBundle\Entity\TblCorrespondenciaDet:
     type: entity
     table: tbl_correspondencia_det
     indexes:
+        fki_func_det_asignado:
+            columns:
+                - id_funcionario_asignado
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
-        fki_func_det_asignado:
-            columns:
-                - id_funcionario_asignado
-        cod_oficio_respuesta:
-            columns:
-                - cod_oficio_respuesta
-        tbl_correspondencia_det_cod_correspondencia_det_idx:
-            columns:
-                - cod_correspondencia_det
-        fki_fk-det_estado:
-            columns:
-                - id_estado
         fki_det_user:
             columns:
                 - id_usuario
         fki_fk-det_estado:
             columns:
                 - id_estado
-        fki_func_det_asignado:
-            columns:
-                - id_funcionario_asignado
-        fki_det_user:
-            columns:
-                - id_usuario
-        cod_oficio_respuesta:
-            columns:
-                - cod_oficio_respuesta
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
+        cod_oficio_respuesta:
+            columns:
+                - cod_oficio_respuesta
     uniqueConstraints:
         tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:
@@ -74,10 +59,14 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fechaIngreso:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_ingreso
         fechaSalida:
             type: date
             nullable: true
+            options:
+                default: '2999-12-31'
             column: fecha_salida
         codReferenciaSreci:
             type: string

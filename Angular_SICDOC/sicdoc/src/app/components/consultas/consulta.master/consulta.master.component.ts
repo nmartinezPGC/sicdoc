@@ -61,6 +61,7 @@ export class ConsultaMasterComponent implements OnInit {
   public loading  = 'hide';
   public loading_table  = 'hide';
   public loading_tr  = 'hide';
+  public loading_tableIn = 'hide';
 
   public loadTabla1:boolean = false;
   public loadTabla2:boolean = false;
@@ -268,20 +269,10 @@ export class ConsultaMasterComponent implements OnInit {
     setTimeout(function () {
       $ (function () {
           $('#example').DataTable();
+          this.loading_tableIn = 'show';
       });
     }, 8000);
-
-    // $('#example').DataTable( {
-    //     "data":  this.datoEnc,
-    //     "columns": [
-    //         { "data": "idCorrespondenciaEnc" },
-    //         { "data": "codCorrespondenciaEnc" },
-    //         { "data": "codReferenciaSreci" },
-    //         { "data": "temaComunicacion" },
-    //         { "data": "descCorrespondenciaEnc" },
-    //         { "data": "descCorrespondenciaEnc" }
-    //     ]
-    // } );
+    this.loading_tableIn = 'hide';
   } // FIN | FND-00003
 
 

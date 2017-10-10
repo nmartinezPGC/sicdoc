@@ -362,7 +362,7 @@ class IngresoCorrespondenciaController extends Controller{
                                ->setHost('smtp.gmail.com')
                                ->setPort(587)
                                ->setEncryption('tls')                               
-                                ->setStreamOptions(array(
+                               ->setStreamOptions(array(
                                             'ssl' => array(
                                                 'allow_self_signed' => true, 
                                                 'verify_peer' => false, 
@@ -370,8 +370,8 @@ class IngresoCorrespondenciaController extends Controller{
                                                 )
                                             )
                                          )
-                               ->setUsername( $identity->email )
-                               //->setUsername("nahum.sreci@gmail.com")
+                               //->setUsername( $identity->email )
+                               ->setUsername("nahum.sreci@gmail.com")
                                //->setUsername( 'gcallejas.sreci@gmail.com')
                                ->setPassword('1897Juve');
                                //->setPassword('gec2017*');
@@ -391,7 +391,8 @@ class IngresoCorrespondenciaController extends Controller{
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega) )
+                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 
+                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y/m/d") )
                                     ), 'text/html' );                           
                            
                             // validamos que se adjunta pdf

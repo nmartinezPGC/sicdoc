@@ -2,12 +2,31 @@ import { Component, OnInit } from '@angular/core';
 
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 
+// Libretias para la Comunicacion HTTp
+import { HttpModule,  Http, Response, Headers } from '@angular/http';
+
 //Importamos los Servicios nesesarios
 import { LoginService } from './services/login/login.service'; //Servico del Login
+
+// Importamos la CLase Usuarios del Modelo
+import { Usuarios } from './models/usuarios/usuarios.model'; //Model del Login
+
+// Librerias para el Formulario
+import { NgForm }    from '@angular/forms';
+
+import { FormGroup, FormControl, Validators }    from '@angular/forms';
+
+// Declaramos las variables para jQuery
+declare var jQuery:any;
+declare var $:any;
+
+import sha256  from 'sha.js';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: 'views/shared/layout.component.html',
+  styleUrls: ['./app.component.css'],
   providers: [LoginService, RouterModule]
 })
 export class AppComponent implements OnInit{
@@ -15,17 +34,128 @@ export class AppComponent implements OnInit{
   public identity;
   public token;
 
-  constructor( private _loginService: LoginService, private router: Router){
+  // Imagen de Usuario
+  public imgUser;
+  public status;
+  public mensajes;
+  public errorMessage;
+
+  // Instacia de la variable del Modelo
+  public user:Usuarios;
+
+  // Objeto que Controlara la Forma
+  forma:FormGroup;
+
+  // Json que se envia con Parametros
+  public jsonSendChangePass;
+
+  // parametros para loading
+  public loading = 'hide';
+
+  // Password Actual
+  public passwordUsuairoAct;
+  public passIdentity:string;
+
+  // public sha256 = require('js-sha256').sha256;
+
+  constructor( private _loginService: LoginService,
+               private _router: Router,
+               private _route: ActivatedRoute,
+               private _http: Http){
     //Codigo del Constructor
   }
 
+  // Metodo ngOnInit()
   ngOnInit(){
+    // Instancia de los valores del Json
+    this.jsonSendChangePass = {
+      "idUserChange":"",
+      "passWordUserAct":"",
+      "passWordUserActSha":"",
+      "passWordUserNew":"",
+      "passWordUserConfirm":""
+    }
+
     //Igualamos los valores de las variables, con las del Servico
     this.identity = this._loginService.getIdentity();
     this.token = this._loginService.getToken();
 
-    //console.log(this.identity);
-    //console.log(this.token);
-  }
+    // Instancia del Modelo de la Clase Usuarios
+    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
+  } //FIN | ngOnInit()
+
+
+  // Metodo onSubmit
+  onSubmit(forma:NgForm){
+      // Seteamos los valores de las variables
+      this.jsonSendChangePass.idUserChange = this.identity.sub;
+      // Contraseña en SHA256
+      this.jsonSendChangePass.passWordUserActSha = this.identity.password;
+      this.jsonSendChangePass.passWordUserNew     = this.user.passwordUsuairo;
+      this.jsonSendChangePass.passWordUserConfirm = this.user.passwordConfirmation;
+
+      // Efecto de Carga
+      this.loading = 'show';
+
+      console.log( this.jsonSendChangePass );
+
+      // Ejecuta el llamado a la API para realizar el Cambio de Contraseña
+      this._loginService.changePassUser( this.jsonSendChangePass ).subscribe(
+        response => {
+            // Obtenemos el Status de la Peticion
+            this.status = response.status;
+            this.mensajes = response.msg;
+
+            // Condicionamos la Respuesta
+            if(this.status != "success"){
+                this.status = "error";
+            }else{
+              // Evaluamos el code Response
+              if( response.code == "200" ){
+                // Reiniciamos Todo
+                this.ngOnInit();
+
+                alert(this.mensajes);
+                //console.log(response.data);
+                setTimeout(function() {
+                  $('#myModal').modal('hide');
+                }, 600);
+                this.loading = 'hide';
+
+                //Redirecciona a la Pagina Login
+                this._router.navigateByUrl('/login/1');
+              }else {
+                alert(this.mensajes);
+                this.loading = 'hide';
+                // return;
+              }
+
+            }
+        }, error => {
+            //Regisra cualquier Error de la Llamada a la API
+            this.errorMessage = <any>error;
+
+            //Evaluar el error
+            if(this.errorMessage != null){
+              console.log(this.errorMessage);
+              this.mensajes = this.errorMessage;
+              alert("Error en la Petición !!" + this.errorMessage);
+            }
+        });
+  } // FIN | onSubmit
+
+
+  /****************************************************
+  * Funcion: FND-00001
+  * Fecha: 09-10-2017
+  * Descripcion: Limpia los valores del Formulario
+  * Objetivo: Limpiar los valores del Formulario
+  *****************************************************/
+  public cleanForm() {
+    // console.log('preparing to load...')
+    this.user.passwordConfirmation = '';
+    this.user.passwordUsuairo = '';
+    this.jsonSendChangePass.passWordUserAct = '';
+  } // FIN : FND-00001
 
 }

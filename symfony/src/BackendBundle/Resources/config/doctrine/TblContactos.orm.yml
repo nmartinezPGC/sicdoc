@@ -1,0 +1,113 @@
+BackendBundle\Entity\TblContactos:
+    type: entity
+    table: tbl_contactos
+    indexes:
+        tbl_contactos_cod_contacto_idx:
+            columns:
+                - cod_contacto
+    id:
+        idContacto:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_contacto
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codContacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: cod_contacto
+        nombre1Contacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: nombre1_contacto
+        nombre2Contacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: nombre2_contacto
+        apellido1Contacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: apellido1_contacto
+        apellido2Contacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: apellido2_contacto
+        fotoContacto:
+            type: blob
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: foto_contacto
+        perfilContacto:
+            type: blob
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: perfil_contacto
+        telefono1Contacto:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: telefono1_contacto
+        telefono2Contacto:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: telefono2_contacto
+        celular1Contacto:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: celular1_contacto
+        celular2Contacto:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: celular2_contacto
+        email1Contacto:
+            type: string
+            nullable: true
+            length: 80
+            options:
+                fixed: false
+            column: email1_contacto
+        email2Contacto:
+            type: string
+            nullable: true
+            length: 80
+            options:
+                fixed: false
+            column: email2_contacto
+        contactoSreci:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: contacto_sreci
+    lifecycleCallbacks: {  }

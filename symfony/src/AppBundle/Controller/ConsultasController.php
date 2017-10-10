@@ -61,6 +61,11 @@ class ConsultasController extends Controller{
                 //Parametros a Convertir                           
                 //Datos generales de la Tabla
                 $id_funcionario_asignado   = $identity->sub;
+                
+                // Tipo de Funcionario
+                $id_tipo_funcionario       = $identity->idTipoFunc;
+                $id_depto_funcional        = $identity->idDeptoFuncional;
+                
                 $codigo_oficio_interno     = ($params->codOficioInterno != null) ? $params->codOficioInterno : null ;
                 $codigo_oficio_externo     = ($params->codOficioExterno != null) ? $params->codOficioExterno : null ;
                 $send_search               = ($params->searchValueSend != null) ? $params->searchValueSend : null ;
@@ -77,26 +82,41 @@ class ConsultasController extends Controller{
                     
                     // Seteo de Datos Generales de la tabla: TblCorrespondenciaEnc
                     // Localizamos el Oficio que se va a Buscar
-                    // Verificacion del Codigo de la Correspondenia ************
-                    // Realizamos Condicion con swith ( $opcion_busqueda )
-                    switch ( $opcion_busqueda )
+                    // Verificacion del Tipo de Funcionario  ************
+                    // Realizamos Condicion con swith ( $id_tipo_funcionario )
+                    switch ( $id_tipo_funcionario )
                     {
-                        case "1": // Case por codCorrespondenciaEnc
+                        case 1: // Administrador del Sistema
                             $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findBy(
-                                    array(
-                                        //"codCorrespondenciaEnc" => $codigo_oficio_interno,
-                                        "idFuncionarioAsignado" => $id_funcionario_asignado,
-                                        "idEstado" => $id_estado
+                                    array(                                        
+                                        "idEstado" => [3,4,5,6,7,8]
                                     ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") );
                             $opcion_salida = $codigo_oficio_interno;
                             break;
-                        case "2":
+                        case 4: // Administrador de Correspondencia
                             $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
-                                ->findOneBy(
-                                    array(
-                                        "codReferenciaSreci" => $codigo_oficio_externo,
-                                        "idFuncionarioAsignado"  => $id_funcionario_asignado
+                                ->findBy(
+                                    array(                                        
+                                        "idEstado" => [3,4,5,6,7,8]
+                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") );
+                            $opcion_salida = $codigo_oficio_interno;
+                            break;
+                        case 6: // Director de Area
+                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                                ->findBy(
+                                    array(                                        
+                                        "idDeptoFuncional"    => $id_depto_funcional,                                        
+                                        "idEstado"            => [3,4,5,6,7,8]
+                                    ));
+                            $opcion_salida = $codigo_oficio_externo;
+                            break;
+                        case 2: // Analista de Cartera / Funcionario
+                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                                ->findBy(
+                                    array(                                        
+                                        "idFuncionarioAsignado"  => $id_funcionario_asignado,                                        
+                                        "idEstado"               => [3,4,5,6,7,8]
                                     ));
                             $opcion_salida = $codigo_oficio_externo;
                             break;
@@ -212,7 +232,7 @@ class ConsultasController extends Controller{
                         ->findOneBy(
                             array(
                                 "idCorrespondenciaEnc" => $id_correspondencia_enc,
-                                "idFuncionarioAsignado" => $id_funcionario_asignado
+                                //"idFuncionarioAsignado" => $id_funcionario_asignado
                             ));
                     $opcion_salida = $codigo_oficio_interno;
                            
