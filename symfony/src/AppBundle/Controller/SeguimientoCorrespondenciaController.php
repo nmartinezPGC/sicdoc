@@ -565,11 +565,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 
                            
                             // validamos que se adjunta pdf
-                            if( $pdf_send != null ){
+                            /*if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }
+                            }*/
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);
@@ -869,11 +869,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 
                            
                             // validamos que se adjunta pdf
-                            if( $pdf_send != null ){
+                            /*if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }
+                            }*/
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);
