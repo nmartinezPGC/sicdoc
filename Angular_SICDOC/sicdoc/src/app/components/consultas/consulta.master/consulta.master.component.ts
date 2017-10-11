@@ -97,6 +97,8 @@ export class ConsultaMasterComponent implements OnInit {
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http ){
+     // Llenado de la Tabla de Encabezado
+     this.fillDataTable();
   } // Fin | Definicion del Constructor
 
 
@@ -127,7 +129,7 @@ export class ConsultaMasterComponent implements OnInit {
     // console.log(this.JsonOutgetlistaComunicacionEnc);
 
     // Llenado de la Tabla de Encabezado
-    this.fillDataTable();
+    // this.fillDataTable();
   }
   // Fin | ngOnInit
 

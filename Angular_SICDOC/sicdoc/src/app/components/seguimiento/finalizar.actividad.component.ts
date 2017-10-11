@@ -110,7 +110,11 @@ export class FinalizarActividadComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http ) { }
+               private _http: Http ) {
+
+                 // Inicializamos laTabla
+                 this.fillDataTable();
+}
 
  /*****************************************************
  * Funcion: ngOnInit()
@@ -178,7 +182,7 @@ export class FinalizarActividadComponent implements OnInit {
     //this.listarCodigoCorrespondenciaOfiResp();
 
     // Inicializamos laTabla
-    this.fillDataTable();
+    // this.fillDataTable();
 
   } // FIN | ngOnInit()
 
@@ -262,7 +266,7 @@ export class FinalizarActividadComponent implements OnInit {
                 //this.resetForm();
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
-                this.ngOnInit();
+                // this.ngOnInit();
                 //console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m').modal('hide');
@@ -309,7 +313,7 @@ export class FinalizarActividadComponent implements OnInit {
                 //this.resetForm();
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
-                this.ngOnInit();
+                // this.ngOnInit();
                 console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m2').modal('hide');
@@ -357,7 +361,7 @@ export class FinalizarActividadComponent implements OnInit {
                 //this.resetForm();
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
-                this.ngOnInit();
+                // this.ngOnInit();
                 console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m3').modal('hide');

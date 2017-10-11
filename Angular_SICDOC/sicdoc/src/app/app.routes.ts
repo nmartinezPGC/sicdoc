@@ -17,6 +17,9 @@ import { PdfComponent } from './components/pdf/pdf.component';
 // Imports de las Consultas de la Aplicacion
 import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
 
+// Imports de los Contactos
+import { ContactosComponent } from './components/contactos/contacto.component';
+
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
   { path: 'index', component: DefaultComponent },
@@ -38,8 +41,12 @@ export const APP_ROUTES: Routes = [
   { path: 'pdf', component: PdfComponent },
 
   // Mapeo de Menu de Consultas
-  { path: 'consulta-maestra-comunicacion', component: ConsultaMasterComponent },  
+  { path: 'consulta-maestra-comunicacion', component: ConsultaMasterComponent },
 
+  // Mapeo de Opcion de Contactos
+  { path: 'contactos-sreci', component: ContactosComponent },
+
+  // Ruta Default
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
 ];
 

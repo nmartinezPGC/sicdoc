@@ -48,12 +48,17 @@ import { DatatablesActividadPendientesComponent } from './components/seguimiento
 
 // import de Materialize
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdMenuModule, MdSidenavModule, MdGridListModule, MdExpansionModule,
-       MdDatepickerModule, MdInputModule, MdCheckboxModule, MdNativeDateModule, MdTableModule} from '@angular/material';
+/*import { MdButtonModule, MdMenuModule, MdSidenavModule, MdGridListModule, MdExpansionModule,
+       MdDatepickerModule, MdInputModule, MdCheckboxModule, MdNativeDateModule, MdTableModule} from '@angular/material';*/
 
 // Imports de las Consultas de la Aplicacion
 import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
 import { ConsultaMasterService } from './services/consultas/consulta.master.service';
+
+
+// Imports de los Contactos SRECI
+import { ContactosComponent } from './components/contactos/contacto.component';
+import { ContactosService } from './services/contactos/contacto.service';
 
 @NgModule({
   declarations: [
@@ -73,7 +78,8 @@ import { ConsultaMasterService } from './services/consultas/consulta.master.serv
     IngresoComunicacionPorTipoComponent,
     SeguimientoActividadComponent,
     DatatablesActividadPendientesComponent,
-    ConsultaMasterComponent
+    ConsultaMasterComponent,
+    ContactosComponent
   ],
   imports: [
     BrowserModule,
@@ -83,9 +89,9 @@ import { ConsultaMasterService } from './services/consultas/consulta.master.serv
     ReactiveFormsModule,
     APP_ROUTING,
     // importamos los Modules de Materialize
-    BrowserAnimationsModule, MdButtonModule, MdMenuModule, MdSidenavModule,
+    /*BrowserAnimationsModule, MdButtonModule, MdMenuModule, MdSidenavModule,
     MdGridListModule, MdExpansionModule, MdDatepickerModule, MdInputModule,
-    MdCheckboxModule, MdNativeDateModule, MdTableModule
+    MdCheckboxModule, MdNativeDateModule, MdTableModule*/
   ],
   providers: [
     UsuariosService,
@@ -94,7 +100,8 @@ import { ConsultaMasterService } from './services/consultas/consulta.master.serv
     IngresoActividadComponent,
     AgregarActividadService,
     FinalizarActividadService,
-    SeguimientoActividadService
+    SeguimientoActividadService,
+    ContactosService
   ],
   bootstrap: [AppComponent]
 })

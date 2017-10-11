@@ -481,9 +481,11 @@ class UsuarioController extends Controller{
                         $pwdNew = hash('sha256', $password_new);
                         
                         $compa = strcmp($pwdAct, $password_actual_sha);
-                        if( strcmp($pwdAct, $password_actual_sha) ){
+                        
+                        //if( $password_actual_sha != $pwdAct ){
+                        if( $compa != 0 ){
                             // Evaluamos que los Password sean Distintos
-                            if( $pwdAct != $pwdNew  ){
+                            if( $password_actual_sha != $pwdNew  ){
                                 //Actualizmos el password
                                 $usuario->setPasswordUsuario($pwdNew);
                                 $usuario->setFechaModificacion($modifyAt);
@@ -540,7 +542,7 @@ class UsuarioController extends Controller{
                                             // app/Resources/views/Emails/registration.html.twig
                                                 'Emails/changePassWord.html.twig',
                                                 array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
-                                                       'passAnterior' => $password_actual, 'passActual' => $password_new ,
+                                                       'passActual' => $password_new ,
                                                        'fechaChange' => date_format($modifyAt, "Y/m/d") )
                                             ), 'text/html' );                                
 
@@ -553,7 +555,7 @@ class UsuarioController extends Controller{
                                 $data = array(
                                     "status" => "success",                
                                     "code" => "200",                
-                                    "msg" => "Usuario actualizado, la contraseña se Actualizo !! "  . "  No   " . $compa              
+                                    "msg" => "Usuario actualizado, la contraseña se Actualizo pronto recibiras un correo de confirmación !! "
                                 );
                             } else {
                                 //Seteamos el array de Mensajes a enviar ***********

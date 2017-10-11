@@ -22,7 +22,6 @@ declare var $:any;
 
 import sha256  from 'sha.js';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'views/shared/layout.component.html',
@@ -90,6 +89,7 @@ export class AppComponent implements OnInit{
       // Seteamos los valores de las variables
       this.jsonSendChangePass.idUserChange = this.identity.sub;
       // Contraseña en SHA256
+      this.jsonSendChangePass.passWordUserAct    = "PassAct";
       this.jsonSendChangePass.passWordUserActSha = this.identity.password;
       this.jsonSendChangePass.passWordUserNew     = this.user.passwordUsuairo;
       this.jsonSendChangePass.passWordUserConfirm = this.user.passwordConfirmation;
@@ -111,6 +111,7 @@ export class AppComponent implements OnInit{
                 this.status = "error";
             }else{
               // Evaluamos el code Response
+              // alert('Codigo de Response ' + response.code);
               if( response.code == "200" ){
                 // Reiniciamos Todo
                 this.ngOnInit();

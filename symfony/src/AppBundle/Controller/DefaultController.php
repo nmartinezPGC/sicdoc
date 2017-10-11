@@ -86,8 +86,9 @@ class DefaultController extends Controller
             }else{
                 //echo 'Data incorrect !!';
                 return $helpers->parserJson(array(
+                    "code"   => 400,
                     "status" => "error",
-                    "data" => "Login not valid, user not register !!"
+                    "data"   => "Falta ingresar información para continuar !!"
                 ));                
             }            
         }else{

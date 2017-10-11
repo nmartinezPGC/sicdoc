@@ -184,6 +184,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $desc_correspondencia = $correspondenciaAsigna->getDescCorrespondenciaEnc();
                         
                         // Parametros de Salida que Utiliza el Correo
+                        //Instanciamos de la Clase TblFuncionarios, para Obtener
+                        // los Datos de envio de Mail **************************
+                            $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                            array(
+                                "idFuncionario" => $identity->sub                
+                            ));
                         $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                         $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                         $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
@@ -507,6 +513,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $desc_correspondencia = $correspondenciaAsigna->getDescCorrespondenciaEnc();
                         
                         // Parametros de Salida que Utiliza el Correo
+                            //Instanciamos de la Clase TblFuncionarios, para Obtener
+                        // los Datos de envio de Mail **************************
+                            $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                            array(
+                                "idFuncionario" => $identity->sub                
+                            ));
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
@@ -801,10 +813,17 @@ class SeguimientoCorrespondenciaController extends Controller {
                         
                         // Parametros del Oficio nesearios para enviar por *****
                         // Mail ************************************************
+                        
                             $tema_correspondencia = $correspondenciaAsigna->getTemaComunicacion();
                             $desc_correspondencia = $correspondenciaAsigna->getDescCorrespondenciaEnc();
                         
                         // Parametros de Salida que Utiliza el Correo
+                        //Instanciamos de la Clase TblFuncionarios, para Obtener
+                        // los Datos de envio de Mail **************************
+                            $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                            array(
+                                "idFuncionario" => $identity->sub                
+                            ));
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
@@ -1098,6 +1117,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                             $desc_correspondencia = $correspondenciaAsigna->getDescCorrespondenciaEnc();
                         
                         // Parametros de Salida que Utiliza el Correo
+                            //Instanciamos de la Clase TblFuncionarios, para Obtener
+                        // los Datos de envio de Mail **************************
+                            $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                            array(
+                                "idFuncionario" => $identity->sub                
+                            ));
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
                             $apellidoSend = $funcionario_asignado->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
@@ -1144,11 +1169,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 
                            
                             // validamos que se adjunta pdf
-                            if( $pdf_send != null ){
+                            /*if( $pdf_send != null ){
                               $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
                               //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
-                            }
+                            }*/
                                  
                             // Envia el Correo con todos los Parametros
                         //  $resuly = $mailer->send($mail);
