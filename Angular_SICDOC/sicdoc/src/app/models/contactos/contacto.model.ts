@@ -3,6 +3,7 @@ export class  Contactos {
   //Constructor de la Clase
     constructor(
       // Campos de la Tabla
+      public idContacto:number,
       public codContacto:string,
       public nombre1Contacto:string,
       public nombre2Contacto:string,
@@ -23,7 +24,7 @@ export class  Contactos {
 
       // Contacto SRECI
       public idContactoSreci:number,
-      public idInstitucion:number,
+      public idInstitucion:number
 
     ){}
 

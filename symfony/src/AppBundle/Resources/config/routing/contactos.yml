@@ -1,0 +1,19 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos Enc
+consultas_consultaGeneralContactoList:
+    path: /contactos-consulta
+    defaults: { _controller: "AppBundle:Contactos:consultaGeneralContactoList" }
+    methods: POST
+
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos New
+consultas_contactoNew:
+    path: /contacto-new
+    defaults: { _controller: "AppBundle:Contactos:contactoNew" }
+    methods: POST
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos New
+consultas_contactoEdit:
+    path: /contacto-edit
+    defaults: { _controller: "AppBundle:Contactos:contactoEdit" }
+    methods: POST

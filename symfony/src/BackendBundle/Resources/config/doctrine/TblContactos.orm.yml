@@ -5,6 +5,12 @@ BackendBundle\Entity\TblContactos:
         tbl_contactos_cod_contacto_idx:
             columns:
                 - cod_contacto
+        fki_institucion_contacto:
+            columns:
+                - id_institucion
+        fki_func_contacto:
+            columns:
+                - id_funcionario
     id:
         idContacto:
             type: integer
@@ -103,11 +109,25 @@ BackendBundle\Entity\TblContactos:
             options:
                 fixed: false
             column: email2_contacto
-        contactoSreci:
-            type: string
-            nullable: true
-            length: 100
-            options:
-                fixed: false
-            column: contacto_sreci
+    manyToOne:
+        idInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idFuncionario:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
     lifecycleCallbacks: {  }

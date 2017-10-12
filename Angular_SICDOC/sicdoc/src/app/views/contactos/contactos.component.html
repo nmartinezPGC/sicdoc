@@ -1,5 +1,152 @@
 <div class="container">
-  <div class="col-xs-10">
-    
+  <!-- Titulo y Barra separadora -->
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+  <div class="row-fluid">
+    <div class="col-xs-12 col-md-12 col-lg-12" >
+
+      <!-- Loader de Carga de los Datos -->
+      <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:35%; margin-top:5%;">
+        <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+      </div>
+      <!-- Opcion de Nuevo Contacto -->
+      <button type="button" class="btn btn-outline-primary"
+        data-toggle="modal" data-target="#t_and_c_m">Nuevo Contacto</button>
+        <!-- Tabla de Contactos -->
+        <table id="example" class="table table-striped table-bordered"
+                cellspacing="0" style="font-size:15px;" *ngIf="loadTabla1 == true">
+              <thead>
+                  <tr>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Telefonos</th>
+                      <th>Celulares</th>
+                      <th>Correos</th>
+                      <th>Institucion</th>
+                      <th>Contacto SRECI</th>
+                      <!-- <th>Codigo</th> -->
+                      <th>Edit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of JsonOutgetlistaContactosEnc">
+                  <td >{{ item.nombre1Contacto }} - {{ item.nombre2Contacto }}</td>
+                  <td >{{ item.apellido1Contacto }} - {{ item.apellido2Contacto }}</td>
+                  <td >{{ item.telefono1Contacto }} - {{ item.telefono2Contacto }}</td>
+                  <td >{{ item.celular1Contacto }} - {{ item.celular2Contacto }}</td>
+                  <td >{{ item.email1Contacto }} - {{ item.email2Contacto }}</td>
+                  <td >{{ item.idInstitucion.descInstitucion }}</td>
+                  <td >{{ item.idFuncionario.nombre1Funcionario }}
+                       {{ item.idFuncionario.apellido1Funcionario }}</td>
+                  <!-- <td >{{ item.codContacto }}</td> -->
+                  <!-- <td style="width:20px"><a href="/#" data-toggle="modal" data-target="#t_and_c_m" ><i class="material-icons">pageview</i></a></td> -->
+                  <td> <a  href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+                                   item.idDeptoFuncional.idDeptoFuncional,
+                                   item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
+                                   item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
+                                   item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );"
+                         data-toggle="modal" data-target="#t_and_c_m" ><i class="material-icons">assignment</i> </a>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+          <!-- Fin de Tabla de Contactos -->
+
+            <!-- Modal Detalle de la Comunicacion Seleccionada -->
+            <div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                  data-backdrop="static" data-keyboard="false" >
+            	<div class="modal-dialog modal-lg">
+            		<div class="modal-content">
+            			<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="material-icons">close</i> </button>
+            				<h4 class="modal-title" id="myModalLabel">{{ newTittle }}</h4>
+                  </div>
+
+            			<div class="modal-body">
+                      <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" name="contactForm" role="form">
+                        <h4>Datos Personales</h4>
+                        <div class="row">
+                          <!-- Seccion de Nomnres de Contacto -->
+                          <div class="col-xs-3 col-md-3 col-lg-3">
+                            <label for="exampleInputEmail1">Primer Nombre</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="Primer Nombre" value="">
+                          </div>
+                          <div class="col-xs-3 col-md-3 col-lg-3">
+                            <label for="exampleInputEmail1">Segundo Nombre</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="Segundo Nombre" value="">
+                          </div>
+                        <!-- </div> -->
+                        <!-- <div class="row"> -->
+                          <!-- Seccion de Apellidos -->
+                          <div class="col-xs-3 col-md-3 col-lg-3">
+                            <label for="exampleInputEmail1">Primer Apellido</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="Primer Apellido" value="">
+                          </div>
+                          <div class="col-xs-3 col-md-3 col-lg-3">
+                            <label for="exampleInputEmail1">Segundo Apellido</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="Segundo Apellido" value="">
+                          </div>
+                        </div>
+                        <hr>
+                        <!-- Seccion de Correos -->
+                        <h4>Datos de Mensajeria</h4>
+                        <div class="row">
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label for="exampleInputEmail1">Primer Correo</label>
+                            <input type="mail" class="form-control" id="validationDefault01" placeholder="name@example.com" value="">
+                          </div>
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label for="exampleInputEmail1">Segundo Correo</label>
+                            <input type="mail" class="form-control" id="validationDefault01" placeholder="name@example.com" value="">
+                          </div>
+                        </div>
+
+                        <hr>
+                        <!-- Seccion de Telefonia -->
+                        <h4>Datos de Telefonia</h4>
+                        <div class="row">
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label for="exampleInputEmail1">Telefono</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="22060200" value="">
+                          </div>
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label for="exampleInputEmail1">Celular</label>
+                            <input type="text" class="form-control" id="validationDefault01" placeholder="99889988" value="">
+                          </div>
+                        </div>
+
+                        <hr>
+                        <!-- Seccion de Relaciones -->
+                        <h4>Datos de Relaciones</h4>
+                        <div class="row">
+                          <!-- Institucion de Contacto-->
+                          <div class="col-xs-12 col-sm-6 col-md-4">
+                  					<div class="form-group">
+                              <!-- <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+                                    ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" (change)="getlistaInstituciones()" >
+                                  <option value="0" >Tipo de Institución</option>
+                                  <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
+                              </select>
+                              <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small> -->
+                             <ng2-completer inputClass="form-control"  fieldTabindex="true" name="colors"
+                                 [(ngModel)]="searchStr" inputId="1"
+                                 [datasource]="dataService" [minSearchLength]="2" textSearching="Buscando ..."
+                                 textNoResults="No se han encontrado nada ..."
+                                 placeholder="Selecciona una Institucion" (selected)="onSelected($event)" >
+                             </ng2-completer>
+                              <p>Selected: {{selectedColor}}</p>
+                            </div>
+                  				</div>
+
+
+                        </div>
+                        <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+                    </form>
+                    </div>
+            		</div><!-- /.modal-content -->
+            	</div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+    </div>
   </div>
+  <hr>
 </div>

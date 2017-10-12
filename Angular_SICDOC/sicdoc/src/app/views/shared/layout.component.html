@@ -4,16 +4,16 @@
 <div class="container-fluid">
 <div class="row-fluid">
     <!-- <nav class="navbar navbar-dark bg-primary"> -->
-    <nav *ngIf="identity && identity != null" class="navbar navbar-expand-lg navbar-light bg-faded">
+    <nav  class="navbar navbar-expand-lg navbar-light bg-faded">
       <div class="container-fluid">
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" [routerLink]="['index']" >Dashboard</a>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <div  class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
+            <ul *ngIf="identity && identity != null" class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <a class="navbar-brand" [routerLink]="['index']" >Dashboard</a>
               <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,13 +83,23 @@
            </ul>
 
            <!-- Menu de Login No Identificado -->
-           <ul *ngIf="!identity || identity == null" class="navbar-nav">
+           <!-- <ul *ngIf="!identity || identity == null" class="navbar-nav">
             <li class="nav-item">
              <a class="nav-link" [routerLink]="['/login']">Acceder</a>
            </li>
            <li class="nav-item">
             <a class="nav-link" [routerLink]="['/registro']">Registro</a>
           </li>
+          </ul> -->
+
+          <!-- Menu de Login No Identificado -->
+          <ul *ngIf="!identity || identity == null" class="navbar-nav">
+            <li class="nav-item">
+               <a class="nav-link" [routerLink]="['/login']">Acceder</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" [routerLink]="['/contactos-sreci']">Cotactos</a>
+            </li>
           </ul>
 
             <!-- <form class="form-inline my-2 my-lg-0">
@@ -173,10 +183,9 @@
               <button type="submit" class="btn btn-success" [disabled]="!changePassForm.valid">Enviar</button>
         </form> <!-- Fin del Formulario -->
       </div>
-      <div class="modal-footer">
-          <!-- Boton de Envio de Datos -->
+      <!-- <div class="modal-footer">
           ...
-      </div>
+      </div> -->
     </div>
   </div>
 </div> <!-- Fin de Modal Cambio de Contraseña -->

@@ -39,3 +39,8 @@ app_seguimiento:
 app_consultas:
     resource: "@AppBundle/Resources/config/routing/consultas.yml"
     prefix: /consultas
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Contactos
+app_contactos:
+    resource: "@AppBundle/Resources/config/routing/contactos.yml"
+    prefix: /contactos

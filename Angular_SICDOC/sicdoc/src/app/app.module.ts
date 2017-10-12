@@ -60,6 +60,10 @@ import { ConsultaMasterService } from './services/consultas/consulta.master.serv
 import { ContactosComponent } from './components/contactos/contacto.component';
 import { ContactosService } from './services/contactos/contacto.service';
 
+// Imports de AutoComplete
+import { Ng2CompleterModule } from "ng2-completer";
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,6 +96,7 @@ import { ContactosService } from './services/contactos/contacto.service';
     /*BrowserAnimationsModule, MdButtonModule, MdMenuModule, MdSidenavModule,
     MdGridListModule, MdExpansionModule, MdDatepickerModule, MdInputModule,
     MdCheckboxModule, MdNativeDateModule, MdTableModule*/
+    Ng2CompleterModule,
   ],
   providers: [
     UsuariosService,

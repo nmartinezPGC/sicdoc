@@ -64,19 +64,20 @@ export class ContactosService {
 
   /****************************************************
   * Funcion: FND-00003
-  * Fecha: 05-10-2017
+  * Fecha: 11-10-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( consulta-general ).
-  * Objetivo: Buscar Comunicacion - Asignado
-  * Parametros: Estados[], Tipo Comunicacion[].
+  * a la API ( contactos/contactos-consulta ).
+  * Objetivo: Listar todos los Contactos
+  * Parametros: Datos del Model de la Clase
   *****************************************************/
-  contactoFind( contacto_to_find ){
+  contactoFindAll( contacto_to_find ){
       let json = JSON.stringify( contacto_to_find );
-      let params = "json=" + json + "&authorization=" + this.getToken();
+      let params = "json=" + json;
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/contactos/consulta-general", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/contactos/contactos-consulta",
+                          params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 

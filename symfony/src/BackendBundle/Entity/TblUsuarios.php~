@@ -557,4 +557,33 @@ class TblUsuarios
     {
         return $this->idTipoUsuario;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fechaModificacion = '2999-12-31';
+
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return TblUsuarios
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
 }

@@ -130,8 +130,8 @@ export class ConsultaMasterComponent implements OnInit {
 
     // Llenado de la Tabla de Encabezado
     // this.fillDataTable();
-  }
-  // Fin | ngOnInit
+  } // Fin | ngOnInit
+
 
   /*****************************************************
   * Funcion: FND-00001
