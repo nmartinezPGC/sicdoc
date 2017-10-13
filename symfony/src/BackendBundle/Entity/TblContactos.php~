@@ -428,5 +428,62 @@ class TblContactos
     {
         return $this->contactoSreci;
     }
-}
+    /**
+     * @var \BackendBundle\Entity\TblInstituciones
+     */
+    private $idInstitucion;
 
+    /**
+     * @var \BackendBundle\Entity\TblFuncionarios
+     */
+    private $idFuncionario;
+
+
+    /**
+     * Set idInstitucion
+     *
+     * @param \BackendBundle\Entity\TblInstituciones $idInstitucion
+     *
+     * @return TblContactos
+     */
+    public function setIdInstitucion(\BackendBundle\Entity\TblInstituciones $idInstitucion = null)
+    {
+        $this->idInstitucion = $idInstitucion;
+
+        return $this;
+    }
+
+    /**
+     * Get idInstitucion
+     *
+     * @return \BackendBundle\Entity\TblInstituciones
+     */
+    public function getIdInstitucion()
+    {
+        return $this->idInstitucion;
+    }
+
+    /**
+     * Set idFuncionario
+     *
+     * @param \BackendBundle\Entity\TblFuncionarios $idFuncionario
+     *
+     * @return TblContactos
+     */
+    public function setIdFuncionario(\BackendBundle\Entity\TblFuncionarios $idFuncionario = null)
+    {
+        $this->idFuncionario = $idFuncionario;
+
+        return $this;
+    }
+
+    /**
+     * Get idFuncionario
+     *
+     * @return \BackendBundle\Entity\TblFuncionarios
+     */
+    public function getIdFuncionario()
+    {
+        return $this->idFuncionario;
+    }
+}

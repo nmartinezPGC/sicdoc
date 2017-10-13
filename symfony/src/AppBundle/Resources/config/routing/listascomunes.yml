@@ -134,3 +134,9 @@ seguimiento_finalizarOficiosListDet:
     path: /finalizar-oficios-det-list
     defaults: { _controller: "AppBundle:ListasComunes:finalizarOficiosListDet" }
     methods: POST
+    
+## Listado de todos los Funcionarios de l SRCI | Modulo Listas
+listascomunes_funcionariosListAll:
+    path: /funcionarios-list-all
+    defaults: { _controller: "AppBundle:ListasComunes:funcionariosListAll" }
+    methods: POST

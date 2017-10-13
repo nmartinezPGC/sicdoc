@@ -6,14 +6,20 @@ consultas_consultaGeneralContactoList:
     defaults: { _controller: "AppBundle:Contactos:consultaGeneralContactoList" }
     methods: POST
 
-## Redireccionamiento de las Ruta por Defecto | Modulo Contactos New
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos
 consultas_contactoNew:
-    path: /contacto-new
+    path: /contactos-new
     defaults: { _controller: "AppBundle:Contactos:contactoNew" }
     methods: POST
     
-## Redireccionamiento de las Ruta por Defecto | Modulo Contactos New
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos
 consultas_contactoEdit:
     path: /contacto-edit
     defaults: { _controller: "AppBundle:Contactos:contactoEdit" }
+    methods: POST
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo Contactos
+consultas_uploadDocumento:
+    path: /contacto-upload-perfil
+    defaults: { _controller: "AppBundle:Contactos:uploadDocumento" }
     methods: POST

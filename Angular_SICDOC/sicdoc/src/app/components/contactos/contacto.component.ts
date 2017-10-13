@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
-import { HttpModule,  Http, Response, Headers } from '@angular/http';
+import { HttpModule,  Http, Response, Headers, RequestOptions } from '@angular/http';
 
 // Lirerias para el AutoComplete
 import {Observable} from 'rxjs/Observable';
@@ -42,24 +42,23 @@ export class ContactosComponent implements OnInit {
   public newTittle = "Ingreso de Contacto";
 
   protected searchStr: string;
+  protected searchStrFunc: string;
   protected captain: string;
   protected dataService: CompleterData;
-  protected searchData = [
-    { colors: 'red', value: '#f00', id: 1 },
-    { colors: 'green', value: '#0f0', id: 2 },
-    { colors: 'blue', value: '#00f', id: 3 },
-    { colors: 'cyan', value: '#0ff', id: 4 },
-    { colors: 'magenta', value: '#f0f', id: 5 },
-    { colors: 'yellow', value: '#ff0', id: 6 },
-    { colors: 'black', value: '#000', id: 7 }
-  ];
-  protected captains = ['James T. Kirk', 'Benjamin Sisko', 'Jean-Luc Picard', 'Spock', 'Jonathan Archer', 'Hikaru Sulu', 'Christopher Pike', 'Rachel Garrett' ];
+  protected dataServiceFunc: CompleterData;
 
-  protected selectedColor: string;
+
+  protected selectedInstitucion: string;
+  protected selectedFuncionario: string;
   // variables del localStorage
   public identity;
   public token;
   public userId;
+
+  // Variables de Captura de msg
+  public status;
+  public mensajes;
+  public errorMessage;
 
   // Instacia del Objeto Model de la Clase
   public consultaContactos: Contactos;
@@ -76,6 +75,8 @@ export class ContactosComponent implements OnInit {
   // Parametros de los Json de la Aplicacion
   public JsonOutgetlistaContactosDet:any[];
   public JsonOutgetlistaContactosEnc:any[];
+  public JsonOutgetlistaInstitucion:any[];
+  public JsonOutgetlistaFuncionarios:any[];
 
   public JsonLimpio;
 
@@ -84,12 +85,14 @@ export class ContactosComponent implements OnInit {
   constructor( private _listasComunes: ListasComunesService,
                private _router: Router,
                private _consultaContactoService: ContactosService,
+               private _uploadService: UploadService,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http,
                private completerService: CompleterService ) {
     // Llenado de la Tabla de Encabezado
-    //  this.fillDataTable();
+    this.fillDataTable();
+
     // this.dataService = completerService.local(this.searchData, 'colors', 'colors');
     // this.dataService = completerService.local(this.JsonOutgetlistaContactosEnc, 'idContacto', 'idContacto');
     // console.log(this.JsonOutgetlistaContactosEnc);
@@ -107,19 +110,85 @@ export class ContactosComponent implements OnInit {
     //this.identity = JSON.parse(localStorage.getItem('identity'));
     //this.userId = this.identity.sub;
     this.searchStr = "";
+    this.searchStrFunc = "";
 
     // Definicion de la Insercion de los Datos de Nuevo Contacto
     this.consultaContactos = new Contactos ( 0, null, null, null, null, null,
                                              null, null,  0, 0,
-                                             null, null,  0, 0);
+                                             null, null,  0, 0, null, null);
 
-    // Ejecucion de la Lista de Comunicacion de Usuario Logeado
+    // Ejecucion de la Lista de Instituciones
+    this.getlistaInstituciones();
+
+    // Ejecucion de la Lista Funcionarios
+    this.getlistaFuncionariosSreci();
+
+    // Ejecucion de la Lista de Contactos
     this.getlistaContactosTableFind();
-    //console.log(this.JsonOutgetlistaContactosEnc);
-    // this.dataService = this.completerService.local(this.JsonOutgetlistaContactosEnc, 'idContacto', 'idContacto');
-
-    // console.log(this.dataService);
   } // Fin | ngOnInit
+
+
+  /*****************************************************
+  * Funcion: onSubmit
+  * Fecha: 11-10-2017
+  * Descripcion: Metodo que envia la Informacion
+  ******************************************************/
+  public filesToUpload: Array<File>;
+  public resultUpload;
+
+  onSubmit(forma:NgForm){
+      // Parseo de parametros que no se seleccionan
+      // this.filesToUpload = <Array<File>>this.consultaContactos.imgDocumento.target.files;
+      // Parametro para documento Seleccionado
+      this.loading_table = 'show';
+      console.log( this.consultaContactos );
+      this._consultaContactoService.newContact( this.consultaContactos, "", "").subscribe(
+        response => {
+            // Obtenemos el Status de la Peticion
+            this.status = response.status;
+            this.mensajes = response.msg;
+
+            // Condicionamos la Respuesta
+            alert('Paso 1 ' + this.status);
+            if(this.status != "success"){
+                this.status = "error";
+                this.mensajes = response.msg;
+                if(this.loading_table = 'show'){
+                  this.loading_table = 'hidden';
+                }
+
+                alert('Error Data ' +  this.mensajes);
+            }else{
+              //this.resetForm();
+              this.loading = 'hidden';
+              // this.ngOnInit();
+              // Llenado de la Tabla de Encabezado
+              this.fillDataTable();
+              
+              this.loading_table = 'hide';
+              // alert('Send Data ' +  this.mensajes);
+              setTimeout(function() {
+                $('#t_and_c_m').modal('hide');
+              }, 600);
+            }
+        }, error => {
+            //Regisra cualquier Error de la Llamada a la API
+            this.errorMessage = <any>error;
+
+            //Evaluar el error
+            if(this.errorMessage != null){
+              console.log(this.errorMessage);
+              this.mensajes = this.errorMessage;
+              alert("Error en la Petición !!" + this.errorMessage);
+
+              if(this.loading = 'show'){
+                this.loading = 'hidden';
+              }
+            }
+        });
+  } // Fin | Metodo onSubmit
+
+
 
   /*****************************************************
   * Funcion: FND-00001
@@ -152,15 +221,68 @@ export class ContactosComponent implements OnInit {
             this.loading = 'hidden';
             this.loadTabla1 = true;
 
-            console.log(this.JsonOutgetlistaContactosEnc);
-            this.dataService = this.completerService.local(this.JsonOutgetlistaContactosEnc, 'nombre1Contacto', 'nombre1Contacto');
-
-            console.log(this.dataService);
-            // console.log( this.JsonOutgetlistaContactosEnc );
-            // console.log( this.JsonLimpio );
+            // console.log(this.JsonOutgetlistaInstitucion); // Lista de Instituciones
+            // console.log(this.JsonOutgetlistaFuncionarios); // Lista de Funcionarios
+            // console.log(this.JsonOutgetlistaContactosEnc); // Tabla de Contactos
+            this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'perfilInstitucion');
+            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
+            console.log(this.dataServiceFunc);
           }
         });
   } // FIN | FND-00001
+
+
+  /*****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 31-07-2017
+  * Descripcion: Carga la Lista de las Instituciones
+  * Objetivo: Obtener la lista de los Tipos de usuarios
+  * de la BD, Llamando a la API, por su metodo
+  * (instituciones-sreci-list).
+  ******************************************************/
+  getlistaInstituciones() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    this._listasComunes.listasComunes("","instituciones-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaInstitucion = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaInstitucion = response.data;
+            //console.log(response.data);
+          }
+        });
+  } // FIN : FND-00001.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 12-10-2017
+  * Descripcion: Carga la Lista de Todos los Funcionarios
+  * Objetivo: Obtener la lista de los Funcionarios de la
+  * de la BD, Llamando a la API, por su metodo
+  * ( listas/funcionarios-list-all ).
+  ******************************************************/
+  getlistaFuncionariosSreci() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    this._listasComunes.listasComunes("","funcionarios-list-all").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionarios = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaFuncionarios = response.data;
+            //console.log(response.data);
+          }
+        });
+  } // FIN : FND-00001.2
 
 
   /*****************************************************
@@ -185,12 +307,77 @@ export class ContactosComponent implements OnInit {
   * Funcion: FND-00003
   * Fecha: 11-10-2017
   * Descripcion: Funcion para AutoCompletar y sacar el
-  * Id de la Data
+  * Id de la Data de la Tabla tblInstituciones
   * Params: $event
   ******************************************************/
   protected onSelected( item: CompleterItem ) {
-    this.selectedColor = item? item.originalObject.apellido1Contacto : "";
-    // alert('Hola Mundo ' + item );
+    this.selectedInstitucion = item? item.originalObject.idInstitucion : "";
+    // Seteamos y Parseamos a Int el idInstitucion
+    this.consultaContactos.idInstitucion = parseInt(this.selectedInstitucion);
   } // FIN | FND-00003
+
+
+  /*****************************************************
+  * Funcion: FND-00003.1
+  * Fecha: 12-10-2017
+  * Descripcion: Funcion para AutoCompletar y sacar el
+  * Id de la Data de la Tabla TblFunionarios
+  * Params: $event
+  ******************************************************/
+  protected onSelectedFunc( item: CompleterItem ) {
+    this.selectedFuncionario = item? item.originalObject.idFuncionario : "";
+    // Seteamos y Parseamos a Int el idContactoSreci
+    this.consultaContactos.idContactoSreci = parseInt(this.selectedFuncionario);
+  } // FIN | FND-00003.1
+
+
+  /*****************************************************
+  * Funcion: FND-00004
+  * Fecha: 29-07-2017
+  * Descripcion: Carga la Imagen de usuario desde el File
+  * Objetivo: Obtener la imagen que se carga desde el
+  * control File de HTML
+  * (fileChangeEvent).
+  ******************************************************/
+  // public filesToUpload: Array<File>;
+  // public resultUpload;
+
+  fileChangeEvent(fileInput: any){
+    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+
+    // Direccion del Metodo de la API
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
+    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
+
+    // Variables del Metodo
+    let  error:string;
+    let  status:string;
+    let  codigoSec:string;
+
+    // Seteamos el valore del Nombre del Documento
+    codigoSec = this.consultaContactos.nombre1Contacto + ' ' + this.consultaContactos.apellido1Contacto;
+
+
+    // Ejecutamos el Servicio con los Parametros
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', codigoSec ], this.filesToUpload ).then(
+        ( result ) => {
+          this.resultUpload = result;
+          status = this.resultUpload.status;
+          console.log(this.resultUpload);
+          if(status === "error"){
+            console.log(this.resultUpload);
+            alert(this.resultUpload.msg);
+          }
+          this.consultaContactos.pdfDocumento = this.resultUpload.data;
+          // this.mensajes = this.resultUpload.msg;
+        },
+        ( error ) => {
+          alert(error);
+          console.log(error);
+        });
+  } // FIN : FND-00004
+
 
 } // FIN | Clase

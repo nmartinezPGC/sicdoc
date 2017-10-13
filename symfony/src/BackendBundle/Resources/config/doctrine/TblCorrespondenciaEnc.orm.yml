@@ -5,27 +5,27 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
         fki_enc_inst:
             columns:
                 - id_institucion
-        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
-            columns:
-                - cod_correspondencia_enc
         fki_enc_estado:
             columns:
                 - id_estado
-        fki_corr_depto:
-            columns:
-                - id_depto_funcional
         fki_enc_direccion:
             columns:
                 - id_direccion_sreci
-        fki_enc_user:
-            columns:
-                - id_usuario
-        fki_comu_docu:
-            columns:
-                - id_tipo_documento
         fki_funcionario_asig:
             columns:
                 - id_funcionario_asignado
+        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
+            columns:
+                - cod_correspondencia_enc
+        fki_comu_docu:
+            columns:
+                - id_tipo_documento
+        fki_corr_depto:
+            columns:
+                - id_depto_funcional
+        fki_enc_user:
+            columns:
+                - id_usuario
     uniqueConstraints:
         tbl_correspondencia_enc_cod_correspondencia_enc_key:
             columns:

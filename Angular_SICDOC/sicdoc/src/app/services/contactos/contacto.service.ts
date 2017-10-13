@@ -83,20 +83,19 @@ export class ContactosService {
 
   /****************************************************
   * Funcion: FND-00004
-  * Fecha: 06-10-2017
+  * Fecha: 12-10-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( consulta-general-det ).
-  * Objetivo: Buscar Comunicacion - Asignado
-  * Parametros: Codigos ( codCorrespondenciaEnc y
-  * idCorrespondenciaEnc).
+  * a la API ( contactos/contactos-new ).
+  * Objetivo: Ingresar Nuevo Contacto
   *****************************************************/
-  comunicacionDetFind( correspondencia_to_find ){
-      let json = JSON.stringify( correspondencia_to_find );
-      let params = "json=" + json + "&authorization=" + this.getToken();
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+  newContact( data_to_contact, imageContact, perfilContact ){
+      let json = JSON.stringify( data_to_contact ); //Convertimos el Objeto a Json
+      let params = "json=" + json + "&image=" + imageContact + "&documento=" + perfilContact;                // Instanciamos los Valorrs del Json con sus parametros
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'}); // Declaramos las Cabezeras
 
-    return this._http.post(this.url + "/consultas/consulta-general-det", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/contactos/contactos-new", params, { headers:headers }).map( res => res.json());
+    // return this._http.post(this.url + "/login", params).map( res => res.json());
   } // FIN : FND-00004
+
 
 }

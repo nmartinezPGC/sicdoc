@@ -74,30 +74,41 @@ class ContactosController extends Controller{
         //Instanciamos el Servicio Helpers y Jwt  ******************************
         $helpers = $this->get("app.helpers");
         
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+       //echo "Antes de Falla  ******************   " . $json;
         // INI | Valid Json
         if ($json != null) {
+        // Declaramos el Entity Manager  *******************************
+        $em = $this->getDoctrine()->getManager();
+
         //Variables que vienen del Json ************************************
         //Seccion de Identificacion ****************************************
         //El ID no se incluye en el Ingreso; ya que es un campo Serial                   
             $cod_contacto     = (isset($params->codContacto)) ? $params->codContacto : null;
             
             // Datos Generales
-            $nombre1_contacto = (isset($params->primerNombre) && ctype_alpha($params->primerNombre) ) ? $params->primerNombre : null;
-            $nombre2_contacto = (isset($params->segundoNombre) && ctype_alpha($params->segundoNombre) ) ? $params->segundoNombre : null;
-            $apellido1_contacto = (isset($params->primerApellido) && ctype_alpha($params->primerApellido) ) ? $params->primerApellido : null;
-            $apellido2_contacto = (isset($params->segundoApellido) && ctype_alpha($params->segundoApellido) ) ? $params->segundoApellido : null;
+            $nombre1_contacto = (isset($params->nombre1Contacto) && ctype_alpha($params->nombre1Contacto) ) ? $params->nombre1Contacto : null;
+            $nombre2_contacto = (isset($params->nombre2Contacto) && ctype_alpha($params->nombre2Contacto) ) ? $params->nombre2Contacto : null;
+            $apellido1_contacto = (isset($params->apellido1Contacto) && ctype_alpha($params->apellido1Contacto) ) ? $params->apellido1Contacto : null;
+            $apellido2_contacto = (isset($params->apellido2Contacto) && ctype_alpha($params->segundoApellido) ) ? $params->apellido2Contacto : null;
             
             // Datos de Contacto
             $email_1          = (isset($params->email1Contacto)) ? $params->email1Contacto  : null;            
             $email_2          = (isset($params->email2Contacto)) ? $params->email2Contacto  : null;            
-            $telefono_1       = (isset($params->telefono1Contacto)) ? $params->telefono1Contacto  : null;            
-            $telefono_2       = (isset($params->telefono2Contacto)) ? $params->telefono2Contacto  : null;            
-            $celular_1        = (isset($params->celular1Contacto)) ? $params->celular1Contacto  : null;            
-            $celular_2        = (isset($params->celular2Contacto)) ? $params->celular2Contacto  : null;            
+            $telefono_1       = (isset($params->telefono1Contacto)) ? $params->telefono1Contacto  : 0;            
+            $telefono_2       = (isset($params->telefono2Contacto)) ? $params->telefono2Contacto  : 0;            
+            $celular_1        = (isset($params->celular1Contacto)) ? $params->celular1Contacto  : 0;            
+            $celular_2        = (isset($params->celular2Contacto)) ? $params->celular2Contacto  : 0;            
                         
             // Relaciones de Tablas
-            $id_institucion   = (isset($params->idInstitucion)) ? $params->idInstitucion  : null;
-            $id_funcionario   = (isset($params->idFuncionario)) ? $params->idFuncionario  : null;
+            $id_institucion   = (isset($params->idInstitucion)) ? $params->idInstitucion  : 0;
+            $id_funcionario   = (isset($params->idContactoSreci)) ? $params->idContactoSreci  : 0;
+            
+            //Documentos enviados
+            $pdf_documento   = (isset($params->pdfDocumento)) ? $params->pdfDocumento  : null;
+            $img_documento   = (isset($params->imgDocumento)) ? $params->imgDocumento  : null;
         
             //Verificacion del Codigo y Email en la Tabla: TblContactos ********                
             $isset_contact_mail = $em->getRepository("BackendBundle:TblContactos")
@@ -115,19 +126,17 @@ class ContactosController extends Controller{
                     ));
             
             if( count($isset_contact_mail) == 0 && count($isset_contact_cod) == 0 ){
-                // Declaramos el Entity Manager  *******************************
-                $em = $this->getDoctrine()->getManager();
-
+                
                 // Query para Obtener todos los Contactos de la Tabla: TblContactos ****
-                $contactos = $em->getRepository("BackendBundle:TblContactos")->findAll();
+                //$contactos = $em->getRepository("BackendBundle:TblContactos")->findAll();
 
                 // Validar que los Campos no vengan vacios
-                if ( $nombre1_contacto != null && $apellido1_contacto == 0 && 
+                if ( $nombre1_contacto != null && $apellido1_contacto != null  && 
                      $id_funcionario != 0 && $id_institucion != 0 ){
                     //Instanciamos la Entidad TblContactos *********************
                     $contactoNew = new TblContactos();
                     //Seteamos los valores de Identificacion *******************
-                    $contactoNew->setCodContacto($cod_usuario);                
+                    $contactoNew->setCodContacto($cod_contacto);                
                     $contactoNew->setNombre1Contacto($nombre1_contacto);
                     $contactoNew->setNombre2Contacto($nombre2_contacto);
                     $contactoNew->setApellido1Contacto($apellido1_contacto);
@@ -157,7 +166,77 @@ class ContactosController extends Controller{
                                 "idFuncionario" => $id_funcionario
                             )) ;
                     $contactoNew->setIdFuncionario($funcionarios);
+                                        
                     
+                    // INI | Ingreso de Documento ******************************
+                    //Recoger el Fichero que viene por el POST y lo guardamos el HD
+                    $file_document  = $request->files->get("documento");
+                                 
+                    //Se verifica que el fichero no venga Null
+                    if (!empty($file_document) && $file_document != null) {
+                        //Obtenemos la extencion del Fichero
+                        $ext = $file_document->guessExtension();
+                        //Comprobamos que la Extencion sea Aceptada
+                        if ($ext == "pdf" || $ext == "doc" || $ext == "docs" ) {                   
+                            // Concatenmos al Nombre del Fichero la Fecha y la Extencion
+                            //$file_name = time().".".$ext;
+                            $file_name = $nombre1_contacto . "-". $apellido1_contacto . "-" . date('Y-m-d'). "." .$ext; 
+                            //Movemos el Fichero
+                            $path_of_file = "uploads/contactos/perfiles/perfiles_".date('Y-m-d');
+                            $file_document->move($path_of_file, $file_name);                            
+                            
+                            // Setamos los Valores de Perfil de Contacto
+                            $contactoNew->setPerfilContacto( $file_name );
+                                                                                    
+                        } else {
+                            // Devolvemos el Mensaje de Array, cuando la Imagen no sea valida
+                            $data = array(
+                                "status" => "error",
+                                "code" => 400,
+                                "msg" => "El formato del archivo no es valido !!"
+                            );
+                        }
+                    }else{
+                        // Setamos los Valores de Perfil de Contacto
+                        $contactoNew->setPerfilContacto($pdf_documento);                          
+                    } // FIN | Ingreso de Documento ****************************
+                    
+                    
+                    // INI | Ingreso de Imagen *********************************
+                    //Recoger el Fichero que viene por el POST y lo guardamos el HD
+                    $file_imagen   = $request->files->get("image");
+                                 
+                    //Se verifica que el fichero no venga Null
+                    if (!empty($file_imagen) && $file_imagen != null) {
+                        //Obtenemos la extencion del Fichero
+                        $ext = $file_imagen->guessExtension();
+                        //Comprobamos que la Extencion sea Aceptada
+                        if ($ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
+                            // Concatenmos al Nombre del Fichero la Fecha y la Extencion
+                            //$file_name = time().".".$ext;
+                            $file_name = $nombre1_contacto . "-". $apellido1_contacto . "-" . date('Y-m-d'). "." .$ext; 
+                            //Movemos el Fichero
+                            $path_of_file = "uploads/contactos/imagen/imagen_".date('Y-m-d');
+                            $file_imagen->move($path_of_file, $file_name);                            
+                            
+                            // Setamos los Valores de Perfil de Contacto
+                            $contactoNew->setFotoContacto( $file_name );
+                                                                                    
+                        } else {
+                            // Devolvemos el Mensaje de Array, cuando la Imagen no sea valida
+                            $data = array(
+                                "status" => "error",
+                                "code" => 400,
+                                "msg" => "El formato del archivo no es valido !!"
+                            );
+                        }
+                    }else{
+                        // Setamos los Valores de Perfil de Contacto
+                        $contactoNew->setFotoContacto($img_documento);                          
+                    } // FIN | Ingreso de Documento ****************************
+                   
+                   
+                    // *********************************************************
                     // Realizamos la Persistencia de los Datos
                     $em->persist($contactoNew);
                     
@@ -168,14 +247,14 @@ class ContactosController extends Controller{
                     $data = array(
                         "status" => "success",                
                         "code" => "200",                
-                        "msg" => "El Contacto, " . " " . $nombre1_contacto . " " . $apellido1_contacto . 
+                        "msg" => "El Contacto, " . " " . $nombre1_contacto . " " . $apellido1_contacto  .
                                  " se ha creado satisfactoriamente."                 
                     );
                 } else {
                     $data = array(
                         "status" => "error",                
                         "code"   => "400",                
-                        "msg"    => "Falta Informacion por Ingresar !!"                
+                        "msg"    => "Falta Informacion por Ingresar !!"             
                     );
                 } // FIN | Validacion de Datos Pendientes
             } else {
@@ -185,8 +264,84 @@ class ContactosController extends Controller{
                         "msg"    => "Ya Existe un Contacto Ingresado con esta informacion !!"                
                     );
             } // FIN | Validacion de Existencia de Contacto
-        } // FIN | Valid Json
+        }else {
+             $data = array(
+                    "status" => "error",                
+                    "code"   => 400,                
+                    "msg"    => "Error en los Parametros enviados, comuniquese con el Admiistrador !!"                
+                );            
+        }// FIN | Valid Json
+         
         return $helpers->parserJson($data);
     }//FIN | FND00002
+    
+    
+    
+    /**
+     * @Route("contactos/contacto-upload-perfil", name="contactos/contacto-upload-perfil")
+     * Creacion del Controlador: Comunes Perfil PDF
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003
+     */
+    public function uploadDocumentoAction(Request $request) {
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        $cod_contacto  = (isset($params->codigoSec)) ? $params->codigoSec : null;
+                
+        // Nombre del Documento
+        $file_nameIn = $request->get("name_pdf");
+                
+        //Evaluamos la Autoriuzacion del Token
+        
+        //$em = $this->getDoctrine()->getManager();
+        //Recoger el Fichero que viene por el POST y lo guardamos el HD
+        $file      = $request->files->get("name_pdf");
+        
+        //Recoger el Fichero que viene por el POST y lo guardamos el HD ********
+            //Se verifica que el fichero no venga Null
+            if (!empty($file) && $file != null) {
+                //Obtenemos la extencion del Fichero
+                $ext = $file->guessExtension();
+                //Comprobamos que la Extencion sea Aceptada
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ) {                   
+                    // Concatenmos al Nombre del Fichero la Fecha y la Extencion
+                    //$file_name = time().".".$ext;
+                    $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
+                    //Movemos el Fichero
+                    $path_of_file = "uploads/contactos/perfiles/perfil_".date('Y-m-d');
+                    $file->move($path_of_file, $file_name);                    
+                
+                    // Devolvemos el Mensaje de Array
+                    $data = array(
+                        "status" => "success",
+                        "code" => 200,
+                        "msg" => "Document for user uploaded success !!",
+                        "data" => $file_name
+                    );
+                } else {
+                    // Devolvemos el Mensaje de Array, cuando la Imagen no sea valida
+                    $data = array(
+                        "status" => "error",
+                        "code" => 400,
+                        "msg" => "File not valid !!"
+                    );
+                }
+            }else{
+                $data = array(
+                    "status" => "error",
+                    "code" => 400,
+                    "msg" => "Document not upload !!" . $file_nameIn
+                );                
+            }            
+        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } // FIN FND00003
+    
     
 }

@@ -24,7 +24,12 @@ export class  Contactos {
 
       // Contacto SRECI
       public idContactoSreci:number,
-      public idInstitucion:number
+      public idInstitucion:number,
+
+      // Docuemntos
+      public pdfDocumento:string,
+      public imgDocumento:string,
+
 
     ){}
 

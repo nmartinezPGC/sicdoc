@@ -2,15 +2,15 @@ BackendBundle\Entity\TblContactos:
     type: entity
     table: tbl_contactos
     indexes:
-        tbl_contactos_cod_contacto_idx:
-            columns:
-                - cod_contacto
-        fki_institucion_contacto:
-            columns:
-                - id_institucion
         fki_func_contacto:
             columns:
                 - id_funcionario
+        fki_institucion_contacto:
+            columns:
+                - id_institucion
+        tbl_contactos_cod_contacto_idx:
+            columns:
+                - cod_contacto
     id:
         idContacto:
             type: integer
@@ -57,20 +57,6 @@ BackendBundle\Entity\TblContactos:
             options:
                 fixed: false
             column: apellido2_contacto
-        fotoContacto:
-            type: blob
-            nullable: true
-            length: null
-            options:
-                fixed: false
-            column: foto_contacto
-        perfilContacto:
-            type: blob
-            nullable: true
-            length: null
-            options:
-                fixed: false
-            column: perfil_contacto
         telefono1Contacto:
             type: integer
             nullable: true
@@ -109,17 +95,21 @@ BackendBundle\Entity\TblContactos:
             options:
                 fixed: false
             column: email2_contacto
+        fotoContacto:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: foto_contacto
+        perfilContacto:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: perfil_contacto
     manyToOne:
-        idInstitucion:
-            targetEntity: TblInstituciones
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_institucion:
-                    referencedColumnName: id_institucion
-            orphanRemoval: false
         idFuncionario:
             targetEntity: TblFuncionarios
             cascade: {  }
@@ -129,5 +119,15 @@ BackendBundle\Entity\TblContactos:
             joinColumns:
                 id_funcionario:
                     referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion:
+                    referencedColumnName: id_institucion
             orphanRemoval: false
     lifecycleCallbacks: {  }

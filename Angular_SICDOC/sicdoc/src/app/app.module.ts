@@ -63,6 +63,9 @@ import { ContactosService } from './services/contactos/contacto.service';
 // Imports de AutoComplete
 import { Ng2CompleterModule } from "ng2-completer";
 
+// Imports de Pluguin de Subir Imagenes
+import { ImageUploadModule } from "angular2-image-upload";
+
 
 @NgModule({
   declarations: [
@@ -97,6 +100,7 @@ import { Ng2CompleterModule } from "ng2-completer";
     MdGridListModule, MdExpansionModule, MdDatepickerModule, MdInputModule,
     MdCheckboxModule, MdNativeDateModule, MdTableModule*/
     Ng2CompleterModule,
+    ImageUploadModule.forRoot(),
   ],
   providers: [
     UsuariosService,

@@ -272,12 +272,19 @@ class ListasComunesController extends Controller {
             $pais_institucion    = (isset($params->idPais)) ? $params->idPais : null;
             $tipo_institucion    = (isset($params->idTipoInstitucion)) ? $params->idTipoInstitucion : null;
             
-            // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
-            $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
+            // Evaluamos que Parametro nos enviaron
+            if( $pais_institucion != null && $tipo_institucion != null){
+                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
+                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
                     array(
                         "idTipoInstitucion" => $tipo_institucion, //Tipo de Institucion
                         "idPais"            => $pais_institucion //Pais de la Institucion
                     ));
+            }else {
+                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
+                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findAll();
+            }         
+            
 
             // Condicion de la Busqueda
             if (count($institucionesSreci) >= 1 ) {
@@ -1099,6 +1106,58 @@ class ListasComunesController extends Controller {
         return $helpers->parserJson($data);
     }//FIN | FND00019
     
+    
+    
+    /**
+     * @Route("listas/funcionarios-list-all", name="listas/funcionarios-list-all")
+     * Creacion del Controlador: Funcionarios Listado Completo
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00020
+     */
+    public function funcionariosListAllAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Tipo de Funcionario***************************
+            $tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            
+            // Query para Obtener todos los Funcionarios de la Tabla: TblUsuarios
+            $funcionario_all = $em->getRepository("BackendBundle:TblFuncionarios")->findAll();
+
+            // Condicion de la Busqueda
+            if (count( $funcionario_all ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $funcionario_all
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Funcionarios !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00020
     
     
 }
