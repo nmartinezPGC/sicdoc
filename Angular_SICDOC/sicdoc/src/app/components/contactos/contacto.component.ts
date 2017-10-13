@@ -79,6 +79,7 @@ export class ContactosComponent implements OnInit {
   public JsonOutgetlistaFuncionarios:any[];
 
   public JsonLimpio;
+  public paramsDocs;
 
 
   // Ini | Definicion del Constructor
@@ -92,11 +93,6 @@ export class ContactosComponent implements OnInit {
                private completerService: CompleterService ) {
     // Llenado de la Tabla de Encabezado
     this.fillDataTable();
-
-    // this.dataService = completerService.local(this.searchData, 'colors', 'colors');
-    // this.dataService = completerService.local(this.JsonOutgetlistaContactosEnc, 'idContacto', 'idContacto');
-    // console.log(this.JsonOutgetlistaContactosEnc);
-    // console.log(this.dataService);
   } // Fin | Definicion del Constructor
 
 
@@ -111,6 +107,12 @@ export class ContactosComponent implements OnInit {
     //this.userId = this.identity.sub;
     this.searchStr = "";
     this.searchStrFunc = "";
+
+    // Iniciamos los Parametros de Documentos
+    this.paramsDocs = {
+      "nombreDocumento"  : "",
+      "optDocumento"  : ""
+    };
 
     // Definicion de la Insercion de los Datos de Nuevo Contacto
     this.consultaContactos = new Contactos ( 0, null, null, null, null, null,
@@ -149,7 +151,7 @@ export class ContactosComponent implements OnInit {
             this.mensajes = response.msg;
 
             // Condicionamos la Respuesta
-            alert('Paso 1 ' + this.status);
+            // alert('Paso 1 ' + this.status);
             if(this.status != "success"){
                 this.status = "error";
                 this.mensajes = response.msg;
@@ -164,7 +166,7 @@ export class ContactosComponent implements OnInit {
               // this.ngOnInit();
               // Llenado de la Tabla de Encabezado
               this.fillDataTable();
-              
+
               this.loading_table = 'hide';
               // alert('Send Data ' +  this.mensajes);
               setTimeout(function() {
@@ -187,7 +189,6 @@ export class ContactosComponent implements OnInit {
             }
         });
   } // Fin | Metodo onSubmit
-
 
 
   /*****************************************************
@@ -342,7 +343,7 @@ export class ContactosComponent implements OnInit {
   // public filesToUpload: Array<File>;
   // public resultUpload;
 
-  fileChangeEvent(fileInput: any){
+  fileChangeEvent(fileInput: any, optDoc){
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
@@ -356,12 +357,21 @@ export class ContactosComponent implements OnInit {
     let  status:string;
     let  codigoSec:string;
 
+
     // Seteamos el valore del Nombre del Documento
     codigoSec = this.consultaContactos.nombre1Contacto + ' ' + this.consultaContactos.apellido1Contacto;
 
+    this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
+                                    + this.consultaContactos.apellido1Contacto;
+
+     this.paramsDocs.optDocumento = optDoc;
+
+     let sendParms = "json=" + this.paramsDocs;
+
+     console.log(this.paramsDocs);
 
     // Ejecutamos el Servicio con los Parametros
-    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', codigoSec ], this.filesToUpload ).then(
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', codigoSec], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;

@@ -173,19 +173,7 @@
                             <label for="exampleInputEmail1">Perfil de Contacto</label>
                             <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
                                  ngControl="pdfDocumento" [(ngModel)]="consultaContactos.pdfDocumento" placeholder="Subir Pdf ..."
-                                 aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
-
-                                 <!-- Barra de Progreso de Carga de la Imagen -->
-                                 <div class="progress">
-                                     <div id="upload-progress-bar" class="progress-bar progress-bar-success"
-                                         role="progressbar"
-                                         aria-valuenow="0"
-                                         aria-valuemin="0"
-                                         aria-valuemax="0"
-                                         style="width:1%">
-                                     </div>
-                                 </div>
-                                 <p id="status"></p>
+                                 aria-describedby="fileHelp" (change)="fileChangeEvent($event, 1)">
 
                             <!-- <image-upload url="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/imagen" [max]="2" [extensions]="['jpeg','png']"></image-upload> -->
                           </div>
@@ -193,7 +181,24 @@
                             <label for="exampleInputEmail1">Imagen de Contacto</label>
                             <input #imgDocumento="ngModel" type="file" class="form-control-file" id="imgDocumento" name="imgDocumento"
                                  ngControl="imgDocumento" [(ngModel)]="consultaContactos.imgDocumento" placeholder="Subir Pdf ..."
-                                 aria-describedby="fileHelp">
+                                 aria-describedby="fileHelp" (change)="fileChangeEvent($event, 2)">
+
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8 col-lg-12">
+                            <!-- Barra de Progreso de Carga de la Imagen -->
+                            <div class="progress">
+                                <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                                    role="progressbar"
+                                    aria-valuenow="0"
+                                    aria-valuemin="0"
+                                    aria-valuemax="0"
+                                    style="width:1%">
+                                </div>
+                            </div>
+                            <p id="status"></p>
                           </div>
                         </div>
 
