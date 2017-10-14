@@ -65,6 +65,7 @@ import { Ng2CompleterModule } from "ng2-completer";
 
 // Imports de Pluguin de Subir Imagenes
 import { ImageUploadModule } from "angular2-image-upload";
+import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
 
 
 @NgModule({
@@ -86,7 +87,8 @@ import { ImageUploadModule } from "angular2-image-upload";
     SeguimientoActividadComponent,
     DatatablesActividadPendientesComponent,
     ConsultaMasterComponent,
-    ContactosComponent
+    ContactosComponent,
+    ReporteGeneralComponent
   ],
   imports: [
     BrowserModule,

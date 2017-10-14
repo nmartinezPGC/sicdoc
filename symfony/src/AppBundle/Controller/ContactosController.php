@@ -92,7 +92,7 @@ class ContactosController extends Controller{
             $nombre1_contacto = (isset($params->nombre1Contacto) && ctype_alpha($params->nombre1Contacto) ) ? $params->nombre1Contacto : null;
             $nombre2_contacto = (isset($params->nombre2Contacto) && ctype_alpha($params->nombre2Contacto) ) ? $params->nombre2Contacto : null;
             $apellido1_contacto = (isset($params->apellido1Contacto) && ctype_alpha($params->apellido1Contacto) ) ? $params->apellido1Contacto : null;
-            $apellido2_contacto = (isset($params->apellido2Contacto) && ctype_alpha($params->segundoApellido) ) ? $params->apellido2Contacto : null;
+            $apellido2_contacto = (isset($params->apellido2Contacto) && ctype_alpha($params->apellido2Contacto) ) ? $params->apellido2Contacto : null;
             
             // Datos de Contacto
             $email_1          = (isset($params->email1Contacto)) ? $params->email1Contacto  : null;            
@@ -308,7 +308,8 @@ class ContactosController extends Controller{
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ) {                   
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                    $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 

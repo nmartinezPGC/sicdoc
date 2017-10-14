@@ -15,8 +15,10 @@ export class  Contactos {
       public perfilContacto:string,
 
       // Telefonos
-      public telefonoContacto:number,
-      public celularContacto:number,
+      public telefono1Contacto:number,
+      public telefono2Contacto:number,
+      public celular1Contacto:number,
+      public celular2Contacto:number,
 
       //Datos de la Busqueda
       public email1Contacto:string,

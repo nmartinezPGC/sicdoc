@@ -105,13 +105,16 @@
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Primer Correo</label>
                             <input #email1Contacto="ngModel" type="mail" class="form-control" name="email1Contacto" id="email1Contacto" placeholder="name@example.com"
-                              [(ngModel)]="consultaContactos.email1Contacto" required>
+                              [(ngModel)]="consultaContactos.email1Contacto"
+                              required pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" >
+                          <small class="form-text text-muted" *ngIf="email1Contacto.errors?.pattern" >el campo no tiene formato de correo</small>
                           <small class="form-text text-muted" *ngIf="email1Contacto.errors?.required" >Ingresa el Correo de Contacto</small>
                           </div>
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Segundo Correo</label>
                             <input #email2Contacto="ngModel" type="mail" class="form-control" name="email2Contacto" id="email2Contacto" placeholder="name@example.com"
-                                [(ngModel)]="consultaContactos.email2Contacto">
+                                [(ngModel)]="consultaContactos.email2Contacto" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                          <small class="form-text text-muted" *ngIf="email2Contacto.errors?.pattern" >el campo no tiene formato de correo</small>
                           </div>
                         </div>
 
@@ -122,16 +125,21 @@
                           <!-- Celular de Contacto -->
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Celular</label>
-                            <input #celularContacto="ngModel" type="text" class="form-control" name="celularContacto" id="validationDefault01" placeholder="99889988"
-                                [(ngModel)]="consultaContactos.celularContacto" required>
-                            <small class="form-text text-muted" *ngIf="celularContacto.errors?.required" >Ingresa el No. de Celular</small>
+                            <input #celular1Contacto="ngModel" type="text" class="form-control" name="celular1Contacto" id="celular1Contacto"
+                                placeholder="99889988" [(ngModel)]="consultaContactos.celular1Contacto" ngControl="celular1Contacto"
+                                required  maxlength="8" pattern ="^([0-9])*$">
+                            <small class="form-text text-muted" *ngIf="celular1Contacto.errors?.pattern" >Solo se permite Inresar Números</small>
+                            <small class="form-text text-muted" *ngIf="celular1Contacto.errors?.required" >Ingresa el No. de Celular</small>
                           </div>
 
                           <!-- Telefono Fijo -->
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Telefono</label>
-                            <input #email2Contacto="ngModel" type="text" class="form-control" name="telefonoContacto" id="telefonoContacto" placeholder="22060200"
-                                [(ngModel)]="consultaContactos.telefonoContacto" >
+                            <input #telefono1Contacto="ngModel" type="text" class="form-control"
+                                name="telefono1Contacto" id="telefono1Contacto" placeholder="22060200"
+                                pattern ="^([0-9])*$" ngControl="telefono1Contacto"
+                                [(ngModel)]="consultaContactos.telefono1Contacto" maxlength="8">
+                             <small class="form-text text-muted" *ngIf="telefono1Contacto.errors?.pattern" >Solo se permite Inresar Números</small>
                           </div>
 
                         </div>
@@ -142,7 +150,7 @@
                         <div class="row">
                           <!-- Institucion de Contacto-->
                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
-                  					<div class="form-group">
+                  					<!-- <div class="form-group"> -->
                             <!-- Instituciones que sera de Contacto -->
                              <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idInstitucion"
                                  [(ngModel)]="searchStr" inputId="1" required
@@ -150,18 +158,18 @@
                                  textNoResults="No se han encontrado nada ..."
                                  placeholder="Selecciona una Institucion" (selected)="onSelected($event)" >
                              </ng2-completer>
-                              <p>Selected: {{selectedInstitucion}}</p>
-                            </div>
+                              <!-- <p>Selected: {{selectedInstitucion}}</p> -->
+                            <!-- </div> -->
                             <!-- Funcionario de Contacto de SRECI -->
-                            <div class="form-group">
+                            <!-- <div class="form-group"> -->
                              <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
                                  [(ngModel)]="searchStrFunc" inputId="2" required
                                  [datasource]="dataServiceFunc" [minSearchLength]="2" textSearching="Buscando ..."
                                  textNoResults="No se han encontrado nada ..."
                                  placeholder="Selecciona un Funcionario de Conatcto" (selected)="onSelectedFunc($event)" >
                              </ng2-completer>
-                              <p>Selected: {{selectedFuncionario}}</p>
-                            </div>
+                              <!-- <p>Selected: {{selectedFuncionario}}</p> -->
+                            <!-- </div> -->
                   				</div>
                         </div>
 
@@ -173,19 +181,20 @@
                             <label for="exampleInputEmail1">Perfil de Contacto</label>
                             <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
                                  ngControl="pdfDocumento" [(ngModel)]="consultaContactos.pdfDocumento" placeholder="Subir Pdf ..."
-                                 aria-describedby="fileHelp" (change)="fileChangeEvent($event, 1)">
+                                 aria-describedby="fileHelp" (change)="fileChangeEvent($event, 1)" value="foo">
 
                             <!-- <image-upload url="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/imagen" [max]="2" [extensions]="['jpeg','png']"></image-upload> -->
                           </div>
                           <div class="col-xs-12 col-md-4 col-lg-6">
                             <label for="exampleInputEmail1">Imagen de Contacto</label>
                             <input #imgDocumento="ngModel" type="file" class="form-control-file" id="imgDocumento" name="imgDocumento"
-                                 ngControl="imgDocumento" [(ngModel)]="consultaContactos.imgDocumento" placeholder="Subir Pdf ..."
+                                 ngControl="imgDocumento" [(ngModel)]="consultaContactos.imgDocumento" value="foo" placeholder="Subir Pdf ..."
                                  aria-describedby="fileHelp" (change)="fileChangeEvent($event, 2)">
 
                           </div>
                         </div>
 
+                        <hr>
                         <div class="row">
                           <div class="col-xs-12 col-md-8 col-lg-12">
                             <!-- Barra de Progreso de Carga de la Imagen -->
@@ -203,8 +212,8 @@
                         </div>
 
                         <hr class="colorgraph">
+                        <!-- Boton de envio de Datos de la Data -->
                         <div class="row">
-
                   				<div class="col-xs-12 col-md-3">
                             <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17"
                                 [disabled]="!contactForm.valid" >

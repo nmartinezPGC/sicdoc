@@ -91,6 +91,8 @@ export class ContactosComponent implements OnInit {
                private _appComponent: AppComponent,
                private _http: Http,
                private completerService: CompleterService ) {
+    // Ejecucion de la Lista de Contactos
+    this.getlistaContactosTableFind();
     // Llenado de la Tabla de Encabezado
     this.fillDataTable();
   } // Fin | Definicion del Constructor
@@ -116,7 +118,8 @@ export class ContactosComponent implements OnInit {
 
     // Definicion de la Insercion de los Datos de Nuevo Contacto
     this.consultaContactos = new Contactos ( 0, null, null, null, null, null,
-                                             null, null,  0, 0,
+                                             null, null,
+                                             null, null, null, null,
                                              null, null,  0, 0, null, null);
 
     // Ejecucion de la Lista de Instituciones
@@ -127,6 +130,9 @@ export class ContactosComponent implements OnInit {
 
     // Ejecucion de la Lista de Contactos
     this.getlistaContactosTableFind();
+
+    // Llenado de la Tabla de Encabezado
+    // this.fillDataTable();
   } // Fin | ngOnInit
 
 
@@ -158,17 +164,19 @@ export class ContactosComponent implements OnInit {
                 if(this.loading_table = 'show'){
                   this.loading_table = 'hidden';
                 }
-
                 alert('Error Data ' +  this.mensajes);
             }else{
               //this.resetForm();
               this.loading = 'hidden';
-              // this.ngOnInit();
+              this.ngOnInit();
+
+              // Ejecucion de la Lista de Contactos
+              // this.getlistaContactosTableFind();
               // Llenado de la Tabla de Encabezado
-              this.fillDataTable();
+              // this.fillDataTable();
 
               this.loading_table = 'hide';
-              // alert('Send Data ' +  this.mensajes);
+              alert( this.mensajes );
               setTimeout(function() {
                 $('#t_and_c_m').modal('hide');
               }, 600);
@@ -228,7 +236,7 @@ export class ContactosComponent implements OnInit {
             this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'perfilInstitucion');
             this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
                   'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
-            console.log(this.dataServiceFunc);
+            //console.log(this.dataServiceFunc);
           }
         });
   } // FIN | FND-00001
@@ -300,7 +308,7 @@ export class ContactosComponent implements OnInit {
           this.loading_tableIn = 'show';
       });
     }, 8000);
-    this.loading_tableIn = 'hide';
+    //this.loading_tableIn = 'hide';
   } // FIN | FND-00002
 
 
@@ -380,7 +388,13 @@ export class ContactosComponent implements OnInit {
             console.log(this.resultUpload);
             alert(this.resultUpload.msg);
           }
-          this.consultaContactos.pdfDocumento = this.resultUpload.data;
+          // alert(this.resultUpload.data);
+          // Evalua si Sube Imagen / Documento
+          if( optDoc == 1 ){
+              this.consultaContactos.pdfDocumento = this.resultUpload.data;
+          } else if( optDoc == 2 ){
+              this.consultaContactos.imgDocumento = this.resultUpload.data;
+          }
           // this.mensajes = this.resultUpload.msg;
         },
         ( error ) => {
