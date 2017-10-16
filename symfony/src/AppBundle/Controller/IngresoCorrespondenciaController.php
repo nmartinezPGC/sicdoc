@@ -333,7 +333,7 @@ class IngresoCorrespondenciaController extends Controller{
                             // Pdf que se Agrega
                             // validamos que se adjunta pdf
 
-                                $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                                $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d'). ".pdf" ); //Set Url de Documento
 
 
                             // Relizamos la persistencia de Datos de las Comunicaciones Detalle
