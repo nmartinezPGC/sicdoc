@@ -8,6 +8,9 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_det_user:
             columns:
                 - id_usuario
+        fki_func_det_asignado:
+            columns:
+                - id_funcionario_asignado
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
@@ -17,9 +20,6 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_fk-det_estado:
             columns:
                 - id_estado
-        fki_func_det_asignado:
-            columns:
-                - id_funcionario_asignado
     uniqueConstraints:
         tbl_correspondencia_det_cod_correspondencia_det_key:
             columns:

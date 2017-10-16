@@ -168,8 +168,8 @@ export class ContactosComponent implements OnInit {
             }else{
               //this.resetForm();
               this.loading = 'hidden';
-              this.ngOnInit();
-
+              // this.ngOnInit();
+              window.location.reload();
               // Ejecucion de la Lista de Contactos
               // this.getlistaContactosTableFind();
               // Llenado de la Tabla de Encabezado
@@ -348,9 +348,6 @@ export class ContactosComponent implements OnInit {
   * control File de HTML
   * (fileChangeEvent).
   ******************************************************/
-  // public filesToUpload: Array<File>;
-  // public resultUpload;
-
   fileChangeEvent(fileInput: any, optDoc){
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     this.filesToUpload = <Array<File>>fileInput.target.files;
@@ -402,6 +399,22 @@ export class ContactosComponent implements OnInit {
           console.log(error);
         });
   } // FIN : FND-00004
+
+
+  /*****************************************************
+  * Funcion: FND-00005
+  * Fecha: 13-10-2017
+  * Descripcion: Descarga el PDF
+  * Objetivo: Descarga el pdf del Contacto
+  * ( downloadDocumento ).
+  ******************************************************/
+  downloadDocumento(downloadUrl){
+    var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
+
+    //  let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
+
+      window.open( url + downloadUrl);
+  } // FIN | FND-00005
 
 
 } // FIN | Clase

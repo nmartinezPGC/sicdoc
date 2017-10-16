@@ -314,7 +314,7 @@ class ContactosController extends Controller{
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
-                    $path_of_file = "uploads/contactos/perfiles/perfil_".date('Y-m-d');
+                    $path_of_file = "uploads/contactos/perfiles/";
                     $file->move($path_of_file, $file_name);                    
                 
                     // Devolvemos el Mensaje de Array

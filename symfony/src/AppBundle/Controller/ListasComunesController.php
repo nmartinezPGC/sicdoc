@@ -147,6 +147,48 @@ class ListasComunesController extends Controller {
     
     
     /**
+     * @Route("/subdir-sreci-list-all", name="subdir-sreci-list-all")
+     * Creacion del Controlador: Departamentos Funcionales All
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003.1
+     */
+    public function deptoFuncionalListAllAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+            //Variables que vienen del Json ***********************************************
+            //Recogemos el la Direccion ********************************
+            $direccion_sreci    = (isset($params->idDireccionSreci)) ? $params->idDireccionSreci : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblEstados
+            $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findAll();
+
+            // Condicion de la Busqueda
+            if (count($tipoFunc) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $tipoFunc
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Sub Direcciones !!"
+                );
+            }  
+        return $helpers->parserJson($data);
+    }//FIN | FND00003.1
+    
+    
+    /**
      * @Route("/depto-func-user", name="depto-func-user")
      * Creacion del Controlador: Depto. Funcionales de User
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>

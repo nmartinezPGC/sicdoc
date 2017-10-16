@@ -3,20 +3,22 @@ export class ReporteGeneral{
   //Constructor de la Clase
     constructor(
       // Campos de la Tabla
-      public codOficioInterno:string,
-      public codOficioExterno:string,
-      public searchValueSend:string,
+      public fechaInicial:Date,
+      public fechaFinal:Date,
+      // public searchValueSend:string,
 
       // Funcionario Asignado
       public idFuncionarioAsignado:number,
-      public idCorrespondenciaEnc:number,
+      public idDireccion:number,
 
       //Datos de la Busqueda
-      public optUserFind:string,
-      public optUserFindId:number,
-      public idEstado:any[],
+      // public optUserFind:string,
+      public idEstadoComunicacion:any[],
       public idTipoComunicacion:any[],
 
+      // Condiciones de los envio de Parametros
+      public optArrayEstados:number,
+      public optArrayTipos:number
     ){}
 
 }

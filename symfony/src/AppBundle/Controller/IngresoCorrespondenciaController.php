@@ -397,8 +397,8 @@ class IngresoCorrespondenciaController extends Controller{
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
-                              $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
-                              //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
+                              $target_path1 = "uploads/correspondencia" . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                                                        
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
                             }
                                  
@@ -924,7 +924,7 @@ class IngresoCorrespondenciaController extends Controller{
                         //Instanciamos de la Clase TblFuncionarios
                         $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
                         array(
-                           "idFuncionario" => $id_usuario_asignado                
+                           "idUsuario" => $id_usuario_asignado
                         ));                    
                         $correspondenciaDet->setIdFuncionarioAsignado($usuario_asignado); 
                         
@@ -968,7 +968,7 @@ class IngresoCorrespondenciaController extends Controller{
                             //Instanciamos de la Clase TblUsuario
                             $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                                 array(
-                                   "idUsuario" => $cod_usuario                           
+                                   "idUsuario" => $id_usuario_asignado                           
                                 ));                    
                             $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
 
@@ -1001,7 +1001,8 @@ class IngresoCorrespondenciaController extends Controller{
                         // los Datos de envio de Mail **************************
                         $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
                             array(
-                                "idFuncionario" => $id_usuario_asignado                
+                                //"idFuncionario" => $id_usuario_asignado                
+                                "idUsuario" => $id_usuario_asignado                
                             ));
                         // Parametros de Salida
                         $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
@@ -1025,8 +1026,8 @@ class IngresoCorrespondenciaController extends Controller{
                                                     )
                                                  )
                                //->setEncryption('ssl')                               
-                               ->setUsername( $identity->email )
-                               //->setUsername( 'nahum.sreci@gmail.com')
+                               //->setUsername( $identity->email )
+                               ->setUsername( 'nahum.sreci@gmail.com')
                                //->setUsername( 'gcallejas.sreci@gmail.com')
                                ->setPassword('1897Juve');
                                //->setPassword('gec2017*');
@@ -1051,8 +1052,8 @@ class IngresoCorrespondenciaController extends Controller{
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
-                              $target_path1 = "uploads/correspondencia/correspondencia_" . date('Y-m-d') . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
-                              //$target_path1 = "COM-IN-OFI-11-2017-09-12.pdf";                            
+                              $target_path1 = "uploads/correspondencia" . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                                                         
                               $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
                             }
                                  

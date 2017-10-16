@@ -3,38 +3,89 @@
   <h2> {{ titulo }} <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
   <div class="row-fluid">
-    <div class="col-xs-12 col-md-12 col-lg-12" >
+    <div class="col-xs-12 col-md-12 col-lg-12" id="primero">
 
       <!-- Area de Selecion de Criterios -->
-      <div class="jumbotron">
-        <h4 class="display-4">Seleccione los Criterios para el Reporte</h4>
+      <div class="jumbotron" >
+        <h4 class="display-4" style="margin-top:-40px" >Seleccione los Criterios para el Reporte</h4>
         <!-- <p class="lead">Seleccione los Criterio para el Reporte</p> -->
         <hr class="my-4">
         <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
         <p class="lead">
         </p>
         <!-- Formulario de Seleccion de Criterios de Busqueda -->
-      <form class="" >
-
+      <form #reporteForm="ngForm" (ngSubmit)="onSubmit(reporteForm)" name="reporteForm" role="form">
           <!-- Tarjeta de Primer Criterio -->
           <div class="row">
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-block" >
                   <h3 class="card-title">Selección de Fechas</h3>
-                  Todos <input type="checkbox" name="" value="">
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <!-- Todas las Opciones -->
+                  <!-- <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="chkTipoCom[]" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Todas las opciones</span>
+                  </label> -->
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      Fecha de Inicio
+                      <input #dtFechaIni="ngModel" type="date" class="form-control" name="dtFechaIni"
+                        [(ngModel)]="_ModelReporteGeneral.fechaInicial" required value="">
+                    </li>
+                    <li class="list-group-item">
+                      Fecha de Final
+                      <input #dtFechaFin="ngModel" type="date" class="form-control" name="dtFechaFin"
+                        [(ngModel)]="_ModelReporteGeneral.fechaFinal" required value="">
+                    </li>
+                  </ul>
+
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-block">
+                  <h3 class="card-title">Seleción de Direccion</h3>
+                  <!-- Todas las Opciones -->
+                  <!-- <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="chkAllFunc[]" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Todos las Direcciones</span>
+                  </label> -->
+                  <!-- Input de Busqueda de las Direcciones -->
+                  <!-- Loader de Carga de los Datos -->
+                  <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idDireccion"
+                      [(ngModel)]="searchStrDireccion" inputId="1"
+                      [datasource]="dataServiceSubDireccion" [minSearchLength]="2" textSearching="Buscando ..."
+                      textNoResults="No se han encontrado nada ..."
+                      placeholder="Selecciona una Direccion" (selected)="onSelectedDireccion($event)" >
+                  </ng2-completer>
+                  <!-- <p>Selected: {{selectedDireccion}}</p> -->
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+
+                <div class="card-block">
                   <h3 class="card-title">Seleción de Funcionario</h3>
-                  Todos <input type="checkbox" name="" value="">
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <!-- Todas las Opciones -->
+                  <!-- <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="chkTipoCom[]" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Todos los Funcionarios</span>
+                  </label> -->
+                  <!-- Input de Busqueda de Funcionario -->
+                  <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idFuncionario"
+                      [(ngModel)]="searchStrFuncionario" inputId="1"
+                      [datasource]="dataServiceFuncionario" [minSearchLength]="2" textSearching="Buscando ..."
+                      textNoResults="No se han encontrado nada ..."
+                      placeholder="Selecciona un Funcionario" (selected)="onSelectedFuncionarios($event)" >
+                  </ng2-completer>
+                  <!-- <p>Selected: {{selectedFuncionario}}</p> -->
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+                <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:35%; margin-top:5%;">
+                  <img src="assets/images/30.gif" alt="Cargando Tareas">
                 </div>
               </div>
             </div>
@@ -46,29 +97,133 @@
           <div class="col-sm-6">
             <div class="card">
               <div class="card-block">
-                <h3 class="card-title">Tipo de Comunicacion</h3>
-                Todos <input type="checkbox" name="" value="">
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h3 class="card-title">Tipo de Comunicación</h3>
+                <!-- Todas las Opciones -->
+                <!-- <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkAllTipoCom[]" class="custom-control-input">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Todas las opciones</span>
+                </label> -->
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+
+                    <!-- Oficios -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComOficio }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Oficios</span>
+                    </label>
+                    <!-- Correos -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCorreos }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Correos</span>
+                    </label>
+                    <!-- Llamadas -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComLlamadas }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Llamadas</span>
+                    </label>
+                    <!-- Verbal -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComVerbal }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Verbal</span>
+                    </label>
+                  </li>
+                </ul>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
               <div class="card-block">
-                <h3 class="card-title">Estado de Comunicacion</h3>
-                Todos <input type="checkbox" name="" value="">
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h3 class="card-title">Estado de Comunicación</h3>
+                <!-- Todas las Opciones -->
+                <!-- <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkEstComAll" id="chkEstComAll"  (click)="checkTodos()" class="custom-control-input 0">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Todas las opciones</span>
+                </label> -->
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <!-- Oficios -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoIngreso }}" id="chkEstCom" class="custom-control-input 1">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Ingreso</span>
+                    </label>
+                    <!-- Correos -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoAsignado }}" id="chkEstCom" class="custom-control-input 1">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Asignado</span>
+                    </label>
+                    <!-- Llamadas -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoEnRespuesta }}" id="chkEstCom" class="custom-control-input 1">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">En Respuesta</span>
+                    </label>
+                    <!-- Verbal -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoFinalizado }}" id="chkEstCom" class="custom-control-input 1">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Finalizado</span>
+                    </label>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      </form> <!-- Fin de Formulario de Seleccion de Criterios de Busqueda -->
 
+        <!-- <input type="button" name="" value="Li" (click)="download()"> -->
+        <input type="submit" value="Generar Reporte" class="btn btn-primary btn-lg"
+          [disabled]="!reporteForm.valid" >
+
+          <!-- Loader de Carga de los Datos -->
+          <div id="loader-2" *ngIf="loading_tableIn == 'show' " >
+            <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%">
+          </div>
+
+      </form> <!-- Fin de Formulario de Seleccion de Criterios de Busqueda -->
       </div>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Reset Criterios</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Generar</a>
+
+      <hr>
+
+      <!-- Tabla del Reporte -->
+      <h4 id="editor" >Resumen de la Informacion Solicitada</h4>
+      <hr>
+      <table class="table table-striped table-hover table-responsive" cellspacing="0" width="100%" id="example">
+        <thead>
+          <tr>
+            <th>Tipo de Comunicacion</th>
+            <th>Direccion Responsable</th>
+            <th>Funcionario Responsable</th>
+            <th>Fecha Ingreso </th>
+            <th>Institucion de Comunicacion</th>
+            <th>Tema de Comunicacion</th>
+            <th>Descripcion de Comunicacion</th>
+            <th>Estado Comunicacion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of JsonOutgetReporteComunicaion">
+            <th scope="row">{{ item.idTipoDocumento.descTipoDocumento }}</th>
+            <td>{{ item.idDeptoFuncional.descDeptoFuncional }}</td>
+            <td>{{ item.idFuncionarioAsignado.nombre1Funcionario }} - {{ item.idFuncionarioAsignado.apellido1Funcionario }}</td>
+            <td>{{ item.fechaIngreso.timestamp | generateDate }}</td>
+            <td>{{ item.idInstitucion.perfilInstitucion }}</td>
+            <td>{{ item.temaComunicacion }}</td>
+            <td>{{ item.descCorrespondenciaEnc }}</td>
+            <td>{{ item.idEstado.descripcionEstado }}</td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
   <hr>

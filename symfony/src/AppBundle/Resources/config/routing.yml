@@ -44,3 +44,8 @@ app_consultas:
 app_contactos:
     resource: "@AppBundle/Resources/config/routing/contactos.yml"
     prefix: /contactos
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Contactos
+app_reportes:
+    resource: "@AppBundle/Resources/config/routing/reportes.yml"
+    prefix: /reportes

@@ -39,6 +39,12 @@ listascomunes_deptoFuncionalList:
     defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
     methods: POST
     
+# Lista de Sub Direcciones All
+listascomunes_deptoFuncionalListAll:
+    path: /subdir-sreci-list-all
+    defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalListAll"}
+    methods: POST
+    
 # Lista de Sub Direcciones por Usuario Logeado | 2017-09-15
 listascomunes_deptoFuncionalUser:
     path: /depto-func-user

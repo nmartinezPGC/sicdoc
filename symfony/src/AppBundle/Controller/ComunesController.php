@@ -53,26 +53,22 @@ class ComunesController extends Controller {
                "idUsuario" => $identity->sub
             ));
             //Recoger el Fichero que viene por el POST y lo guardamos el HD
-            $file      = $request->files->get("image");
-            
+            $file      = $request->files->get("image");            
             
             //Se verifica que el fichero no venga Null
             if (!empty($file) && $file != null) {
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" ) {                   
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || 
+                    $ext == "png" || $ext == "jpeg" || $ext == "jpg") {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
-                    $path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
+                    //$path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
+                    $path_of_file = "uploads/correspondencia/";
                     $file->move($path_of_file, $file_name);
-
-                    //Seteamos el valor de la Imagen dentro de la Tabla:Tblusuarios+
-                    //$usuario->setImagenUsuario($file_name);
-                    //$em->persist($usuario);
-                    //$em->flush();
                 
                     // Devolvemos el Mensaje de Array
                     $data = array(

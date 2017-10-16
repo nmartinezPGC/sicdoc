@@ -76,7 +76,7 @@ export class ReporteGeneralService {
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/consultas/consulta-general", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/reportes/reporte-general", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 
