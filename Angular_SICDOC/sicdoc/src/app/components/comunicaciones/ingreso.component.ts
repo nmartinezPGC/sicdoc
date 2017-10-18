@@ -774,7 +774,7 @@ export class IngresoComunicacionComponent implements OnInit{
   public filesToUpload: Array<File>;
   public resultUpload;
 
-    fileChangeEvent(fileInput: any){
+  fileChangeEvent(fileInput: any){
       //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
       this.filesToUpload = <Array<File>>fileInput.target.files;
 
@@ -844,7 +844,7 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-  } // FIN : FND-00006
+   } // FIN : FND-00006
 
 
   /*****************************************************
@@ -875,7 +875,7 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-  } // FIN : FND-00006.1
+   } // FIN : FND-00006.1
 
 
   /*****************************************************
@@ -891,7 +891,7 @@ export class IngresoComunicacionComponent implements OnInit{
     //console.log(this.params);
     let json = JSON.stringify( cadenaCodigoConverir );
     console.log(cadenaCodigoConverir);
-  } // FIN : FND-00006.1
+   } // FIN : FND-00006.1
 
   /*****************************************************
   * Funcion: FND-00007
@@ -1144,6 +1144,35 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-00010
+
+
+  /*****************************************************
+  * Funcion: FND-00011
+  * Fecha: 18-10-2017
+  * Descripcion: Creacion de nuevo File input
+  * ( createNewFileInput ).
+  ******************************************************/
+  createNewFileInput(){
+    $("#fileIn").append(' <div id="contFile"> ' +
+                    ' <label for="exampleInputFile">Agregar Pdf</label> ' +
+                    ' <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento" ' +
+                        ' ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..." ' +
+                        ' aria-describedby="fileHelp" (click)="otrFND()" (change)="fileChangeEvent($event)"> ' +
+                  ' <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small> ' +
+                  ' </div> ');
+  } // FIN | FND-00011
+
+
+  myFunction() {
+    var s = '#fileIn';
+    var $s = $(s).find('#contFile').remove().end();
+    console.log( $s );
+    //$('body').append($s);​
+  }
+
+  otrFND(){
+    alert('Otra DND');
+  }
 
 
 } // // FIN : export class IngresoComunicacionComponent

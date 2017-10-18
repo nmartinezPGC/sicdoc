@@ -270,13 +270,15 @@
 
             <!-- Subir PDF del Oficio entrante -->
             <div class="col-xs-12 col-sm-6 col-md-12">
-              <div class="form-group">
-                <label for="exampleInputFile">Agregar Pdf</label>
-                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
-                     ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
-                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
+              <div class="form-group" id="fileIn">
+                  <div id="contFile">
+                    <label for="exampleInputFile">Agregar Pdf</label>
+                    <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
+                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
-                 <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
+                     <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
+                  </div>
                 </div>
                 <!-- Barra de Progreso de Carga de la Imagen -->
                 <div class="progress">
@@ -289,6 +291,9 @@
                     </div>
                 </div>
                 <p id="status"></p>
+
+                <button type="button" name="button" (click)="createNewFileInput()">Agregar Nuevo</button>
+                <button type="button" name="button" (click)="myFunction()">Borrar</button>'
             </div>
 
 
