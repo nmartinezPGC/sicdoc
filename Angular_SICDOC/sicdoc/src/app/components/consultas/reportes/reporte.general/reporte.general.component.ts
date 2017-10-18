@@ -38,8 +38,7 @@ import 'rxjs/Rx';
 
 // Libreria para Crear el PDF
 import * as jsPDF from "jspdf";
-// import * as jsPDF from 'jspdf';
-import * as autoTable from 'jspdf-autotable';
+// import * as jsPDF from 'jspdf'
 
 // Declaramos las variables para jQuery
 declare var jQuery:any;

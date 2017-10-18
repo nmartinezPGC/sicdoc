@@ -2,15 +2,15 @@ BackendBundle\Entity\TblFuncionarios:
     type: entity
     table: tbl_funcionarios
     indexes:
-        fki_tipo_func:
-            columns:
-                - id_tipo_funcionario
-        fki_depto_func:
-            columns:
-                - id_depto_funcional
         fki_user_funci:
             columns:
                 - id_usuario
+        fki_depto_func:
+            columns:
+                - id_depto_funcional
+        fki_tipo_func:
+            columns:
+                - id_tipo_funcionario
     id:
         idFuncionario:
             type: integer

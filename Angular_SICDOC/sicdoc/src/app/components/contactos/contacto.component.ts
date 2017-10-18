@@ -232,7 +232,7 @@ export class ContactosComponent implements OnInit {
 
             // console.log(this.JsonOutgetlistaInstitucion); // Lista de Instituciones
             // console.log(this.JsonOutgetlistaFuncionarios); // Lista de Funcionarios
-            // console.log(this.JsonOutgetlistaContactosEnc); // Tabla de Contactos
+            console.log(this.JsonOutgetlistaContactosEnc); // Tabla de Contactos
             this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'perfilInstitucion');
             this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
                   'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');

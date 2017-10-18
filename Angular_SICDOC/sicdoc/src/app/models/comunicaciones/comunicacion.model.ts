@@ -44,6 +44,10 @@ export class Comunicaciones{
       public pdfDocumento:string,
       public hideCom:string,
 
+      // Observaciones Iniciales
+      public observaciones:string,
+
+
 
     ){}
 

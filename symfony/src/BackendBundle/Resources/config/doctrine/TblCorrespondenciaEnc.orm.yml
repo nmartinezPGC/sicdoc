@@ -2,30 +2,30 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        fki_corr_depto:
-            columns:
-                - id_depto_funcional
-        fki_funcionario_asig:
-            columns:
-                - id_funcionario_asignado
-        fki_enc_direccion:
-            columns:
-                - id_direccion_sreci
-        fki_enc_user:
-            columns:
-                - id_usuario
-        fki_enc_inst:
-            columns:
-                - id_institucion
         fki_comu_docu:
             columns:
                 - id_tipo_documento
+        fki_corr_depto:
+            columns:
+                - id_depto_funcional
         fki_enc_estado:
             columns:
                 - id_estado
+        fki_enc_inst:
+            columns:
+                - id_institucion
         tbl_correspondencia_enc_cod_correspondencia_enc_idx:
             columns:
                 - cod_correspondencia_enc
+        fki_enc_direccion:
+            columns:
+                - id_direccion_sreci
+        fki_funcionario_asig:
+            columns:
+                - id_funcionario_asignado
+        fki_enc_user:
+            columns:
+                - id_usuario
     uniqueConstraints:
         tbl_correspondencia_enc_cod_correspondencia_enc_key:
             columns:
@@ -99,6 +99,12 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             options:
                 default: '2999-12-31'
             column: fecha_finalizacion
+        observaciones:
+            type: string
+            nullable: true
+            length: 1000
+            options:
+                fixed: false
     manyToOne:
         idTipoDocumento:
             targetEntity: TblTipoDocumento

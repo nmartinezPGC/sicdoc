@@ -51,7 +51,7 @@
          </div>
         </div>
 
-
+        <!-- Informacion General -->
         <div class="row">
   				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group" >
@@ -85,16 +85,60 @@
             </div>
           </div>
         </div>
+
+        <!-- Institucion de COmunicacion -->
+        <div class="row">
+          <!-- Lista de Paises -->
+  				<div class="col-xs-12 col-sm-6 col-md-3">
+  					<div class="form-group">
+              <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+                    ngControl="idPais" [(ngModel)]="comunicacion.idPais" tabindex="4">
+                  <option value="0">País</option>
+                  <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
+  					</div>
+  				</div>
+
+          <!-- Tipo de Institucion -->
+          <div class="col-xs-12 col-sm-6 col-md-4">
+  					<div class="form-group">
+              <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+                    ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" tabindex="5" (change)="getlistaInstituciones()" >
+                  <option value="0" >Tipo de Institución</option>
+                  <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
+  					</div>
+  				</div>
+
+          <!-- Instituciones de la Comunicacion -->
+          <div class="col-xs-12 col-sm-6 col-md-5">
+            <div class="form-group">
+              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6">
+                  <option value="0">Selecciona una Institución</option>
+                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
+              </select>
+              <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
+             <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
+             <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
+            </div>
+          </div>
+  			</div>
+
+        <!-- Fecha De Entrega -->
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
                 <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega </label>
-                <input #fechaMaxEntrega class="form-control" type="date"  value="2017-09-11" tabindex="4" required
+                <input #fechaMaxEntrega class="form-control" type="date"  value="2017-09-11" tabindex="7" required
                 name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" [(ngModel)]="comunicacion.fechaMaxEntrega" >
 
             </div>
           </div>
   			</div>
+
       </div>
 
 
@@ -151,49 +195,18 @@
 
       <hr>
       <div class="panel-collapse collapse in" id="demo">
-
-  			<div class="row">
-          <!-- Lista de Paises -->
-  				<div class="col-xs-12 col-sm-6 col-md-3">
-  					<div class="form-group">
-              <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
-                    ngControl="idPais" [(ngModel)]="comunicacion.idPais" >
-                  <option value="0">País</option>
-                  <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
-              </select>
-              <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
-  					</div>
-  				</div>
-
-          <!-- Tipo de Institucion -->
-          <div class="col-xs-12 col-sm-6 col-md-4">
-  					<div class="form-group">
-              <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
-                    ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" (change)="getlistaInstituciones()" >
-                  <option value="0" >Tipo de Institución</option>
-                  <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
-              </select>
-              <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
-  					</div>
-  				</div>
-
-          <!-- Instituciones de la Comunicacion -->
-          <div class="col-xs-12 col-sm-6 col-md-5">
-            <div class="form-group">
-              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
-                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion" >
-                  <option value="0">Selecciona una Institución</option>
-                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
-              </select>
-              <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
-             <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
-             <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
-            </div>
-          </div>
-
-  			</div>
-
             <div class="row">
+
+              <!-- Observaciones de la Ingreso de Comunicacion -->
+              <div class="col-xs-12 col-sm-6 col-md-12">
+                <div class="form-group">
+                    <textarea #observaciones="ngModel" class="form-control" id="observaciones" name="observaciones" rows="3"
+                        placeholder="Ingresa la Observacion / Instruccion" tabindex="3" required minlength="10"
+                        ngControl="observaciones" [(ngModel)]="comunicacion.observaciones"></textarea>
+                    <small class="form-text text-muted" *ngIf="observaciones.errors?.required" >Ingresa la Observacion de la comunicacion</small>
+                    <small class="form-text text-muted" *ngIf="observaciones.errors?.minlength" >Se nesesita por lo menos {{ observaciones.errors.minlength.requiredLength }} caracteres</small>
+                </div>
+              </div>
 
             <!-- Subir PDF del Oficio entrante -->
             <div class="col-xs-12 col-sm-6 col-md-12">

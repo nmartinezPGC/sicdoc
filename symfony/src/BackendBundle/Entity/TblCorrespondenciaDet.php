@@ -471,4 +471,33 @@ class TblCorrespondenciaDet
     {
         return $this->temaComunicacion;
     }
+    /**
+     * @var string
+     */
+    private $instrucciones;
+
+
+    /**
+     * Set instrucciones
+     *
+     * @param string $instrucciones
+     *
+     * @return TblCorrespondenciaDet
+     */
+    public function setInstrucciones($instrucciones)
+    {
+        $this->instrucciones = $instrucciones;
+
+        return $this;
+    }
+
+    /**
+     * Get instrucciones
+     *
+     * @return string
+     */
+    public function getInstrucciones()
+    {
+        return $this->instrucciones;
+    }
 }

@@ -20,11 +20,11 @@
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Telefonos</th>
-                      <th>Celulares</th>
                       <th>Correos</th>
-                      <th>Institucion</th>
+                      <th>Institucion de Contacto</th>
+                      <th>Tipo Institución</th>
                       <th>Contacto SRECI</th>
-                      <!-- <th>Codigo</th> -->
+                      <th>Dirección SRECI</th>
                       <th>Dowload</th>
                   </tr>
               </thead>
@@ -32,17 +32,18 @@
                 <tr *ngFor="let item of JsonOutgetlistaContactosEnc">
                   <td >{{ item.nombre1Contacto }} - {{ item.nombre2Contacto }}</td>
                   <td >{{ item.apellido1Contacto }} - {{ item.apellido2Contacto }}</td>
-                  <td >{{ item.telefono1Contacto }} - {{ item.telefono2Contacto }}</td>
                   <td >{{ item.celular1Contacto }} - {{ item.celular2Contacto }}</td>
                   <td >{{ item.email1Contacto }} - {{ item.email2Contacto }}</td>
                   <td >{{ item.idInstitucion.descInstitucion }}</td>
+                  <td >{{ item.idInstitucion.idTipoInstitucion.descTipoInstitucion }}</td>
                   <td >{{ item.idFuncionario.nombre1Funcionario }}
                        {{ item.idFuncionario.apellido1Funcionario }}</td>
+                  <td >{{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}</td>
                   <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                         href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}">
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
-                      <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5" 
+                      <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5"
                         href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank">
                           <i class="material-icons">photo</i>
                       </a>
@@ -120,11 +121,11 @@
 
                         <hr>
                         <!-- Seccion de Telefonia -->
-                        <h4>Datos de Telefonia</h4>
+                        <h4>Datos de Telefonos</h4>
                         <div class="row">
                           <!-- Celular de Contacto -->
                           <div class="col-xs-4 col-md-4 col-lg-4">
-                            <label for="exampleInputEmail1">Celular</label>
+                            <label for="exampleInputEmail1">Telefono Celular</label>
                             <input #celular1Contacto="ngModel" type="text" class="form-control" name="celular1Contacto" id="celular1Contacto"
                                 placeholder="99889988" [(ngModel)]="consultaContactos.celular1Contacto" ngControl="celular1Contacto"
                                 required  maxlength="8" pattern ="^([0-9])*$">
@@ -134,7 +135,7 @@
 
                           <!-- Telefono Fijo -->
                           <div class="col-xs-4 col-md-4 col-lg-4">
-                            <label for="exampleInputEmail1">Telefono</label>
+                            <label for="exampleInputEmail1">Telefono Fijo</label>
                             <input #telefono1Contacto="ngModel" type="text" class="form-control"
                                 name="telefono1Contacto" id="telefono1Contacto" placeholder="22060200"
                                 pattern ="^([0-9])*$" ngControl="telefono1Contacto"
@@ -145,13 +146,11 @@
                         </div>
 
                         <hr>
-                        <!-- Seccion de Relaciones -->
-                        <h4>Datos de Relaciones</h4>
-                        <div class="row">
+                         <!-- Seccion de Relaciones -->
+                         <h4>Datos de Institución del Contacto</h4>
+                         <div class="row">
                           <!-- Institucion de Contacto-->
                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
-                  					<!-- <div class="form-group"> -->
-                            <!-- Instituciones que sera de Contacto -->
                              <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idInstitucion"
                                  [(ngModel)]="searchStr" inputId="1" required
                                  [datasource]="dataService" [minSearchLength]="2" textSearching="Buscando ..."
@@ -159,9 +158,13 @@
                                  placeholder="Selecciona una Institucion" (selected)="onSelected($event)" >
                              </ng2-completer>
                               <!-- <p>Selected: {{selectedInstitucion}}</p> -->
-                            <!-- </div> -->
-                            <!-- Funcionario de Contacto de SRECI -->
-                            <!-- <div class="form-group"> -->
+                            </div>
+                        </div>
+
+                        <!-- Funcionario SRECI de Contacto-->
+                        <h4>Datos de Funcionario Contacto SRECI</h4>
+                          <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
                              <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
                                  [(ngModel)]="searchStrFunc" inputId="2" required
                                  [datasource]="dataServiceFunc" [minSearchLength]="2" textSearching="Buscando ..."
@@ -169,9 +172,9 @@
                                  placeholder="Selecciona un Funcionario de Conatcto" (selected)="onSelectedFunc($event)" >
                              </ng2-completer>
                               <!-- <p>Selected: {{selectedFuncionario}}</p> -->
-                            <!-- </div> -->
-                  				</div>
-                        </div>
+                            </div>
+                  			</div>
+                        <!-- </div> -->
 
                         <hr>
                         <!-- Seccion de Anexos -->

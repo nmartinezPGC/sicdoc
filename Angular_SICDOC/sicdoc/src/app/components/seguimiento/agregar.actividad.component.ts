@@ -253,7 +253,7 @@ export class IngresoActividadComponent implements OnInit{
 
             if( this.errorMessage != null ){
               console.log( this.errorMessage );
-              alert( "Errro en la petición." );
+              alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
             }
         }); // Fin de Llamado al Servicios
 
@@ -313,7 +313,15 @@ export class IngresoActividadComponent implements OnInit{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosDisponibles = response.data;
           }
-        });
+        },
+        error => {
+            this.errorMessage = <any>error;
+
+            if( this.errorMessage != null ){
+              console.log( this.errorMessage );
+              alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
+            }
+        }); // Fin de Llamado al Servicios
 
    } // FIN : FND-00001.2
 
@@ -442,6 +450,7 @@ export class IngresoActividadComponent implements OnInit{
    // 4 ) Ejecutamos el llamado al Metodo de la API ( /seguimiento/asignar-oficio )
       let token1 = this._asignaOficio.getToken();
       this.loading_table = 'show';
+      console.log(this.asignarOficios);
       this._asignaOficio.asignarOficio( token1, this.asignarOficios ).subscribe(
         response => {
             // Obtenemos el Status de la Peticion

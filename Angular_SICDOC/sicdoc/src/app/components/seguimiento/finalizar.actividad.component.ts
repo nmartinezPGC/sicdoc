@@ -37,7 +37,7 @@ declare var $:any;
   providers: [ FinalizarActividadService, ListasComunesService ]
 })
 export class FinalizarActividadComponent implements OnInit {
-  public titulo:string = "Finalizar Actividad";
+  public titulo:string = "Agregar / Finalizar Actividad";
   public fechaHoy:Date = new Date();
   public fechafin:string;
 

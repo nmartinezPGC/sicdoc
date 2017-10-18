@@ -73,8 +73,11 @@ class IngresoCorrespondenciaController extends Controller{
                 //Datos generales de la Tabla                
                 $new_secuencia        = ($params->secuenciaComunicacionIn != null) ? $params->secuenciaComunicacionIn : null ;
                 $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
                 $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
+                $observacion_correspondencia = ($params->observaciones != null) ? $params->observaciones : null ;
+                
                 $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
                 
                 $fecha_ingreso        = new \DateTime('now');
@@ -132,16 +135,47 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     
                     // Buscamos el Id de la Secuencia y Generamos el Codigo
-                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia);                    
+                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia . "-" . $new_secuencia );                    
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
+                    $correspondenciaNew->setObservaciones($observacion_correspondencia);                    
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
                     $correspondenciaNew->setFechaModificacion($fecha_null);
                     $correspondenciaNew->setFechaFinalizacion($fecha_null);
                     
                     
-                    $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
+                    $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);                    
                     
+                    // Nuevo Campo de Codigo de Refrencia SRECI ----------------
+                                        
+                    //Preguntamos si Tipo Doc Es 1 | Oficio ********************
+                    /*if( $cod_tipo_documento === "1" || $cod_tipo_documento === "2" || 
+                         $cod_tipo_documento === "3"  || $cod_tipo_documento === "4"){
+                        // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
+                        $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
+                            array(
+                               "codSecuencial"  => "SCPI",
+                               "idTipoDocumento" => $cod_tipo_documento
+                            ));
+                        $cod_referenciaSCPI = $secuenciaSCPI->getCodSecuencial();
+                        $valor2_secuenciaSCPI = $secuenciaSCPI->getValor2() + 1;
+                        $secuenciaSCPI->setValor2($valor2_secuenciaSCPI);
+
+                        $em->persist($secuenciaSCPI);
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+
+
+                        // Consulta a los Datos del Depto Funcional *************
+                        $deptoFuncConsulta = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                            array(
+                               "idDeptoFuncional" => $identity->idDeptoFuncional
+                            ));
+                        $inicialesDeptoFunc = $deptoFuncConsulta->getInicialesDeptoFuncional();
+                        
+                    $cod_referenciaSreci = $cod_referenciaSCPI . "-". $inicialesDeptoFunc . "-". $valor2_secuenciaSCPI;
+                    } // Fin Codicion de Oficio Secuencial SCPI ****************                    
+                    */
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
                     $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
                     $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
@@ -202,16 +236,17 @@ class IngresoCorrespondenciaController extends Controller{
                     //Finaliza Busqueda de Integridad entre Tablas
                     
                     
-                    //Verificacion del Codigo de la Correspondenia *******************
-                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+                    //Verificacion del Codigo de la Correspondencia *******************
+                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codCorrespondenciaEnc" => $cod_correspondencia
                         ));
                     
                     //Verificacion del Codigo de Referencia de la Correspondenia *******************
-                    $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+                    $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
-                          "codReferenciaSreci" => $cod_referenciaSreci
+                          "codReferenciaSreci" => $cod_referenciaSreci,
+                          "idTipoDocumento"    => $cod_tipo_documento
                         ));
                     
                     
@@ -225,11 +260,12 @@ class IngresoCorrespondenciaController extends Controller{
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                                "codSecuencial"  => "COM-IN-OFI"
+                                "codSecuencial"  => $cod_correspondencia
+                                //"codSecuencial"  => "COM-IN-MEMO"
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
                         
-                        
+                        //echo "Error 1";
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaNew);
                         
@@ -245,15 +281,15 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         //Ingresamos un valor en la Tabla **********************
                         //Correspondencia Enc **********************************                        
-                        $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det); //Set de Codigo Correspondencia
+                        $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Codigo Correspondencia
                         $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
                         $correspondenciaDet->setFechaSalida($fecha_null); //Set de Fecha Salida
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
-                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Oficio: " . $cod_correspondencia); //Set de Descripcion Inicial
-                        $correspondenciaDet->setActividadRealizar("Pendiente de Crear Oficio de respuesta"); //Set de Actividad Inicial
-                        
+                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Comunicación: " . $cod_correspondencia); //Set de Descripcion Inicial
+                        $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta"); //Set de Actividad Inicial
+                        $correspondenciaDet->setInstrucciones($observacion_correspondencia); 
                        
                         //Verificacion del Codigo de la Correspondenia *********
                         $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
@@ -287,10 +323,12 @@ class IngresoCorrespondenciaController extends Controller{
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Det
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                                "codSecuencial"  => "COM-IN-DET-OFI"
+                                "codSecuencial"  => $cod_correspondencia_det
+                                //"codSecuencial"  => "COM-IN-DET-MEMO"
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia_det); //Set de valor2 de Secuencia de Oficios
                         
+                        //echo "Error 2";
                         // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                         $em->persist($correspondenciaDet);
                         
@@ -418,7 +456,7 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
-                                "msg"    => "Se ha ingresado el Oficio No. " . $cod_correspondencia,
+                                "msg"    => "Se ha ingresado el Oficio No. " . $cod_correspondencia . "-" . $new_secuencia,
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{
@@ -687,7 +725,9 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
-                $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
+                $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ; 
+                $observacion_correspondencia = ($params->observaciones != null) ? $params->observaciones : null ;
+                
                 $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
                 
                 $fecha_ingreso        = new \DateTime('now');
@@ -748,6 +788,7 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia. "-" . $new_secuencia);                    
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
+                    $correspondenciaNew->setObservaciones($observacion_correspondencia); 
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
                     $correspondenciaNew->setFechaIngreso($fecha_ingreso);
                     $correspondenciaNew->setFechaModificacion($fecha_null);
@@ -758,11 +799,13 @@ class IngresoCorrespondenciaController extends Controller{
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
                                         
                     //Preguntamos si Tipo Doc Es 1 | Oficio ********************
-                    if( $cod_tipo_documento === "1" ){
+                    if( $cod_tipo_documento === "1" || $cod_tipo_documento === "2" || 
+                         $cod_tipo_documento === "3"  || $cod_tipo_documento === "4"){
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                               "codSecuencial"  => "SCPI"
+                               "codSecuencial"  => "SCPI",
+                               "idTipoDocumento" => $cod_tipo_documento
                             ));
                         $cod_referenciaSCPI = $secuenciaSCPI->getCodSecuencial();
                         $valor2_secuenciaSCPI = $secuenciaSCPI->getValor2() + 1;
@@ -898,7 +941,7 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Comunicacion: " . $cod_correspondencia . "-" . $new_secuencia_det); //Set de Descripcion Inicial
                         $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta a comunicación: " . $cod_correspondencia . "-" . $new_secuencia_det); //Set de Actividad Inicial
-                        
+                        $correspondenciaDet->setInstrucciones($observacion_correspondencia); 
                        
                         //Verificacion del Codigo de la Correspondenia *********
                         $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(

@@ -219,7 +219,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.getlistaDireccionesSRECIAcom();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,  "", "", "", "", "", "", "",  "");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,  "", "", "", "", "", "", "",  "",  "");
 
     // Eventos de Señaloizacion
     this.loading = "hide";
@@ -498,6 +498,42 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
+       this.paramsSecuencia.codSecuencial = "COM-OUT-MEMO";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
+       this.paramsSecuencia.codSecuencial = "COM-OUT-CIRCULAR";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
+       this.paramsSecuencia.codSecuencial = "COM-OUT-NOTA-VERBAL";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-MAIL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
@@ -525,6 +561,18 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 8 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-VERB";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_verb";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "15";
+       this.pattern ="";
+
+     }else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
+       this.paramsSecuencia.codSecuencial = "COM-OUT-REUNION";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_reunion";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
@@ -572,6 +620,18 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-OFI";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
+     } else if ( idTipoDocumentoIn == 2 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-MEMO";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
+     } else if ( idTipoDocumentoIn == 3 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-CIRCULAR";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
+     } else if ( idTipoDocumentoIn == 4 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-NOTA-VERBAL";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
      } else if ( idTipoDocumentoIn == 5 ) {
        this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-MAIL";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_mail";
@@ -583,6 +643,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
      } else if ( idTipoDocumentoIn == 8 ) {
        this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-VERB";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_verb";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     }else if ( idTipoDocumentoIn == 9 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-OUT-REUNION";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }// Fin de Condicion
 

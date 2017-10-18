@@ -48,6 +48,8 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSubDirAcom;
   private paramsTipoFuncionario; // Parametros para el Filtro de Funcionarios
 
+  private paramsSecuenciaIn;
+
   // Propiedad de Loader
   public loading      = 'show';
   public alertSuccess = 'show';
@@ -115,6 +117,12 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetListaOficiosFinalizados:any[];
 
 
+  // Variabls para validaciones de Seleccionado
+  public maxlengthCodReferencia = "38"; // Defaul Correo
+  public minlengthCodReferencia = "5"; // Defaul Correo
+  public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
+
+
   // Ini | Definicion del Constructor
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
@@ -167,8 +175,16 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoFuncionario"  : ""
     };
 
+
+    // Iniciamos los Parametros de Encabezado de Conunicacion
+    this.paramsSecuenciaIn = {
+      "codSecuencial"  : "",
+      "tablaSecuencia"  : "",
+      "idTipoDocumento"  : ""
+    };
+
     // Lsita de Tipo de Documentos
-    //this.getlistaTipoDocumentos();
+    this.getlistaTipoDocumentos();
 
     // Inicializacion de las Listas
     this.getlistaEstadosComunicacion();
@@ -190,7 +206,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this.convertirFecha();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"1", this.fechafin , null,  0, 0,  0, 0,  "","","","",  "", "",  "", "");
+    this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
+                                           0, "0", 0, 0, "7", 1, 0, "0",
+                                           this.fechafin , null,
+                                           0, 0,  0, 0,
+                                           "", "", "", "", "", "", "", "",
+                                           "");
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
@@ -219,7 +240,6 @@ export class IngresoComunicacionComponent implements OnInit{
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
       //this.validCampos();
-
       // Parseo de parametros que no se seleccionan
       this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
       this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
@@ -227,11 +247,13 @@ export class IngresoComunicacionComponent implements OnInit{
       this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
 
       // Secuenciales de la Tabla correspondencia Encabenzado
-      this.comunicacion.codCorrespondencia = this.codigoSecuencia + "-" + this.valorSecuencia;
+      // this.comunicacion.codCorrespondencia = this.codigoSecuencia + "-" + this.valorSecuencia;
+      this.comunicacion.codCorrespondencia = this.codigoSecuencia;
       this.comunicacion.secuenciaComunicacionIn = this.valorSecuencia;
 
       // Secuenciales de la Tabla correspondencia detalle
-      this.comunicacion.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
+      // this.comunicacion.codCorrespondenciaDet = this.codigoSecuenciaDet + "-" + this.valorSecuenciaDet;
+      this.comunicacion.codCorrespondenciaDet = this.codigoSecuenciaDet;
       this.comunicacion.secuenciaComunicacionDet = this.valorSecuenciaDet;
 
       // Parametro para documento Seleccionado
@@ -253,6 +275,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
+      console.log(this.comunicacion);
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
@@ -290,7 +313,6 @@ export class IngresoComunicacionComponent implements OnInit{
 
             }
         });
-
   } // Fin | Metodo onSubmit
 
 
@@ -355,7 +377,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.status = "hide";
     this.loading = "hide";
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "1",  "", "",  0, 0,  0, 0,  "","","","",  "", "",  "", "");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",  "", "", "");
   } // FIN : FND-00001.1
 
 
@@ -499,13 +521,12 @@ export class IngresoComunicacionComponent implements OnInit{
   * de la BD, Llamando a la API, por su metodo
   * (instituciones-sreci-list).
   ******************************************************/
-    getlistaInstituciones() {
-    this.params.idPais = this.comunicacion.idPais;
-    this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
-    //Llamar al metodo, de Login para Obtener la Identidad
-    //console.log(this.params);
-
-    this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
+  getlistaInstituciones() {
+      this.params.idPais = this.comunicacion.idPais;
+      this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
+      //Llamar al metodo, de Login para Obtener la Identidad
+      //console.log(this.params);
+      this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
@@ -518,7 +539,8 @@ export class IngresoComunicacionComponent implements OnInit{
             // console.log(response.data);
           }
         });
-  } // FIN : FND-00004.1
+   } // FIN : FND-00004.1
+
 
   /*****************************************************
   * Funcion: FND-00004.2
@@ -528,9 +550,9 @@ export class IngresoComunicacionComponent implements OnInit{
   * de la BD, Llamando a la API, por su metodo
   * ( tipo-documento-list ).
   ******************************************************/
-    getlistaTipoDocumentos() {
+  getlistaTipoDocumentos() {
 
-    this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+      this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
@@ -546,6 +568,201 @@ export class IngresoComunicacionComponent implements OnInit{
   } // FIN : FND-00004.2
 
 
+
+  /*****************************************************
+  * Funcion: FND-00004.3
+  * Fecha: 25-09-2017
+  * Descripcion: Obtiene la siguiente secuencia
+  * Objetivo: Obtener el secuencial de la tabla
+  * indicada con su cosigo
+  * (gen-secuencia-comunicacion-in).
+  ******************************************************/
+  getCodigoCorrespondencia(){
+     //Llamar al metodo, de Login para Obtener la Identidad
+     this.paramsSecuenciaIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
+     //alert(this.comunicacion.idTipoDocumento);
+     //Evaluamos el valor del Tipo de Documento
+     if( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
+       this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+      //  $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-MEMO";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+      //  $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-NOTA-VERBAL";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+      //  $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-CIRCULAR";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+      //  $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-MAIL";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Correo
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "10";
+       this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
+       this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "8";
+       this.minlengthCodReferencia = "8";
+       this.pattern ="^([0-9])*$";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 8 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-VERB";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_verb";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "15";
+       this.pattern ="";
+
+     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-REUNION";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_reunion";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "15";
+       this.pattern ="";
+
+     }// Fin de Condicion
+
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetCodigoSecuenciaNew = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetCodigoSecuenciaNew = response.data;
+            console.log(response.data);
+            // Ejecutamos la Funcion de Secuencia de Detalle
+            this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
+          }
+        });
+  } // FIN : FND-00004.3
+
+
+  /*****************************************************
+  * Funcion: FND-00004.3.1
+  * Fecha: 25-09-2017
+  * Descripcion: Obtiene la siguiente secuencia
+  * Objetivo: Obtener el secuencial de la tabla
+  * indicada con su cosigo
+  * (gen-secuencia-comunicacion-in).
+  ******************************************************/
+  getCodigoCorrespondenciaDet( idTipoDocumentoIn:number ){
+     //Llamar al metodo, de Login para Obtener la Identidad
+    //  this.paramsSecuenciaDetIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
+     //Evaluamos el valor del Tipo de Documento
+     if( idTipoDocumentoIn == 1 ){
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
+     } else if ( idTipoDocumentoIn == 2 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-MEMO";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 3 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-NOTA-VERBAL";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 4 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-CIRCULAR";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 5 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-MAIL";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_mail";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 7 ){
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-CALL";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_call";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 8 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-VERB";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_verb";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 9 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-REUNION";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     }// Fin de Condicion
+
+    //Llamar al metodo, de Login para Obtener la Identidad
+    //console.log(this.params);
+    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetCodigoSecuenciaDet = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetCodigoSecuenciaDet = response.data;
+            console.log(response.data);
+          }
+        });
+  } // FIN : FND-00004.3.1
+
+
   /*****************************************************
   * Funcion: FND-00005
   * Fecha: 29-07-2017
@@ -557,30 +774,30 @@ export class IngresoComunicacionComponent implements OnInit{
   public filesToUpload: Array<File>;
   public resultUpload;
 
-  fileChangeEvent(fileInput: any){
-    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
-    this.filesToUpload = <Array<File>>fileInput.target.files;
+    fileChangeEvent(fileInput: any){
+      //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+      this.filesToUpload = <Array<File>>fileInput.target.files;
 
-    let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
-    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
+      let token = this._loginService.getToken();
+      let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
+      // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+      // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
-    // Variables del Metodo
-    let  error:string;
-    let  status:string;
-    let  codigoSec:string;
+      // Variables del Metodo
+      let  error:string;
+      let  status:string;
+      let  codigoSec:string;
 
-    // Parametros de las Secuencias
-    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-    codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+      // Parametros de las Secuencias
+      this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+      this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+      codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
 
-    // Parametro para documento Seleccionado
-    this.comunicacion.pdfDocumento = codigoSec;
+      // Parametro para documento Seleccionado
+      this.comunicacion.pdfDocumento = codigoSec;
 
-    // Ejecutamos el Servicio con los Parametros
-    this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
+      // Ejecutamos el Servicio con los Parametros
+      this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;
@@ -627,7 +844,6 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-
   } // FIN : FND-00006
 
 
@@ -659,7 +875,6 @@ export class IngresoComunicacionComponent implements OnInit{
             //console.log(response.data);
           }
         });
-
   } // FIN : FND-00006.1
 
 
@@ -676,7 +891,6 @@ export class IngresoComunicacionComponent implements OnInit{
     //console.log(this.params);
     let json = JSON.stringify( cadenaCodigoConverir );
     console.log(cadenaCodigoConverir);
-
   } // FIN : FND-00006.1
 
   /*****************************************************
