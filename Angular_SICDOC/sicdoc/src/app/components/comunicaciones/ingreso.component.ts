@@ -1248,9 +1248,7 @@ export class IngresoComunicacionComponent implements OnInit{
   createNewFileInput(){
    // Actualiza el valor de la Secuencia
    let secActual = this.nextDocumento - 1;
-   let newSecAct = this.codigoSec + "-" + this.fechaHoy.getDate() + "-" + this.fechaHoy.getMonth() + " -" + this.fechaHoy.getFullYear() ;
-
-
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + this.fechaHoy.getMonth() + "-" + this.fechaHoy.getDate();
 
    $("#newTable").append('<tr> ' +
                       '   <th scope="row">'+ secActual +'</th> ' +
