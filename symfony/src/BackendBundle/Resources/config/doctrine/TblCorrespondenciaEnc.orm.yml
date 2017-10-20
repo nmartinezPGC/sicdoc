@@ -23,6 +23,9 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
         fki_funcionario_asig:
             columns:
                 - id_funcionario_asignado
+        fki_tipo_com:
+            columns:
+                - id_tipo_comunicacion
         fki_enc_user:
             columns:
                 - id_usuario
@@ -175,5 +178,15 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             joinColumns:
                 id_funcionario_asignado:
                     referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idTipoComunicacion:
+            targetEntity: TblTipoComunicacion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_comunicacion:
+                    referencedColumnName: id_tipo_comunicacion
             orphanRemoval: false
     lifecycleCallbacks: {  }

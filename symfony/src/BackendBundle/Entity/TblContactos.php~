@@ -486,4 +486,62 @@ class TblContactos
     {
         return $this->idFuncionario;
     }
+    /**
+     * @var string
+     */
+    private $cargoFuncional;
+
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuarioModifica;
+
+
+    /**
+     * Set cargoFuncional
+     *
+     * @param string $cargoFuncional
+     *
+     * @return TblContactos
+     */
+    public function setCargoFuncional($cargoFuncional)
+    {
+        $this->cargoFuncional = $cargoFuncional;
+
+        return $this;
+    }
+
+    /**
+     * Get cargoFuncional
+     *
+     * @return string
+     */
+    public function getCargoFuncional()
+    {
+        return $this->cargoFuncional;
+    }
+
+    /**
+     * Set idUsuarioModifica
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuarioModifica
+     *
+     * @return TblContactos
+     */
+    public function setIdUsuarioModifica(\BackendBundle\Entity\TblUsuarios $idUsuarioModifica = null)
+    {
+        $this->idUsuarioModifica = $idUsuarioModifica;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuarioModifica
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuarioModifica()
+    {
+        return $this->idUsuarioModifica;
+    }
 }

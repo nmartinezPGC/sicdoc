@@ -674,4 +674,33 @@ class TblCorrespondenciaEnc
     {
         return $this->fechaFinalizacion;
     }
+    /**
+     * @var string
+     */
+    private $observaciones;
+
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
 }

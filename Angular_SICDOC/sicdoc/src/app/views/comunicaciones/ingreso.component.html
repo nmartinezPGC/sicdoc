@@ -275,7 +275,7 @@
                     <label for="exampleInputFile">Agregar Pdf</label>
                     <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
                          ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento"  multiple placeholder="Subir Pdf ..."
-                         aria-describedby="fileHelp" (change)="fileChangeEvent2($event)">
+                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
                      <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
                   </div>
