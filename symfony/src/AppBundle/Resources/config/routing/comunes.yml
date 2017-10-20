@@ -17,4 +17,10 @@ comunes_genSecuenciaComIn:
     path: /gen-secuencia-comunicacion-in
     defaults: { _controller: "AppBundle:Comunes:genSecuenciaComIn" }
     methods: POST
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos con Opcion #
+comunes_uploadDocumentoOpction:
+    path: /documentos-upload-options
+    defaults: { _controller: "AppBundle:Comunes:uploadDocumentoOpction" }
+    methods: POST
    

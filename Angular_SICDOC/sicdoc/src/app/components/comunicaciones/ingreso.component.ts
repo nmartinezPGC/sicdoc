@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
@@ -26,9 +26,6 @@ import { Comunicaciones } from '../../models/comunicaciones/comunicacion.model';
 
 declare var $:any;
 
-//Importamos los Javascript
-//import '../../views/login/register.component';
-
 @Component({
   selector: 'app-ingreso-comunicacion',
   templateUrl: '../../views/comunicaciones/ingreso.component.html',
@@ -36,7 +33,9 @@ declare var $:any;
   providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService]
 })
 
+
 export class IngresoComunicacionComponent implements OnInit{
+
   public titulo:string = "Ingreso de Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
@@ -46,7 +45,10 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSecuenciaDet;
   private paramsSubDir;
   private paramsSubDirAcom;
-  private paramsTipoFuncionario; // Parametros para el Filtro de Funcionarios
+  private paramsTipoFuncionario; // Parametros para el Filtro de Funcionario
+
+  private paramsDocumentosSend; // Parametros para los Documentos enviados
+
 
   private paramsSecuenciaIn;
 
@@ -123,6 +125,17 @@ export class IngresoComunicacionComponent implements OnInit{
   public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
 
 
+  // Variables para la Persistencia de los Datos en los Documentos
+  public nextDocumento:number = 1;
+  public extencionDocumento:string;
+  public seziDocumento:number;
+
+  // Variables del Metodo
+  public  error:string;
+  // public  status:string;
+  public  codigoSec:string;
+
+
   // Ini | Definicion del Constructor
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
@@ -132,6 +145,7 @@ export class IngresoComunicacionComponent implements OnInit{
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http){
+
   } // Fin | Definicion del Constructor
 
 
@@ -197,7 +211,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Generar la Lista de Secuenciales
     this.listarCodigoCorrespondencia();
-    this.listarCodigoCorrespondenciaDet();
+    //this.listarCodigoCorrespondenciaDet();
 
     // Tipo Funcionarios de la SRECI
     this.getlistaTipoFuncionariosSRECI();
@@ -817,6 +831,84 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
+  * Funcion: FND-00004
+  * Fecha: 29-07-2017
+  * Descripcion: Carga la Imagen de usuario desde el File
+  * Objetivo: Obtener la imagen que se carga desde el
+  * control File de HTML
+  * (fileChangeEvent).
+  ******************************************************/
+  fileChangeEvent2(fileInput: any){
+    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+
+    // Direccion del Metodo de la API
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
+
+    // let ext = this.getExt(this.filesToUpload  );
+    // alert( ext );
+    // Parametros de las Secuencias
+    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    this.codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+
+    this.codigoSec = this.codigoSec + '-' + this.nextDocumento;
+    this.nextDocumento = this.nextDocumento + 1;
+
+    // Tamaño
+    let sizeByte:number = this.filesToUpload[0].size;
+    let siezekiloByte:number =  Math.round( sizeByte / 1024 );
+
+    this.seziDocumento = siezekiloByte;
+
+    let type = this.filesToUpload[0].type;
+
+    var filename = $("#pdfDocumento").val();
+
+    // Use a regular expression to trim everything before final dot
+    this.extencionDocumento = filename.replace(/^.*\./, '');
+        // alert(this.extencionDocumento);
+
+
+    // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
+                                    // + this.consultaContactos.apellido1Contacto;
+
+    //  this.paramsDocs.optDocumento = optDoc;
+
+     let sendParms = "json=" + "";
+     let codigoSec2 = "sdsd";
+
+
+    //  console.log(this.paramsDocs);
+
+    // Ejecutamos el Servicio con los Parametros
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec ], this.filesToUpload ).then(
+        ( result ) => {
+          this.resultUpload = result;
+          status = this.resultUpload.status;
+          console.log(this.resultUpload);
+          if(status === "error"){
+            console.log(this.resultUpload);
+            alert(this.resultUpload.msg);
+          }
+          // alert(this.resultUpload.data);
+
+          // Añadimos a la Tabla Temporal los Items Subidos
+          this.createNewFileInput();
+
+          // this.mensajes = this.resultUpload.msg;
+        },
+        ( error ) => {
+          alert(error);
+          console.log(error);
+        });
+  } // FIN : FND-00004
+
+
+
+  /*****************************************************
   * Funcion: FND-00006
   * Fecha: 01-09-2017
   * Descripcion: Obtiene la siguiente secuencia
@@ -841,6 +933,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
+            this.listarCodigoCorrespondenciaDet();
             //console.log(response.data);
           }
         });
@@ -1153,26 +1246,52 @@ export class IngresoComunicacionComponent implements OnInit{
   * ( createNewFileInput ).
   ******************************************************/
   createNewFileInput(){
-    $("#fileIn").append(' <div id="contFile"> ' +
-                    ' <label for="exampleInputFile">Agregar Pdf</label> ' +
-                    ' <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento" ' +
-                        ' ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..." ' +
-                        ' aria-describedby="fileHelp" (click)="otrFND()" (change)="fileChangeEvent($event)"> ' +
-                  ' <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small> ' +
-                  ' </div> ');
+   // Actualiza el valor de la Secuencia
+   let secActual = this.nextDocumento - 1;
+   let newSecAct = this.codigoSec + "-" + this.fechaHoy.getDate() + "-" + this.fechaHoy.getMonth() + " -" + this.fechaHoy.getFullYear() ;
+
+
+
+   $("#newTable").append('<tr> ' +
+                      '   <th scope="row">'+ secActual +'</th> ' +
+                      '   <td>' + newSecAct + '</td> ' +
+                      '   <td>'+ this.extencionDocumento +'</td> ' +
+                      '   <td>'+ this.seziDocumento +'</td> ' +
+                      ' </tr>');
+
   } // FIN | FND-00011
 
 
-  myFunction() {
+  /*****************************************************
+  * Funcion: FND-00012
+  * Fecha: 19-10-2017
+  * Descripcion: Remove File input
+  * ( removeFileInput ).
+  ******************************************************/
+  removeFileInput() {
     var s = '#fileIn';
     var $s = $(s).find('#contFile').remove().end();
     console.log( $s );
-    //$('body').append($s);​
-  }
+  } // FIN | FND-00012
+
 
   otrFND(){
-    alert('Otra DND');
+    alert('Hola Mundo');
   }
+
+  /*****************************************************
+  * Funcion: FND-00001
+  * Fecha: 14-10-2017
+  * Descripcion: Chekear todas las Opciones
+  ******************************************************/
+  checkTodos(){
+    $('.form-control-file').each(function () {
+        // if (this.checked) $(this).attr("checked", false);
+        //else $(this).prop("checked", true);s
+        let name = $('#pdfDocumento')[0].name;
+        console.log('Pasa por : ' + name);
+    });
+  } // FIN | FND-00001
 
 
 } // // FIN : export class IngresoComunicacionComponent

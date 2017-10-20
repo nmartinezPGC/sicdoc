@@ -67,7 +67,6 @@ import { Ng2CompleterModule } from "ng2-completer";
 import { ImageUploadModule } from "angular2-image-upload";
 import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

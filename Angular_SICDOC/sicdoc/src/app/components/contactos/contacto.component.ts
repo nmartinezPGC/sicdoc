@@ -410,9 +410,7 @@ export class ContactosComponent implements OnInit {
   ******************************************************/
   downloadDocumento(downloadUrl){
     var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
-
     //  let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
-
       window.open( url + downloadUrl);
   } // FIN | FND-00005
 

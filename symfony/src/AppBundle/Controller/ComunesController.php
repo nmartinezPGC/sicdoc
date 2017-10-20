@@ -176,4 +176,75 @@ class ComunesController extends Controller {
     }//FIN | FND00002
     
     
+    
+    /**
+     * @Route("comunes/documentos-upload-options", name="comunes/documentos-upload-options")
+     * Creacion del Controlador: Comunes Documentos PDF
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003
+     */
+    public function uploadDocumentoOpctionAction(Request $request) {
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        $cod_contacto  = (isset($params->codigoSec)) ? $params->codigoSec : null;
+        $cod_contacto2  = (isset($params->codigoSec2)) ? $params->codigoSec2 : null;
+                
+        // Nombre del Documento
+        $file_nameIn = $request->get("name_pdf");
+                
+        //Evaluamos la Autoriuzacion del Token
+        
+        //$em = $this->getDoctrine()->getManager();
+        //Recoger el Fichero que viene por el POST y lo guardamos el HD
+        $file      = $request->files->get("name_pdf");
+               
+        
+        //Recoger el Fichero que viene por el POST y lo guardamos el HD ********
+            //Se verifica que el fichero no venga Null
+            if (!empty($file) && $file != null) {
+                //Obtenemos la extencion del Fichero
+                $ext = $file->guessExtension();
+                //Comprobamos que la Extencion sea Aceptada
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                    $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
+                    // Concatenmos al Nombre del Fichero la Fecha y la Extencion
+                    //$file_name = time().".".$ext;
+                    $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
+                    //Movemos el Fichero
+                    $path_of_file = "uploads/correspondencia/";
+                    $file->move($path_of_file, $file_name);                    
+                
+                    // Devolvemos el Mensaje de Array
+                    $data = array(
+                        "status" => "success",
+                        "code" => 200,
+                        "msg" => "Document for user uploaded success !!",
+                        "data" => $file_name
+                    );
+                } else {
+                    // Devolvemos el Mensaje de Array, cuando la Imagen no sea valida
+                    $data = array(
+                        "status" => "error",
+                        "code" => 400,
+                        "msg" => "File not valid, please check this format !!"
+                    );
+                }
+            }else{
+                $data = array(
+                    "status" => "error",
+                    "code" => 400,
+                    "msg" => "Document not upload !!" . $file_nameIn
+                );                
+            }            
+        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } // FIN FND00003
+    
+    
 }

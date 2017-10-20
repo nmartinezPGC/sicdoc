@@ -97,15 +97,21 @@ export class UploadService {
         var formData: any = new FormData();
         var xhr = new XMLHttpRequest();
 
-        var name_file_input = params[0];
-        var name_pdf = params[1];
+        // var name_file_input = params[0];
+        // var name_pdf = params[1];
+
+        let tamanoArray = files.length;
+        // alert(tamanoArray);
 
         for(var i = 0; i < files.length; i ++){
+          var name_file_input = params[0];
+          var name_pdf = params[1];
+
             formData.append( name_file_input, files[i], files[i].name );
             formData.append( "name_pdf", name_pdf );
             //alert( files[i].name );
         }
-        
+
         // formData.append("name_pdf", name_pdf );
         //alert(xhr.readyState);
         xhr.onreadystatechange = function(){

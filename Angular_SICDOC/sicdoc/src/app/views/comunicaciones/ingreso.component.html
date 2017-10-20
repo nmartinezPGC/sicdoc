@@ -273,12 +273,13 @@
               <div class="form-group" id="fileIn">
                   <div id="contFile">
                     <label for="exampleInputFile">Agregar Pdf</label>
-                    <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
-                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
-                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
+                    <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
+                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento"  multiple placeholder="Subir Pdf ..."
+                         aria-describedby="fileHelp" (change)="fileChangeEvent2($event)">
 
-                     <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
+                     <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>
                   </div>
+
                 </div>
                 <!-- Barra de Progreso de Carga de la Imagen -->
                 <div class="progress">
@@ -292,15 +293,33 @@
                 </div>
                 <p id="status"></p>
 
-                <button type="button" name="button" (click)="createNewFileInput()">Agregar Nuevo</button>
-                <button type="button" name="button" (click)="myFunction()">Borrar</button>'
+
+               <!-- tabla que muestra los Documentos subidos -->
+               <table class="table table-striped" >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre de Documento</th>
+                      <th>Extencion</th>
+                      <th>Peso en Kb</th>
+                    </tr>
+                  </thead>
+                  <tbody id="newTable">
+                      <!-- Cuerpor de la Tabla  -->
+                  </tbody>
+                </table>
+
+
+                <!-- <button type="button" name="button" (click)="createNewFileInput()">Agregar Nuevo</button>
+                <button type="button" name="button" (click)="removeFileInput()">Borrar</button>'
+                <button type="button" name="button" (click)="checkTodos()">Subir</button>' -->
             </div>
 
+            <div [innerHTML]="myHtml"></div>
 
           </div>
       </div>
       <hr>
-
 			<!-- <div class="row">
 				<div class="col-xs-8 col-sm-9 col-md-9">
 					 Para saber mas de utilidad de esta aplicacion, verifica los <a href="#" data-toggle="modal" data-target="#t_and_c_m"> manuales de usuario </a> que tiene este sistema.
@@ -345,7 +364,7 @@
     <!-- <div class="card" style="width: 16rem; margin-top:5px">
 
   </div>
-<!-- Columna de las Tarjetas -->
+ Columna de las Tarjetas -->
 
 </div>
 <!-- Modal -->

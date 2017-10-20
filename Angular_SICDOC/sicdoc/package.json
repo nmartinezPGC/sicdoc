@@ -33,6 +33,7 @@
     "jspdf-autotable": "^2.3.2",
     "ng2-auto-complete": "^0.12.0",
     "ng2-completer": "^1.6.3",
+    "ng2-file-upload": "^1.2.1",
     "ng2-input-autocomplete": "0.0.11",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
