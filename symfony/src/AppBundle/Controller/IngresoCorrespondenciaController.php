@@ -246,7 +246,8 @@ class IngresoCorrespondenciaController extends Controller{
                     $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codReferenciaSreci" => $cod_referenciaSreci,
-                          "idTipoDocumento"    => $cod_tipo_documento
+                          //"idTipoDocumento"    => $cod_tipo_documento
+                          "idTipoDocumento"    => [1,2,3,4]
                         ));
                     
                     
@@ -345,7 +346,7 @@ class IngresoCorrespondenciaController extends Controller{
                         if( $pdf_send != null ){
                             $documentosIn = new TblDocumentos();
 
-                            $documentosIn->setCodDocumento($cod_correspondencia); //Set de Codigo Documento
+                            $documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
                             $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
                             $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
@@ -363,7 +364,7 @@ class IngresoCorrespondenciaController extends Controller{
                             // Detalle  ********************************************
                             $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
                                 array(
-                                    "codCorrespondenciaDet" => $cod_correspondencia_det
+                                    "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
                                 ));
                             $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
 
