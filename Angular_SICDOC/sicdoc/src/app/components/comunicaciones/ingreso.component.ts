@@ -844,6 +844,8 @@ export class IngresoComunicacionComponent implements OnInit{
      let sendParms = "json=" + "";
      let codigoSec2 = "sdsd";
 
+     // Parametro para documento Seleccionado
+     this.comunicacion.pdfDocumento = this.codigoSec;
 
     //  console.log(this.paramsDocs);
 
