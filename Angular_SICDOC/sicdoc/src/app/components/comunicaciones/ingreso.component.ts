@@ -871,7 +871,6 @@ export class IngresoComunicacionComponent implements OnInit{
     this.extencionDocumento = filename.replace(/^.*\./, '');
         // alert(this.extencionDocumento);
 
-
     // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
                                     // + this.consultaContactos.apellido1Contacto;
 
