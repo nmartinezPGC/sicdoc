@@ -1,0 +1,22 @@
+BackendBundle\Entity\TblTipoComunicacion:
+    type: entity
+    table: tbl_tipo_comunicacion
+    id:
+        idTipoComunicacion:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_comunicacion
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descTipoComunicacion:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: desc_tipo_comunicacion
+    lifecycleCallbacks: {  }

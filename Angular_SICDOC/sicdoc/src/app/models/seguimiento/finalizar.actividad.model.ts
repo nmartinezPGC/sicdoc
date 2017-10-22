@@ -32,7 +32,9 @@ export class FinalizarActividad{
       public secuenciaComunicacionDet:number,
       public secuenciaComunicacionNewOfi:number,
       public secuenciaComunicacionNewOfiAct:number,
-      public secuenciaComunicacionNewRespActividad:number
+      public secuenciaComunicacionNewRespActividad:number,
+
+      public secuenciaComunicacionFind:string,
 
 
     ){}

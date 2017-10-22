@@ -703,4 +703,33 @@ class TblCorrespondenciaEnc
     {
         return $this->observaciones;
     }
+    /**
+     * @var \BackendBundle\Entity\TblTipoComunicacion
+     */
+    private $idTipoComunicacion;
+
+
+    /**
+     * Set idTipoComunicacion
+     *
+     * @param \BackendBundle\Entity\TblTipoComunicacion $idTipoComunicacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setIdTipoComunicacion(\BackendBundle\Entity\TblTipoComunicacion $idTipoComunicacion = null)
+    {
+        $this->idTipoComunicacion = $idTipoComunicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoComunicacion
+     *
+     * @return \BackendBundle\Entity\TblTipoComunicacion
+     */
+    public function getIdTipoComunicacion()
+    {
+        return $this->idTipoComunicacion;
+    }
 }

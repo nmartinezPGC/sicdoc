@@ -16,6 +16,8 @@ use BackendBundle\Entity\TblInstituciones;
 use BackendBundle\Entity\TblEstados;
 use BackendBundle\Entity\TblDireccionesSreci;
 use BackendBundle\Entity\TblSecuenciales;
+use BackendBundle\Entity\TblTipoComunicacion;
+
 use Swift_MessageAcceptanceTest;
 
 
@@ -232,8 +234,16 @@ class IngresoCorrespondenciaController extends Controller{
                            "idFuncionario" => $id_usuario_asignado                
                         ));                    
                     $correspondenciaNew->setIdFuncionarioAsignado($usuario_asignado); //Set de Codigo de Funcionario Asignado
-                                                         
-                    //Finaliza Busqueda de Integridad entre Tablas
+                     
+                    // Setea el Tipo de Comunicacion
+                    //Instanciamos de la Clase TblTipoComunicacion
+                    $tipo_comunicacion = $em->getRepository("BackendBundle:TblTipoComunicacion")->findOneBy(
+                        array(
+                           "idTipoComunicacion" => 1
+                        ));                    
+                    $correspondenciaNew->setIdTipoComunicacion($tipo_comunicacion); //Set de Tipo de Comunicacion 
+                    
+                    //Finaliza Busqueda de Integridad entre Tablas *************
                     
                     
                     //Verificacion del Codigo de la Correspondencia *******************
@@ -883,11 +893,19 @@ class IngresoCorrespondenciaController extends Controller{
                            "idFuncionario" => $id_usuario_asignado                
                         ));                    
                     $correspondenciaNew->setIdFuncionarioAsignado($usuario_asignado); //Set de Codigo de Funcionario Asignado
-                                                         
-                    //Finaliza Busqueda de Integridad entre Tablas
+                    
+                    // Setea el Tipo de Comunicacion
+                    //Instanciamos de la Clase TblTipoComunicacion
+                    $tipo_comunicacion = $em->getRepository("BackendBundle:TblTipoComunicacion")->findOneBy(
+                        array(
+                           "idTipoComunicacion" => 2
+                        ));                    
+                    $correspondenciaNew->setIdTipoComunicacion($tipo_comunicacion); //Set de Tipo de Comunicacion
+                                                                             
+                    //Finaliza Busqueda de Integridad entre Tablas *************
                     
                     
-                    //Verificacion del Codigo de la Correspondenia *******************
+                    //Verificacion del Codigo de la Correspondenia *************
                     $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                         array(
                           "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia

@@ -370,6 +370,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                 $apellido1_funcionario_asignado = ($params->apellido1FuncionarioAsigmado != null) ? $params->apellido1FuncionarioAsigmado : null ;
                 $apellido2_funcionario_asignado = ($params->apellido2FuncionarioAsigmado != null) ? $params->apellido2FuncionarioAsigmado : null ;
                 
+                // Secuencia de la Tabla Secuencias, para Obtener el Valor2
+                //$secuenca_generate = ($params->secuenciaComunicacionFind != null) ? $params->secuenciaComunicacionFind : null ;
+                
+                $secuenca_generate        = ($params->codCorrespondenciaRespAct != null) ? $params->codCorrespondenciaRespAct : null ;
+                
                 $estado_asignado                = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
                                 
                 $fecha_finalizacion             = new \DateTime('now');
@@ -436,10 +441,19 @@ class SeguimientoCorrespondenciaController extends Controller {
                         //Seteo del nuevo secuencial de la tabla: TblSecuenciales
                         $secuenciaNew = new TblSecuenciales();
                         
+                        
+                        // Buscamos el Tipo de Documento para Generar la Secuencia                        
+                        $tipoComunicacion = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                        array(
+                          "codCorrespondenciaEnc" => $codgio_oficio_interno
+                        ));
+                                                
+                        
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                                "codSecuencial"  => "COM-IN-DET-OFI"
+                                //"codSecuencial"  => "COM-IN-DET-OFI"
+                                "codSecuencial"  => $secuenca_generate
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
                         

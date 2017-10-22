@@ -24,6 +24,8 @@ import { NgForm }    from '@angular/forms';
 import { Usuarios } from '../../models/usuarios/usuarios.model'; // Servico del Login
 import { Comunicaciones } from '../../models/comunicaciones/comunicacion.model'; // Modelo a Utilizar
 
+// Declaramos las variables para jQuery
+declare var jQuery:any;
 declare var $:any;
 
 @Component({
@@ -118,6 +120,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetListaOficiosPendientes:any[];
   public JsonOutgetListaOficiosFinalizados:any[];
 
+  // Array de Documentos de Comunicacion
+  public JsonOutgetListaDocumentos = [];
+
 
   // Variabls para validaciones de Seleccionado
   public maxlengthCodReferencia = "38"; // Defaul Correo
@@ -197,6 +202,13 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoDocumento"  : ""
     };
 
+
+    // this.JsonOutgetListaDocumentos = {
+    //   "nameDoc":"",
+    //   "extDoc":"",
+    //   "pesoDoc":""
+    // };
+
     // Lsita de Tipo de Documentos
     this.getlistaTipoDocumentos();
 
@@ -242,6 +254,9 @@ export class IngresoComunicacionComponent implements OnInit{
     // Eventos de Señaloizacion
 
     this.loading = "hide";
+
+
+    // this.removeFileInput();
 
 
     // this.getlistaSubDireccionesSRECIAcom();
@@ -328,6 +343,7 @@ export class IngresoComunicacionComponent implements OnInit{
             }
         });
   } // Fin | Metodo onSubmit
+
 
 
   /****************************************************
@@ -789,56 +805,6 @@ export class IngresoComunicacionComponent implements OnInit{
   public resultUpload;
 
   fileChangeEvent(fileInput: any){
-      //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
-      this.filesToUpload = <Array<File>>fileInput.target.files;
-
-      let token = this._loginService.getToken();
-      let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
-      // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
-      // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
-
-      // Variables del Metodo
-      let  error:string;
-      let  status:string;
-      let  codigoSec:string;
-
-      // Parametros de las Secuencias
-      this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-      this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-      codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
-
-      // Parametro para documento Seleccionado
-      this.comunicacion.pdfDocumento = codigoSec;
-
-      // Ejecutamos el Servicio con los Parametros
-      this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
-        ( result ) => {
-          this.resultUpload = result;
-          status = this.resultUpload.status;
-          console.log(this.resultUpload);
-          if(status === "error"){
-            console.log(this.resultUpload);
-            alert(this.resultUpload.msg);
-          }
-
-          // this.mensajes = this.resultUpload.msg;
-        },
-        ( error ) => {
-          alert(error);
-          console.log(error);
-        });
-  } // FIN : FND-00005
-
-
-  /*****************************************************
-  * Funcion: FND-00004
-  * Fecha: 29-07-2017
-  * Descripcion: Carga la Imagen de usuario desde el File
-  * Objetivo: Obtener la imagen que se carga desde el
-  * control File de HTML
-  * (fileChangeEvent).
-  ******************************************************/
-  fileChangeEvent2(fileInput: any){
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
@@ -847,8 +813,6 @@ export class IngresoComunicacionComponent implements OnInit{
     // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
-    // let ext = this.getExt(this.filesToUpload  );
-    // alert( ext );
     // Parametros de las Secuencias
     this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
     this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
@@ -893,13 +857,11 @@ export class IngresoComunicacionComponent implements OnInit{
           if(status === "error"){
             console.log(this.resultUpload);
             alert(this.resultUpload.msg);
+          } else {
+            // Añadimos a la Tabla Temporal los Items Subidos
+            this.createNewFileInput();
           }
           // alert(this.resultUpload.data);
-
-          // Añadimos a la Tabla Temporal los Items Subidos
-          this.createNewFileInput();
-
-          // this.mensajes = this.resultUpload.msg;
         },
         ( error ) => {
           alert(error);
@@ -1251,15 +1213,25 @@ export class IngresoComunicacionComponent implements OnInit{
    let secActual = this.nextDocumento - 1;
    let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + this.fechaHoy.getMonth() + "-" + this.fechaHoy.getDate();
 
+
+   this.JsonOutgetListaDocumentos.push({
+     "nameDoc": newSecAct,
+     "extDoc": this.extencionDocumento,
+     "pesoDoc": this.seziDocumento
+   });
+
+   console.log(this.JsonOutgetListaDocumentos);
+
    $("#newTable").append('<tr> ' +
                       '   <th scope="row">'+ secActual +'</th> ' +
                       '   <td>' + newSecAct + '</td> ' +
                       '   <td>'+ this.extencionDocumento +'</td> ' +
                       '   <td>'+ this.seziDocumento +'</td> ' +
+                      '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
                       ' </tr>');
 
   } // FIN | FND-00011
-
+  
 
   /*****************************************************
   * Funcion: FND-00012
@@ -1268,15 +1240,15 @@ export class IngresoComunicacionComponent implements OnInit{
   * ( removeFileInput ).
   ******************************************************/
   removeFileInput() {
-    var s = '#fileIn';
-    var $s = $(s).find('#contFile').remove().end();
-    console.log( $s );
+    // var s = '#fileIn';
+    // var $s = $(s).find('#contFile').remove().end();
+      $("#delDoc").click( function(){
+        // this.JsonOutgetListaDocumentos.splice(0, 1);
+        alert('Ejecuto Fun');
+          console.log( this.JsonOutgetListaDocumentos );
+      });
   } // FIN | FND-00012
 
-
-  otrFND(){
-    alert('Hola Mundo');
-  }
 
   /*****************************************************
   * Funcion: FND-00001
