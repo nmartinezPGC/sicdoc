@@ -36,6 +36,8 @@ export class FinalizarActividad{
 
       public secuenciaComunicacionFind:string,
 
+      public idTipoDocumento:number,
+
 
     ){}
 

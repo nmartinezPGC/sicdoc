@@ -2,15 +2,15 @@ BackendBundle\Entity\TblContactos:
     type: entity
     table: tbl_contactos
     indexes:
-        fki_func_contacto:
-            columns:
-                - id_funcionario
         tbl_contactos_cod_contacto_idx:
             columns:
                 - cod_contacto
         fki_contact_user_modif:
             columns:
                 - id_usuario_modifica
+        fki_func_contacto:
+            columns:
+                - id_funcionario
         fki_institucion_contacto:
             columns:
                 - id_institucion
@@ -120,6 +120,16 @@ BackendBundle\Entity\TblContactos:
                 fixed: false
             column: cargo_funcional
     manyToOne:
+        idUsuarioModifica:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario_modifica:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
         idFuncionario:
             targetEntity: TblFuncionarios
             cascade: {  }
@@ -139,15 +149,5 @@ BackendBundle\Entity\TblContactos:
             joinColumns:
                 id_institucion:
                     referencedColumnName: id_institucion
-            orphanRemoval: false
-        idUsuarioModifica:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario_modifica:
-                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -2,15 +2,15 @@ BackendBundle\Entity\TblInstituciones:
     type: entity
     table: tbl_instituciones
     indexes:
-        tbl_instituciones_cod_institucion_idx:
-            columns:
-                - cod_institucion
-        fki_inst_tipo:
-            columns:
-                - id_tipo_institucion
         fki_pais_inst:
             columns:
                 - id_pais
+        fki_inst_tipo:
+            columns:
+                - id_tipo_institucion
+        tbl_instituciones_cod_institucion_idx:
+            columns:
+                - cod_institucion
     uniqueConstraints:
         tbl_instituciones_cod_institucion_key:
             columns:

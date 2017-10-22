@@ -3,13 +3,80 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <style type="text/css">
+        .tabla {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size:12px;
+            text-align: left;
+            width: 600px;
+        }
+
+        .tabla th {
+            padding: 5px;
+            font-size: 16px;
+            background-color: #83aec0;
+            background-image: url(fondo_th.png);
+            background-repeat: repeat-x;
+            color: #FFFFFF;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #558FA6;
+            border-bottom-color: #558FA6;
+            font-family: "Trebuchet MS", Arial;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .tabla .modo1 {
+            font-size: 12px;
+            font-weight:bold;
+            background-color: #F2F3F4;
+            background-image: url(fondo_tr01.png);
+            background-repeat: repeat-x;
+            color: #34484E;
+            font-family: "Trebuchet MS", Arial;
+        }
+
+        .tabla .modo1 td {
+            padding: 5px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #A4C4D0;
+            border-bottom-color: #A4C4D0;
+            text-align:left;
+        }
+
+        .tabla .modo1 th {
+            background-image: url(fondo_tr01a.png);
+            background-position: left top;
+            font-size: 12px;
+            font-weight:bold;
+            text-align: left;
+            background-color: #CACFD2;
+            background-repeat: repeat-x;
+            color: #34484E;
+            font-family: "Trebuchet MS", Arial;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #A4C4D0;
+            border-bottom-color: #A4C4D0;
+        }
+
+    </style>
+
 </head>
 <body>
     <div class="container">
         <div class="jumbotron">
             <h1 class="display-3">Estimado(a): </h1>
             <h2 class="display-3">{{ name }}  {{ apellidoOficio }} </h2>
-            <p class="lead">Se ha ingresado una Comunicacion, con la siguiente informacion: </p>
+            <p class="lead">Se ha finalizado una Comunicacion, con la siguiente informacion: </p>
             <hr class="my-4">
             <br>
             <table class="tabla" border="0" cellpadding="0" cellspacing="0">

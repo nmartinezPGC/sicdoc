@@ -41,7 +41,7 @@ export class Comunicaciones{
 
       //Envio de correos
       public emailDireccion:string,
-      public pdfDocumento:string,
+      public pdfDocumento,
       public hideCom:string,
 
       // Observaciones Iniciales

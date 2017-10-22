@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style type="text/css">
+        .tabla {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size:12px;
+            text-align: left;
+            width: 600px;
+        }
+
+        .tabla th {
+            padding: 5px;
+            font-size: 16px;
+            background-color: #83aec0;
+            background-image: url(fondo_th.png);
+            background-repeat: repeat-x;
+            color: #FFFFFF;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #558FA6;
+            border-bottom-color: #558FA6;
+            font-family: "Trebuchet MS", Arial;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .tabla .modo1 {
+            font-size: 12px;
+            font-weight:bold;
+            background-color: #F2F3F4;
+            background-image: url(fondo_tr01.png);
+            background-repeat: repeat-x;
+            color: #34484E;
+            font-family: "Trebuchet MS", Arial;
+        }
+
+        .tabla .modo1 td {
+            padding: 5px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #A4C4D0;
+            border-bottom-color: #A4C4D0;
+            text-align:left;
+        }
+
+        .tabla .modo1 th {
+            background-image: url(fondo_tr01a.png);
+            background-position: left top;
+            font-size: 12px;
+            font-weight:bold;
+            text-align: left;
+            background-color: #CACFD2;
+            background-repeat: repeat-x;
+            color: #34484E;
+            font-family: "Trebuchet MS", Arial;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-right-color: #A4C4D0;
+            border-bottom-color: #A4C4D0;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Estimado(a): </h1>
+            <h2 class="display-3">{{ name }}  {{ apellidoOficio }} </h2>
+            <p class="lead">Se ha Asignado una Comunicacion, con la siguiente informacion: </p>
+            <hr class="my-4">
+            <br>
+            <table class="tabla" border="0" cellpadding="0" cellspacing="0">
+                
+                  <tr>
+                    <th>
+                      <th colspan="3">Informacion de la Comunicacion</th>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Descripcion</th>                    
+                  </tr>                
+                
+                  <tr class="modo1">
+                    <th scope="row">1</th>
+                    <td>Codigo Externo</td>
+                    <td>{{ oficioExtNo }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">2</th>
+                    <td>Codigo Interno</td>
+                    <td>{{ oficioInNo }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">3</th>
+                    <td>Tema</td>
+                    <td>{{ temaOficio }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">4</th>
+                    <td>Contenido</td>
+                    <td>{{ descOficio }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">5</th>
+                    <td>Fecha Entrega</td>
+                    <td>{{ fechaIngresoOfi }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">6</th>
+                    <td>Fecha Creacion</td>
+                    <td>{{ fechaMaxOfi }}</td>                    
+                  </tr>
+                
+            </table>
+
+            <br>
+            <h4> Saludos cordiales </h4>
+
+            <img src="secretaria_exterior.png" alt="SRECI" height="142" width="142">
+        </div>
+    </div>
+</body>
+</html>

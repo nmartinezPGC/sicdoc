@@ -188,7 +188,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         // los Datos de envio de Mail **************************
                             $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
                             array(
-                                "idFuncionario" => $identity->sub                
+                                //"idFuncionario" => $identity->sub                
+                                "idFuncionario" => $id_funcionario_asignado                
                             ));
                         $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                         $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
@@ -221,12 +222,13 @@ class SeguimientoCorrespondenciaController extends Controller {
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Asignación de Oficio | SICDOC')
-                               ->setFrom(array($identity->email => $nombreSend . " " .  $apellidoSend ))
+                               //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
                                     // Plantilla HTML que sirve para el envio de los Correos
-                                        'Emails/sendMailFuncionario.html.twig',
+                                        'Emails/sendMailAsignacion.html.twig',
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
@@ -261,7 +263,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             "status" => "error",
                             "desc"   => "No existe un codigo",
                             "code"   => 400, 
-                            "msg"   => "Error al asignar, no existe un  el Oficio con este código, ". $codgio_oficio_interno . 
+                            "msg"   => "Error al asignar, no existe una comunicacion con este código, ". $codgio_oficio_interno . 
                                        " por favor ingrese otro !!"
                         );                       
                     } // Fin de Busqueda del Oficio que se esta Asignado
@@ -321,6 +323,7 @@ class SeguimientoCorrespondenciaController extends Controller {
         
         return $fecha_salida;
     } // FIN | FND00002
+    
     
     
     /**
@@ -531,7 +534,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         // los Datos de envio de Mail **************************
                             $funcionario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
                             array(
-                                "idFuncionario" => $identity->sub                
+                                "idUsuario" => $identity->sub                
                             ));
                             $mailSend = $funcionario_asignado->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
                             $nombreSend = $funcionario_asignado->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
@@ -563,8 +566,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Asignación de Oficio | SICDOC')
-                               ->setFrom(array($identity->email => $nombreSend . " " .  $apellidoSend ))
+                               ->setSubject('Finalizacion de Comunicacion | SICDOC')
+                               //->setFrom(array("nahum.sreci@gmail.com"  => $nombreSend . " " .  $apellidoSend ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -586,7 +590,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             }*/
                                  
                             // Envia el Correo con todos los Parametros
-                        //  $resuly = $mailer->send($mail);
+                            $resuly = $mailer->send($mail);
                                                   
                         // ***** Fin de Envio de Correo ************************                        
                         
@@ -639,6 +643,7 @@ class SeguimientoCorrespondenciaController extends Controller {
     } // FIN | FND00003
     
     
+    
     /**
      * @Route("/creacion-oficio-asignado", name="creacion-oficio-asignado")
      * Creacion del Controlador: Crear Oficio Respuesta
@@ -688,6 +693,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                 $apellido2_funcionario_asignado = ($params->apellido2FuncionarioAsigmado != null) ? $params->apellido2FuncionarioAsigmado : null ;
                 
                 $estado_asignado                = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
+                $tipo_documento                = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;
                                 
                 $fecha_finalizacion             = new \DateTime('now');
                 
@@ -756,7 +762,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                                "codSecuencial"  => "SCPI"
+                                "codSecuencial"  => "SCPI",
+                                "idTipoDocumento" => $tipo_documento
                             ));                    
                         $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
                         
@@ -867,15 +874,16 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Asignación de Oficio | SICDOC')
-                               ->setFrom(array($identity->email => $nombreSend . " " .  $apellidoSend ))
+                               ->setSubject('Creacion de Actividad | SICDOC')
+                               //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
                                     // Plantilla HTML que sirve para el envio de los Correos
-                                        'Emails/sendMailFuncionario.html.twig',
+                                        'Emails/sendMailFuncionarioCrearActividad.html.twig',
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
-                                               'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
+                                               'oficioExtNo' => $cod_oficio_resp, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_creacion_convert), 
                                                'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
@@ -890,7 +898,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             }*/
                                  
                             // Envia el Correo con todos los Parametros
-                        //  $resuly = $mailer->send($mail);
+                            $resuly = $mailer->send($mail);
                                                   
                         // ***** Fin de Envio de Correo ************************                        
                         
@@ -909,7 +917,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             "status" => "error",
                             "desc"   => "No existe un codigo",
                             "code"   => 400, 
-                            "msg"   => "Error al asignar, no existe un  el Oficio con este código, ". $codgio_oficio_interno . 
+                            "msg"   => "Error al asignar, no existe una comunicacion con este código, ". $codgio_oficio_interno . 
                                        " por favor ingrese otro !!"
                         );                       
                     } // Fin de Busqueda del Oficio que se esta Asignado
@@ -1167,13 +1175,14 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Asignación de Oficio | SICDOC')
-                               ->setFrom(array($identity->email => $nombreSend . " " .  $apellidoSend ))
+                               ->setSubject('Creacion de Actividad | SICDOC')
+                               //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
                                     // Plantilla HTML que sirve para el envio de los Correos
-                                        'Emails/sendMailFuncionario.html.twig',
+                                        'Emails/sendMailFuncionarioCrearActividad.html.twig',
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
@@ -1190,7 +1199,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             }*/
                                  
                             // Envia el Correo con todos los Parametros
-                        //  $resuly = $mailer->send($mail);
+                            $resuly = $mailer->send($mail);
                                                   
                         // ***** Fin de Envio de Correo ************************                        
                         

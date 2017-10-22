@@ -172,7 +172,8 @@ export class FinalizarActividadComponent implements OnInit {
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
     this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null,
-                               null, null, null,  null,  null, null, 5,  null, null, null, null, null, null, null, null, null);
+                               null, null, null,  null,  null, null, 5,  null, null, null,
+                               null, null, null, null, null, null, null);
 
     // Inicializamos el Llenado de las Tablas
     this.getlistaFinalizarOficiosTable();
@@ -239,11 +240,14 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.apellido2FuncionarioAsigmado = this.apellido2FuncModal;
     this.finalizarOficios.codOficioRespuesta = this.idCorrepEncModal;
 
+    // Asignamos el valor al tipo de Documento
+    this.finalizarOficios.idTipoDocumento = this.paramsSecuenciaDet.idTipoDocumento;
+
     // Inicializamos la Instacia al Metodo de la API
       let token1 = this._finalizarOficio.getToken();
       this.loading = 'show';
       this.loading_table = 'show';
-      console.log( this.finalizarOficios );
+      // console.log( this.finalizarOficios );
 
       // Evalua que Opcion va a Enviar por el Formulario ***********************
       // Opcion de Finalizar Oficio ********************************************
@@ -295,8 +299,8 @@ export class FinalizarActividadComponent implements OnInit {
       // Opcion de Oficio de respuesta *****************************************
       }else if ( opcion == 2 ) {
         this.finalizarOficios.idEstadoAsigna = 8;
-        console.log(this.finalizarOficios);
-        // Opcion de Creacion de Oficio de Respuesta
+        // console.log(this.finalizarOficios);
+        // Opcion de Creacion de Comunicacion de Respuesta
         this._finalizarOficio.creacionOficioAsignado(token1, this.finalizarOficios).subscribe(
           response => {
               // Obtenemos el Status de la Peticion
@@ -317,7 +321,7 @@ export class FinalizarActividadComponent implements OnInit {
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
                 this.ngOnInit();
-                console.log(response.data);
+                // console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m2').modal('hide');
                 }, 600);
@@ -342,7 +346,7 @@ export class FinalizarActividadComponent implements OnInit {
           });
       // Opcion de Agregar Actividad *******************************************
     }else if ( opcion == 3 ){
-        opcionExecute = "finalizarOficioAsignado";
+        opcionExecute = "agregarActividadResp";
         // Opcion de Finalizacion de Comunicacion
         console.log(this.finalizarOficios);
         this._finalizarOficio.agregarActividadResp(token1, this.finalizarOficios).subscribe(
@@ -365,7 +369,7 @@ export class FinalizarActividadComponent implements OnInit {
                 this.loading = 'hidden';
                 this.loading_table = 'hide';
                 this.ngOnInit();
-                console.log(response.data);
+                // console.log(response.data);
                 setTimeout(function() {
                   $('#t_and_c_m3').modal('hide');
                 }, 600);
@@ -428,7 +432,7 @@ export class FinalizarActividadComponent implements OnInit {
 
             this.loading = 'hidden';
             this.loadTabla1 = true;
-            console.log(this.JsonOutgetlistaOficiosAll);
+            // console.log(this.JsonOutgetlistaOficiosAll);
           }
         });
   } // FIN | FND-00001
@@ -545,7 +549,7 @@ export class FinalizarActividadComponent implements OnInit {
  * (gen-secuencia-comunicacion-in).
  ******************************************************/
   listarCodigoCorrespondenciaDet( idTipoDocumento:number, idTipoComunicacion:number ){
-    //Llamar al metodo, de Login para Obtener la Identidad    
+    //Llamar al metodo, de Login para Obtener la Identidad
 
     if( idTipoDocumento == 1 ){
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
@@ -635,7 +639,7 @@ export class FinalizarActividadComponent implements OnInit {
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
         this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-REUNION";
-        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
+        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
         this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumento;
       } else {
         this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-REUNION";
@@ -647,7 +651,7 @@ export class FinalizarActividadComponent implements OnInit {
 
 
     //Llamar al metodo, de Login para Obtener la Identidad
-    //console.log(this.params);
+    console.log('Entro en 1 listarCodigoCorrespondenciaDet');
     this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
          // login successful so redirect to return url
@@ -659,8 +663,8 @@ export class FinalizarActividadComponent implements OnInit {
          }else{
            this.JsonOutgetCodigoSecuenciaDet = response.data;
            // Ejecutamos el llamado al la Segunda Secuencia
-           this.listarCodigoCorrespondenciaOfiResp();
-           console.log( this.JsonOutgetCodigoSecuenciaDet );
+           this.listarCodigoCorrespondenciaOfiResp( this.paramsSecuenciaDet.idTipoDocumento );
+          //  console.log( this.JsonOutgetCodigoSecuenciaDet );
            //this.listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoFuc );
          }
        });
@@ -675,23 +679,50 @@ export class FinalizarActividadComponent implements OnInit {
  * indicada con su cosigo
  * (gen-secuencia-comunicacion-in).
  ******************************************************/
-  listarCodigoCorrespondenciaOfiResp(){
-   this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-   this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-   this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
+  listarCodigoCorrespondenciaOfiResp( idTipoDocumento:number ){
+
+  // Validamos que el Tipo de Documentos pertenesaca al Adecuado
+  let idTipoDocumentoIN = idTipoDocumento;
+
+  if( idTipoDocumentoIN == 1 ){
+    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+  } else if ( idTipoDocumentoIN == 2 ) {
+    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+  } else if ( idTipoDocumentoIN == 3 ) {
+    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+  } else if ( idTipoDocumentoIN == 4 ) {
+    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+  }else {
+    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
+  }
+
    //Llamar al metodo, de Login para Obtener la Identidad
    //console.log(this.params);
+   console.log('Entro en 2 listarCodigoCorrespondenciaOfiResp');
+   console.log(this.paramsSecuenciaOficioRespuesta);
+
    this._listasComunes.listasComunesToken( this.paramsSecuenciaOficioRespuesta, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
          // login successful so redirect to return url
          if(response.status == "error"){
            //Mensaje de alerta del error en cuestion
            this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
+           console.log('errorrrr');
            alert(response.msg);
 
          }else{
            this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
-          //  console.log( this.JsonOutgetCodigoSecuenciaDet );
+           console.log( this.JsonOutgetCodigoSecuenciaDet );
          }
        });
  } // FIN : FND-00005
@@ -708,8 +739,16 @@ export class FinalizarActividadComponent implements OnInit {
   listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoIn:number, idTipoComunicacion:number ){
     // Condicion del Secuencial Segun el Tipo de Documento
     //Evaluamos el valor del Tipo de Documento
-    console.log('Tipo Documento ' + idTipoDocumentoIn);
-    console.log('Tipo Comunicacion ' + idTipoComunicacion);
+    // console.log('Tipo Documento ' + idTipoDocumentoIn);
+    // console.log('Tipo Comunicacion ' + idTipoComunicacion);
+
+    // Iniciamos los Parametros de Secuenciales | Agregar Actividad
+    this.paramsSecuenciaActividadAgregar = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+
     if( idTipoDocumentoIn == 1 ){
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
@@ -776,7 +815,7 @@ export class FinalizarActividadComponent implements OnInit {
         this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-CALL";
         this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_call";
         this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
+      } else if ( idTipoComunicacion == 2 ) {
         this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-CALL";
         this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_call";
         this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
@@ -798,7 +837,7 @@ export class FinalizarActividadComponent implements OnInit {
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
         this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-REUNION";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_reunion";
+        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
         this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
       } else {
         this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-REUNION";
@@ -808,17 +847,19 @@ export class FinalizarActividadComponent implements OnInit {
 
     }// Fin de Condicion
 
+    console.log(this.paramsSecuenciaActividadAgregar);
 
    //Llamar al metodo, de Login para Obtener la Identidad
    //console.log(this.params);
+   console.log('Entro en 3 listarCodigoCorrespondenciaAgregarActividad');
    this._listasComunes.listasComunesToken( this.paramsSecuenciaActividadAgregar, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
          // login successful so redirect to return url
          if(response.status == "error"){
            //Mensaje de alerta del error en cuestion
            this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
-           alert(response.msg);
-
+           //alert(response.msg);
+           alert('ha ocurrido un error, pulsa F5 para recargar la pagina, si persiste comunicate con el Administrador');
          }else{
            this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
           //  console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );

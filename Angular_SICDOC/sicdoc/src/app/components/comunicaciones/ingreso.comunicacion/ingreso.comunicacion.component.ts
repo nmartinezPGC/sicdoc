@@ -74,6 +74,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public JsonOutgetlistaTipoInstitucion:any[];
   public JsonOutgetlistaInstitucion:any[];
 
+  public JsonOutgetListaDocumentos = [];
+
   // Secuencias
   public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaDet:any[];
@@ -89,6 +91,18 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public maxlengthCodReferencia = "38"; // Defaul Correo
   public minlengthCodReferencia = "5"; // Defaul Correo
   public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
+
+
+  // Variables para la Persistencia de los Datos en los Documentos
+  public nextDocumento:number = 1;
+  public extencionDocumento:string;
+  public seziDocumento:number;
+
+
+  // Variables del Metodo
+  public  error:string;
+  // public  status:string;
+  public  codigoSec:string;
 
 
   // Objeto que Controlara la Forma
@@ -210,6 +224,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       "tablaSecuencia"  : "",
       "idTipoDocumento"  : ""
     };
+
+
 
     // Lsita de Tipo de Documentos
     this.getlistaTipoDocumentos();
@@ -595,7 +611,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            //console.log(response.data);
+            // console.log(response.data);
             // Ejecutamos la Funcion de Secuencia de Detalle
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
           }
@@ -645,7 +661,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_verb";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }else if ( idTipoDocumentoIn == 9 ) {
-       this.paramsSecuenciaDet.codSecuencial = "COM-IN-OUT-REUNION";
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-REUNION";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }// Fin de Condicion
@@ -713,26 +729,47 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
-    let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/upload-documento";
+    // Direccion del Metodo de la API
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
-
-    // Variables del Metodo
-    let  error:string;
-    let  status:string;
-    let  codigoSec:string;
 
     // Parametros de las Secuencias
     this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
     this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-    codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+    this.codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
 
-    // Parametro para documento Seleccionado
-    this.comunicacion.pdfDocumento = codigoSec;
+    this.codigoSec = this.codigoSec + '-' + this.nextDocumento;
+    this.nextDocumento = this.nextDocumento + 1;
+
+    // Tamaño
+    let sizeByte:number = this.filesToUpload[0].size;
+    let siezekiloByte:number =  Math.round( sizeByte / 1024 );
+
+    this.seziDocumento = siezekiloByte;
+
+    let type = this.filesToUpload[0].type;
+
+    var filename = $("#pdfDocumento").val();
+
+    // Use a regular expression to trim everything before final dot
+    this.extencionDocumento = filename.replace(/^.*\./, '');
+        // alert(this.extencionDocumento);
+
+    // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
+                                    // + this.consultaContactos.apellido1Contacto;
+
+    //  this.paramsDocs.optDocumento = optDoc;
+
+     let sendParms = "json=" + "";
+
+     // Parametro para documento Seleccionado
+     this.comunicacion.pdfDocumento = this.codigoSec;
+
+    //  console.log(this.paramsDocs);
 
     // Ejecutamos el Servicio con los Parametros
-    this._uploadService.makeFileRequest( token, url, [ 'image', codigoSec ], this.filesToUpload ).then(
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec ], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;
@@ -740,15 +777,49 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(status === "error"){
             console.log(this.resultUpload);
             alert(this.resultUpload.msg);
-          }
+          } else {
+            // Añadimos a la Tabla Temporal los Items Subidos
+            this.createNewFileInput();
 
-          // this.mensajes = this.resultUpload.msg;
+          }
+          // alert(this.resultUpload.data);
         },
         ( error ) => {
           alert(error);
           console.log(error);
         });
   } // FIN : FND-00004
+
+
+  /*****************************************************
+  * Funcion: FND-00011
+  * Fecha: 18-10-2017
+  * Descripcion: Creacion de nuevo File input
+  * ( createNewFileInput ).
+  ******************************************************/
+  createNewFileInput(){
+   // Actualiza el valor de la Secuencia
+   let secActual = this.nextDocumento - 1;
+   let mesAct = this.fechaHoy.getMonth() + 1;
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + this.fechaHoy.getDate();
+   console.log('Entro en Funcion ' );
+   this.JsonOutgetListaDocumentos.push({
+     "nameDoc": newSecAct,
+     "extDoc": this.extencionDocumento,
+     "pesoDoc": this.seziDocumento
+   });
+
+   this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
+
+   $("#newTable").append('<tr> ' +
+                      '   <th scope="row">'+ secActual +'</th> ' +
+                      '   <td>' + newSecAct + '</td> ' +
+                      '   <td>'+ this.extencionDocumento +'</td> ' +
+                      '   <td>'+ this.seziDocumento +'</td> ' +
+                      '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
+                      ' </tr>');
+
+  } // FIN | FND-00011
 
 
 }

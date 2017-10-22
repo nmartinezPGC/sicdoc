@@ -118,7 +118,7 @@
               <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6">
                   <option value="0">Selecciona una Institución</option>
-                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }}</option>
+                  <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.perfilInstitucion }} | {{ list.descInstitucion }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
              <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
@@ -212,7 +212,7 @@
             <div class="col-xs-12 col-sm-6 col-md-12">
               <div class="form-group">
                 <label for="exampleInputFile">Agregar Pdf</label>
-                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
                      ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
                      aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
@@ -229,8 +229,24 @@
                     </div>
                 </div>
                 <p id="status"></p>
-            </div>
 
+                <!-- tabla que muestra los Documentos subidos -->
+                <table class="table table-striped" >
+                   <thead>
+                     <tr>
+                       <th>#</th>
+                       <th>Nombre de Documento</th>
+                       <th>Extencion</th>
+                       <th>Peso en Kb</th>
+                     </tr>
+                   </thead>
+                   <tbody id="newTable">
+                       <!-- Cuerpor de la Tabla  -->
+                   </tbody>
+                 </table>
+
+            </div>
+              <div [innerHTML]="myHtml"></div>
           </div>
       </div>
 

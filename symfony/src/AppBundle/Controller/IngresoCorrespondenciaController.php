@@ -119,6 +119,7 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Ruta del Pdf a Subir
                 $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
+                               
                 
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
@@ -298,14 +299,14 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
-                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Comunicación: " . $cod_correspondencia); //Set de Descripcion Inicial
+                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Actividad a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion Inicial
                         $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta"); //Set de Actividad Inicial
                         $correspondenciaDet->setInstrucciones($observacion_correspondencia); 
                        
                         //Verificacion del Codigo de la Correspondenia *********
                         $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                             array(
-                                "codCorrespondenciaEnc" => $cod_correspondencia
+                                "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                             ));
                         $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
                         
@@ -354,43 +355,54 @@ class IngresoCorrespondenciaController extends Controller{
                         //Seteo del nuevo documentos de la tabla: TblDocumentos
                         // *****************************************************
                         if( $pdf_send != null ){
-                            $documentosIn = new TblDocumentos();
+                            // Se convierte el Array en String
+                            $documentos_array_convert      = json_encode($pdf_send);
+                            $documentos_array_convert2      = json_decode($documentos_array_convert);
 
-                            $documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
-                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
+                            // Recorreros los Items del Array
+                            foreach ( $documentos_array_convert2 as $arr ){                                
+                                $nameDoc = $arr->nameDoc;
+                                $extDoc = $arr->extDoc;
+                                $pesoDoc = $arr->pesoDoc;
+                                //var_dump($nameDoc);
+                                
+                                $documentosIn = new TblDocumentos();
 
-                            $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
-                            $documentosIn->setStatus("LOAD"); //Set Documento Desc
+                                //$documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
+                                $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
+                                $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
-                            //Instanciamos de la Clase TblUsuario
-                            $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
-                                array(
-                                   "idUsuario" => $cod_usuario                           
-                                ));                    
-                            $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
+                                $documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                                $documentosIn->setStatus("LOAD"); //Set Documento Desc
 
+                                //Instanciamos de la Clase TblUsuario
+                                $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                    array(
+                                       "idUsuario" => $cod_usuario                           
+                                    ));                    
+                                $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
 
-                            // Verificacion del Codigo de la Correspondenia  *******
-                            // Detalle  ********************************************
-                            $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
-                                array(
-                                    "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
-                                ));
-                            $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+                                // Verificacion del Codigo de la Correspondenia  *******
+                                // Detalle  ********************************************
+                                $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                                    array(
+                                        "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
+                                    ));
+                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
 
+                                // Pdf que se Agrega
+                                // validamos que se adjunta pdf
+                                $documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento
 
-                            // Pdf que se Agrega
-                            // validamos que se adjunta pdf
+                                // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                                $em->persist($documentosIn); 
 
-                                $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d'). ".pdf" ); //Set Url de Documento
-
-
-                            // Relizamos la persistencia de Datos de las Comunicaciones Detalle
-                            $em->persist($documentosIn); 
-
-                            //Realizar la actualizacion en el storage de la BD
-                            $em->flush();
+                                //Realizar la actualizacion en el storage de la BD
+                                $em->flush();
+                            } // Fin de foreach                            
                         }
+                        // Fin de Grabacion de Documentos **********************
+                        
                         // Fin de Comunicacion Detalle *************************
                         
                         // Envio de Correo despues de la Granacion de Datos
@@ -430,25 +442,39 @@ class IngresoCorrespondenciaController extends Controller{
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Oficio | SICDOC')
-                               ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
-                               ->setTo($mailSend)                               
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
+                               //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))    
+                               ->setTo($mailSend)
+                               //->addCc('person1@example.com', 'person1')
                                ->setBody(
                                     $this->renderView(
                                     // app/Resources/views/Emails/registration.html.twig
                                         'Emails/sendMail.html.twig',
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
-                                               'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia,
+                                               'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia ,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega), 
-                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y/m/d") )
+                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d") )
                                     ), 'text/html' );                           
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
-                              $target_path1 = "uploads/correspondencia" . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
+                              // Realizamos el foreach de los Documentos enviados
+                              // Se convierte el Array en String
+                              $documentos_array_convert      = json_encode($pdf_send);
+                              $documentos_array_convert2      = json_decode($documentos_array_convert);
+                            
+                              foreach ( $documentos_array_convert2 as $attachMail  ) {
+                                // varibles
+                                $nameDoc = $attachMail->nameDoc;
+                                $extDoc = $attachMail->extDoc;
+                                $pesoDoc = $attachMail->pesoDoc;
+                                
+                                $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
                                                         
-                              $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
+                                $mail->attach(\Swift_Attachment::fromPath($target_path1));
+                              }
                             }
                                  
                             // Envia el Correo con todos los Parametros
@@ -1019,41 +1045,51 @@ class IngresoCorrespondenciaController extends Controller{
                         //Seteo del nuevo documentos de la tabla: TblDocumentos
                         // *****************************************************
                         if( $pdf_send != null ){
-                            $documentosIn = new TblDocumentos();
+                            // Se convierte el Array en String
+                            $documentos_array_convert      = json_encode($pdf_send);
+                            $documentos_array_convert2      = json_decode($documentos_array_convert);
 
-                            $documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
-                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
+                            // Recorreros los Items del Array
+                            foreach ( $documentos_array_convert2 as $arr ){                                
+                                $nameDoc = $arr->nameDoc;
+                                $extDoc = $arr->extDoc;
+                                $pesoDoc = $arr->pesoDoc;
+                                //var_dump($nameDoc);
+                                
+                                $documentosIn = new TblDocumentos();
 
-                            $documentosIn->setDescDocumento("Oficio de Respaldo"); //Set Documento Desc
-                            $documentosIn->setStatus("LOAD"); //Set Documento Desc
+                                //$documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
+                                $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
+                                $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
-                            //Instanciamos de la Clase TblUsuario
-                            $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
-                                array(
-                                   "idUsuario" => $id_usuario_asignado                           
-                                ));                    
-                            $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
+                                $documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                                $documentosIn->setStatus("LOAD"); //Set Documento Desc
 
+                                //Instanciamos de la Clase TblUsuario
+                                $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                    array(
+                                       "idUsuario" => $cod_usuario                           
+                                    ));                    
+                                $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
 
-                            // Verificacion del Codigo de la Correspondenia  *******
-                            // Detalle  ********************************************
-                            $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
-                                array(
-                                    "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
-                                ));
-                            $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+                                // Verificacion del Codigo de la Correspondenia  *******
+                                // Detalle  ********************************************
+                                $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                                    array(
+                                        "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
+                                    ));
+                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
 
+                                // Pdf que se Agrega
+                                // validamos que se adjunta pdf
+                                $documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento
 
-                            // Pdf que se Agrega
-                            // validamos que se adjunta pdf
-                            $documentosIn->setUrlDocumento($pdf_send . "-" . date('Y-m-d') . ".pdf"); //Set Url de Documento
+                                // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                                $em->persist($documentosIn); 
 
-
-                            // Relizamos la persistencia de Datos de las Comunicaciones Detalle
-                            $em->persist($documentosIn); 
-
-                            //Realizar la actualizacion en el storage de la BD
-                            $em->flush();
+                                //Realizar la actualizacion en el storage de la BD
+                                $em->flush();
+                            } // Fin de foreach 
                         }
                         // Fin de Comunicacion Detalle *************************
                         
@@ -1100,7 +1136,8 @@ class IngresoCorrespondenciaController extends Controller{
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
-                               ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
+                               //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
+                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1114,9 +1151,21 @@ class IngresoCorrespondenciaController extends Controller{
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
-                              $target_path1 = "uploads/correspondencia" . "/" . $pdf_send . "-" .date('Y-m-d'). ".pdf";                            
-                                                         
-                              $mail->attach(\Swift_Attachment::fromPath($target_path1));                                
+                              // Realizamos el foreach de los Documentos enviados
+                              // Se convierte el Array en String
+                              $documentos_array_convert      = json_encode($pdf_send);
+                              $documentos_array_convert2      = json_decode($documentos_array_convert);
+                            
+                              foreach ( $documentos_array_convert2 as $attachMail  ) {
+                                // varibles
+                                $nameDoc = $arr->nameDoc;
+                                $extDoc = $arr->extDoc;
+                                $pesoDoc = $arr->pesoDoc;
+                                
+                                $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
+                                                        
+                                $mail->attach(\Swift_Attachment::fromPath($target_path1));
+                              }                                
                             }
                                  
                             // Envia el Correo con todos los Parametros

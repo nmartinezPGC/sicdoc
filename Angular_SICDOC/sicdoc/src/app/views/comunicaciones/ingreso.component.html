@@ -115,12 +115,13 @@
           <!-- Instituciones de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-5">
             <div class="form-group">
-              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion" required
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6" (change)="getlistaInstituciones()" >
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }} - {{ list.perfilInstitucion }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
+              <small class="form-text text-muted" *ngIf="idInstitucion.errors?.required" >Debes Seleccionar una Institucion</small>
              <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
              <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
             </div>
@@ -274,7 +275,7 @@
                   <div id="contFile">
                     <label for="exampleInputFile">Agregar Pdf</label>
                     <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
-                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento"  multiple placeholder="Subir Pdf ..."
+                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento"  placeholder="Subir Pdf ..."
                          aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
                      <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo al Oficio.</small>

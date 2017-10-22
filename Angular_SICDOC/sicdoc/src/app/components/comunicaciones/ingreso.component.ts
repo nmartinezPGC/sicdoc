@@ -305,6 +305,12 @@ export class IngresoComunicacionComponent implements OnInit{
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
       console.log(this.comunicacion);
+      console.log(this.comunicacion.pdfDocumento);
+
+      //  let convert = JSON.stringify(this.comunicacion.pdfDocumento);
+      //  this.comunicacion.pdfDocumento = convert;
+      //  console.log(this.comunicacion.pdfDocumento);
+
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
@@ -698,7 +704,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
        this.paramsSecuencia.codSecuencial = "COM-IN-REUNION";
-       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_reunion";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
@@ -771,7 +777,7 @@ export class IngresoComunicacionComponent implements OnInit{
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      } else if ( idTipoDocumentoIn == 9 ) {
        this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-REUNION";
-       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }// Fin de Condicion
 
@@ -860,6 +866,7 @@ export class IngresoComunicacionComponent implements OnInit{
           } else {
             // Añadimos a la Tabla Temporal los Items Subidos
             this.createNewFileInput();
+
           }
           // alert(this.resultUpload.data);
         },
@@ -1211,7 +1218,8 @@ export class IngresoComunicacionComponent implements OnInit{
   createNewFileInput(){
    // Actualiza el valor de la Secuencia
    let secActual = this.nextDocumento - 1;
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + this.fechaHoy.getMonth() + "-" + this.fechaHoy.getDate();
+   let mesAct = this.fechaHoy.getMonth() + 1;
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + this.fechaHoy.getDate();
 
 
    this.JsonOutgetListaDocumentos.push({
@@ -1220,7 +1228,8 @@ export class IngresoComunicacionComponent implements OnInit{
      "pesoDoc": this.seziDocumento
    });
 
-   console.log(this.JsonOutgetListaDocumentos);
+
+   this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
 
    $("#newTable").append('<tr> ' +
                       '   <th scope="row">'+ secActual +'</th> ' +
@@ -1231,7 +1240,7 @@ export class IngresoComunicacionComponent implements OnInit{
                       ' </tr>');
 
   } // FIN | FND-00011
-  
+
 
   /*****************************************************
   * Funcion: FND-00012

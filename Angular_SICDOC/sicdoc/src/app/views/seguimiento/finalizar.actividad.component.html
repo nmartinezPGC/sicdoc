@@ -64,7 +64,8 @@
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso.timestamp | generateDate }} </td>
               <td> {{ item.fechaMaxEntrega.timestamp | generateDate }} </td>
-              <td> <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento == 1 && item.idTipoComunicacion.idTipoComunicacion == 1"
+              <td> <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento == 1
+                        && item.idTipoComunicacion.idTipoComunicacion == 1 "
                     href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
                                                          item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
@@ -73,9 +74,9 @@
                                                          item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion);"
                      data-toggle="modal" data-target="#t_and_c_m2" >
-                     <i class="material-icons" data-placement="top" title="Oficio Respuesta">create_new_folder</i>
+                     <i class="material-icons" data-placement="top" title="Comunicacion de Respuesta">create_new_folder</i>
                   </a>
-                  <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento != 1"
+                  <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento != 1 "
                      href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
                                                          item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
@@ -94,7 +95,7 @@
                                                          item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m" >
-                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Oficio" >assignment_turned_in</i>
+                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i>
                   </a>
 
               </td>

@@ -52,4 +52,3 @@ class TblTipoComunicacion
         return $this->descTipoComunicacion;
     }
 }
-
