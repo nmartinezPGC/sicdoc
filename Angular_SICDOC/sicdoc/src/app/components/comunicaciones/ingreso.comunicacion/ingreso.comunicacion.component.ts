@@ -18,6 +18,9 @@ import { ListasComunesService } from '../../../services/shared/listas.service'; 
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Carga de Arhcivos
 import { CreateDomService } from '../../../services/shared/createDom.service'; //Servico Creacion de DOM
 
+// Contact Service
+import { ContactosService } from '../../../services/contactos/contacto.service'; //Servico La Clase Contactos
+
 import { AppComponent } from '../../../app.component'; //Servico del Login
 
 import { NgForm }    from '@angular/forms';
@@ -26,13 +29,20 @@ import { NgForm }    from '@angular/forms';
 import { Usuarios } from '../../../models/usuarios/usuarios.model'; // Servico del Login
 import { Comunicaciones } from '../../../models/comunicaciones/comunicacion.model'; // Modelo a Utilizar
 
+// Importamos la CLase Usuarios del Modelo
+import { Contactos } from '../../../models/contactos/contacto.model'; // Servico del Login
+
+// Libreria de AutoComplete
+import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
+
 declare var $:any;
 
 @Component({
   selector: 'ingreso.comunicacion-tipo',
   templateUrl: './ingreso.comunicacion.component.html',
   styleUrls: ['./ingreso.comunicacion.component.css'],
-  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService, CreateDomService]
+  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService,
+          CreateDomService, ContactosService]
 })
 export class IngresoComunicacionPorTipoComponent implements OnInit {
   public titulo:string = "Salida de Comunicación";
@@ -104,6 +114,16 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   // public  status:string;
   public  codigoSec:string;
 
+  // AutoComplete
+  protected searchStrFunc: string;
+  protected dataServiceFunc: CompleterData;
+  protected selectedFuncionario: string = "" ;
+  protected selectedFuncionarioAll: string = "";
+  protected selectedFuncionarioAllSend:any[] = [];
+
+  // Json de AutoCompleter Funcionarios
+  public JsonOutgetlistaFuncionarios:any[];
+
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -112,12 +132,16 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
+               private _consultaContactoService: ContactosService,
                private _ingresoComunicacion: IngresoComunicacionService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http,
-              private _createDomService: CreateDomService,){
+              private _createDomService: CreateDomService,
+              private completerService: CompleterService){
+      // Llamado al Servicio de lista de Los Funcionarios SRECI
+      this.getlistaFuncionariosSreci();
   } // Fin | Definicion del Constructor
 
 
@@ -235,10 +259,17 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.getlistaDireccionesSRECIAcom();
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0, "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,  "", "", "", "", "", "", "",  "",  "");
+    this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0,
+                            "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,
+                            "", "", "", "", "", "", "",  "",  "", null);
 
     // Eventos de Señaloizacion
     this.loading = "hide";
+
+    $("#newTable").children().remove();
+
+    // Limpiamos el Textarea de los COntactos
+    $("#contacAddCC").val();
 
     // Carga el scrip Js, para crear componentes Dinamicos en el DOM
     //this.loadScript('../assets/js/ingreso.comunicacion.component.js');
@@ -820,6 +851,60 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                       ' </tr>');
 
   } // FIN | FND-00011
+
+
+  /*****************************************************
+  * Funcion: FND-00003.1
+  * Fecha: 12-10-2017
+  * Descripcion: Funcion para AutoCompletar y sacar el
+  * Id de la Data de la Tabla TblFunionarios
+  * Params: $event
+  ******************************************************/
+  protected onSelectedFunc( item: CompleterItem ) {
+    // Validar si hay datos Previos
+
+    if( this.selectedFuncionarioAll == '' ){
+      // alert( this.selectedFuncionarioAll );
+      this.selectedFuncionario = item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionarioAll = this.selectedFuncionario;
+    }else {
+      this.selectedFuncionario = this.selectedFuncionario + ',' + item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionarioAll = this.selectedFuncionarioAll + ',' + this.selectedFuncionario;
+    }
+
+     this.comunicacion.setTomail = this.selectedFuncionarioAll;
+  } // FIN | FND-00003.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 12-10-2017
+  * Descripcion: Carga la Lista de Todos los Funcionarios
+  * Objetivo: Obtener la lista de los Funcionarios de la
+  * de la BD, Llamando a la API, por su metodo
+  * ( listas/funcionarios-list-all ).
+  ******************************************************/
+  getlistaFuncionariosSreci() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    this._listasComunes.listasComunes("","funcionarios-list-all").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionarios = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaFuncionarios = response.data;
+            // console.log(response.data);
+            // Cargamos el compoenete de AutoCompletar
+            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
+
+            console.log(this.JsonOutgetlistaFuncionarios);
+          }
+        });
+  } // FIN : FND-00001.2
 
 
 }

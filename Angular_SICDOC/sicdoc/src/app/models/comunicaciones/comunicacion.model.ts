@@ -47,6 +47,8 @@ export class Comunicaciones{
       // Observaciones Iniciales
       public observaciones:string,
 
+      //Copia de Correspondencia
+      public setTomail:string
 
 
     ){}

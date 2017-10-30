@@ -16,6 +16,9 @@ import { IngresoComunicacionService } from '../../services/comunicaciones/ingres
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../services/shared/upload.service'; //Servico Carga de Arhcivos
 
+// Contact Service
+import { ContactosService } from '../../services/contactos/contacto.service'; //Servico La Clase Contactos
+
 import { AppComponent } from '../../app.component'; //Servico del Login
 
 import { NgForm }    from '@angular/forms';
@@ -23,6 +26,12 @@ import { NgForm }    from '@angular/forms';
 // Importamos la CLase Usuarios del Modelo
 import { Usuarios } from '../../models/usuarios/usuarios.model'; // Servico del Login
 import { Comunicaciones } from '../../models/comunicaciones/comunicacion.model'; // Modelo a Utilizar
+
+// Importamos la CLase Usuarios del Modelo
+import { Contactos } from '../../models/contactos/contacto.model'; // Servico del Login
+
+// Libreria de AutoComplete
+import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
 
 // Declaramos las variables para jQuery
 declare var jQuery:any;
@@ -32,7 +41,8 @@ declare var $:any;
   selector: 'app-ingreso-comunicacion',
   templateUrl: '../../views/comunicaciones/ingreso.component.html',
   styleUrls: ['../../views/comunicaciones/style.component.css'],
-  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService]
+  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService,
+              ContactosService]
 })
 
 
@@ -59,6 +69,13 @@ export class IngresoComunicacionComponent implements OnInit{
   public alertSuccess = 'show';
   public alertError   = 'show';
 
+  // AutoComplete
+  protected searchStrFunc: string;
+  protected dataServiceFunc: CompleterData;
+  protected selectedFuncionario: string = "" ;
+  protected selectedFuncionarioAll: string = "";
+  protected selectedFuncionarioAllSend:any[] = [];
+
   // Propiedades de los Resumenes
   public countOficiosIngresados;
   public countOficiosPendientes;
@@ -67,6 +84,9 @@ export class IngresoComunicacionComponent implements OnInit{
   // Instacia de la variable del Modelo | Json de Parametros
   public user:Usuarios;
   public comunicacion: Comunicaciones;
+
+  // Instacia del Objeto Model de la Clase
+  public consultaContactos: Contactos;
 //
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -120,6 +140,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetListaOficiosPendientes:any[];
   public JsonOutgetListaOficiosFinalizados:any[];
 
+  // Json de AutoCompleter Funcionarios
+  public JsonOutgetlistaFuncionarios:any[];
+
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
 
@@ -145,11 +168,15 @@ export class IngresoComunicacionComponent implements OnInit{
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
+               private _consultaContactoService: ContactosService,
                private _ingresoComunicacion: IngresoComunicacionService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http){
+               private _http: Http,
+               private completerService: CompleterService){
+     // Llamado al Servicio de lista de Los Funcionarios SRECI
+     this.getlistaFuncionariosSreci();
 
   } // Fin | Definicion del Constructor
 
@@ -202,12 +229,13 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoDocumento"  : ""
     };
 
+    // Array de los Documentos enviados
+    this.JsonOutgetListaDocumentos = [];
 
-    // this.JsonOutgetListaDocumentos = {
-    //   "nameDoc":"",
-    //   "extDoc":"",
-    //   "pesoDoc":""
-    // };
+    $("#newTable").children().remove();
+
+    // Limpiamos el Textarea de los COntactos
+    $("#contacAddCC").val();
 
     // Lsita de Tipo de Documentos
     this.getlistaTipoDocumentos();
@@ -231,16 +259,20 @@ export class IngresoComunicacionComponent implements OnInit{
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
+    this.searchStrFunc = "";
+
+
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
                                            0, "0", 0, 0, "7", 1, 0, "0",
                                            this.fechafin , null,
                                            0, 0,  0, 0,
                                            "", "", "", "", "", "", "", "",
-                                           "");
+                                           "", null);
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
+
 
     // Llenamos la Lsita Funcionarios despues de los Campos Default
     // this.getlistaUsuariosAsinadosSRECI();
@@ -413,7 +445,9 @@ export class IngresoComunicacionComponent implements OnInit{
     this.status = "hide";
     this.loading = "hide";
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0, "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",  "", "", "");
+    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0,
+                                          "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
+                                          "", "", "", null);
   } // FIN : FND-00001.1
 
 
@@ -812,6 +846,10 @@ export class IngresoComunicacionComponent implements OnInit{
 
   fileChangeEvent(fileInput: any){
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    // Validamos que se ha llenado los datos Generales, para continuar
+    this.validDatosGen();
+
+    // Setea el array de las Imagenes a Subir
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
@@ -1086,6 +1124,7 @@ export class IngresoComunicacionComponent implements OnInit{
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosSRECI = response.data;
+            // console.log(this.JsonOutgetlistaFuncionariosSRECI);
           }
         });
   } // FIN : FND-00007.1.1.3
@@ -1272,6 +1311,73 @@ export class IngresoComunicacionComponent implements OnInit{
         console.log('Pasa por : ' + name);
     });
   } // FIN | FND-00001
+
+
+  /*****************************************************
+  * Funcion: FND-00001
+  * Fecha: 14-10-2017
+  * Descripcion: Chekear todas las Opciones
+  ******************************************************/
+  validDatosGen(){
+    if( this.comunicacion.codReferenciaSreci == null ){
+         alert('Debes llenar los datos generales, para poder seleccionar los documentos.');
+         return;
+    }
+  }
+
+
+  /*****************************************************
+  * Funcion: FND-00003.1
+  * Fecha: 12-10-2017
+  * Descripcion: Funcion para AutoCompletar y sacar el
+  * Id de la Data de la Tabla TblFunionarios
+  * Params: $event
+  ******************************************************/
+  protected onSelectedFunc( item: CompleterItem ) {
+    // Validar si hay datos Previos
+
+    if( this.selectedFuncionarioAll == '' ){
+      // alert( this.selectedFuncionarioAll );
+      this.selectedFuncionario = item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionarioAll = this.selectedFuncionario;
+    }else {
+      this.selectedFuncionario = this.selectedFuncionario + ',' + item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionarioAll = this.selectedFuncionarioAll + ',' + this.selectedFuncionario;
+    }
+
+     this.comunicacion.setTomail = this.selectedFuncionarioAll;
+  } // FIN | FND-00003.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 12-10-2017
+  * Descripcion: Carga la Lista de Todos los Funcionarios
+  * Objetivo: Obtener la lista de los Funcionarios de la
+  * de la BD, Llamando a la API, por su metodo
+  * ( listas/funcionarios-list-all ).
+  ******************************************************/
+  getlistaFuncionariosSreci() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    this._listasComunes.listasComunes("","funcionarios-list-all").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionarios = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaFuncionarios = response.data;
+            // console.log(response.data);
+            // Cargamos el compoenete de AutoCompletar
+            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
+
+            console.log(this.JsonOutgetlistaFuncionarios);
+          }
+        });
+  } // FIN : FND-00001.2
 
 
 } // // FIN : export class IngresoComunicacionComponent

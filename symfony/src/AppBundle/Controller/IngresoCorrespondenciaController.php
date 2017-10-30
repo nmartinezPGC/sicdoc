@@ -124,6 +124,13 @@ class IngresoCorrespondenciaController extends Controller{
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
                 
+                // setTomail, copias de contactos a enviar
+                $setTomail = ($params->setTomail != null) ? $params->setTomail : null ;
+                
+                // Se convierte el Array en String
+                $setTo_array_convert = explode(",", $setTomail);
+                $setTo_array_convertIn = implode(",", $setTo_array_convert);
+                
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null && $cod_referenciaSreci != null &&
@@ -151,34 +158,7 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
                                         
-                    //Preguntamos si Tipo Doc Es 1 | Oficio ********************
-                    /*if( $cod_tipo_documento === "1" || $cod_tipo_documento === "2" || 
-                         $cod_tipo_documento === "3"  || $cod_tipo_documento === "4"){
-                        // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
-                        $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
-                            array(
-                               "codSecuencial"  => "SCPI",
-                               "idTipoDocumento" => $cod_tipo_documento
-                            ));
-                        $cod_referenciaSCPI = $secuenciaSCPI->getCodSecuencial();
-                        $valor2_secuenciaSCPI = $secuenciaSCPI->getValor2() + 1;
-                        $secuenciaSCPI->setValor2($valor2_secuenciaSCPI);
-
-                        $em->persist($secuenciaSCPI);
-                        //Realizar la actualizacion en el storage de la BD
-                        $em->flush();
-
-
-                        // Consulta a los Datos del Depto Funcional *************
-                        $deptoFuncConsulta = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
-                            array(
-                               "idDeptoFuncional" => $identity->idDeptoFuncional
-                            ));
-                        $inicialesDeptoFunc = $deptoFuncConsulta->getInicialesDeptoFuncional();
-                        
-                    $cod_referenciaSreci = $cod_referenciaSCPI . "-". $inicialesDeptoFunc . "-". $valor2_secuenciaSCPI;
-                    } // Fin Codicion de Oficio Secuencial SCPI ****************                    
-                    */
+                   
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
                     $correspondenciaNew->setCodReferenciaSreci($cod_referenciaSreci);
                     $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
@@ -254,11 +234,17 @@ class IngresoCorrespondenciaController extends Controller{
                         ));
                     
                     //Verificacion del Codigo de Referencia de la Correspondenia *******************
+                    // Verifica el Tipo de Documento valido para las Repeticiones
+                    if( $cod_tipo_documento == 1 || $cod_tipo_documento == 2 ||
+                        $cod_tipo_documento == 3 || $cod_tipo_documento == 4 ){
+                        $cod_tipo_documento_send = $cod_tipo_documento;
+                    }
                     $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codReferenciaSreci" => $cod_referenciaSreci,
-                          //"idTipoDocumento"    => $cod_tipo_documento
-                          "idTipoDocumento"    => [1,2,3,4]
+                          "idTipoDocumento"    => $cod_tipo_documento_send,
+                          "idTipoComunicacion" => $tipo_comunicacion
+                          //"idTipoDocumento"    => [1,2,3,4]
                         ));
                     
                     
@@ -364,6 +350,11 @@ class IngresoCorrespondenciaController extends Controller{
                                 $nameDoc = $arr->nameDoc;
                                 $extDoc = $arr->extDoc;
                                 $pesoDoc = $arr->pesoDoc;
+                                
+                                // Cambiamos el Tipo de extencion jpg => jpeg
+                                if( $extDoc == "jpg" ){
+                                    $extDoc = "jpeg";
+                                }
                                 //var_dump($nameDoc);
                                 
                                 $documentosIn = new TblDocumentos();
@@ -440,13 +431,19 @@ class IngresoCorrespondenciaController extends Controller{
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            
+                           //$myarray = array_filter($setTo_array_convertIn, 'strlen');  //removes null values but leaves "0"
+                           //$myarray = array_filter($myarray);            //removes all null values
+                           
+                           
+                           //$setTo_array_convertIn = str_replace(",", "", $setTo_array_convertIn);
+                           //var_dump(  $setTo_array_convert );
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
                                ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))    
-                               ->setTo($mailSend)
-                               //->addCc('person1@example.com', 'person1')
+                               ->setTo($mailSend)                                
+                               //->addCc([ $setTo_array_convertIn ])                              
                                ->setBody(
                                     $this->renderView(
                                     // app/Resources/views/Emails/registration.html.twig
@@ -455,10 +452,19 @@ class IngresoCorrespondenciaController extends Controller{
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia ,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega), 
-                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d") )
-                                    ), 'text/html' );                           
+                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d"), 'obsComunicacion' => $observacion_correspondencia )
+                                    ), 'text/html' );  
                            
+                            // Insercion de los Contactos en Copia
+                            // Array | addCC
+                            if ( $setTo_array_convert != null ) {
+                              foreach ($setTo_array_convert as $address) {
+                                $mail->addCc($address);
+                              }
+                            } //FIN Array | addCC
+                            
                             // validamos que se adjunta pdf
+                            // Array | Attach
                             if( $pdf_send != null ){
                               // Realizamos el foreach de los Documentos enviados
                               // Se convierte el Array en String
@@ -471,11 +477,16 @@ class IngresoCorrespondenciaController extends Controller{
                                 $extDoc = $attachMail->extDoc;
                                 $pesoDoc = $attachMail->pesoDoc;
                                 
+                                // Cambiamos el Tipo de extencion jpg => jpeg
+                                if( $extDoc == "jpg" ){
+                                    $extDoc = "jpeg";
+                                }
+                                
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
                                                         
                                 $mail->attach(\Swift_Attachment::fromPath($target_path1));
                               }
-                            }
+                            } // FIN Array | Attach
                                  
                             // Envia el Correo con todos los Parametros
                             $resuly = $mailer->send($mail);
@@ -808,6 +819,13 @@ class IngresoCorrespondenciaController extends Controller{
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
                 
+                // setTomail, copias de contactos a enviar
+                $setTomail = ($params->setTomail != null) ? $params->setTomail : null ;
+                
+                // Se convierte el Array en String
+                $setTo_array_convert = explode(",", $setTomail);
+                $setTo_array_convertIn = implode(",", $setTo_array_convert);
+                
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
                 if($cod_correspondencia != null && $desc_correspondencia != null && $cod_referenciaSreci != null &&
@@ -938,13 +956,18 @@ class IngresoCorrespondenciaController extends Controller{
                         ));
                     
                     //Verificacion del Codigo de Referencia de la Correspondenia *******************
-                    //if( $cod_tipo_documento === "1" ){
-                        $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
-                            array(
-                                "codReferenciaSreci" => $cod_referenciaSreci,
-                                "idTipoDocumento"    => 1
-                            ));                    
-                    //}else { $isset_referencia_cod = 0; }
+                    // Verifica el Tipo de Documento valido para las Repeticiones
+                    if( $cod_tipo_documento == 1 || $cod_tipo_documento == 2 ||
+                        $cod_tipo_documento == 3 || $cod_tipo_documento == 4 ){
+                        $cod_tipo_documento_send = $cod_tipo_documento;
+                    }
+                    $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                        array(
+                          "codReferenciaSreci" => $cod_referenciaSreci,
+                          "idTipoDocumento"    => $cod_tipo_documento_send,
+                          "idTipoComunicacion" => $tipo_comunicacion
+                          //"idTipoDocumento"    => [1,2,3,4]
+                        ));
                     
                     
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
@@ -1054,6 +1077,11 @@ class IngresoCorrespondenciaController extends Controller{
                                 $nameDoc = $arr->nameDoc;
                                 $extDoc = $arr->extDoc;
                                 $pesoDoc = $arr->pesoDoc;
+                                
+                                // Cambiamos el Tipo de extencion jpg => jpeg
+                                if( $extDoc == "jpg" ){
+                                    $extDoc = "jpeg";
+                                }
                                 //var_dump($nameDoc);
                                 
                                 $documentosIn = new TblDocumentos();
@@ -1146,8 +1174,17 @@ class IngresoCorrespondenciaController extends Controller{
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => $fecha_maxima_entrega_convert )
-                                    ), 'text/html' );                           
+                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => $fecha_maxima_entrega_convert,
+                                                'obsComunicacion' => $observacion_correspondencia)
+                                    ), 'text/html' );  
+                           
+                           // Insercion de los Contactos en Copia
+                            // Array | addCC
+                            if ( $setTo_array_convert != null ) {
+                              foreach ($setTo_array_convert as $address) {
+                                $mail->addCc($address);
+                              }
+                            } //FIN Array | addCC
                            
                             // validamos que se adjunta pdf
                             if( $pdf_send != null ){
@@ -1161,6 +1198,11 @@ class IngresoCorrespondenciaController extends Controller{
                                 $nameDoc = $arr->nameDoc;
                                 $extDoc = $arr->extDoc;
                                 $pesoDoc = $arr->pesoDoc;
+                                
+                                // Cambiamos el Tipo de extencion jpg => jpeg
+                                if( $extDoc == "jpg" ){
+                                    $extDoc = "jpeg";
+                                }
                                 
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
                                                         

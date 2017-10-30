@@ -195,8 +195,26 @@
 
       <hr>
       <div class="panel-collapse collapse in" id="demo">
+            <!-- Fila para los contactos en Copia -->
             <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
+                <strong>Contactos a copiar:</strong>
+               <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
+                   [(ngModel)]="searchStrFunc" inputId="2" clearSelected="true"
+                   [datasource]="dataServiceFunc" [minSearchLength]="2" textSearching="Buscando Contacto ..."
+                   textNoResults="No se han encontrado nada ..."
+                   placeholder="Selecciona un Funcionario de contacto" (selected)="onSelectedFunc($event)" >
+               </ng2-completer>
 
+               <textarea #observaciones="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
+                   tabindex="3" disabled="true"
+                   ngControl="setTomail" [(ngModel)]="comunicacion.setTomail">{{selectedFuncionarioAll}}</textarea>
+                <!-- <p><strong>Copia a:</strong> {{selectedFuncionarioAll}}</p> -->
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
               <!-- Observaciones de la Ingreso de Comunicacion -->
               <div class="col-xs-12 col-sm-6 col-md-12">
                 <div class="form-group">
