@@ -37,6 +37,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    date:
+        timezone: "America/Tegucigalpa"
 
 # Doctrine Configuration
 doctrine:

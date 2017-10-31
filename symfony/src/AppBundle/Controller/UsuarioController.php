@@ -69,6 +69,9 @@ class UsuarioController extends Controller{
             $celular          = (isset($params->celularFuncionario)) ? $params->celularFuncionario : null;
             $telefono         = (isset($params->telefonoFuncionario)) ? $params->telefonoFuncionario : null;
             
+            // Fechas Nulas
+            $fecha_null = new \DateTime('2999-12-31');
+            
             //Validamos el Email ************************************************************************************
             $emailConstraint = new Assert\Email();
             $emailConstraint->message = "El Email no es valido!!";
@@ -88,6 +91,8 @@ class UsuarioController extends Controller{
                 $usuario->setApellido1Usuario($apellido1);
                 $usuario->setApellido2Usuario($apellido2);
                 $usuario->setEmailUsuario($email);
+                $usuario->setFechaModificacion($fecha_null);
+                
                 //Seteamos los valores de Relaciones de Tablas *******************************
                 //Instancia a la Tabla: TblEstados *****************************                
                 $estados = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
@@ -96,30 +101,38 @@ class UsuarioController extends Controller{
                             )) ;
                 
                 $usuario->setIdEstado($estados);
+                
                 //Instancia a la Tabla: TblTipoFuncionarios ********************                
                 $tipoFuncionario = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findOneBy(
                             array(
                                 "idTipoFuncionario" => $cod_tipo_funcionario
                             )) ;
-                $usuario->setIdTipoFuncionario($tipoFuncionario);  
+                $usuario->setIdTipoFuncionario($tipoFuncionario); 
+                
                 //Instancia a la Tabla: TblDepartamentosFuncionales ************                
                 $deptoFuncional = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
                             array(
                                 "idDeptoFuncional" => $cod_depto_funcional
                             )) ;
                 $usuario->setIdDeptoFuncional($deptoFuncional);
+                
                 //Instancia a la Tabla: TblTipoUsuario *************************                
                 $tipoUsuario = $em->getRepository("BackendBundle:TblTipoUsuario")->findOneBy(
                             array(
                                 "idTipoUsuario" => $cod_tipo_usuario
                             )) ;
                 $usuario->setIdTipoUsuario($tipoUsuario);
+                
                 //Seteamos el Resto de campos de la Tabla: TblUsuarios *********
                 $usuario->setInicialesUsuario($iniciales);
+                
                 //Cifrar la Contraseña *****************************************
                 $pwd = hash('sha256', $password);                
-                $usuario->setPasswordUsuario($pwd);                
-                $usuario->setImagenUsuario($image);
+                $usuario->setPasswordUsuario($pwd); 
+                
+                // Imagen del usuario
+                $usuario->setImagenUsuario("sreci.png");
+                
                 //Seteamos los valores de la Bitacora **************************
                 $usuario->setFechaCreacion($createdAt);                
                 //Verificacion del Codigo y Email en la Tabla: TblUsuarios *****                
@@ -133,9 +146,10 @@ class UsuarioController extends Controller{
                         array(
                           "codUsuario" => $cod_usuario
                         ));
+                
                 //Verificamos que el retorno de la Funcion sea = 0 *************                
-                if(count($isset_user_cod) == 0 && count($isset_user_mail) == 0){
-                    $em->persist($usuario);                                        
+                if(count($isset_user_cod) == 0 && count($isset_user_mail) == 0){                    
+                    $em->persist($usuario);                    
                     $em->flush();
                     
                     // Termina Tblusuarios *************************************
@@ -146,14 +160,15 @@ class UsuarioController extends Controller{
                     $funcionario = new TblFuncionarios();
                     
                     //Seteamos los valores de Identificacion *******************
-                    $funcionario->setcodFuncionario($cod_usuario);                
+                    $funcionario->setcodFuncionario($cod_usuario);                    
                     $funcionario->setNombre1Funcionario($nombre1);
                     $funcionario->setNombre2Funcionario($nombre2);
                     $funcionario->setApellido1Funcionario($apellido1);
                     $funcionario->setApellido2Funcionario($apellido2);
                     $funcionario->setCelularFuncionario($celular);
                     $funcionario->setTelefonoFuncionario($telefono);
-                    $funcionario->setEmailFuncionario($email);                    
+                    $funcionario->setEmailFuncionario($email);  
+                    
                     // Tablas relacionales *************************************
                     $funcionario->setIdTipoFuncionario($tipoFuncionario);
                     $funcionario->setIdDeptoFuncional($deptoFuncional);

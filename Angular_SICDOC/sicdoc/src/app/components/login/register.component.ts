@@ -101,7 +101,7 @@ export class RegisterComponent implements OnInit{
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
-      //console.log(this.user);
+      console.log(this.user);
       // parseInt(this.user.idTipoUsuario);
       this._loginService.registerUser(this.user).subscribe(
         response => {
