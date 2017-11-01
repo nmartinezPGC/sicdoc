@@ -53,11 +53,11 @@
                 <i class="fa fa-heart"></i> Informacion de Seguimiento
               </a></h4>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
               <h4><a class="nav-link" data-toggle="tab" href="#panel7" role="tab">
-                <i class="fa fa-envelope"></i> Informacion de Finalizacion
+                <i class="fa fa-envelope"></i> Documentos
               </a></h4>
-          </li> -->
+          </li>
       </ul>
     <!-- Tab panels -->
       <div class="tab-content">
@@ -304,7 +304,7 @@
                   <tbody>
                   <tr *ngFor="let item of JsonOutgetlistaSeguimiento">
                     <td [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3, 'text-info' : item.idEstado.idEstado == 8,
-                                     'text-primary' : item.idEstado.idEstado == 5 }">
+                                     'text-primary' : item.idEstado.idEstado == 5, 'text-success' : item.idEstado.idEstado == 7 }">
                       {{ item.idEstado.descripcionEstado }}</td>
                     <td style="width:220px">{{ item.codCorrespondenciaDet }}</td>
                     <td>{{ item.codReferenciaSreci }}</td>
@@ -319,16 +319,30 @@
           </div>
           <!--/.Panel 2-->
           <!--Panel 3-->
-          <!-- <div class="tab-pane fade" id="panel7" role="tabpanel">
+          <div class="tab-pane fade" id="panel7" role="tabpanel">
               <br>
-              <div class="card">
+              <!-- Lista de los Documentos Anexados -->
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="card" style="width: 20rem;">
+                    <img class="card-img-top" src="http://localhost/sicdoc/symfony/web/uploads/users/sreci.png" alt="Card image cap">
+                    <div class="card-body">
+                      <h4 class="card-title">Codigo Doc. | </h4>
+                      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                      <a href="#" class="btn btn-primary">Descargar</a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <!-- <div class="card">
                 <h3 class="card-header">Featured</h3>
                 <div class="card-block">
                   <h4 style="margin-left:10px">Special title treatment</h4>
                   <p style="margin-left:10px">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
-              </div>
-          </div> -->
+              </div> -->
+          </div>
           <!--/.Panel 3-->
       </div>
     </div>

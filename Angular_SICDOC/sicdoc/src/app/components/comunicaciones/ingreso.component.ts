@@ -284,15 +284,10 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
     // Eventos de Señaloizacion
-
     this.loading = "hide";
 
-
     // this.removeFileInput();
-
-
     // this.getlistaSubDireccionesSRECIAcom();
-
     // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
 
@@ -336,8 +331,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
-      console.log(this.comunicacion);
-      console.log(this.comunicacion.pdfDocumento);
+      // console.log(this.comunicacion);
+      // console.log(this.comunicacion.pdfDocumento);
 
       //  let convert = JSON.stringify(this.comunicacion.pdfDocumento);
       //  this.comunicacion.pdfDocumento = convert;
@@ -941,8 +936,10 @@ export class IngresoComunicacionComponent implements OnInit{
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
+
+            // Generamos el Secuencial del Detalle
             this.listarCodigoCorrespondenciaDet();
-            //console.log(response.data);
+            // console.log(response.data);
           }
         });
    } // FIN : FND-00006
@@ -993,6 +990,7 @@ export class IngresoComunicacionComponent implements OnInit{
     let json = JSON.stringify( cadenaCodigoConverir );
     console.log(cadenaCodigoConverir);
    } // FIN : FND-00006.1
+
 
   /*****************************************************
   * Funcion: FND-00007
@@ -1374,7 +1372,7 @@ export class IngresoComunicacionComponent implements OnInit{
             this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
                   'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
 
-            console.log(this.JsonOutgetlistaFuncionarios);
+            // console.log(this.JsonOutgetlistaFuncionarios);
           }
         });
   } // FIN : FND-00001.2

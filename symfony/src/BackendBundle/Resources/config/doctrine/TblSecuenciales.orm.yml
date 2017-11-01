@@ -51,6 +51,12 @@ BackendBundle\Entity\TblSecuenciales:
             options:
                 fixed: false
             column: tabla_secuencia
+        reservada:
+            type: string
+            nullable: true
+            length: 1
+            options:
+                fixed: false
     manyToOne:
         idTipoDocumento:
             targetEntity: TblTipoDocumento

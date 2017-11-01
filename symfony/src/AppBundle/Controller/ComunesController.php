@@ -32,7 +32,8 @@ class ComunesController extends Controller {
      */
     public function uploadDocumentoAction(Request $request) {
         //Instanciamos el Servicio Helpers
-        date_default_timezone_set('America/Tegucigalpa');
+        //date_default_timezone_set('America/Tegucigalpa');
+        date_default_timezone_set('Australia/Sydney');
         $helpers = $this->get("app.helpers");        
         //Recoger el Hash
         //Recogemos el Hash y la Autrizacion del Mismo
@@ -66,6 +67,7 @@ class ComunesController extends Controller {
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
+                    //$file_name = $file_nameIn . "." .$ext; 
                     //Movemos el Fichero
                     //$path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
                     $path_of_file = "uploads/correspondencia/";
@@ -124,21 +126,21 @@ class ComunesController extends Controller {
         //Evaluamos la Autoriuzacion del Token
         if($checkToken == true){
             $em = $this->getDoctrine()->getManager();
-        
-        $json = $request->get("json", null);
-        $params = json_decode($json);
-        
-        //Array de Mensajes
-        $data = $data = array(
-                "status" => "error",                
-                "code" => "400",                
-                "msg" => "No se ha podido obtener los Datos, los parametros son erroneos !!"                
-        ); 
+
+            $json = $request->get("json", null);
+            $params = json_decode($json);
+
+            //Array de Mensajes
+            $data = $data = array(
+                    "status" => "error",                
+                    "code" => "400",                
+                    "msg" => "No se ha podido obtener los Datos, los parametros son erroneos !!"                
+            ); 
         
         //Evaluamos el Json
         if ($json != null) {
-            //Variables que vienen del Json ***********************************************
-            ////Recogemos el Pais y el Tipo de Institucion ********************************
+            //Variables que vienen del Json ************************************
+            // Recogemos el Pais y el Tipo de Institucion **********************
             $codigo_secuencia = (isset($params->codSecuencial)) ? $params->codSecuencial : null;
             $tabla_secuencia  = (isset($params->tablaSecuencia)) ? $params->tablaSecuencia : null;
             $tipo_documento   = (isset($params->idTipoDocumento)) ? $params->idTipoDocumento : null;
@@ -148,16 +150,43 @@ class ComunesController extends Controller {
                     array(
                         "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
                         "tablaSecuencia"  => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
-                        "idTipoDocumento" => $tipo_documento // Tipo de Documento (Oficio)
+                        "idTipoDocumento" => $tipo_documento, // Tipo de Documento (Oficio)
+                        "reservada"       => "N"
                     ));
-
+            
+            // Validar que la Secuencia no ha sido, reservada por Otro Usuario
+            $count_Sec = count($secuencias);
+              
+                
             // Condicion de la Busqueda
-            if (count($secuencias) >= 1 ) {
+            if ( $count_Sec >= 1 ) {
+                // Actualizamos la Suencia a Reservada
+                //Seteo de Datos Generales de la tabla
+                //$secueciasNew = new TblDocumentos();
+                             
                 $data = array(
                     "status" => "success",
                     "code"   => 200,                    
                     "data"   => $secuencias
-                );
+                );                
+                                
+                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
+                /*$secuenciasAct  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
+                    array(
+                        "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"  => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento" => $tipo_documento, // Tipo de Documento (Oficio)
+                        "reservada"       => "N"
+                    ));
+                
+                // Acualiza que la Secuencia Esta Reservda
+                $valor2_secuencia = $secuenciasAct->getValor2() + 1;
+                //$reserva_secuencia = $secuencias->getReservada();
+                $secuenciasAct->setValor2( $valor2_secuencia );
+                $em->persist($secuenciasAct);
+                // Realizar la actualizacion en el storage de la BD
+                $em->flush();*/
+                
             }else {
                 $data = array(
                     "status" => "error",
@@ -187,6 +216,8 @@ class ComunesController extends Controller {
      */
     public function uploadDocumentoOpctionAction(Request $request) {
         //Instanciamos el Servicio Helpers
+        //date_default_timezone_set('Australia/Sydney');
+        date_default_timezone_set('America/Tegucigalpa');
         $helpers = $this->get("app.helpers");
 
         $json = $request->get("json", null);

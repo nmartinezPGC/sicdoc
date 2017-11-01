@@ -167,4 +167,33 @@ class TblSecuenciales
     {
         return $this->idTipoDocumento;
     }
+    /**
+     * @var string
+     */
+    private $reservada;
+
+
+    /**
+     * Set reservada
+     *
+     * @param string $reservada
+     *
+     * @return TblSecuenciales
+     */
+    public function setReservada($reservada)
+    {
+        $this->reservada = $reservada;
+
+        return $this;
+    }
+
+    /**
+     * Get reservada
+     *
+     * @return string
+     */
+    public function getReservada()
+    {
+        return $this->reservada;
+    }
 }

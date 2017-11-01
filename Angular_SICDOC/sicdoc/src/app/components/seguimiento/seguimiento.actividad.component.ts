@@ -338,9 +338,9 @@ export class SeguimientoActividadComponent implements OnInit {
     // this.tableSeguimientoActividadList.fechaModificacion = dataIn.fechaModificacion.timestamp;
     this.tableSeguimientoActividadList.fechaFinalizacion = dataIn.fechaFinalizacion.timestamp;
     // Area de Informacion General
-    this.tableSeguimientoActividadList.institucionReceptora = dataIn.idInstitucion.descInstitucion;
-    this.tableSeguimientoActividadList.direccionSreci = dataIn.idDireccionSreci.descDireccionSreci;
-    this.tableSeguimientoActividadList.subDireccionSreci = dataIn.idDeptoFuncional.descDeptoFuncional;
+    this.tableSeguimientoActividadList.institucionReceptora = dataIn.idInstitucion.descInstitucion + ' | ' + dataIn.idInstitucion.perfilInstitucion;
+    this.tableSeguimientoActividadList.direccionSreci = dataIn.idDireccionSreci.inicialesDireccionSreci + ' | ' + dataIn.idDireccionSreci.descDireccionSreci;
+    this.tableSeguimientoActividadList.subDireccionSreci = dataIn.idDeptoFuncional.inicialesDeptoFuncional + ' | ' + dataIn.idDeptoFuncional.descDeptoFuncional;
     this.tableSeguimientoActividadList.tipoComunicacion = dataIn.idTipoDocumento.descTipoDocumento;
     this.tableSeguimientoActividadList.estadoComunicacion = dataIn.idEstado.descripcionEstado;
     this.tableSeguimientoActividadList.usuarioCreador =

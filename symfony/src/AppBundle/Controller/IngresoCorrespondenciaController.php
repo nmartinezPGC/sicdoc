@@ -238,7 +238,11 @@ class IngresoCorrespondenciaController extends Controller{
                     if( $cod_tipo_documento == 1 || $cod_tipo_documento == 2 ||
                         $cod_tipo_documento == 3 || $cod_tipo_documento == 4 ){
                         $cod_tipo_documento_send = $cod_tipo_documento;
+                    }else {
+                        $cod_tipo_documento_send = 0;
                     }
+                    
+                    // Ejecutamos la Consulta
                     $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codReferenciaSreci" => $cod_referenciaSreci,
@@ -431,12 +435,6 @@ class IngresoCorrespondenciaController extends Controller{
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            
-                           //$myarray = array_filter($setTo_array_convertIn, 'strlen');  //removes null values but leaves "0"
-                           //$myarray = array_filter($myarray);            //removes all null values
-                           
-                           
-                           //$setTo_array_convertIn = str_replace(",", "", $setTo_array_convertIn);
-                           //var_dump(  $setTo_array_convert );
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
@@ -452,12 +450,13 @@ class IngresoCorrespondenciaController extends Controller{
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia ,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega), 
-                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d"), 'obsComunicacion' => $observacion_correspondencia )
+                                               'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d"), 'obsComunicacion' => $observacion_correspondencia,
+                                               'institucionCom' => $institucion->getPerfilInstitucion())
                                     ), 'text/html' );  
                            
                             // Insercion de los Contactos en Copia
-                            // Array | addCC
-                            if ( $setTo_array_convert != null ) {
+                            // Array | addCC                            
+                            if ( $setTomail != null && $setTomail != ''  ) {
                               foreach ($setTo_array_convert as $address) {
                                 $mail->addCc($address);
                               }
@@ -960,7 +959,11 @@ class IngresoCorrespondenciaController extends Controller{
                     if( $cod_tipo_documento == 1 || $cod_tipo_documento == 2 ||
                         $cod_tipo_documento == 3 || $cod_tipo_documento == 4 ){
                         $cod_tipo_documento_send = $cod_tipo_documento;
+                    }else {
+                        $cod_tipo_documento_send = 0;
                     }
+                    
+                    // Ejecutamos la Consulta
                     $isset_referencia_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codReferenciaSreci" => $cod_referenciaSreci,
@@ -1175,12 +1178,12 @@ class IngresoCorrespondenciaController extends Controller{
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => $fecha_maxima_entrega_convert,
-                                                'obsComunicacion' => $observacion_correspondencia)
+                                                'obsComunicacion' => $observacion_correspondencia, 'institucionCom' => $institucion->getPerfilInstitucion())
                                     ), 'text/html' );  
                            
-                           // Insercion de los Contactos en Copia
+                            // Insercion de los Contactos en Copia
                             // Array | addCC
-                            if ( $setTo_array_convert != null ) {
+                            if ( $setTomail != null && $setTomail != ''  ) {
                               foreach ($setTo_array_convert as $address) {
                                 $mail->addCc($address);
                               }

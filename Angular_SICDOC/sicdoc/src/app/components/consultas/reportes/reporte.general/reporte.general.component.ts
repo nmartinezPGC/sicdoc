@@ -166,6 +166,10 @@ export class ReporteGeneralComponent implements OnInit {
       $ (function () {
         $('#example').DataTable( {
             dom: 'Bfrtip',
+            // Refresca la Data y Borra de Memoria los Datos anteriores
+            destroy: true,
+            retrieve: true,
+            // paging: false,
             buttons: [
                // Boton de Imprimir
                 {
@@ -234,6 +238,10 @@ export class ReporteGeneralComponent implements OnInit {
       // Parseo de parametros que no se seleccionan
       this.loading_tableIn = 'show';
       let timeAll = false;
+
+      // Llamamos al Metodo de Reconstruccion de la Tabla
+      this.recargaTable(),
+
       // Ejecucion de los Array de Estados
       this.sendEstComunicacion();
       // Ejecucion de los Array de Tipos
@@ -261,7 +269,6 @@ export class ReporteGeneralComponent implements OnInit {
             }else{
               //this.resetForm();
               this.loading_tableIn = 'hidden';
-              // this.ngOnInit();
               // window.location.reload();
               //alert(response.msg);
 
@@ -269,7 +276,9 @@ export class ReporteGeneralComponent implements OnInit {
               console.log(this.JsonOutgetReporteComunicaion);
 
               // Cargamos la Tabla con las Instancias
+
               this.fillDataTable();
+              // this.ngOnInit();
 
             }
         }, error => {
@@ -288,6 +297,27 @@ export class ReporteGeneralComponent implements OnInit {
             }
         });
   } // Fin | Metodo onSubmit
+
+
+
+  /*****************************************************
+  * Funcion: FND-00001-1
+  * Fecha: 31-10-2017
+  * Descripcion: Reconstruir la Tabla, para nuevo uso
+  ******************************************************/
+  recargaTable(){
+    // Declaracion del Objeto de la Tabla
+    var table = $('#example').DataTable();
+
+    // Reiniciamos los vaores de la Tabla y la volvemos a Diseñar
+    table
+      .clear()
+      .draw();
+
+    // Destruimos la Instacia que fue Generada
+    $("#example").dataTable().fnDestroy();
+    // $('#example tbody > tr').remove();
+  } // FIN | FND-00001-1
 
 
   /*****************************************************

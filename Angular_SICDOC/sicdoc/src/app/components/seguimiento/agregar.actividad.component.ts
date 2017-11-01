@@ -253,7 +253,8 @@ export class IngresoActividadComponent implements OnInit{
 
             if( this.errorMessage != null ){
               console.log( this.errorMessage );
-              alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
+              window.location.reload();
+              // alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
             }
         }); // Fin de Llamado al Servicios
 
