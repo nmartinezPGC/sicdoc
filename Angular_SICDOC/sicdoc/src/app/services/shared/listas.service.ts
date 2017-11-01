@@ -95,6 +95,26 @@ export class ListasComunesService {
 
 
   /*****************************************************
+  * Funcion: FND-00002.1.1
+  * Fecha: 01-11-2017
+  * Descripcion: Carga la lista de Documentos con Token,
+  * como autorizacion para poder verlos o descargarlos
+  * Objetivo: Obtener la lista segun autiriztion del
+  * Token y el servicio invocado
+  * ( documentos/listar-documentos ).
+  ******************************************************/
+  listasDocumentosToken( lista_comun_token, lista ){
+      let json = JSON.stringify( lista_comun_token );
+
+      let params  = "json=" + json + "&authorization=" + this.getToken();
+      let listaIn = lista;
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/documentos/" + listaIn, params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002.1.1
+
+
+  /*****************************************************
   * Funcion: FND-00002.1
   * Fecha: 21-09-2017
   * Descripcion: Carga la lista de Parametros con Token

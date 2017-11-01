@@ -356,4 +356,33 @@ class TblDocumentos
     {
         return $this->idCorrespondenciaDet;
     }
+    /**
+     * @var integer
+     */
+    private $idCorrespondenciaEnc;
+
+
+    /**
+     * Set idCorrespondenciaEnc
+     *
+     * @param integer $idCorrespondenciaEnc
+     *
+     * @return TblDocumentos
+     */
+    public function setIdCorrespondenciaEnc($idCorrespondenciaEnc)
+    {
+        $this->idCorrespondenciaEnc = $idCorrespondenciaEnc;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaEnc
+     *
+     * @return integer
+     */
+    public function getIdCorrespondenciaEnc()
+    {
+        return $this->idCorrespondenciaEnc;
+    }
 }

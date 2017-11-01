@@ -250,7 +250,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaDireccionesSRECIAcom();
 
     // Generar la Lista de Secuenciales
-    this.listarCodigoCorrespondencia();
+    // this.listarCodigoCorrespondencia();
     //this.listarCodigoCorrespondenciaDet();
 
     // Tipo Funcionarios de la SRECI
@@ -296,6 +296,7 @@ export class IngresoComunicacionComponent implements OnInit{
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
       //this.validCampos();
+      this.listarCodigoCorrespondencia();
       // Parseo de parametros que no se seleccionan
       this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
       this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
@@ -842,7 +843,7 @@ export class IngresoComunicacionComponent implements OnInit{
   fileChangeEvent(fileInput: any){
     //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
     // Validamos que se ha llenado los datos Generales, para continuar
-    this.validDatosGen();
+    // this.validDatosGen();
 
     // Setea el array de las Imagenes a Subir
     this.filesToUpload = <Array<File>>fileInput.target.files;
@@ -939,7 +940,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
             // Generamos el Secuencial del Detalle
             this.listarCodigoCorrespondenciaDet();
-            // console.log(response.data);
+            console.log(response.data);
           }
         });
    } // FIN : FND-00006
@@ -1256,7 +1257,15 @@ export class IngresoComunicacionComponent implements OnInit{
    // Actualiza el valor de la Secuencia
    let secActual = this.nextDocumento - 1;
    let mesAct = this.fechaHoy.getMonth() + 1;
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + this.fechaHoy.getDate();
+
+   // Dia del Mes
+   let day = this.fechaHoy.getDate(); // Dia
+   let final_day = day.toString();
+   if( day <= 9 ){
+     final_day = "0" + final_day;
+   }
+   
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + final_day;
 
 
    this.JsonOutgetListaDocumentos.push({

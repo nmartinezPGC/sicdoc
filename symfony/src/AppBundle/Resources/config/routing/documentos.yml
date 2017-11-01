@@ -20,3 +20,8 @@ documento_upload_pdf:
     path: /upload-pdf/{id}
     defaults: { _controller: "AppBundle:Documentos:upload", id:null }
     methods: POST
+    
+documento_listaDocumentos:
+    path: /listar-documentos
+    defaults: { _controller: "AppBundle:Documentos:listaDocumentos" }
+    methods: POST

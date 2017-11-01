@@ -383,7 +383,15 @@ class IngresoCorrespondenciaController extends Controller{
                                     array(
                                         "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
                                     ));
-                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Id Correspondencia Det
+                                
+                                // Verificacion del Codigo de la Correspondenia*
+                                // Encabezado  *********************************
+                                $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                                    array(
+                                        "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
+                                    ));
+                                $documentosIn->setIdCorrespondenciaEnc($id_correspondencia_enc_docu); //Set de Id Correspondencia Enc
 
                                 // Pdf que se Agrega
                                 // validamos que se adjunta pdf
@@ -1087,6 +1095,7 @@ class IngresoCorrespondenciaController extends Controller{
                                 }
                                 //var_dump($nameDoc);
                                 
+                                // Ingresa el Documento ************************
                                 $documentosIn = new TblDocumentos();
 
                                 //$documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
@@ -1109,7 +1118,15 @@ class IngresoCorrespondenciaController extends Controller{
                                     array(
                                         "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
                                     ));
-                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Fecha Id Correspondencia Det
+                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Id Correspondencia Det
+                                
+                                // Verificacion del Codigo de la Correspondenia*
+                                // Encabezado  *********************************
+                                $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                                    array(
+                                        "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
+                                    ));
+                                $documentosIn->setIdCorrespondenciaEnc($id_correspondencia_enc_docu); //Set de Id Correspondencia Enc
 
                                 // Pdf que se Agrega
                                 // validamos que se adjunta pdf
@@ -1117,9 +1134,9 @@ class IngresoCorrespondenciaController extends Controller{
 
                                 // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                                 $em->persist($documentosIn); 
-
                                 //Realizar la actualizacion en el storage de la BD
                                 $em->flush();
+                                
                             } // Fin de foreach 
                         }
                         // Fin de Comunicacion Detalle *************************

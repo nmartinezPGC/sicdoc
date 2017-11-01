@@ -681,30 +681,30 @@ export class FinalizarActividadComponent implements OnInit {
  ******************************************************/
   listarCodigoCorrespondenciaOfiResp( idTipoDocumento:number ){
 
-  // Validamos que el Tipo de Documentos pertenesaca al Adecuado
-  let idTipoDocumentoIN = idTipoDocumento;
+    // Validamos que el Tipo de Documentos pertenesaca al Adecuado
+    let idTipoDocumentoIN = idTipoDocumento;
 
-  if( idTipoDocumentoIN == 1 ){
-    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
-  } else if ( idTipoDocumentoIN == 2 ) {
-    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
-  } else if ( idTipoDocumentoIN == 3 ) {
-    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
-  } else if ( idTipoDocumentoIN == 4 ) {
-    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
-  }else {
-    this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
-    this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
-  }
+    if( idTipoDocumentoIN == 1 ){
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+      this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+    } else if ( idTipoDocumentoIN == 2 ) {
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+      this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+    } else if ( idTipoDocumentoIN == 3 ) {
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+      this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+    } else if ( idTipoDocumentoIN == 4 ) {
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+      this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+    }else {
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
+      this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
+    }
 
    //Llamar al metodo, de Login para Obtener la Identidad
    //console.log(this.params);

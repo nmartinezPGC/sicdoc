@@ -321,27 +321,41 @@
           <!--Panel 3-->
           <div class="tab-pane fade" id="panel7" role="tabpanel">
               <br>
-              <!-- Lista de los Documentos Anexados -->
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <div class="card" style="width: 20rem;">
-                    <img class="card-img-top" src="http://localhost/sicdoc/symfony/web/uploads/users/sreci.png" alt="Card image cap">
-                    <div class="card-body">
-                      <h4 class="card-title">Codigo Doc. | </h4>
-                      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-                      <a href="#" class="btn btn-primary">Descargar</a>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-
-              <!-- <div class="card">
-                <h3 class="card-header">Featured</h3>
-                <div class="card-block">
-                  <h4 style="margin-left:10px">Special title treatment</h4>
-                  <p style="margin-left:10px">With supporting text below as a natural lead-in to additional content.</p>
+              <div class="row">
+                <!-- Loader de Carga de los Datos -->
+                <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:40%; margin-top:100px;" >
+                  <img src="assets/images/30.gif" alt="Cargando Tareas" >
                 </div>
-              </div> -->
+
+                <table class="table table-striped" cellspacing="0" width="100%"
+                    *ngIf="loadTabla2 == true">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Codigo Documento</th>
+                      <th>Fecha Creacion</th>
+                      <th>Documento</th>
+                      <th>Descargar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of JsonOutgetlistaDocumentos; let i = index">
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>{{ item.codDocumento }}</td>
+                      <td>{{ item.fechaIngreso.timestamp | generateDate }}</td>
+                      <td>{{ item.urlDocumento }}</td>
+                      <td>
+                        <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
+                          href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                            <i class="material-icons">photo</i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
           </div>
           <!--/.Panel 3-->
       </div>

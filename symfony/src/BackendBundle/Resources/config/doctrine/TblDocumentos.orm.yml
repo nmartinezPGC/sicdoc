@@ -2,15 +2,18 @@ BackendBundle\Entity\TblDocumentos:
     type: entity
     table: tbl_documentos
     indexes:
-        fki_co_det_docum:
-            columns:
-                - id_correspondencia_det
         fki_doc_user:
             columns:
                 - id_usuario
         tbl_documentos_cod_documento_idx:
             columns:
                 - cod_documento
+        fki_co_det_docum:
+            columns:
+                - id_correspondencia_det
+        fki_enc_doc:
+            columns:
+                - id_correspondencia_enc
     uniqueConstraints:
         tbl_documentos_cod_documento_key:
             columns:
@@ -92,5 +95,15 @@ BackendBundle\Entity\TblDocumentos:
             joinColumns:
                 id_usuario:
                     referencedColumnName: id_usuario
+            orphanRemoval: false
+        idCorrespondenciaEnc:
+            targetEntity: TblCorrespondenciaEnc
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_enc:
+                    referencedColumnName: id_correspondencia_enc
             orphanRemoval: false
     lifecycleCallbacks: {  }

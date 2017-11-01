@@ -382,4 +382,69 @@ class DocumentosController extends Controller{
         return $helpers->parserJson($data);
     } //Fin de la Funcion Subir Arhcivo **********************************
     
+    
+    /* Funcion de Listar Documentos ********************************************
+     * Parametros:                                                             * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
+     *     Informacion.                                                        * 
+     * 2 ) Lista los docuemntos segun parametro ( codCorrespondenciaEnc )      *
+     * 3 ) Ruta = documentos/listar-documentos                                 * 
+     ***************************************************************************/
+    public function listaDocumentosAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID de Comunicacion Enc ******************************
+            $cod_correspondencia = (isset($params->searchValueSend)) ? $params->searchValueSend : null; 
+                        
+            
+            // Verificacion del Codigo de la Correspondenia*
+            // Encabezado  *********************************
+            $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                array(
+                    "codCorrespondenciaEnc" => $cod_correspondencia
+                ));
+            
+            
+            // Query para Obtener todos los Funcionarios de la Tabla: TblDocumentos
+            $lista_documentos = $em->getRepository("BackendBundle:TblDocumentos")->findBy(
+                    array(
+                        "idCorrespondenciaEnc" => $id_correspondencia_enc_docu                      
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $lista_documentos ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $lista_documentos
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Documentos asociados a la Coumunicacion, "
+                                . "comuniquese con el Administrador !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Documentos, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN
+    
 }

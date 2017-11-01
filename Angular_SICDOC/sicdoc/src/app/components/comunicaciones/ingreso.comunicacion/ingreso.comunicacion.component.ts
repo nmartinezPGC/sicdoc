@@ -831,9 +831,23 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   createNewFileInput(){
    // Actualiza el valor de la Secuencia
    let secActual = this.nextDocumento - 1;
-   let mesAct = this.fechaHoy.getMonth() + 1;
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + this.fechaHoy.getDate();
-   console.log('Entro en Funcion ' );
+   // Mes Actual
+   let mesAct = this.fechaHoy.getMonth() +1; // Dia
+   let final_month = mesAct.toString();
+   if( mesAct <= 9 ){
+     final_month = "0" + final_month;
+   }
+
+
+   // Dia del Mes
+   let day = this.fechaHoy.getDate(); // Dia
+   let final_day = day.toString();
+   if( day <= 9 ){
+     final_day = "0" + final_day;
+   }
+
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+  //  console.log('Entro en Funcion ' );
    this.JsonOutgetListaDocumentos.push({
      "nameDoc": newSecAct,
      "extDoc": this.extencionDocumento,

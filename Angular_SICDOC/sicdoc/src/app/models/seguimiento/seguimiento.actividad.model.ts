@@ -14,6 +14,10 @@ export class SeguimientoActividad{
       public optUserFind:string,
       public optUserFindId:number,
 
+      // Parametros para los Documentos
+      public idCorrespondenciaEnc:number,
+
+
     ){}
 
 }

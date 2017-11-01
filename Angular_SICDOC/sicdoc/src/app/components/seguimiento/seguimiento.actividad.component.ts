@@ -53,6 +53,7 @@ export class SeguimientoActividadComponent implements OnInit {
   public loading_tr  = 'hide';
 
   public loadTabla2:boolean = false;
+  public loadTabla3:boolean = false;
 
   // Variables de Mensajeria y Informaicon
   //  public data;
@@ -81,6 +82,7 @@ export class SeguimientoActividadComponent implements OnInit {
   // Json de los listas de los Oficios por usuario
   public JsonOutgetComunicacionFind:any[];
   public JsonOutgetlistaSeguimiento:any[];
+  public JsonOutgetlistaDocumentos:any[];
 
   public datosDet;
 
@@ -150,7 +152,7 @@ export class SeguimientoActividadComponent implements OnInit {
 
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.seguimientoActividad = new SeguimientoActividad(null, null, null, null, null, null );
+    this.seguimientoActividad = new SeguimientoActividad(null, null, null, null, null, null, null );
 
     // Inicializamos el Llenado de las Tablas
     // this.getlistaFinalizarOficiosTable();
@@ -198,7 +200,7 @@ export class SeguimientoActividadComponent implements OnInit {
   *****************************************************/
    timeConverter(UNIX_timestamp){
       let a = new Date( UNIX_timestamp * 1000);
-  //  alert(UNIX_timestamp);
+      //  alert(UNIX_timestamp);
        let diaFechamaxima = String( a.getDay() );
        let mesFechamaxima = String( a.getMonth() + 1 );
        let anioFechamaxima = String( a.getFullYear() );
@@ -260,7 +262,11 @@ export class SeguimientoActividadComponent implements OnInit {
     // this.seguimientoActividad.searchValueSend = "";
     this.seguimientoActividad.optUserFindId = this.optUserFindId;
     this.seguimientoActividad.idFuncionarioAsignado = this.identity.sub;
+
+    // Asignacion de la Comunicacion de Encabezado
+    this.seguimientoActividad.idFuncionarioAsignado = this.identity.sub;
     console.log( this.seguimientoActividad );
+
     // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
     this._seguimientoActividad.comunicacionFind( this.seguimientoActividad ).subscribe(
         response => {
@@ -279,6 +285,9 @@ export class SeguimientoActividadComponent implements OnInit {
 
             // Consulta de las Actividades TblCorrespondenciaDet
             this.getlistaComunicacionDetTableFind();
+
+            // Consulta de las Documentos de la Comunicacion
+            this.getlistaDocumentosTable();
 
             this.loading = 'hidden';
             console.log( response.data );
@@ -314,10 +323,45 @@ export class SeguimientoActividadComponent implements OnInit {
             //this.valoresdataDetJson ( response.data );
             this.loading_table = 'hide';
             this.loadTabla2 = true;
+
             console.log( this.JsonOutgetlistaSeguimiento );
           }
         });
   } // FIN | FND-00002.1
+
+
+  /*****************************************************
+  * Funcion: FND-00002.2
+  * Fecha: 01-11-2017
+  * Descripcion: Carga la Lista de los Documentos de la
+  * Comunicacion de la BD que pertenecen al usaurio
+  * Logeado, en el Detalle
+  * Objetivo: Obtener la lista de los Documentos de las
+  * Comunicaciones de la BD, Llamando a la API, por su
+  * metodo ( documentos/listar-documentos ).
+  ******************************************************/
+  getlistaDocumentosTable() {
+    // Laoding
+    this.loading_table = 'show';
+    this.loadTabla2 = false;
+    // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+    this._listasComunes.listasDocumentosToken( this.seguimientoActividad, "listar-documentos" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaDocumentos = response.data;
+
+            alert(response.msg);
+          }else{
+            this.JsonOutgetlistaDocumentos = response.data;
+            //this.valoresdataDetJson ( response.data );
+            this.loading_table = 'hide';
+            this.loadTabla2 = true;
+            console.log( this.JsonOutgetlistaDocumentos );
+          }
+        });
+  } // FIN | FND-00002.2
 
 
 
