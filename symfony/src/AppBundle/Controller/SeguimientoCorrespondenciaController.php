@@ -39,6 +39,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function asignarOficioAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -335,6 +336,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function finalizarOficioAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -653,6 +655,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function creacionOficioRespAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -960,6 +963,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function creacionActividadRespAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -1263,6 +1267,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function seguimientoEncListAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -1387,6 +1392,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function seguimientoDetListAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

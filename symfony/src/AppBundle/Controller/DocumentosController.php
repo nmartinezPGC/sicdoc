@@ -31,6 +31,7 @@ class DocumentosController extends Controller{
      *     Informacion.                                                        * 
      ***************************************************************************/
     public function newAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -167,6 +168,7 @@ class DocumentosController extends Controller{
      * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
      ***************************************************************************/
     public function editAction(Request $request, $id = null) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -287,6 +289,7 @@ class DocumentosController extends Controller{
      * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
      ***************************************************************************/
     public function uploadAction(Request $request, $id) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

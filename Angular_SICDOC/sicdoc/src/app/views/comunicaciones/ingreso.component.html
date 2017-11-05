@@ -20,8 +20,9 @@
       </div>
 
       <!-- Loader de Carga de los Datos -->
-      <div id="loader-2" *ngIf="loading == 'show' ">
-        <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+      <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
+        <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
+        <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
 
 		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
@@ -348,7 +349,8 @@
 			<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-md-3">
-            <input type="submit" value="Guardar" class="btn btn-primary btn-block btn-lg" tabindex="17" [disabled]="!ingresoComunicacionForm.valid"  >
+            <input type="submit" value="Guardar"  class="btn btn-primary btn-block btn-lg" tabindex="17"
+                [disabled]="!ingresoComunicacionForm.valid" >
         </div>
 				<div class="col-xs-12 col-md-3">
 

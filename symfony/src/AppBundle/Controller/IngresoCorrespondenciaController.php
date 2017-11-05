@@ -53,6 +53,7 @@ class IngresoCorrespondenciaController extends Controller{
     public function newCorrespondenciaAction(Request $request) 
     {
         //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
         //Recogemos el Hash y la Autorizacion del Mismo        
@@ -752,6 +753,7 @@ class IngresoCorrespondenciaController extends Controller{
      ***************************************************************************/
     public function newCorrespondenciaTipoAction(Request $request) 
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

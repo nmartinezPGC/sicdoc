@@ -20,8 +20,9 @@
       </div>
 
       <!-- Loader de Carga de los Datos -->
-      <div id="loader-2" *ngIf="loading == 'show' ">
-        <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+      <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
+        <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
+        <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
 
 		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerTipoComunicacion)" name="ingresoComunicacionForm" role="form">

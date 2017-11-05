@@ -111,9 +111,13 @@ export class ReporteGeneralComponent implements OnInit {
 
   // Valores de Tipos de Comunicacion
   public idTipoComOficio:number = 1;
+  public idTipoComMemo:number = 2;
+  public idTipoComNotVerb:number = 3;
+  public idTipoComCircular:number = 4;
   public idTipoComCorreos:number = 5;
   public idTipoComLlamadas:number = 7;
   public idTipoComVerbal:number = 8;
+  public idTipoComReunion:number = 9;
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
@@ -171,9 +175,30 @@ export class ReporteGeneralComponent implements OnInit {
             retrieve: true,
             // paging: false,
             buttons: [
+               // Boton de excelHtml5
+                 {
+                    extend: 'excelHtml5',
+                      text: 'Exportar en Excel',
+                      customize: function( xlsx ) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        $('row:first c', sheet).attr( 's', '42' );
+                      }
+                },
+
                // Boton de Imprimir
                 {
                   extend: 'print',
+                  utoPrint: false,
+                  exportOptions: {
+                    columns: ':visible',
+                  },
+                  customize: function (win) {
+                    $(win.document.body).find('table').addClass('display').css('font-size', '10px');
+                    $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                        $(this).css('background-color','#D0D0D0');
+                    });
+                    $(win.document.body).find('h1').css('text-align','center');
+                  },
                   text: 'Imprimir Todos',
                   message: 'Listado de Comunicaciones',
                   title: 'Informe de Comunicaciones',
@@ -189,6 +214,7 @@ export class ReporteGeneralComponent implements OnInit {
                   title: 'Informe de Comunicaciones',
                   text: 'Exportar a PDF',
                 },
+
                 /*{
                   extend: 'excelHtml5',
                   customize: function( xlsx ) {
@@ -476,8 +502,8 @@ export class ReporteGeneralComponent implements OnInit {
             this.JsonOutgetlistaFuncionarios = response.data;
             console.log(response.data);
             this.loading = 'hide';
-            this.dataServiceFuncionario = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
-                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
+            this.dataServiceFuncionario = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,nombre2Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,emailFuncionario');
           }
         });
   } // FIN : FND-00007

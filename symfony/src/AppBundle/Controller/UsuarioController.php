@@ -32,6 +32,7 @@ class UsuarioController extends Controller{
      * Funcion: FND00001
      */
     public function newAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         
@@ -214,6 +215,7 @@ class UsuarioController extends Controller{
      * Funcion: FND00002
      */
     public function editAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -370,6 +372,7 @@ class UsuarioController extends Controller{
      * Funcion: FND00003
      */
     public function uploadImageAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");        
         //Recoger el Hash
@@ -446,6 +449,7 @@ class UsuarioController extends Controller{
      * Funcion: FND00004
      */
     public function changePassUserAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

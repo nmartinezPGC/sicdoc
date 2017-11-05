@@ -102,6 +102,8 @@ export class IngresoActividadComponent implements OnInit{
   public loading_table  = 'hide';
   public loading_tr  = 'hide';
 
+  public loadTabla1:boolean = false;
+
   // Parametros para aplicar a los Estilos
   public colorestado:number = 1;
   public itemEstado:number = 0;
@@ -178,6 +180,7 @@ export class IngresoActividadComponent implements OnInit{
   * metodo (asignar-oficios-page-list).
   ******************************************************/
   getlistaAsinarOficios() {
+    // Iniciamos el Proceso
     this._route.params.subscribe( params => {
       let page = +params["page"];
       if( !page ){
@@ -186,24 +189,6 @@ export class IngresoActividadComponent implements OnInit{
 
     // Laoding
     this.loading = 'show';
-
-    //Llamar al metodo, de Login para Obtener la Identidad
-    // this._listasComunes.listasComunes("","asignar-oficios-list").subscribe(
-    //     response => {
-    //       // login successful so redirect to return url
-    //       if(response.status == "error"){
-    //         //Mensaje de alerta del error en cuestion
-    //         this.JsonOutgetlistaOficiosAll = response.data;
-    //         alert(response.msg);
-    //       }else{
-    //         this.JsonOutgetlistaOficiosAll = response.data;
-    //         this.tableAgregarActividadCodOficio = this.JsonOutgetlistaOficiosAll[0].codReferenciaSreci;
-    //         this.tableAgregarActividadFechamaxima = this.JsonOutgetlistaOficiosAll[0].fechaMaxEntrega;
-    //         this.loading = 'hidden';
-    //         console.log(this.JsonOutgetlistaOficiosAll);
-    //         localStorage.setItem('JsonPar', JSON.stringify(  this.JsonOutgetlistaOficiosAll ));
-    //       }
-    //     });
 
     // console.log( this.idFuncModal );
     //Llamar al metodo, de Listado de Funcionarios
@@ -220,6 +205,8 @@ export class IngresoActividadComponent implements OnInit{
               // this.tableAgregarActividadCodOficio = this.JsonOutgetlistaOficiosAll[0].codReferenciaSreci;
               // this.tableAgregarActividadFechamaxima = this.JsonOutgetlistaOficiosAll[0].fechaMaxEntrega;
               this.loading = 'hidden';
+
+              this.loadTabla1 = true;
 
               // Array de las Paginas
               this.pages = [];
@@ -252,7 +239,8 @@ export class IngresoActividadComponent implements OnInit{
             this.errorMessage = <any>error;
 
             if( this.errorMessage != null ){
-              console.log( this.errorMessage );
+              // console.log( this.errorMessage );
+              // Recarga la Pagina cuando hay un Error de Cache
               window.location.reload();
               // alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
             }
@@ -319,8 +307,10 @@ export class IngresoActividadComponent implements OnInit{
             this.errorMessage = <any>error;
 
             if( this.errorMessage != null ){
-              console.log( this.errorMessage );
-              alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
+              // console.log( this.errorMessage );
+              // Recarga la Pagina cuando hay un Error de Cache
+              window.location.reload();
+              // alert( "Errror en la petición pulsa F5 para recargar la pagina, de persistir el Error, contacte al Administrador" );
             }
         }); // Fin de Llamado al Servicios
 

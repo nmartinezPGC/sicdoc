@@ -32,8 +32,8 @@ class ComunesController extends Controller {
      */
     public function uploadDocumentoAction(Request $request) {
         //Instanciamos el Servicio Helpers
-        //date_default_timezone_set('America/Tegucigalpa');
-        date_default_timezone_set('Australia/Sydney');
+        date_default_timezone_set('America/Tegucigalpa');
+        //date_default_timezone_set('Australia/Sydney');
         $helpers = $this->get("app.helpers");        
         //Recoger el Hash
         //Recogemos el Hash y la Autrizacion del Mismo

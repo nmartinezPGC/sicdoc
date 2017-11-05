@@ -265,7 +265,7 @@ export class SeguimientoActividadComponent implements OnInit {
 
     // Asignacion de la Comunicacion de Encabezado
     this.seguimientoActividad.idFuncionarioAsignado = this.identity.sub;
-    console.log( this.seguimientoActividad );
+    // console.log( this.seguimientoActividad );
 
     // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
     this._seguimientoActividad.comunicacionFind( this.seguimientoActividad ).subscribe(
@@ -290,7 +290,7 @@ export class SeguimientoActividadComponent implements OnInit {
             this.getlistaDocumentosTable();
 
             this.loading = 'hidden';
-            console.log( response.data );
+            // console.log( response.data );
           }
         });
   } // FIN | FND-00002
@@ -324,7 +324,7 @@ export class SeguimientoActividadComponent implements OnInit {
             this.loading_table = 'hide';
             this.loadTabla2 = true;
 
-            console.log( this.JsonOutgetlistaSeguimiento );
+            // console.log( this.JsonOutgetlistaSeguimiento );
           }
         });
   } // FIN | FND-00002.1
@@ -358,7 +358,7 @@ export class SeguimientoActividadComponent implements OnInit {
             //this.valoresdataDetJson ( response.data );
             this.loading_table = 'hide';
             this.loadTabla2 = true;
-            console.log( this.JsonOutgetlistaDocumentos );
+            // console.log( this.JsonOutgetlistaDocumentos );
           }
         });
   } // FIN | FND-00002.2

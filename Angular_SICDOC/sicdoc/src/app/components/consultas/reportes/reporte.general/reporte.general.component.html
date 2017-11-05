@@ -113,6 +113,24 @@
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Oficios</span>
                     </label>
+                    <!-- Memoramdums -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComMemo }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Memoramdums</span>
+                    </label>
+                    <!-- Nota Verbal -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComNotVerb }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Nota Verbal</span>
+                    </label>
+                    <!-- Circulares -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCircular }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Circulares</span>
+                    </label>
                     <!-- Correos -->
                     <label class="custom-control custom-checkbox">
                       <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCorreos }}" class="custom-control-input">
@@ -130,6 +148,12 @@
                       <input type="checkbox" name="chkTipoCom" value="{{ idTipoComVerbal }}" class="custom-control-input">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Verbal</span>
+                    </label>
+                    <!-- Reuniones / Video Conferencias -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComReunion }}" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Reuniones / Video Conferencias</span>
                     </label>
                   </li>
                 </ul>
@@ -180,13 +204,15 @@
           </div>
         </div>
 
+        <br>
         <!-- <input type="button" name="" value="Recarga" (click)="recargaTable()"> -->
         <input type="submit" value="Generar Reporte" class="btn btn-primary btn-lg"
           [disabled]="!reporteForm.valid" >
 
           <!-- Loader de Carga de los Datos -->
-          <div id="loader-2" *ngIf="loading_tableIn == 'show' " >
-            <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%">
+          <div id="loader-2" *ngIf="loading_tableIn == 'show' " style="margin-left:35%; margin-top:2%; margin-bottom:-4%;" >
+            <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%"> -->
+            <img src="assets/images/745.gif" alt="Cargando Tareas">
           </div>
 
       </form> <!-- Fin de Formulario de Seleccion de Criterios de Busqueda -->

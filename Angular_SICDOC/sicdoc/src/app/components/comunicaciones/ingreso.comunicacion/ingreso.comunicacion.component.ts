@@ -161,6 +161,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   } // FIN : 00001
 
 
+  resetForm(){
+    this.ngOnInit();
+  }
+
+
   /****************************************************
   * Funcion: FND-00002
   * Fecha: 26-09-2017
@@ -249,7 +254,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       "idTipoDocumento"  : ""
     };
 
-
+    // Convertimos las Fechas a una Default
+    this.convertirFecha();
 
     // Lsita de Tipo de Documentos
     this.getlistaTipoDocumentos();
@@ -275,6 +281,31 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     //this.loadScript('../assets/js/ingreso.comunicacion.component.js');
 
   } // Fin Metodo onInit()
+
+
+  /****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 11-09-2017
+  * Descripcion: Funcion que convierte las fechas a
+  * String y le suma 5 dias
+  * Objetivo: Sumar 5 dias a la fecha Maxima de entrega
+  *****************************************************/
+  convertirFecha() {
+    let day = String(this.fechaHoy.getDate() + 5 );
+    let month = String(this.fechaHoy.getMonth() + 1 );
+    const year = String(this.fechaHoy.getFullYear() );
+
+    if(day.length < 2  ){
+      //alert("Dia Falta el 0");
+      day = "0" + day;
+    }else if(month.length < 2){
+      //alert("Mes Falta el 0");
+      month = "0" + month;
+    }
+    this.fechafin = year + "-" + month + "-" + day ;
+    //alert("Dia " + day + " Mes " + month + " Año " + year);
+  } // FIN : FND-00001.2
+
 
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){

@@ -32,6 +32,7 @@ class ContactosController extends Controller{
      */
     public function consultaGeneralContactoListAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt  ******************************
         $helpers = $this->get("app.helpers");
         
@@ -71,6 +72,7 @@ class ContactosController extends Controller{
      */
     public function contactoNewAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt  ******************************
         $helpers = $this->get("app.helpers");
         
@@ -285,6 +287,7 @@ class ContactosController extends Controller{
      * Funcion: FND00003
      */
     public function uploadDocumentoAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
 
