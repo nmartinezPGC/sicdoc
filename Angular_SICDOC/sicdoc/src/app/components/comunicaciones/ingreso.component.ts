@@ -1258,14 +1258,20 @@ export class IngresoComunicacionComponent implements OnInit{
    let secActual = this.nextDocumento - 1;
    let mesAct = this.fechaHoy.getMonth() + 1;
 
+   // Mes Actual
+   let final_month = mesAct.toString();
+   if( mesAct <= 9 ){
+     final_month = "0" + final_month;
+   }
+
    // Dia del Mes
    let day = this.fechaHoy.getDate(); // Dia
    let final_day = day.toString();
    if( day <= 9 ){
      final_day = "0" + final_day;
    }
-   
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + mesAct + "-" + final_day;
+
+   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
 
 
    this.JsonOutgetListaDocumentos.push({

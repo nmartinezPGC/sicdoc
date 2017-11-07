@@ -164,10 +164,44 @@
                     placeholder="Comunicacion de Respuesta" required value="{{ idCorrepEncModal }}" disabled>
               </div>
             </div>
+
+
+            <!-- Seccion de Anexos -->
+            <!-- <h4>Anexos</h4> -->
+            <div class="row">
+              <div class="col-xs-12 col-md-4 col-lg-6">
+                <label for="exampleInputEmail1">Documento de soporte</label>
+                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                     ngControl="pdfDocumento" [(ngModel)]="finalizarOficios.pdfDocumento" placeholder="Subir Pdf ..."
+                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)" value="foo">
+
+                <!-- <image-upload url="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/imagen" [max]="2" [extensions]="['jpeg','png']"></image-upload> -->
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
+              <div class="col-xs-12 col-md-8 col-lg-12">
+                <!-- Barra de Progreso de Carga de la Imagen -->
+                <div class="progress">
+                    <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                        role="progressbar"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="0"
+                        style="width:1%">
+                    </div>
+                </div>
+                <p id="status"></p>
+              </div>
+            </div>
+
+            <hr class="colorgraph">
+
             <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-            <button type="button" class="btn btn-primary">Limpiar</button>
-            <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+            <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
             <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
+            <button type="button" id="closeModalFinCom" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
         </form>
     </div>
       <div class="modal-footer">
@@ -220,10 +254,12 @@
                     <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.maxlength" >La capacidad maxima para la Descripcion es: 1400 caracteres</small>
                   </div>
                 </div>
+
+                <hr class="colorgraph">
                 <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-                <button type="button" class="btn btn-primary">Limpiar</button>
-                <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+                <!-- <button type="button" class="btn btn-primary">Limpiar</button> -->
                 <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
+                <button type="button" id="closeModalComResp" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </form>
         </div>
           <div class="modal-footer">
@@ -277,10 +313,11 @@
               </div>
             </div>
 
+            <hr class="colorgraph">
             <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-            <button type="button" class="btn btn-primary">Limpiar</button>
-            <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+            <!-- <button type="button" class="btn btn-primary">Limpiar</button> -->
             <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" >Guardar</button>
+            <button type="button" id="closeModalAgreCom" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
         </form>
     </div>
       <div class="modal-footer">

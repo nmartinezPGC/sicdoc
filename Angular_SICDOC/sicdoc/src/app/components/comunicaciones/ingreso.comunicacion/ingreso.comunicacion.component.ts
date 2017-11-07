@@ -650,7 +650,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
      }else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-REUNION";
-       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_reunion";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
@@ -723,8 +723,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_verb";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }else if ( idTipoDocumentoIn == 9 ) {
-       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-REUNION";
-       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det_reunion";
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-REUNION";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }// Fin de Condicion
 

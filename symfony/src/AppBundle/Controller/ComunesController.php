@@ -241,6 +241,7 @@ class ComunesController extends Controller {
             if (!empty($file) && $file != null) {
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
+                //$nameDoc = $file->guessName();
                 //Comprobamos que la Extencion sea Aceptada
                 if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
                     $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   

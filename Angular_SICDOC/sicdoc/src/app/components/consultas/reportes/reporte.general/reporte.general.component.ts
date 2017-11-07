@@ -132,6 +132,22 @@ export class ReporteGeneralComponent implements OnInit {
   } // Fin | Definicion del Constructor
 
 
+  /****************************************************
+  * Funcion: FND-00001
+  * Fecha: 28-07-2017
+  * Descripcion: que Carga, Los Script de la Pagina
+  * Objetivo: cargar los scripts, nesesarios para el
+  * uso de la pagina
+  *****************************************************/
+  public loadScript(url) {
+    // console.log('preparing to load...')
+    let node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(node);
+  } // FIN : FND-00001
+
+
   /*****************************************************
   * Fecha: 15-10-2017
   * Funcion: generatePDF
@@ -170,6 +186,7 @@ export class ReporteGeneralComponent implements OnInit {
       $ (function () {
         $('#example').DataTable( {
             dom: 'Bfrtip',
+            "pageLength": 5,
             // Refresca la Data y Borra de Memoria los Datos anteriores
             destroy: true,
             retrieve: true,
@@ -251,6 +268,9 @@ export class ReporteGeneralComponent implements OnInit {
 
     // Llenado de la Lista de Funcionarios
     this.getlistaFuncionariosSreci();
+
+    // Cargamos el Script de Jquery nesesarios
+    // this.loadScript('https://code.jquery.com/jquery-1.12.4.js');
 
   } // FIN ngOnInit
 

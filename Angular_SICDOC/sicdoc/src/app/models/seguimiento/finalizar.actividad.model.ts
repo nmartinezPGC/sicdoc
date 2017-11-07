@@ -38,6 +38,9 @@ export class FinalizarActividad{
 
       public idTipoDocumento:number,
 
+      public pdfDocumento,
+
+
 
     ){}
 
