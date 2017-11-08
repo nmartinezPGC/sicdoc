@@ -51,6 +51,8 @@ declare var $:any;
   providers: [ ListasComunesService, ReporteGeneralService]
 })
 export class ReporteGeneralComponent implements OnInit {
+
+  public fechaHoy:Date = new Date();
   public titulo = "Generacion de Reporte";
 
   // variables del localStorage
@@ -182,6 +184,26 @@ export class ReporteGeneralComponent implements OnInit {
   * los Checkbox
   ******************************************************/
   fillDataTable(){
+    // Trabaja con las Fechas
+    // Actualiza el valor de la Secuencia
+    let mesAct = this.fechaHoy.getMonth() + 1;
+
+    // Mes Actual *************************
+    let final_month = mesAct.toString();
+    if( mesAct <= 9 ){
+      final_month = "0" + final_month;
+    }
+
+    // Dia del Mes *************************
+    let day = this.fechaHoy.getDate(); // Dia
+    let final_day = day.toString();
+    if( day <= 9 ){
+      final_day = "0" + final_day;
+    }
+
+    // Seteo de la Fecha Final
+    let newFecha = this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+
     setTimeout(function () {
       $ (function () {
         $('#example').DataTable( {
@@ -195,6 +217,7 @@ export class ReporteGeneralComponent implements OnInit {
                // Boton de excelHtml5
                  {
                     extend: 'excelHtml5',
+                    title: 'Informe de Comunicaciones' + ' / ' + newFecha,
                       text: 'Exportar en Excel',
                       customize: function( xlsx ) {
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
@@ -218,7 +241,7 @@ export class ReporteGeneralComponent implements OnInit {
                   },
                   text: 'Imprimir Todos',
                   message: 'Listado de Comunicaciones',
-                  title: 'Informe de Comunicaciones',
+                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
                   orientation: 'landscape',
                   pageSize: 'A4',
                 },
@@ -228,7 +251,7 @@ export class ReporteGeneralComponent implements OnInit {
                   extend: 'pdfHtml5',
                   orientation: 'landscape',
                   pageSize: 'A4',
-                  title: 'Informe de Comunicaciones',
+                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
                   text: 'Exportar a PDF',
                 },
 

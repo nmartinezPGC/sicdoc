@@ -130,6 +130,13 @@ export class IngresoActividadComponent implements OnInit{
   ){}
 
 
+  closeModal( nameBotton ){
+    setTimeout(function() {
+      // $('#t_and_c_m').modal('hide');
+      $( nameBotton ).click();
+    }, 600);
+  }
+
   // INI | Metodo OnInit
   ngOnInit(){
     // Iniciamos los Parametros de Asignar Actividad
@@ -473,9 +480,10 @@ export class IngresoActividadComponent implements OnInit{
 
               this.ngOnInit();
               alert( response.msg );
-              setTimeout(function() {
-                $('#t_and_c_m').modal('hide');
-              }, 600);
+              // setTimeout(function() {
+              //   $('#t_and_c_m').modal('hide');
+              // }, 600);
+              this.closeModal('#closeModalFinCom');
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API

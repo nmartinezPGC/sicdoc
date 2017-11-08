@@ -349,7 +349,8 @@
                       <td>{{ item.urlDocumento }}</td>
                       <td>
                         <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
-                          href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                          href="http://172.17.4.162/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                          <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                             <i class="material-icons">photo</i>
                         </a>
                       </td>
