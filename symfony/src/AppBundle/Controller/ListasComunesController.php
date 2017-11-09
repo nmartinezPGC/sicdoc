@@ -606,40 +606,60 @@ class ListasComunesController extends Controller {
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
-               
-        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
-        // Busqueda a la BD  ***************************************************
-        $em = $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
-                
-        // Declaracion del Alias de la tabla
-        $qb = $em->createQueryBuilder('a');
         
-        // Query a la BD
-        $qb->select('COUNT(a)');
-        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
-        $qb->setParameter('validEstado', 7 )->setParameter('validDocumento', 1 )  ;
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEnc");
 
-        $count = $qb->getQuery()->getSingleScalarResult();
-        
-        
-        // Condicion de la Busqueda
-        if ( $count >= 1 ) {
-            $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "data"   => $count
-            );
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento and '
+                    . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
+            $qb->setParameter('validEstado', 7 )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+                            ->setParameter('validUsuario', $user_comunicacion );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
         }else {
             $data = array(
-                "status" => "error",
-                "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
-            );
-        }
-        
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No se ha encontrado parametros a enviar, contacte al Administrador !!"
+                );
+        }      
+        // Retorno de los Datos
         return $helpers->parserJson($data);
     }//FIN | FND00011
     
@@ -655,40 +675,60 @@ class ListasComunesController extends Controller {
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
-               
-        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
-        // Busqueda a la BD  ***************************************************
-        $em = $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
-                
-        // Declaracion del Alias de la tabla
-        $qb = $em->createQueryBuilder('a');
         
-        // Query a la BD
-        $qb->select('COUNT(a)');
-        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
-        $qb->setParameter('validEstado', 3 )->setParameter('validDocumento', 1 )  ;
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEnc");
 
-        $count = $qb->getQuery()->getSingleScalarResult();
-        
-        
-        // Condicion de la Busqueda
-        if ( $count >= 1 ) {
-            $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "data"   => $count
-            );
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento and '
+                    . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
+            $qb->setParameter('validEstado', 3 )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+                        ->setParameter('validUsuario', $user_comunicacion );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
         }else {
             $data = array(
-                "status" => "error",
-                "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
-            );
-        }
-        
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No se ha encontrado parametros, contacte al Administrador !!"
+                );
+        }               
+        // Retorno de la Data
         return $helpers->parserJson($data);
     }//FIN | FND00012
     
@@ -704,39 +744,60 @@ class ListasComunesController extends Controller {
     {
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
-               
-        // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
-        // Busqueda a la BD  ***************************************************
-        $em = $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository("BackendBundle:TblCorrespondenciaEnc");
-                
-        // Declaracion del Alias de la tabla
-        $qb = $em->createQueryBuilder('a');
         
-        // Query a la BD
-        $qb->select('COUNT(a)');
-        $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
-        $qb->setParameter('validEstado', 5 )->setParameter('validDocumento', 1 )  ;
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEnc");
 
-        $count = $qb->getQuery()->getSingleScalarResult();
-        
-        
-        // Condicion de la Busqueda
-        if ( $count >= 1 ) {
-            $data = array(
-                "status" => "success",
-                "code"   => 200,
-                "data"   => $count
-            );
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento and '
+                    . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
+            $qb->setParameter('validEstado', 5 )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+                    ->setParameter('validUsuario', $user_comunicacion );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
         }else {
             $data = array(
                 "status" => "error",
                 "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                "msg"    => "No se ha encontrado parametros, contacte al Administrador !!"
             );
         }
+               
         
         return $helpers->parserJson($data);
     }//FIN | FND00013

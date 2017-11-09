@@ -62,9 +62,15 @@ class JwtAuth {
             
             
             // Query para Obtener el Tipo de Funcionario al que corresponde de la Tabla: TblTiposFuncionarios
-            $func_user = $this->manager->getRepository("BackendBundle:TblTiposFuncionarios")->findOneBy(
+            $tipo_func_user = $this->manager->getRepository("BackendBundle:TblTiposFuncionarios")->findOneBy(
                 array(
                     "idTipoFuncionario" => $user->getIdTipoFuncionario()
+                ));
+            
+            // Query para Obtener el Funcionario al que corresponde de la Tabla: TblTiposFuncionarios
+            $funcionario_user = $this->manager->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                array(
+                    "idFuncionario" => $user->getIdUsuario()
                 ));
             
             //Generamos el Token
@@ -80,7 +86,8 @@ class JwtAuth {
                 "idDireccion"      => $direccion_user->getIdDireccionSreci(),
                 "idDeptoFuncional" => $depto_user->getIdDeptoFuncional(),
                 "idTipoUser"       => $tipo_user->getIdTipoUsuario(),
-                "idTipoFunc"       => $func_user->getIdTipoFuncionario(),
+                "idTipoFunc"       => $tipo_func_user->getIdTipoFuncionario(),
+                "idFuncionario"    => $funcionario_user->getIdFuncionario(),
                 "iat" => time(),
                 "exp" => time() + (7 * 24 * 60 * 60)
                 //"data" => $helpers->parserJson($user)

@@ -55,6 +55,18 @@
                 <a class="dropdown-item" [routerLink]="['consulta-generacion-reporte']" routerLinkActive="active">Generacion de Reportes</a>
               </div>
             </li>
+
+            <!-- Menu de Mantenimientos -->
+            <!-- <li class="nav-item dropdown" >
+              <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Mantenimientos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Mantenimiento de Instituciones</a> -->
+                <!-- <hr> -->
+                <!-- <a class="dropdown-item" [routerLink]="['consulta-generacion-reporte']" routerLinkActive="active">Generacion de Reportes</a> -->
+              <!-- </div>
+            </li> -->
           </ul>
 
 
@@ -62,8 +74,8 @@
             <ul *ngIf="identity" class="nav navbar-nav navbar-right" id="credentials-top">
               <li>
                 <a class="user-image" >
-                  <!-- <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt=""> -->
-                  <img src="http://172.17.4.162/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">          
+                  <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">
+                  <!-- <img src="http://172.17.4.162/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">           -->
                 </a>
               </li>
               <li class="nav-item dropdown">

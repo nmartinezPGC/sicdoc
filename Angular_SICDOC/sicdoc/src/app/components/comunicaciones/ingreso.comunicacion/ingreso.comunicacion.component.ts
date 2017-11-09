@@ -97,6 +97,52 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public valorSecuenciaDet;
   public valorSecuenciaDetAct;
 
+  // Json del Recuento de Datos
+  public JsonOutgetListaOficiosIngresados:any[];
+  public JsonOutgetListaOficiosPendientes:any[];
+  public JsonOutgetListaOficiosFinalizados:any[];
+
+  // Memoramdums
+  public JsonOutgetListaMemosIngresados:any[];
+  public JsonOutgetListaMemosPendientes:any[];
+  public JsonOutgetListaMemosFinalizados:any[];
+
+  // Correos
+  public JsonOutgetListaCorreosIngresados:any[];
+  public JsonOutgetListaCorreosPendientes:any[];
+  public JsonOutgetListaCorreosFinalizados:any[];
+
+  // Llamadas
+  public JsonOutgetListaLlamadasIngresados:any[];
+  public JsonOutgetListaLlamadasPendientes:any[];
+  public JsonOutgetListaLlamadasFinalizados:any[];
+
+  // FIN de Encabezados **********************
+
+  // Propiedades de los Resumenes
+  public countOficiosIngresados;
+  public countOficiosPendientes;
+  public countOficiosFinalizados;
+
+  // Memoramdums
+  public countMemosIngresados;
+  public countMemosPendientes;
+  public countMemosFinalizados;
+
+  // Correos
+  public countCorreosIngresados;
+  public countCorreosPendientes;
+  public countCorreosFinalizados;
+
+  // Llamadas
+  public countLlamadasIngresados;
+  public countLlamadasPendientes;
+  public countLlamadasFinalizados;
+
+  // FIN de Encabezados ****************************
+
+  private paramsIdTipoComSend; // Parametros para el tipo de COmunicacion enviados
+
   // Variabls para validaciones de Seleccionado
   public maxlengthCodReferencia = "38"; // Defaul Correo
   public minlengthCodReferencia = "5"; // Defaul Correo
@@ -206,6 +252,13 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
 
+    // Inicializamos los Parametros de Tipo Comunicacion
+    this.paramsIdTipoComSend = {
+      "idTipoCom" : "",
+      "idFuncionarioAsignado" : "",
+      "idTipoDoc" : "",
+    }
+
     // Iniciamoslos valores de los Prametros de listasComunes
     // Iniciamos los Parametros de Sub Direcciones Acompañantes
     this.paramsSubDirAcom = {
@@ -276,6 +329,25 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     // Limpiamos el Textarea de los COntactos
     $("#contacAddCC").val();
+
+    // Resumenes de la Pantalla
+    // Oficios
+    this.getlistaOficosIngresados();
+    this.getlistaOficosPendientes();
+    this.getlistaOficosFinalizados();
+    // Memos
+    this.getlistaMemosPendientes();
+    this.getlistaMemosFinalizados();
+
+    // Correos
+    this.getlistaCorreosPendientes();
+    this.getlistaCorreosFinalizados();
+
+    // Llamadas
+    this.getlistaLlamadasPendientes();
+    this.getlistaLlamadasFinalizados();
+
+    // FIN de Ejecucuon de Encabezados
 
     // Carga el scrip Js, para crear componentes Dinamicos en el DOM
     //this.loadScript('../assets/js/ingreso.comunicacion.component.js');
@@ -792,8 +864,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
     // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
@@ -951,6 +1023,303 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }
         });
   } // FIN : FND-00001.2
+
+
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaOficosIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-ingresadas-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            this.countOficiosIngresados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            this.countOficiosIngresados = this.JsonOutgetListaOficiosIngresados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00008
+
+
+  /*****************************************************
+  * Funcion: FND-00009
+  * Fecha: 12-09-2017
+  * Descripcion: Carga de los Oficios que se estan Pend.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Pendientes
+  * de la BD, Llamando a la API, por su metodo
+  * (com-pendientes-list).
+  ******************************************************/
+  getlistaOficosPendientes() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = this.JsonOutgetListaOficiosPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00009
+
+
+  /*****************************************************
+  * Funcion: FND-00010
+  * Fecha: 12-09-2017
+  * Descripcion: Carga de los Oficios que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Finalizados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaOficosFinalizados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosFinalizados = response.data;
+            this.countOficiosFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosFinalizados = response.data;
+            this.countOficiosFinalizados = this.JsonOutgetListaOficiosFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00010
+
+
+  /*****************************************************
+  * Funcion: FND-00011
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Memos que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Memoramdums
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaMemosFinalizados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 2;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaMemosFinalizados = response.data;
+            this.countMemosFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaMemosFinalizados = response.data;
+            this.countMemosFinalizados = this.JsonOutgetListaOficiosFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00011
+
+
+  /*****************************************************
+  * Funcion: FND-00012
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Memos que se estan Pend.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Memoramdums
+  * de la BD, Llamando a la API, por su metodo
+  * (com-pendientes-list).
+  ******************************************************/
+  getlistaMemosPendientes() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 2;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaMemosPendientes = response.data;
+            this.countMemosPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaMemosPendientes = response.data;
+            this.countMemosPendientes = this.JsonOutgetListaMemosPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00012
+
+
+  /*****************************************************
+  * Funcion: FND-00013
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Correos que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Correos
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaCorreosFinalizados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 5;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaCorreosFinalizados = response.data;
+            this.countCorreosFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaCorreosFinalizados = response.data;
+            this.countCorreosFinalizados = this.JsonOutgetListaCorreosFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00011
+
+
+  /*****************************************************
+  * Funcion: FND-00014
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Correos que se estan Pend.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Correos
+  * de la BD, Llamando a la API, por su metodo
+  * (com-pendientes-list).
+  ******************************************************/
+  getlistaCorreosPendientes() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 5;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaCorreosPendientes = response.data;
+            this.countCorreosPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaCorreosPendientes = response.data;
+            this.countCorreosPendientes = this.JsonOutgetListaCorreosPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00014
+
+
+  /*****************************************************
+  * Funcion: FND-00015
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Llamadas que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Llamadas
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaLlamadasFinalizados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 7;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaLlamadasFinalizados = response.data;
+            this.countLlamadasFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaLlamadasFinalizados = response.data;
+            this.countLlamadasFinalizados = this.JsonOutgetListaLlamadasFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00011
+
+
+  /*****************************************************
+  * Funcion: FND-00016
+  * Fecha: 08-11-2017
+  * Descripcion: Carga de los Correos que se estan Pend.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Llamadas
+  * de la BD, Llamando a la API, por su metodo
+  * (com-pendientes-list).
+  ******************************************************/
+  getlistaLlamadasPendientes() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 7;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaLlamadasPendientes = response.data;
+            this.countLlamadasPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaLlamadasPendientes = response.data;
+            this.countLlamadasPendientes = this.JsonOutgetListaLlamadasPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00016
 
 
 }

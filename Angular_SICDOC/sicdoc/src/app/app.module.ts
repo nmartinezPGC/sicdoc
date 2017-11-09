@@ -55,10 +55,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
 import { ConsultaMasterService } from './services/consultas/consulta.master.service';
 
-
 // Imports de los Contactos SRECI
 import { ContactosComponent } from './components/contactos/contacto.component';
 import { ContactosService } from './services/contactos/contacto.service';
+
+// Imports de los Mantenimientos
+import { MantenimientoInstitucionesComponent } from './components/mantenimientos/instituciones/mantenimiento.institucion.component';
+import { InstitucionesService } from './services/mantenimientos/instituciones.service';
+
 
 // Imports de AutoComplete
 import { Ng2CompleterModule } from "ng2-completer";
@@ -87,7 +91,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     DatatablesActividadPendientesComponent,
     ConsultaMasterComponent,
     ContactosComponent,
-    ReporteGeneralComponent
+    ReporteGeneralComponent,
+    MantenimientoInstitucionesComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +116,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     AgregarActividadService,
     FinalizarActividadService,
     SeguimientoActividadService,
-    ContactosService
+    ContactosService,
+    InstitucionesService
   ],
   bootstrap: [AppComponent]
 })

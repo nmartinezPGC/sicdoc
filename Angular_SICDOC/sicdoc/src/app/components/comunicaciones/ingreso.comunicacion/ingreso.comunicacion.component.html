@@ -296,6 +296,49 @@
 
   <!-- Columna del formulario -->
 
+  <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+  <div class="col-2">
+    <div class="card" style="width: 16rem; margin-top:5px">
+      <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
+      <div class="card-block" style="margin-left:8px">
+        <h4 class="card-title">Resumen</h4>
+        <p class="card-text">Resumen de la informacion registrada de las Comunicaniones.</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <!-- Oficios -->
+        <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countOficiosFinalizados }} </span> </li>
+
+        <!-- Memoramdums -->
+        <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Memos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Memos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
+
+        <!-- Correos -->
+        <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+        <li class="list-group-item"> <i class="material-icons">markunread_mailbox</i> Correos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countCorreosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">contact_mail</i> Correos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countCorreosFinalizados }} </span> </li>
+
+        <!-- Llamadas -->
+        <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+        <li class="list-group-item"> <i class="material-icons">call</i> Llamadas Pendientes -- | <span class="badge badge-pill badge-warning"> {{ countLlamadasPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">call_end</i> Llamadas Finalizadas -- | <span class="badge badge-pill badge-primary"> {{ countLlamadasFinalizados }} </span> </li>
+
+      </ul>
+        <!-- <div class="card-block" style="margin-left:8px">
+          <a href="#" class="card-link">Ver tablero</a>
+          <a [routerLink]="['/index']" class="card-link">Ir a Dashboard</a>
+        </div> -->
+    </div>
+
+    <!-- <div class="card" style="width: 16rem; margin-top:5px">
+
+  </div>
+  Columna de las Tarjetas -->
+
+  </div>
+
 </div>
 
 <hr>

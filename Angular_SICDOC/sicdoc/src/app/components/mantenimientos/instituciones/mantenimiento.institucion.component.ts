@@ -4,35 +4,33 @@ import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 
 //Importamos los Servicios
-import { LoginService } from '../../services/login/login.service'; //Servico del Login
-import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
-import { UploadService } from '../../services/shared/upload.service'; //Servico Listas Comunes
+import { LoginService } from '../../../services/login/login.service'; //Servico del Login
+import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
+import { UploadService } from '../../../services/shared/upload.service'; //Servico Listas Comunes
 
 
-import { AppComponent } from '../../app.component'; //Servico del Login
+import { AppComponent } from '../../../app.component'; //Servico del Login
 
 import { NgForm }    from '@angular/forms';
 
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
-// Importamos la CLase Usuarios del Modelo
-import { Usuarios } from '../../models/usuarios/usuarios.model'; //Model del Login
+// Importamos la CLase Intituciones del Modelo
+import { Intituciones } from '../../../models/mantenimientos/instituciones.model'; //Model del Login
 
-//Importamos los Javascript
-//import '../../views/login/register.component';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: '../../views/login/register.component.html',
-  styleUrls: ['../../views/login/style.component.css'],
+  selector: 'app-mantenimiento-instituciones',
+  templateUrl: '../../../views/mantenimientos/instituciones/instituciones.component.html',
+  styleUrls: ['../../../views/mantenimientos/instituciones/style.component.css'],
   providers: [LoginService, ListasComunesService, UploadService]
 })
 
-export class RegisterComponent implements OnInit{
-  public titulo:string = "Registro de Usuarios";
+export class MantenimientoInstitucionesComponent implements OnInit{
+  public titulo:string = "Mantenimiento de Instituciones";
 
   // Instacia de la variable del Modelo
-  public user:Usuarios;
+  public _modIntituciones:Intituciones;
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -94,16 +92,16 @@ export class RegisterComponent implements OnInit{
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this.user = new Usuarios(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
+    this._modIntituciones = new Intituciones(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
     //this.loadScript('../assets/js/register.component.js');
   }
 
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
-      console.log(this.user);
+      console.log(this._modIntituciones);
       // parseInt(this.user.idTipoUsuario);
-      this._loginService.registerUser(this.user).subscribe(
+      this._loginService.registerUser(this._modIntituciones).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
             this.status = response.status;
@@ -127,24 +125,6 @@ export class RegisterComponent implements OnInit{
             }
         });
   }
-
-
-
-  /****************************************************
-  * Funcion: FND-00001
-  * Fecha: 28-07-2017
-  * Descripcion: que Carga, Los Script de la Pagina
-  * Objetivo: cargar los scripts, nesesarios para el
-  * uso de la pagina
-  *****************************************************/
-  public loadScript(url) {
-    // console.log('preparing to load...')
-    let node = document.createElement('script');
-    node.src = url;
-    node.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(node);
-  } // FIN : 00001
-
 
 
   /*****************************************************
@@ -330,7 +310,7 @@ export class RegisterComponent implements OnInit{
   ******************************************************/
   getlistaSubDireccionesSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this.paramsSubDir.idDireccionSreci = this.user.idDireccionSreci;
+    this.paramsSubDir.idDireccionSreci = this._modIntituciones.idDireccionSreci;
 
     this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
         response => {

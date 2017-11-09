@@ -7,7 +7,7 @@
 
       <!-- Loader de Carga de los Datos -->
       <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:35%; margin-top:5%;">
-        <img src="assets/images/aguarde.gif" alt="Cargando Tareas">
+        <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
       <!-- Opcion de Nuevo Contacto -->
       <button type="button" class="btn btn-outline-primary"
@@ -41,10 +41,12 @@
                   <td >{{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}</td>
                   <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                         href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}">
+                        <!-- href="http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}"> -->
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
                       <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5"
                         href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank">
+                        <!-- href="http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
                           <i class="material-icons">photo</i>
                       </a>
                   </td>
@@ -63,7 +65,7 @@
             				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="material-icons">close</i> </button>
             				<h4 class="modal-title" id="myModalLabel">{{ newTittle }}</h4>
                     <div id="loader-2" *ngIf="loading_table == 'show' " style="margin-left:35%; margin-top:5%;">
-                      <img src="assets/images/30.gif" alt="Cargando Tareas">
+                      <img src="assets/images/832.gif" alt="Cargando Tareas">
                     </div>
                   </div>
 

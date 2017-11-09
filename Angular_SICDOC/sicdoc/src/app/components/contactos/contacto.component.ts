@@ -136,6 +136,14 @@ export class ContactosComponent implements OnInit {
   } // Fin | ngOnInit
 
 
+  closeModal( nameBotton ){
+    setTimeout(function() {
+      // $('#t_and_c_m').modal('hide');
+      $( nameBotton ).click();
+    }, 600);
+  }
+
+
   /*****************************************************
   * Funcion: onSubmit
   * Fecha: 11-10-2017
@@ -215,6 +223,7 @@ export class ContactosComponent implements OnInit {
     this.loadTabla1 = false;
     // console.log( this.consultaContactos );
     // Llamar al metodo, de Service para Obtener los Datos de los Contactos
+    
     this._consultaContactoService.contactoFindAll( this.consultaContactos ).subscribe(
         response => {
           // login successful so redirect to return url
@@ -222,7 +231,15 @@ export class ContactosComponent implements OnInit {
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaContactosEnc = response.data;
 
+            // Mensaje de Alerta de no enconrar los Datos
             alert(response.msg);
+            // Dispose de los Loaders
+            this.loading = 'hidden';
+            this.loadTabla1 = true;
+
+            this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'descInstitucion,perfilInstitucion');
+            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
           }else{
             this.JsonOutgetlistaContactosEnc = response.data;
             //this.valoresdataDetJson ( response.data );
@@ -262,7 +279,7 @@ export class ContactosComponent implements OnInit {
 
           }else{
             this.JsonOutgetlistaInstitucion = response.data;
-            //console.log(response.data);
+            console.log(response.data);
           }
         });
   } // FIN : FND-00001.1
@@ -353,8 +370,8 @@ export class ContactosComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
-    let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
+    // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
     // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
@@ -410,8 +427,8 @@ export class ContactosComponent implements OnInit {
   * ( downloadDocumento ).
   ******************************************************/
   downloadDocumento(downloadUrl){
-    // var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    var url= window.URL.createObjectURL("http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/");
+    var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
+    // var url= window.URL.createObjectURL("http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/");
     //  let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005

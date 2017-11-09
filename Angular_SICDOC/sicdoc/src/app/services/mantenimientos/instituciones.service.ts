@@ -7,12 +7,11 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class IngresoComunicacionService {
+export class InstitucionesService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
   public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
   // public url = "http://172.17.3.90/sicdoc/symfony/web/app.php";
-  // public url = "http://192.168.0.15/sicdoc/symfony/web/app.php";
   // public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
 
   //Variables para el localStorage
@@ -21,7 +20,7 @@ export class IngresoComunicacionService {
 
 
   //Constructor de la Clase
-  constructor( private _http: Http ) {  }
+  constructor( private _http: Http ) { }
 
 
   /****************************************************
@@ -32,46 +31,46 @@ export class IngresoComunicacionService {
   * Objetivo: Logearse a la Aplicacion
   *****************************************************/
   signUp( user_to_login ){
-      let json = JSON.stringify( user_to_login ); //Convertimos el Objeto a Json
-      let params = "json=" + json;                // Instanciamos los Valorrs del Json con sus parametros
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'}); // Declaramos las Cabezeras
+      let json = JSON.stringify( user_to_login );
+      let params = "json=" + json;
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
     return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
-  } // FIN : FND-00001
+  }
 
 
   /****************************************************
   * Funcion: FND-00002
-  * Fecha: 31-08-2017
+  * Fecha: 28-07-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (correspondencia/new-correspondencia).
-  * Objetivo: Ingresar nueva correspondencia
+  * a la API (usuario/new).
+  * Objetivo: Agregar nuevo Usuario
   *****************************************************/
-  registerComunicacion( token, correspondencia_to_register ){
-      let json = JSON.stringify( correspondencia_to_register );
-      let params = "json=" + json + "&authorization=" + token;
+  registerUser( user_to_register ){
+      let json = JSON.stringify( user_to_register );
+      let params = "json=" + json;
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/correspondencia/new-correspondencia", params, { headers:headers }).map( res => res.json());
-  } // FIN : FND-00002
+    return this._http.post(this.url + "/usuario/new", params, { headers:headers }).map( res => res.json());
+  }
 
 
   /****************************************************
   * Funcion: FND-00002.1
-  * Fecha: 25-09-2017
+  * Fecha: 09-10-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (correspondencia/new-correspondencia-tipo).
-  * Objetivo: Ingresar nueva correspondencia
+  * a la API ( usuario/change-pass-user ).
+  * Objetivo: Cambiar Password a Usuario
   *****************************************************/
-  registerTipoComunicacion( token, correspondencia_to_register ){
-      let json = JSON.stringify( correspondencia_to_register );
-      let params = "json=" + json + "&authorization=" + token;
+  changePassUser( user_to_change_pass ){
+      let json = JSON.stringify( user_to_change_pass );
+      let params = "json=" + json + "&authorization=" + this.getToken();
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/correspondencia/new-correspondencia-tipo", params, { headers:headers }).map( res => res.json());
-  } // FIN : FND-00002.1
+    return this._http.post(this.url + "/usuario/change-pass-user", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002
 
 
   /****************************************************
@@ -91,7 +90,7 @@ export class IngresoComunicacionService {
       }
 
     return this.identity;
-  } // FIN : FND-00003
+  }
 
 
   /****************************************************
@@ -112,7 +111,7 @@ export class IngresoComunicacionService {
       }
 
     return this.token;
-  } // FIN : FND-00004
+  }
 
 
 }
