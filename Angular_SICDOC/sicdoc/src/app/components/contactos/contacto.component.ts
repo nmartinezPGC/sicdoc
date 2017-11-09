@@ -129,7 +129,7 @@ export class ContactosComponent implements OnInit {
     this.getlistaFuncionariosSreci();
 
     // Ejecucion de la Lista de Contactos
-    this.getlistaContactosTableFind();
+    // this.getlistaContactosTableFind();
 
     // Llenado de la Tabla de Encabezado
     // this.fillDataTable();
@@ -223,7 +223,7 @@ export class ContactosComponent implements OnInit {
     this.loadTabla1 = false;
     // console.log( this.consultaContactos );
     // Llamar al metodo, de Service para Obtener los Datos de los Contactos
-    
+
     this._consultaContactoService.contactoFindAll( this.consultaContactos ).subscribe(
         response => {
           // login successful so redirect to return url
@@ -232,27 +232,15 @@ export class ContactosComponent implements OnInit {
             this.JsonOutgetlistaContactosEnc = response.data;
 
             // Mensaje de Alerta de no enconrar los Datos
-            alert(response.msg);
             // Dispose de los Loaders
             this.loading = 'hidden';
             this.loadTabla1 = true;
-
-            this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'descInstitucion,perfilInstitucion');
-            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
-                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
           }else{
             this.JsonOutgetlistaContactosEnc = response.data;
             //this.valoresdataDetJson ( response.data );
             this.JsonLimpio = this.JsonOutgetlistaContactosEnc;
             this.loading = 'hidden';
             this.loadTabla1 = true;
-
-            // console.log(this.JsonOutgetlistaInstitucion); // Lista de Instituciones
-            // console.log(this.JsonOutgetlistaFuncionarios); // Lista de Funcionarios
-            console.log(this.JsonOutgetlistaContactosEnc); // Tabla de Contactos
-            this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'perfilInstitucion');
-            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
-                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
             //console.log(this.dataServiceFunc);
           }
         });
@@ -279,6 +267,8 @@ export class ContactosComponent implements OnInit {
 
           }else{
             this.JsonOutgetlistaInstitucion = response.data;
+
+            this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'descInstitucion,perfilInstitucion');
             console.log(response.data);
           }
         });
@@ -305,7 +295,9 @@ export class ContactosComponent implements OnInit {
 
           }else{
             this.JsonOutgetlistaFuncionarios = response.data;
-            //console.log(response.data);
+            this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
+                  'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,celularFuncionario,emailFuncionario');
+            // console.log(response.data);
           }
         });
   } // FIN : FND-00001.2
