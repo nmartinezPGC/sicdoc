@@ -146,13 +146,35 @@ class ComunesController extends Controller {
             $tipo_documento   = (isset($params->idTipoDocumento)) ? $params->idTipoDocumento : null;
             
             // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
-            $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findBy(
+            $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
                     array(
                         "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
                         "tablaSecuencia"  => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
                         "idTipoDocumento" => $tipo_documento, // Tipo de Documento (Oficio)
-                        "reservada"       => "N"
+                        //"reservada"       => "N"
                     ));
+            
+            // Condicion para Actualizar Datos de la Secuencia
+            if( $secuencias->getReservada() === "N" ){
+                $secuencias->setReservada('S'); 
+            
+                //Realizar la Persistencia de los Datos y enviar a la BD
+                $em->persist($secuencias);
+
+                //Realizar la actualizacion en el storage de la BD
+                $em->flush();
+            } else if ( $secuencias->getReservada() === "S" ) {
+                //$secuencias->setReservada('N'); 
+                $secuencias->setValor2( $secuencias->getValor2() + 1 ); //Set de valor2 de Secuencia de Comunicacion
+                //$secuencias->setReservada('N'); 
+            
+                //Realizar la Persistencia de los Datos y enviar a la BD
+                $em->persist($secuencias);
+
+                //Realizar la actualizacion en el storage de la BD
+                $em->flush();
+            }
+            
             
             // Validar que la Secuencia no ha sido, reservada por Otro Usuario
             $count_Sec = count($secuencias);
@@ -166,6 +188,7 @@ class ComunesController extends Controller {
                              
                 $data = array(
                     "status" => "success",
+                    "msg"    => "Seceuncia Encontrada",
                     "code"   => 200,                    
                     "data"   => $secuencias
                 );                

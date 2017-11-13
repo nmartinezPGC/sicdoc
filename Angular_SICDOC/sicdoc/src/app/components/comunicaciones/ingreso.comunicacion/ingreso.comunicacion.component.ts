@@ -87,8 +87,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public JsonOutgetListaDocumentos = [];
 
   // Secuencias
-  public JsonOutgetCodigoSecuenciaNew:any[];
-  public JsonOutgetCodigoSecuenciaDet:any[];
+  // public JsonOutgetCodigoSecuenciaNew:any[];
+  public JsonOutgetCodigoSecuenciaNew;
+  // public JsonOutgetCodigoSecuenciaDet:any[];
+  public JsonOutgetCodigoSecuenciaDet;
   public JsonOutgetCodigoSecuenciaSCPI:any[];
   public codigoSecuencia:string;
   public valorSecuencia;
@@ -252,6 +254,18 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
 
+    // Inicio de Encabezados
+    this.JsonOutgetCodigoSecuenciaNew = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+
+    // Inicio de Detalle
+    this.JsonOutgetCodigoSecuenciaDet = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+
     // Inicializamos los Parametros de Tipo Comunicacion
     this.paramsIdTipoComSend = {
       "idTipoCom" : "",
@@ -383,13 +397,19 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   onSubmit(forma:NgForm){
       // Parseo de parametros que no se seleccionan
       // Secuenciales de Encabezado | COM-OUT-*  y COM-OUT-DET-*
-      this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-      this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-      this.valorSecuenciaAct     = this.JsonOutgetCodigoSecuenciaNew[0].valor2;
+      // this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+      this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew.codSecuencial;
+      // this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+      this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew.valor2 + 1;
+      // this.valorSecuenciaAct     = this.JsonOutgetCodigoSecuenciaNew[0].valor2;
+      this.valorSecuenciaAct     = this.JsonOutgetCodigoSecuenciaNew.valor2;
 
-      this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-      this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
-      this.valorSecuenciaDetAct  = this.JsonOutgetCodigoSecuenciaDet[0].valor2;
+      // this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+      this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet.codSecuencial;
+      // this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+      this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet.valor2 + 1;
+      // this.valorSecuenciaDetAct  = this.JsonOutgetCodigoSecuenciaDet[0].valor2;
+      this.valorSecuenciaDetAct  = this.JsonOutgetCodigoSecuenciaDet.valor2;
 
       // Secuenciales de la Tabla correspondencia Encabenzado
       this.comunicacion.codCorrespondencia = this.codigoSecuencia;
@@ -745,7 +765,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            // console.log(response.data);
+            console.log(response.data);
             // Ejecutamos la Funcion de Secuencia de Detalle
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
           }
@@ -1150,7 +1170,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetListaMemosFinalizados = response.data;
-            this.countMemosFinalizados = this.JsonOutgetListaOficiosFinalizados;
+            this.countMemosFinalizados = this.JsonOutgetListaMemosFinalizados;
             //alert(this.countOficios);
           }
         });

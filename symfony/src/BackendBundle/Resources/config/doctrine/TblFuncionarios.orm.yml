@@ -5,12 +5,12 @@ BackendBundle\Entity\TblFuncionarios:
         fki_depto_func:
             columns:
                 - id_depto_funcional
-        fki_user_funci:
-            columns:
-                - id_usuario
         fki_tipo_func:
             columns:
                 - id_tipo_funcionario
+        fki_user_funci:
+            columns:
+                - id_usuario
     id:
         idFuncionario:
             type: integer

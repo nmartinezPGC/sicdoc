@@ -151,8 +151,10 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaFuncionariosSRECI:any[];
   public JsonOutgetlistaTiposDocumentos:any[];
 
-  public JsonOutgetCodigoSecuenciaNew:any[];
-  public JsonOutgetCodigoSecuenciaDet:any[];
+  // public JsonOutgetCodigoSecuenciaNew:any[];
+  public JsonOutgetCodigoSecuenciaNew;
+  // public JsonOutgetCodigoSecuenciaDet:any[];
+  public JsonOutgetCodigoSecuenciaDet;
 
   // Json del Recuento de Datos
   // Oficios
@@ -222,6 +224,18 @@ export class IngresoComunicacionComponent implements OnInit{
   ngOnInit(){
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
+
+    // Seteo del Json de Secuecnias Encabezados
+    this.JsonOutgetCodigoSecuenciaNew = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+
+    // Seteo del Json de Secuecnias Encabezados
+    this.JsonOutgetCodigoSecuenciaDet = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
 
     // Inicializamos los Parametros de Tipo Comunicacion
     this.paramsIdTipoComSend = {
@@ -353,12 +367,19 @@ export class IngresoComunicacionComponent implements OnInit{
   // Ini | Metodo onSubmit
   onSubmit(forma:NgForm){
       //this.validCampos();
-      this.listarCodigoCorrespondencia();
+      // this.listarCodigoCorrespondencia();
       // Parseo de parametros que no se seleccionan
-      this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-      this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
-      this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-      this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+      // Datos de la Secuencia Enabezado
+      // this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+      this.codigoSecuencia    = this.JsonOutgetCodigoSecuenciaNew.codSecuencial;
+      // this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+      this.valorSecuencia     = this.JsonOutgetCodigoSecuenciaNew.valor2 + 1;
+
+      // Datos de la Secuencia Detalle
+      // this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+      this.codigoSecuenciaDet = this.JsonOutgetCodigoSecuenciaDet.codSecuencial;
+      // this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+      this.valorSecuenciaDet  = this.JsonOutgetCodigoSecuenciaDet.valor2 + 1;
 
       // Secuenciales de la Tabla correspondencia Encabenzado
       // this.comunicacion.codCorrespondencia = this.codigoSecuencia + "-" + this.valorSecuencia;
@@ -396,6 +417,7 @@ export class IngresoComunicacionComponent implements OnInit{
       //  this.comunicacion.pdfDocumento = convert;
       //  console.log(this.comunicacion.pdfDocumento);
 
+      // Llamado al Procedo de Registro de Comunicacion
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
@@ -912,8 +934,10 @@ export class IngresoComunicacionComponent implements OnInit{
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
     // Parametros de las Secuencias
-    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    // this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew.codSecuencial;
+    // this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew.valor2 + 1;
     this.codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
 
     this.codigoSec = this.codigoSec + '-' + this.nextDocumento;
@@ -1341,7 +1365,7 @@ export class IngresoComunicacionComponent implements OnInit{
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetListaMemosFinalizados = response.data;
-            this.countMemosFinalizados = this.JsonOutgetListaOficiosFinalizados;
+            this.countMemosFinalizados = this.JsonOutgetListaMemosFinalizados;
             //alert(this.countOficios);
           }
         });

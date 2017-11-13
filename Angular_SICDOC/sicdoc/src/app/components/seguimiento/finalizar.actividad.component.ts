@@ -67,9 +67,12 @@ export class FinalizarActividadComponent implements OnInit {
   // Json de los listas de los Oficios por usuario
   public JsonOutgetlistaOficiosAll:any[];
   public JsonOutgetlistaOficiosAllDet:any[];
-  public JsonOutgetCodigoSecuenciaDet:any[];
-  public JsonOutgetCodigoSecuenciaOfiResp:any[];
-  public JsonOutgetCodigoSecuenciaActividadAgregar:any[];
+  // public JsonOutgetCodigoSecuenciaDet:any[];
+  public JsonOutgetCodigoSecuenciaDet;
+  // public JsonOutgetCodigoSecuenciaOfiResp:any[];
+  public JsonOutgetCodigoSecuenciaOfiResp;
+  // public JsonOutgetCodigoSecuenciaActividadAgregar:any[];
+  public JsonOutgetCodigoSecuenciaActividadAgregar;
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
@@ -140,6 +143,23 @@ export class FinalizarActividadComponent implements OnInit {
  *           de la BD, Llamando a la API
  ******************************************************/
   ngOnInit() {
+    // Inicio de Detalle correspondencia
+    this.JsonOutgetCodigoSecuenciaDet = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+
+    // Inicio de Detalle correspondencia
+    this.JsonOutgetCodigoSecuenciaOfiResp = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+    // Inicio de Detalle correspondencia
+    this.JsonOutgetCodigoSecuenciaActividadAgregar = {
+      "codSecuencial" : "",
+      "valor2" : ""
+    }
+
     // Iniciamos los Parametros de Instituciones
     this.tableFinalizarActividadList = {
       "codOficioInt":"",
@@ -235,13 +255,19 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.idFuncionarioAsigmado = this.identity.sub;
 
     // Parametros de l Secuenciales
-    this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-    this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
+    // this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
+    this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet.codSecuencial;
+    // this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
+    this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
 
-    this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial;
-    this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
-    this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
-    this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
+    // this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial;
+    this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
+    // this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
+    this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet.valor2 + 1;
+    // this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
+    this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp.valor2 + 1;
+    // this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
+    this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
     //console.log( this.JsonOutgetCodigoSecuenciaDet );
 
     // Secuenciales de la Tabla correspondencia detalle
@@ -471,8 +497,10 @@ export class FinalizarActividadComponent implements OnInit {
 
 
     // Seteamos el valore del Nombre del Documento
-    let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
-    codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
+    // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
+    let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
+    // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
+    codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
     console.log(codigoSec);
 
     // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '

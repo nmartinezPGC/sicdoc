@@ -466,8 +466,19 @@ class SeguimientoCorrespondenciaController extends Controller {
                             array(
                                 //"codSecuencial"  => "COM-IN-DET-OFI"
                                 "codSecuencial"  => $secuenca_generate
-                            ));                    
-                        $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
+                            ));
+                        
+                        // Evalua que el valor2 de la Consulta no sea Mayor al Enviado
+                        $secuenciaAct = $secuenciaNew->getValor2();
+                        if( $secuenciaAct > $new_secuencia ){
+                            $secuenciaNew->setValor2($secuenciaAct); //Set de valor2 de Secuencia de Comunicacion                            
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion                        
+                        } else if ( $secuenciaAct < $new_secuencia ){
+                            $secuenciaNew->setValor2($new_secuencia ); //Set de valor2 de Secuencia de Comunicacion
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
+                        }
+                        
+                        //$secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                                                 
@@ -859,8 +870,19 @@ class SeguimientoCorrespondenciaController extends Controller {
                             array(
                                 "codSecuencial"  => "SCPI",
                                 "idTipoDocumento" => $tipo_documento
-                            ));                    
-                        $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
+                            )); 
+                        
+                        // Evalua que el valor2 de la Consulta no sea Mayor al Enviado
+                        $secuenciaAct = $secuenciaNew->getValor2();
+                        if( $secuenciaAct > $new_secuencia ){
+                            $secuenciaNew->setValor2($secuenciaAct); //Set de valor2 de Secuencia de Comunicacion                            
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion                        
+                        } else if ( $secuenciaAct < $new_secuencia ){
+                            $secuenciaNew->setValor2($new_secuencia ); //Set de valor2 de Secuencia de Comunicacion
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
+                        }
+                        
+                        //$secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Oficios
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                                                 
@@ -1166,8 +1188,19 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
                                 "codSecuencial"  => $cod_correspondencia_det
-                            ));                    
-                        $secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Documentos
+                            ));  
+                        
+                        // Evalua que el valor2 de la Consulta no sea Mayor al Enviado
+                        $secuenciaAct = $secuenciaNew->getValor2();
+                        if( $secuenciaAct > $new_secuencia ){
+                            $secuenciaNew->setValor2($secuenciaAct); //Set de valor2 de Secuencia de Comunicacion                            
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion                        
+                        } else if ( $secuenciaAct < $new_secuencia ){
+                            $secuenciaNew->setValor2($new_secuencia ); //Set de valor2 de Secuencia de Comunicacion
+                            $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
+                        }
+                        
+                        //$secuenciaNew->setValor2($new_secuencia); //Set de valor2 de Secuencia de Documentos
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                                                 
