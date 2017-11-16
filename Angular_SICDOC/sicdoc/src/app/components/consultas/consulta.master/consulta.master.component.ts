@@ -273,7 +273,7 @@ export class ConsultaMasterComponent implements OnInit {
           $('#example').DataTable({
             // Barra Vertical de la Tabla
             //scrollY:        '50vh',
-            //scrollCollapse: true,            
+            //scrollCollapse: true,
             fixedHeader: true,
             "autoWidth": false,
             // Tamaño de la Pagina

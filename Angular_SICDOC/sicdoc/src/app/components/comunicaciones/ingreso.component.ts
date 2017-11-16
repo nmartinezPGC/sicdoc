@@ -524,7 +524,7 @@ export class IngresoComunicacionComponent implements OnInit{
                                           "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
                                           "", "", "", null);
 
-   // Limpiamos el Array de los Documentos                                        
+   // Limpiamos el Array de los Documentos
    this.comunicacion.pdfDocumento = "";
 
    this.JsonOutgetListaDocumentos = [];
@@ -934,9 +934,9 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
     // Parametros de las Secuencias

@@ -40,13 +40,15 @@
                        {{ item.idFuncionario.apellido1Funcionario }}</td>
                   <td >{{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}</td>
                   <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
-                        href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}">
+                    href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}">
                         <!-- href="http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}"> -->
+                        <!-- href="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}"> -->
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
                       <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5"
                         href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank">
                         <!-- href="http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
+                        <!-- href="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
                           <i class="material-icons">photo</i>
                       </a>
                   </td>

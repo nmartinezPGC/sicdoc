@@ -76,7 +76,8 @@
                                                          item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion);"
                      data-toggle="modal" data-target="#t_and_c_m2" >
-                     <i class="material-icons" data-placement="top" title="Comunicacion de Respuesta">create_new_folder</i>
+                     <!-- <i class="material-icons" data-placement="top" title="Comunicacion de Respuesta">create_new_folder</i> -->
+                     <img src="/assets/icons/comunicacion/test_green_24x24.png" class="d-inline-block align-top" alt="" title="Comunicacion de Respuesta" >
                   </a>
                   <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento != 1 "
                      href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
@@ -87,7 +88,8 @@
                                                          item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m3" >
-                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Agregar Actividad a Comunicacion" >assignment</i>
+                    <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Agregar Actividad a Comunicacion" >assignment</i> -->
+                    <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicacion">
                   </a>
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
@@ -97,7 +99,8 @@
                                                          item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento.idTipoDocumento, item.idTipoComunicacion.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m" >
-                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i>
+                      <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i> -->
+                      <img src="/assets/icons/comunicacion/verified-text-paper_blue_24x24.png" class="d-inline-block align-top" alt="" title="Finalizar Comunicacion" >
                   </a>
 
               </td>
