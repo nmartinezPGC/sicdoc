@@ -545,8 +545,10 @@ class UsuarioController extends Controller{
                                                         )
                                                     )
                                                  )                                   
-                                       ->setUsername("nahum.sreci@gmail.com")                                   
-                                       ->setPassword('1897Juve');                                   
+                                       //->setUsername("nahum.sreci@gmail.com")                                   
+                                       //->setPassword('1897Juve');                                   
+                                       ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                                       ->setPassword('Despachomcns');
                                    //echo "Paso 1";
                                    //Creamos la instancia del envío
                                    $mailer = \Swift_Mailer::newInstance($transport);
@@ -554,7 +556,9 @@ class UsuarioController extends Controller{
                                    //Creamos el mensaje
                                    $mail = \Swift_Message::newInstance()
                                        ->setSubject('Cambio de Contraseña | SICDOC')
-                                       ->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
+                                       //->setFrom(array($identity->email => $identity->nombre . " " .  $identity->apellido ))
+                                       //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" )) 
+                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" )) 
                                        ->setTo($mailSend)                               
                                        ->setBody(
                                             $this->renderView(

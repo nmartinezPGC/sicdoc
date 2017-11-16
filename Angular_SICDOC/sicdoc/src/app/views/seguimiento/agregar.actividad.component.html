@@ -12,9 +12,9 @@
   <div class="row-fluid" *ngIf=" loadTabla1 == true">
     <div class="col-xs-12 col-md-12 col-lg-12">
     <h4>Buscar por:
-      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="temaComunicacion" >Tema de Oficio |
-    <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codCorrespondenciaEnc" checked="checked" >No. Oficio Interno |
-    <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codReferenciaSreci" checked="checked" >No. Oficio Ingresado
+      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="temaComunicacion" >Tema de Comunicación |
+    <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codCorrespondenciaEnc" checked="checked" >No. Interno |
+    <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codReferenciaSreci" checked="checked" >No. Ingresado
     </h4>
       <input class="form-control" type="text" name="search"  [(ngModel)]="search" placeholder="Buscar" >
     </div>
@@ -34,27 +34,27 @@
         <thead >
             <tr>
               <th>Estado</th>
-              <th>No. Oficio Interno</th>
-              <th>No. Oficio Ingresado</th>
+              <th>No. Interno</th>
+              <th>No. Ingresado</th>
               <th>Nombre Institución</th>
-              <th>Tema Oficio</th>
-              <th>Fecha Ingreso</th>
-              <th>Fecha Entrega</th>
+              <th>Tema Comunicación</th>
+              <th>Fecha Creación</th>
+              <th>Fecha Entrega.</th>
               <th>Accion</th>
             </tr>
         </thead>
-        <tfoot>
+        <!-- <tfoot>
             <tr>
               <th>Estado</th>
-              <th>No. Oficio Interno</th>
-              <th>No. Oficio Ingresado</th>
+              <th>No. Interno</th>
+              <th>No. Ingresado</th>
               <th>Nombre Institución</th>
               <th>Tema Oficio</th>
               <th>Fecha Ingreso</th>
               <th>Fecha Entrega</th>
               <th>Accion</th>
             </tr>
-        </tfoot>
+        </tfoot> -->
         <tbody >
             <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search ">
               <td [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3, 'text-danger' : item.idEstado.idEstado == 6,
@@ -65,7 +65,7 @@
               </td>
               <td> {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
-              <td> {{ item.idInstitucion.descInstitucion }} </td>
+              <td> {{ item.idInstitucion.descInstitucion }} | {{ item.idInstitucion.perfilInstitucion }} </td>
               <td> {{ item.temaComunicacion }} </td>
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso.timestamp | generateDate }} </td>
@@ -114,7 +114,7 @@
   		<div class="modal-content">
   			<div class="modal-header">
   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="material-icons">close</i> </button>
-  				<h4 class="modal-title" id="myModalLabel">Oficio No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+  				<h4 class="modal-title" id="myModalLabel">Comunicación No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
           <!-- Loader de Carga de los Datos -->
           <div id="loader-2" *ngIf="loading_table == 'show'" >
             <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
@@ -123,6 +123,7 @@
 
   			<div class="modal-body">
             <form>
+              <hr class="colorgraph">
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="validationDefault01">Nombre de Funcionario Asignado</label>
@@ -174,7 +175,8 @@
             </table>
             </div>
             <!-- Seccion de Boton de Salida -->
-            <button type="button" id="closeModalFinCom" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            <hr class="colorgraph">
+            <button type="button" id="closeModalFinCom" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
   			</div>
   			<!-- <div class="modal-footer">
   			</div> -->

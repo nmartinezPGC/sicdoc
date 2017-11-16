@@ -523,6 +523,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0,
                                           "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
                                           "", "", "", null);
+
+   // Limpiamos el Array de los Documentos                                        
+   this.comunicacion.pdfDocumento = "";
+
+   this.JsonOutgetListaDocumentos = [];
+
   } // FIN : FND-00001.1
 
 

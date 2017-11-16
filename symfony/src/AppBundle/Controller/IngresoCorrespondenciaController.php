@@ -37,8 +37,11 @@ class IngresoCorrespondenciaController extends Controller{
     {
     $mensaje = \Swift_Message::newInstance()
         ->setSubject('Hola')
-        ->setFrom('nahum.sreci@gmail.com')
-        ->setTo('nahum.sreci@gmail.com')
+        //->setFrom('nahum.sreci@gmail.com')
+        //->setTo('nahum.sreci@gmail.com')
+        //->setTo('nahum.sreci@gmail.com')
+        ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+        //->setPassword('Despachomcns');
         ->setBody('Hola Mundo');
         $this->get('mailer')->send($mensaje);
         //return $this->render(...);
@@ -455,10 +458,12 @@ class IngresoCorrespondenciaController extends Controller{
                                             )
                                          )
                                //->setUsername( $identity->email )
-                               ->setUsername("nahum.sreci@gmail.com")
+                               //->setUsername("nahum.sreci@gmail.com")
                                //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
+                               //->setPassword('1897Juve');
                                //->setPassword('gec2017*');
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                               ->setPassword('Despachomcns');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -467,7 +472,8 @@ class IngresoCorrespondenciaController extends Controller{
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))    
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))    
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))                                       
                                ->setTo($mailSend)                                
                                //->addCc([ $setTo_array_convertIn ])                              
                                ->setBody(
@@ -907,7 +913,15 @@ class IngresoCorrespondenciaController extends Controller{
                             ));
                         $inicialesDeptoFunc = $deptoFuncConsulta->getInicialesDeptoFuncional();
                         
-                    $cod_referenciaSreci = $cod_referenciaSCPI . "-". $inicialesDeptoFunc . "-". $valor2_secuenciaSCPI;
+                    //$cod_referenciaSreci = $cod_referenciaSCPI . "-". $inicialesDeptoFunc . "-". $valor2_secuenciaSCPI;
+                        /* Incidencia: INC.00001 | Generacion de Secuencia SCPI | Automatica
+                        * Fecha : 2017-11-15 | 05:25 pm
+                        * Reportada : Nahum Martinez | Admon. SICDOC
+                        * INI | NMA | INC.00001
+                        * Cambiamos Cambiamos El Proceso de Generar la Secuencia en Back End
+                         * y Hacerlo desde el Front End */
+                        $cod_referenciaSreci = $act_secuencia_scpi;
+                        // FIN | NMA | INC.00001
                     } // Fin Codicion de Oficio Secuencial SCPI ****************
                     
                     // Seteamos el Valor de Codigo de Referencia | SCPI-DEPTO-CORRELATIVO
@@ -1219,19 +1233,21 @@ class IngresoCorrespondenciaController extends Controller{
                                                  )
                                //->setEncryption('ssl')                               
                                //->setUsername( $identity->email )
-                               ->setUsername( 'nahum.sreci@gmail.com')
+                               //->setUsername( 'nahum.sreci@gmail.com')
                                //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
+                               //->setPassword('1897Juve');
                                //->setPassword('gec2017*');
-                           
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                               ->setPassword('Despachomcns');     
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')                               
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(

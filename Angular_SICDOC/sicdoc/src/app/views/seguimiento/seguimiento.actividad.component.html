@@ -17,8 +17,8 @@
             {{ opcionSearch }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(1)">No. Interno Comunicacion</a>
-            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(2)">No. Referencia Comunicacion</a>
+            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(1)">No. Interno Comunicación</a>
+            <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(2)">No. Referencia Comunicación</a>
             <!-- <a class="dropdown-item" style="cursor:pointer" (click)="selecOpcionSearch(3)">Tema Comunicacion</a> -->
             <!-- <div role="separator" class="dropdown-divider"></div> -->
             <!-- <a class="dropdown-item" href="#">Descipcion</a> -->
@@ -27,9 +27,9 @@
 
         <input #searchValueSend type="text" class="form-control" name="searchValueSend" id="searchValueSend" [(ngModel)]="seguimientoActividad.searchValueSend"
               aria-label="Search" placeholder="Ingresa criterio de busqueda" required maxlength="40" minlength="8">
-          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.required" >El creterio de busqueda es obligatorio</small>
+          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.required" >El críterio de busqueda es obligatorio</small>
           <small class="form-text text-muted" *ngIf="searchValueSend.errors?.minlength" >Se nesesita por lo menos {{ searchValueSend.errors.minlength.requiredLength }} caracteres</small>
-          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.maxlength" >La capacidad maxima para el criterio de busqueda es: 40 caracteres</small>
+          <small class="form-text text-muted" *ngIf="searchValueSend.errors?.maxlength" >La capacidad máxima para el críterio de busqueda es: 40 caracteres</small>
         <button class="btn btn-outline-success my-2 my-sm-0" type="button"
             (click)="getlistaComunicacionEncTableFind();" >Buscar</button>
         <!-- Loader de Carga de los Datos -->
@@ -46,12 +46,12 @@
       <ul class="nav nav-tabs nav-justified indigo" role="tablist">
           <li class="nav-item">
               <h4><a class="nav-link active" data-toggle="tab" href="#panel5" role="tab">
-                <i class="fa fa-user"></i> Informacion de Ingreso
+                <i class="fa fa-user"></i> Información de Ingreso
               </a></h4>
           </li>
           <li class="nav-item">
               <h4><a class="nav-link" data-toggle="tab" href="#panel6" role="tab">
-                <i class="fa fa-heart"></i> Informacion de Seguimiento
+                <i class="fa fa-heart"></i> Información de Seguimiento
               </a></h4>
           </li>
           <li class="nav-item">
@@ -69,7 +69,7 @@
               <!-- Codigos de la Comunicacion -->
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#demo1">Identificacion de Comunicacion</a>
+                  <a data-toggle="collapse" href="#demo1">Identificación de Comunicación</a>
                 </h4>
               </div>
                 <hr>
@@ -78,7 +78,7 @@
                   <div class="col-lg-6">
                     <div class="card-group">
                       <div class="card">
-                        <h4 class="card-header">Codigo Interno</h4>
+                        <h4 class="card-header">Código Interno</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
                           <p style="margin-left:10px">{{ tableSeguimientoActividadList.codComunicacionInterno }}</p>
@@ -86,7 +86,7 @@
                         </div>
                       </div>
                       <div class="card">
-                        <h4 class="card-header">Codigo Referencia</h4>
+                        <h4 class="card-header">Código Referencia</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
                           <p style="margin-left:10px">{{ tableSeguimientoActividadList.codComunicacionReferencia }}</p>
@@ -102,7 +102,7 @@
               <!-- Fechas de Comunicacion Encabezado -->
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#demo2">Fechas de Comunicacion</a>
+                  <a data-toggle="collapse" href="#demo2">Fechas de Comunicación</a>
                 </h4>
               </div>
               <hr>
@@ -127,7 +127,7 @@
                         </div>
                       </div>
                       <div class="card">
-                        <h4 class="card-header">F. Modificacion</h4>
+                        <h4 class="card-header">F. Modificación</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
                           <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaModificacion | generateDate }}</p>
@@ -135,7 +135,7 @@
                         </div>
                       </div>
                       <div class="card">
-                        <h4 class="card-header">F. Finalizacion</h4>
+                        <h4 class="card-header">F. Finalización</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
                           <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaFinalizacion | generateDate }}</p>
@@ -151,7 +151,7 @@
               <!-- Seccion de Entidades relaciones -->
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#demo3">Informacion General</a>
+                  <a data-toggle="collapse" href="#demo3">Información General</a>
                 </h4>
               </div>
                 <hr>
@@ -160,7 +160,7 @@
                     <div class="col-lg-12">
                       <div class="card-group">
                         <div class="card">
-                          <h4 class="card-header">Institucion Receptora</h4>
+                          <h4 class="card-header">Institución Remitente</h4>
                           <div class="card-block">
                             <!-- <h4 class="card-title">Special title treatment</h4> -->
                             <p style="margin-left:10px">{{ tableSeguimientoActividadList.institucionReceptora }}</p>
@@ -168,7 +168,7 @@
                           </div>
                         </div>
                         <div class="card">
-                          <h4 class="card-header">Direccion SRECI</h4>
+                          <h4 class="card-header">Sub Secretaría Responsable</h4>
                           <div class="card-block">
                             <!-- <h4 class="card-title">Special title treatment</h4> -->
                             <p style="margin-left:10px">{{ tableSeguimientoActividadList.direccionSreci }}</p>
@@ -176,7 +176,7 @@
                           </div>
                         </div>
                         <div class="card">
-                          <h4 class="card-header">Sub Direccion SRECI</h4>
+                          <h4 class="card-header">Dirección Responsable</h4>
                           <div class="card-block">
                             <!-- <h4 class="card-title">Special title treatment</h4> -->
                             <p style="margin-left:10px">{{ tableSeguimientoActividadList.subDireccionSreci }}</p>
@@ -194,7 +194,7 @@
                     <div class="col-lg-8">
                       <div class="card-group">
                         <div class="card">
-                          <h4 class="card-header">Tipo de Comunicacion</h4>
+                          <h4 class="card-header">Tipo de Comunicación</h4>
                           <div class="card-block">
                             <!-- <h4 class="card-title">Special title treatment</h4> -->
                             <p style="margin-left:10px">{{ tableSeguimientoActividadList.tipoComunicacion }}</p>
@@ -202,7 +202,7 @@
                           </div>
                         </div>
                         <div class="card">
-                          <h4 class="card-header">Estado de Comunicacion</h4>
+                          <h4 class="card-header">Estado de Comunicación</h4>
                           <div class="card-block">
                             <!-- <h4 class="card-title">Special title treatment</h4> -->
                             <p style="margin-left:10px">{{ tableSeguimientoActividadList.estadoComunicacion }}</p>
@@ -243,7 +243,7 @@
                 <!-- Seccion de Entidades relaciones -->
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#demo4">Descripcion de la Comunicacion</a>
+                    <a data-toggle="collapse" href="#demo4">Descripción de la Comunicación</a>
                   </h4>
                 </div>
                 <hr>
@@ -252,7 +252,7 @@
                   <div class="row">
                     <div class="col-lg-8">
                       <div class="card">
-                        <h4 class="card-header">Tema de la Comunicacion</h4>
+                        <h4 class="card-header">Tema de la Comunicación</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
                           <p style="margin-left:10px">{{ tableSeguimientoActividadList.temaComunicacion }}</p>
@@ -266,10 +266,24 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="card">
-                      <h4 class="card-header">Contenido de la Comunicacion</h4>
+                      <h4 class="card-header">Contenido de la Comunicación</h4>
                       <div class="card-block">
                         <!-- <h4 class="card-title">Special title treatment</h4> -->
                         <p style="margin-left:10px">{{ tableSeguimientoActividadList.contenidoComunicacion }}</p>
+                        <!-- <br> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Instruccion de la Comunicacion -->
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card">
+                      <h4 class="card-header">Instrucciones / Observaciones de la Comunicación</h4>
+                      <div class="card-block">
+                        <!-- <h4 class="card-title">Special title treatment</h4> -->
+                        <p style="margin-left:10px">{{ tableSeguimientoActividadList.observacionesComunicacion }}</p>
                         <!-- <br> -->
                       </div>
                     </div>
@@ -300,7 +314,7 @@
                         <th>F. Entrega</th>
                         <th>Funcionario Asignado</th>
                         <th>Actividad</th>
-                        <th>Descripcion</th>
+                        <th>Descripción</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -335,7 +349,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Codigo Documento</th>
+                      <th>Código Documento</th>
                       <th>Fecha Creacion</th>
                       <th>Documento</th>
                       <th>Descargar</th>

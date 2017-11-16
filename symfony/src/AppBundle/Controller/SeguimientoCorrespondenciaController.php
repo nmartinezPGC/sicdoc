@@ -212,10 +212,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                                       )
                                    )
                                //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )
+                               //->setUsername( "nahum.sreci@gmail.com" )
                                //->setUsername( 'gcallejas.sreci@gmail.com')
-                               ->setPassword('1897Juve');
+                               //->setPassword('1897Juve');
                                //->setPassword('gec2017*');
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                               ->setPassword('Despachomcns');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -224,7 +226,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Asignación de Oficio | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -644,18 +647,19 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 )
                                             )
                                          )
-                               //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )                               
-                               ->setPassword('1897Juve');                               
+                               //->setUsername( "nahum.sreci@gmail.com" )                                                                  
+                               //->setPassword('1897Juve');
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )                               
+                               ->setPassword('Despachomcns');                               
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Finalizacion de Comunicacion | SICDOC')
-                               //->setFrom(array("nahum.sreci@gmail.com"  => $nombreSend . " " .  $apellidoSend ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               ->setSubject('Finalización de Comunicacion | SICDOC')
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SICDOC" ))
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -983,8 +987,10 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                  )
                                              )
                                           )                                 
-                               ->setUsername( "nahum.sreci@gmail.com" )                               
-                               ->setPassword('1897Juve');                               
+                               //->setUsername( "nahum.sreci@gmail.com" )                               
+                               //->setPassword('1897Juve');                               
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                               ->setPassword('Despachomcns');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -993,7 +999,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1296,8 +1303,10 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 )
                                              )
                                //->setUsername( $identity->email )
-                               ->setUsername( "nahum.sreci@gmail.com" )                               
-                               ->setPassword('1897Juve');                               
+                               //->setUsername( "nahum.sreci@gmail.com" )                               
+                               //->setPassword('1897Juve');                               
+                               ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                               ->setPassword('Despachomcns');
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1306,7 +1315,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
-                               ->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
+                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(

@@ -227,6 +227,15 @@ export class FinalizarActividadComponent implements OnInit {
   } // FIN | ngOnInit()
 
 
+
+  /*****************************************************
+  * Funcion: closeModal()
+  * Fecha: 10-11-2017
+  * Descripcion: Funcion que cierra la ventana Modal de
+  * la Pantalla de forma Automatica
+  * Objetivo: Cerrar la Modal despues de la Accion del
+  * Submit
+  ******************************************************/
   closeModal( nameBotton ){
     setTimeout(function() {
       // $('#t_and_c_m').modal('hide');
@@ -299,7 +308,7 @@ export class FinalizarActividadComponent implements OnInit {
       let token1 = this._finalizarOficio.getToken();
       this.loading = 'show';
       this.loading_table = 'show';
-      console.log( this.finalizarOficios );
+      // console.log( this.finalizarOficios );
 
       // Evalua que Opcion va a Enviar por el Formulario ***********************
       // Opcion de Finalizar Oficio ********************************************
@@ -406,7 +415,7 @@ export class FinalizarActividadComponent implements OnInit {
     }else if ( opcion == 3 ){
         opcionExecute = "agregarActividadResp";
         // Opcion de Agregar Actividad
-        console.log(this.finalizarOficios);
+        // console.log(this.finalizarOficios);
         this._finalizarOficio.agregarActividadResp(token1, this.finalizarOficios).subscribe(
           response => {
               // Obtenemos el Status de la Peticion
@@ -501,7 +510,7 @@ export class FinalizarActividadComponent implements OnInit {
     let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
     // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
     codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
-    console.log(codigoSec);
+    // console.log(codigoSec);
 
     // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
     //                                 + this.consultaContactos.apellido1Contacto;
@@ -517,7 +526,7 @@ export class FinalizarActividadComponent implements OnInit {
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;
-          console.log(this.resultUpload);
+          // console.log(this.resultUpload);
           if(status === "error"){
             console.log(this.resultUpload);
             alert(this.resultUpload.msg);
@@ -585,7 +594,8 @@ export class FinalizarActividadComponent implements OnInit {
   * Comunicaciones de la BD, Llamando a la API, por su
   * metodo ( finalizar-oficios-det-list ).
   ******************************************************/
-  getlistaOficiosDetalle( idCorrespondenciaEncIn:number, idEstadoDetIn:number ) {
+  getlistaOficiosDetalle( idCorrespondenciaEncIn:number, idEstadoDetIn:number,
+                          idTipoDocumento:number, idTipoComunicacion:number) {
     // Parametros de la Lista de los Funcionarios
     // Variable del localStorage, para obtener el Id del Usuario (sub) y luego
     // la parseamos a Objeto Javascript
@@ -610,6 +620,11 @@ export class FinalizarActividadComponent implements OnInit {
             this.loading = 'hidden';
             this.loading_table = 'hide';
             this.idCorrepEncModal = response.data.codCorrespondenciaDet;
+
+            // Buscamos el Codigo de la Secuencia que vamos a Grabar | SCPI ****
+            // Antes el llamdado venia desde:FND-00002
+            this.listarCodigoCorrespondenciaDet( idTipoDocumento, idTipoComunicacion );
+
             //console.log( response.data.codCorrespondenciaDet );
           }
         });
@@ -644,10 +659,12 @@ export class FinalizarActividadComponent implements OnInit {
     this.idCorrepEncModal = "";
 
     // Llamamos el Oficio Detalle que tiene el estado Asignado
-    this.getlistaOficiosDetalle( idOficioEnc, idEstadoAsign );
+    this.getlistaOficiosDetalle( idOficioEnc, idEstadoAsign, idTipoDocumento, idTipoComunicacion );
 
     // Buscamos el Codigo de la Secuencia que vamos a Grabar
-    this.listarCodigoCorrespondenciaDet( idTipoDocumento, idTipoComunicacion );
+    // this.listarCodigoCorrespondenciaDet( idTipoDocumento, idTipoComunicacion );
+    // Se Comentta el Llamado; porque estropea el Acceso a la Cache de Symfony *
+    // Se hace el Llamado desde: FND-00001.1
 
     // Cambia el valor de optionModal
     this.optionModal = 2;
@@ -800,7 +817,7 @@ export class FinalizarActividadComponent implements OnInit {
          }else{
            this.JsonOutgetCodigoSecuenciaDet = response.data;
            // Ejecutamos el llamado al la Segunda Secuencia
-           this.listarCodigoCorrespondenciaOfiResp( this.paramsSecuenciaDet.idTipoDocumento );
+           this.listarCodigoCorrespondenciaOfiResp( idTipoDocumento );
           //  console.log( this.JsonOutgetCodigoSecuenciaDet );
            //this.listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoFuc );
          }
@@ -845,8 +862,8 @@ export class FinalizarActividadComponent implements OnInit {
 
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);
-    //  console.log('Entro en 2 listarCodigoCorrespondenciaOfiResp');
-     console.log(this.paramsSecuenciaOficioRespuesta);
+     // console.log('Entro en 2 listarCodigoCorrespondenciaOfiResp');
+     // console.log(this.paramsSecuenciaOficioRespuesta);
 
    this._listasComunes.listasComunesToken( this.paramsSecuenciaOficioRespuesta, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
@@ -854,14 +871,18 @@ export class FinalizarActividadComponent implements OnInit {
          if(response.status == "error"){
            //Mensaje de alerta del error en cuestion
            this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
-           console.log('1. Error JsonOutgetCodigoSecuenciaOfiResp');
+           // console.log('1. Error JsonOutgetCodigoSecuenciaOfiResp');
            alert(response.msg);
 
          }else{
            this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
-           console.log( this.JsonOutgetCodigoSecuenciaDet );
+           // console.log( this.JsonOutgetCodigoSecuenciaOfiResp );
          }
-       });
+       },
+         ( error ) => {
+           alert(error);
+           console.log(error);
+         });
  } // FIN : FND-00005
 
 
@@ -984,7 +1005,7 @@ export class FinalizarActividadComponent implements OnInit {
 
     }// Fin de Condicion
 
-     console.log(this.paramsSecuenciaActividadAgregar);
+     // console.log(this.paramsSecuenciaActividadAgregar);
 
      //Llamar al metodo, de Login para Obtener la Identidad
      //console.log(this.params);
@@ -1016,9 +1037,27 @@ export class FinalizarActividadComponent implements OnInit {
  fillDataTable(){
    setTimeout(function () {
      $ (function () {
-         $('#example').DataTable();
+         $('#example').DataTable({
+           // Tamaño de la Pagina
+           "pageLength": 5,
+           // Cambiar las Propiedades de Lenguaje
+           "language":{
+               "lengthMenu": "Mostrar _MENU_ registros por pagina",
+               "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                   "infoEmpty": "No hay registros disponibles",
+                   "infoFiltered": "(filtrada de _MAX_ registros)",
+                   "loadingRecords": "Cargando...",
+                   "processing":     "Procesando...",
+                   "search": "Buscar:",
+                   "zeroRecords":    "No se encontraron registros coincidentes",
+                   "paginate": {
+                       "next":       "Siguiente",
+                       "previous":   "Anterior"
+                   },
+           },
+         });
      });
-   }, 7000);
+   }, 8000);
  } // FIN | FND-00006
 
 

@@ -39,7 +39,7 @@ declare var $:any;
 })
 
 export class IngresoActividadComponent implements OnInit{
-  public titulo:string = "Asignar Actividad";
+  public titulo:string = "Asignar Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
@@ -381,7 +381,7 @@ export class IngresoActividadComponent implements OnInit{
     // Previa validacion de los Datos por el Estado del Oficio
     this.idEstadoModal = idEstadoAsign;
     if( idEstadoAsign == 5 ){ // Oficio esta Finalizado
-      alert('El Oficio no puede ser Asignado; ya que esta en un estado Finalizado.');
+      alert('La Comunicación no puede ser Asignado; ya que esta en un estado Finalizado.');
       this.descEstadoModal = "Finalizado";
       return;
     }else if( idEstadoAsign == 3 ){
@@ -430,7 +430,7 @@ export class IngresoActividadComponent implements OnInit{
    // Recolectamos los Parametros de la Pagina que envia la Funcion
    // 1 ) Preguntamos por si esta escogiendo el Mismo Funionario
    if( this.idFuncModal == idFuncionarioAsignIn ){
-     alert('No puedes asignar este oficio a ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', porque ya lo tiene asignado.');
+     alert('No puedes asignar esta Comunicación a ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', porque ya lo tiene asignado.');
      return;
    }
    // 2 ) Si la Condicion retorna verdadero, Obtenmos los valores de la Funcion

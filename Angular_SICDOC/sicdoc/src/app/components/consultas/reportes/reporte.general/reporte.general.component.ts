@@ -208,10 +208,49 @@ export class ReporteGeneralComponent implements OnInit {
       $ (function () {
         $('#example').DataTable( {
             dom: 'Bfrtip',
+            fixedHeader: true,
+            "autoWidth": false,
+            // Tamaño de la Pagina
             "pageLength": 5,
             // Refresca la Data y Borra de Memoria los Datos anteriores
             destroy: true,
             retrieve: true,
+
+            // Cambiar las Propiedades de Lenguaje
+            "language":{
+                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+                "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrada de _MAX_ registros)",
+                    "loadingRecords": "Cargando...",
+                    "processing":     "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords":    "No se encontraron registros coincidentes",
+                    "paginate": {
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+            },
+
+            // Ocultar Columnas
+            "columnDefs": [
+                  { // Columna de Ingreso / Salida
+                      "targets": [ 0 ],
+                      "visible": false,
+                      "searchable": true
+                  },
+                  { // Columna de Codigo Comunicación
+                      "targets": [ 2 ],
+                      "visible": false,
+                      "searchable": true
+                  },
+                  // { // Columna de Funcionario
+                  //     "targets": [ 4 ],
+                  //     "visible": false,
+                  //     "searchable": true
+                  // }
+            ],
+
             // paging: false,
             buttons: [
                // Boton de excelHtml5
@@ -265,8 +304,10 @@ export class ReporteGeneralComponent implements OnInit {
               }*/
             ]
         } );
+        this.loading_tableIn = 'show';
       });
-    }, 7000);
+    }, 8000);
+    this.loading_tableIn = 'hide';
   } // FIN | FND-00006
 
 
@@ -332,12 +373,12 @@ export class ReporteGeneralComponent implements OnInit {
                 this.status = "error";
                 this.mensajes = response.msg;
                 if(this.loading_tableIn = 'show'){
-                  this.loading_tableIn = 'hidden';
+                  this.loading_tableIn = 'hide';
                 }
                 //alert('Error Data ' +  this.mensajes);
             }else{
               //this.resetForm();
-              this.loading_tableIn = 'hidden';
+              this.loading_tableIn = 'hide';
               // window.location.reload();
               //alert(response.msg);
 
@@ -361,7 +402,7 @@ export class ReporteGeneralComponent implements OnInit {
               alert("Error en la Petición !!" + this.errorMessage);
 
               if(this.loading = 'show'){
-                this.loading = 'hidden';
+                this.loading = 'hide';
               }
             }
         });

@@ -69,8 +69,17 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipoFunc = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findAll();
+        // Query para Obtener todos los Tipo de Funcionario de la SRECI ********
+        // de la Tabla: TblTiposFuncionarios ***********************************
+        // Incidencia: INC.00004 | Tipos de Funcionarios Desordenados 
+        // Fecha : 2017-11-12 | 11:08 am
+        // Reportada : Nahum Martinez | Admon. SICDOC
+        // INI | NMA | INC.00004
+        // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+        //$tipoFunc = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findAll();
+        $tipoFunc = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findBy(array(),array("descTipoFuncionario" => "ASC")) ;
+        // FIN | NMA | INC.00004
+        
         
         // Condicion de la Busqueda
         if (count($tipoFunc) >= 1 ) {
@@ -118,7 +127,7 @@ class ListasComunesController extends Controller {
             $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
                     array(
                         "idDireccionSreci" => $direccion_sreci
-                    ));
+                    ) ,array("idDeptoFuncional" => "ASC") );
 
             // Condicion de la Busqueda
             if (count($tipoFunc) >= 1 ) {
@@ -167,15 +176,24 @@ class ListasComunesController extends Controller {
             //Recogemos el la Direccion ********************************
             $direccion_sreci    = (isset($params->idDireccionSreci)) ? $params->idDireccionSreci : null;
             
-            // Query para Obtener todos los Estados de la Tabla: TblEstados
-            $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findAll();
+            // Query para Obtener todos los Deptos. Funcionales de la  *********
+            // Tabla: TblDepartamentosFuncionales ******************************            
+            // Incidencia: INC.00006 | Deptos. Funcionales Desordenados
+            // Fecha : 2017-11-12 | 11:15 am
+            // Reportada : Nahum Martinez | Admon. SICDOC
+            // INI | NMA | INC.00006
+            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+            // $deptoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findAll();
+            $deptoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(array(),array("idDeptoFuncional" => "ASC")) ;
+            // FIN | NMA | INC.00006
+                        
 
             // Condicion de la Busqueda
-            if (count($tipoFunc) >= 1 ) {
+            if (count( $deptoFunc ) >= 1 ) {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
-                    "data"   => $tipoFunc
+                    "data"   => $deptoFunc
                 );
             }else {
                 $data = array(
@@ -323,8 +341,16 @@ class ListasComunesController extends Controller {
                         "idPais"            => $pais_institucion //Pais de la Institucion
                     ));
             }else {
-                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
-                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findAll();
+                // Query para Obtener todos las Instituciones de la Tabla: TblInstituciones                    
+                // Tabla: TblDepartamentosFuncionales ******************************            
+                // Incidencia: INC.00007 | Lista de Instituciones Desordenadas
+                // Fecha : 2017-11-12 | 11:20 am
+                // Reportada : Nahum Martinez | Admon. SICDOC
+                // INI | NMA | INC.00007
+                // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+                // $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findAll();
+                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(array(),array("descInstitucion" => "ASC")) ;
+                // FIN | NMA | INC.00007                
             }         
             
 
@@ -361,10 +387,15 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipoInstitucion = $em->getRepository("BackendBundle:TblTipoInstitucion")->findAll();
-        
+        // Incidencia: INC.00002 | Tipos de Instituciones Desordenadas 
+        // Fecha : 2017-11-12 | 10:57 am
+        // Reportada : Wendy Flores | Directora DCPI
+        // INI | NMA | INC.00002
+        // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+        //$tipoInstitucion = $em->getRepository("BackendBundle:TblTipoInstitucion")->findAll();
+        $tipoInstitucion = $em->getRepository("BackendBundle:TblTipoInstitucion")->findBy(array(),array("descTipoInstitucion" => "ASC")) ;
+        // FIN | NMA | INC.00002
+                
         // Condicion de la Busqueda
         if (count( $tipoInstitucion ) >= 1 ) {
             $data = array(
@@ -399,8 +430,16 @@ class ListasComunesController extends Controller {
         $em = $this->getDoctrine()->getManager();
         
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $paisList = $em->getRepository("BackendBundle:TblPais")->findAll();
+        // Query para Obtener todos los Estados de la Tabla: TblPais
+        // Ordenamos el Listado de los Paises de Forma Alfabética de < a >
+        // Incidencia: INC.00001 | Paises Desordenados 
+        // Fecha : 2017-11-12 | 10:50 am
+        // Reportada : Wendy Flores | Directora DCPI
+        // INI | NMA | INC.00001
+        // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+        //$paisList = $em->getRepository("BackendBundle:TblPais")->findAll();
+        $paisList = $em->getRepository("BackendBundle:TblPais")->findBy(array(),array("descPais" => "ASC")) ;
+        // FIN | NMA | INC.00001
         
         // Condicion de la Busqueda
         if (count( $paisList ) >= 1 ) {
@@ -573,8 +612,15 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener la Direccion del Funcionario de la Tabla: TblDireccionesSreci
-        $direccion_sreci = $em->getRepository("BackendBundle:TblDireccionesSreci")->findAll();
+        // Incidencia: INC.00003 | Direcciones SRECI Desordenadas 
+        // Fecha : 2017-11-12 | 11:01 am
+        // Reportada : Wendy Flores | Directora DCPI
+        // INI | NMA | INC.00003
+        // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+        //$direccion_sreci = $em->getRepository("BackendBundle:TblDireccionesSreci")->findAll();
+        $direccion_sreci = $em->getRepository("BackendBundle:TblDireccionesSreci")->findBy(array(),array("descDireccionSreci" => "ASC")) ;
+        // FIN | NMA | INC.00003
+        
         
         // Condicion de la Busqueda
         if (count($direccion_sreci) >= 1 ) {
@@ -817,8 +863,17 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findAll();
+        // Query para Obtener todos los Encabezados de las Correspondencias ****
+        // de la Tabla: TblCorrespondenciaEnc **********************************
+        // Incidencia: INC.00003 | Correspondencia_Enc Desordenadas 
+        // Fecha : 2017-11-12 | 11:03 am
+        // Reportada : Wendy Flores | Directora DCPI
+        // INI | NMA | INC.00003
+        // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+        //$com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findAll();
+        $com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(array(),array("codCorrespondenciaEnc" => "ASC")) ;
+        // FIN | NMA | INC.00003
+                
         
         // Condicion de la Busqueda
         if (count($com_enc) >= 1 ) {
@@ -1104,7 +1159,7 @@ class ListasComunesController extends Controller {
                     array(
                         "idDeptoFuncional"      => $depto_funcional,                        
                         "idFuncionarioAsignado" => $id_funcionario,
-                        "idEstado"              => [3,8]                        
+                        "idEstado"              => [3,8,7]                        
                         //"idTipoDocumento"       => [1]
                     ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );
 
@@ -1234,8 +1289,17 @@ class ListasComunesController extends Controller {
             //Recogemos el ID del Tipo de Funcionario***************************
             $tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
             
-            // Query para Obtener todos los Funcionarios de la Tabla: TblUsuarios
+            // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios           
+            // de la Tabla: TblTiposFuncionarios *******************************
+            // Incidencia: INC.00005 | Funcionarios Desordenados ? Vaidar
+            // Fecha : 2017-11-12 | 11:08 am
+            // Reportada : Nahum Martinez | Admon. SICDOC
+            // INI | NMA | INC.00005
+            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
             $funcionario_all = $em->getRepository("BackendBundle:TblFuncionarios")->findAll();
+            //$funcionario_all = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findBy(array(),array("nombre1Funcionario" => "ASC")) ;
+            // FIN | NMA | INC.00005
+                       
 
             // Condicion de la Busqueda
             if (count( $funcionario_all ) >= 1 ) {

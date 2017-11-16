@@ -17,12 +17,12 @@
               <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Comunicacion
+                  Comunicación
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Comunicacion</a>
+                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">Ingreso de Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion-tipo']" routerLinkActive="active">Salida de Comunicacion</a>
+                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion-tipo']" routerLinkActive="active">Salida de Comunicación</a>
 
                   <!-- <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a> -->
                 </div>
@@ -34,11 +34,11 @@
                   Seguimiento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Comunicacion</a>
+                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">Asignar Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
-                  <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Agregar / Finalizar Comunicacion</a>
+                  <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">Agregar / Finalizar Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['seguimiento-actividad']" routerLinkActive="active">Seguimiento de Comunicacion</a>
+                  <a class="dropdown-item" [routerLink]="['seguimiento-actividad']" routerLinkActive="active">Seguimiento de Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a> -->
                 </div>
               </li>
@@ -52,7 +52,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" [routerLink]="['consulta-maestra-comunicacion']" routerLinkActive="active">Consulta General de Comunicaciones</a>
                 <hr>
-                <a class="dropdown-item" [routerLink]="['consulta-generacion-reporte']" routerLinkActive="active">Generacion de Reportes</a>
+                <a class="dropdown-item" [routerLink]="['consulta-generacion-reporte']" routerLinkActive="active">Generación de Reportes</a>
               </div>
             </li>
 
@@ -89,7 +89,7 @@
                      <i class="material-icons">security</i> Cambiar Contraseña</a>
                    <hr>
                    <a class="dropdown-item" [routerLink]="['/login/1']">
-                     <i class="material-icons">exit_to_app</i> Cerrar sesion</a>
+                     <i class="material-icons">exit_to_app</i> Cerrar sesión</a>
                  </div>
                </li>
 
@@ -111,7 +111,7 @@
                <a class="nav-link" [routerLink]="['/login']">Acceder</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" [routerLink]="['/contactos-sreci']">Cotactos</a>
+               <a class="nav-link" [routerLink]="['/contactos-sreci']">Contactos</a>
             </li>
           </ul>
 

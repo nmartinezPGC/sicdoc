@@ -140,7 +140,8 @@ export class SeguimientoActividadComponent implements OnInit {
       "usuarioAsignado":"",
       // Area de Descripcion de la Comunicacion
       "temaComunicacion":"",
-      "contenidoComunicacion":""
+      "contenidoComunicacion":"",
+      "observacionesComunicacion":""
     };
 
     // Iniciamos los Parametros de Usuarios a Depto Funcionales
@@ -286,9 +287,6 @@ export class SeguimientoActividadComponent implements OnInit {
             // Consulta de las Actividades TblCorrespondenciaDet
             this.getlistaComunicacionDetTableFind();
 
-            // Consulta de las Documentos de la Comunicacion
-            this.getlistaDocumentosTable();
-
             this.loading = 'hidden';
             // console.log( response.data );
           }
@@ -321,10 +319,13 @@ export class SeguimientoActividadComponent implements OnInit {
           }else{
             this.JsonOutgetlistaSeguimiento = response.data;
             //this.valoresdataDetJson ( response.data );
+
             this.loading_table = 'hide';
             this.loadTabla2 = true;
 
-            // console.log( this.JsonOutgetlistaSeguimiento );
+            // Consulta de las Documentos de la Comunicacion
+            this.getlistaDocumentosTable();
+            // console.log(this.JsonOutgetlistaSeguimiento);
           }
         });
   } // FIN | FND-00002.1
@@ -351,7 +352,9 @@ export class SeguimientoActividadComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaDocumentos = response.data;
-
+            // Oculta los Loaders            
+            this.loading_table = 'hide';
+            this.loadTabla2 = true;
             alert(response.msg);
           }else{
             this.JsonOutgetlistaDocumentos = response.data;
@@ -398,6 +401,7 @@ export class SeguimientoActividadComponent implements OnInit {
     // Area de Descripcion de Comunicacion
     this.tableSeguimientoActividadList.temaComunicacion = dataIn.temaComunicacion;
     this.tableSeguimientoActividadList.contenidoComunicacion = dataIn.descCorrespondenciaEnc;
+    this.tableSeguimientoActividadList.observacionesComunicacion = dataIn.observaciones;
   } // FIN | FND-00003
 
 

@@ -162,10 +162,10 @@
             <div class="form-group">
               <select #idDireccionSreciAcom="ngModel" class="form-control" name="idDireccionSreciAcom" id="idDireccionSreciAcom"
                     ngControl="idDireccionSreciAcom" [(ngModel)]="comunicacion.idDireccionSreciAcom"  (change)="getlistaSubDireccionesSRECIAcom()" >
-                  <option value="0">Dirección SRECI Acompañante </option>
+                  <option value="0">Sub Secretaría Acompañante </option>
                   <option *ngFor="let list of JsonOutgetlistaDireccionSRECIAcom" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
               </select>
-              <small class="form-text text-muted" *ngIf="idDireccionSreciAcom.value == 0 || idDireccionSreciAcom.value == null " >Debes Seleccionar una Dirección SRECI acompañante</small>
+              <small class="form-text text-muted" *ngIf="idDireccionSreciAcom.value == 0 || idDireccionSreciAcom.value == null " >Debes Seleccionar una Sub Secretaría acompañante</small>
             </div>
          </div>
 
@@ -174,10 +174,10 @@
            <div class="form-group">
              <select #idDeptoFuncionalAcom="ngModel" class="form-control" name="idDeptoFuncionalAcom" id="idDeptoFuncionalAcom"
                    ngControl="idDeptoFuncionalAcom" [(ngModel)]="comunicacion.idDeptoFuncionalAcom"  >
-                 <option value="0">Sub Dirección SRECI Acompañante</option>
+                 <option value="0">Dirección Acompañante</option>
                  <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECIAcom" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
              </select>
-             <small class="form-text text-muted" *ngIf="idDeptoFuncionalAcom.value == 0 || idDeptoFuncionalAcom.value == null " >Debes Seleccionar una Sub Dirección SRECI acompañante</small>
+             <small class="form-text text-muted" *ngIf="idDeptoFuncionalAcom.value == 0 || idDeptoFuncionalAcom.value == null " >Debes Seleccionar una Dirección acompañante</small>
            </div>
          </div>
 
@@ -190,7 +190,7 @@
       <!-- Datos de las Relaciones de las Tablas -->
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#demo">Informacion Complementaria</a>
+          <a data-toggle="collapse" href="#demo">Información Complementaria</a>
         </h4>
       </div>
 

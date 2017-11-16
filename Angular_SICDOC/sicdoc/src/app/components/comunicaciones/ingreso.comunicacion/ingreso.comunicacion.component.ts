@@ -91,7 +91,15 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public JsonOutgetCodigoSecuenciaNew;
   // public JsonOutgetCodigoSecuenciaDet:any[];
   public JsonOutgetCodigoSecuenciaDet;
-  public JsonOutgetCodigoSecuenciaSCPI:any[];
+  // public JsonOutgetCodigoSecuenciaSCPI:any[];
+  public JsonOutgetCodigoSecuenciaSCPI;
+
+  // Variables de Generacion de Secuencia | SCPI
+  public codigoSecuenciaGen:string;
+  public valorSecuenciaGen;
+  // public codigoSecuencia:string;
+
+
   public codigoSecuencia:string;
   public valorSecuencia;
   public valorSecuenciaAct;
@@ -363,6 +371,12 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     // FIN de Ejecucuon de Encabezados
 
+
+    // Limpiamos el Array de los Documentos
+    this.JsonOutgetListaDocumentos = [];
+
+    this.comunicacion.pdfDocumento = "";
+
     // Carga el scrip Js, para crear componentes Dinamicos en el DOM
     //this.loadScript('../assets/js/ingreso.comunicacion.component.js');
 
@@ -621,7 +635,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * de la BD, Llamando a la API, por su metodo
   * (instituciones-sreci-list).
   ******************************************************/
-    getlistaInstituciones() {
+  getlistaInstituciones() {
     this.params.idPais = this.comunicacion.idPais;
     this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -660,7 +674,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.paramsSecuencia.codSecuencial = "COM-OUT-OFI";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
-       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       this.comunicacion.codReferenciaSreci = "Generando código ...";
+       // this.comunicacion.codReferenciaSreci =  this.JsonOutgetCodigoSecuenciaSCPI.valor2 ;
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
@@ -668,11 +683,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
-     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
+      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-MEMO";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
-       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       this.comunicacion.codReferenciaSreci = "Generando código ...";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
@@ -680,23 +695,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
-     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
-       this.paramsSecuencia.codSecuencial = "COM-OUT-CIRCULAR";
-       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
-       this.comunicacion.codReferenciaSreci = "Codigo Generate";
-       // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", true );
-       // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "30";
-       this.minlengthCodReferencia = "5";
-       this.pattern ="";
-
-     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
+      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-NOTA-VERBAL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
-       this.comunicacion.codReferenciaSreci = "Codigo Generate";
+       this.comunicacion.codReferenciaSreci = "Generando código ...";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
@@ -704,7 +707,19 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
-     } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
+      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
+       this.paramsSecuencia.codSecuencial = "COM-OUT-CIRCULAR";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "Generando código ...";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", true );
+       // Seteo de variable de validaciones | Oficio de Salida
+       this.maxlengthCodReferencia = "30";
+       this.minlengthCodReferencia = "5";
+       this.pattern ="";
+
+      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-MAIL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
@@ -754,8 +769,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
      }// Fin de Condicion
 
-    //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
+     //Llamar al metodo, de Login para Obtener la Identidad
+     this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
@@ -765,9 +780,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            console.log(response.data);
+            console.log( this.JsonOutgetCodigoSecuenciaNew );
             // Ejecutamos la Funcion de Secuencia de Detalle
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
+
           }
         });
 
@@ -795,11 +811,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
      } else if ( idTipoDocumentoIn == 3 ) {
-       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-CIRCULAR";
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-NOTA-VERBAL";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
      } else if ( idTipoDocumentoIn == 4 ) {
-       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-NOTA-VERBAL";
+       this.paramsSecuenciaDet.codSecuencial = "COM-OUT-DET-CIRCULAR";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
      } else if ( idTipoDocumentoIn == 5 ) {
@@ -832,7 +848,14 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
-            //console.log(response.data);
+            console.log(response.data);
+            // Secuencia de Generacion Automatica | Ejm: SCPI
+            // Evalua si por el Tipo de Documento envia los Datos
+            if ( idTipoDocumentoIn == 1 || idTipoDocumentoIn == 2 ||
+                 idTipoDocumentoIn == 3 || idTipoDocumentoIn == 4  ) {
+                this.listarCodigoCorrespondenciaOfiResp( this.paramsSecuenciaIn.idTipoDocumento );
+            }
+            // FIN de Evalua Documento
           }
         });
 
@@ -845,14 +868,19 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * Descripcion: Obtiene la siguiente secuencia
   * Objetivo: Obtener el secuencial de la tabla
   * indicada con su codigo
+  * Params: idDocumento
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
-   listarCodigoCorrespondenciaOfiResp(){
+   listarCodigoCorrespondenciaOfiResp( idDocumento: number ){
     this.paramsSecuenciaSCPI.codSecuencial = "SCPI";
     this.paramsSecuenciaSCPI.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuenciaSCPI.idTipoDocumento = "1";
+    // this.paramsSecuenciaSCPI.idTipoDocumento = "1";
+    this.paramsSecuenciaSCPI.idTipoDocumento = idDocumento;
     //Llamar al metodo, de Login para Obtener Secuencia de SCPI | Oficio
-    //console.log(this.params);
+    // console.log( this.paramsSecuenciaSCPI );
+    let _subSecretariSreciId:number;
+    let _subSecretariSRECIName:string = "";
+
     this._listasComunes.listasComunesToken( this.paramsSecuenciaSCPI, "gen-secuencia-comunicacion-in" ).subscribe(
         response => {
           // login successful so redirect to return url
@@ -862,7 +890,30 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             alert(response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaSCPI = response.data;
-            //console.log( this.JsonOutgetCodigoSecuenciaDet );
+            console.log( this.JsonOutgetCodigoSecuenciaSCPI );
+
+            // Generacion del Codigo Nuevo de SCPI
+            _subSecretariSreciId = this.identity.idDireccion;
+
+            // Evalua a que Sub Secreatria Pertenece el Usuario ****************
+            if( _subSecretariSreciId == 1 ){
+              _subSecretariSRECIName = "DCPI";
+            } else if ( _subSecretariSreciId == 2 ) {
+              _subSecretariSRECIName = "DPE";
+            } else if ( _subSecretariSreciId == 3 ) {
+              _subSecretariSRECIName = "ACPM";
+            }else if ( _subSecretariSreciId == 4 ) {
+              _subSecretariSRECIName = "SE";
+            }
+
+            // Concatenacion del Codigo de Comunicacion a Responder
+            this.codigoSecuenciaGen = this.JsonOutgetCodigoSecuenciaSCPI.codSecuencial;
+            this.valorSecuenciaGen =  this.JsonOutgetCodigoSecuenciaSCPI.valor2;
+            this.comunicacion.codReferenciaSreci = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+
+            // Enviamos la Secuencia con Nuevo Valor
+            this.comunicacion.secuenciaComunicacionSCPI = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+
           }
         });
   } // FIN : FND-00003.2
@@ -890,8 +941,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
     // Parametros de las Secuencias
-    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
-    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    // this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
+    this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew.codSecuencial;
+    // this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
+    this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew.valor2 + 1;
     this.codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
 
     this.codigoSec = this.codigoSec + '-' + this.nextDocumento;
@@ -953,40 +1006,40 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * ( createNewFileInput ).
   ******************************************************/
   createNewFileInput(){
-   // Actualiza el valor de la Secuencia
-   let secActual = this.nextDocumento - 1;
-   // Mes Actual
-   let mesAct = this.fechaHoy.getMonth() +1; // Dia
-   let final_month = mesAct.toString();
-   if( mesAct <= 9 ){
-     final_month = "0" + final_month;
-   }
+     // Actualiza el valor de la Secuencia
+     let secActual = this.nextDocumento - 1;
+     // Mes Actual
+     let mesAct = this.fechaHoy.getMonth() +1; // Dia
+     let final_month = mesAct.toString();
+     if( mesAct <= 9 ){
+       final_month = "0" + final_month;
+     }
 
 
-   // Dia del Mes
-   let day = this.fechaHoy.getDate(); // Dia
-   let final_day = day.toString();
-   if( day <= 9 ){
-     final_day = "0" + final_day;
-   }
+     // Dia del Mes
+     let day = this.fechaHoy.getDate(); // Dia
+     let final_day = day.toString();
+     if( day <= 9 ){
+       final_day = "0" + final_day;
+     }
 
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
-  //  console.log('Entro en Funcion ' );
-   this.JsonOutgetListaDocumentos.push({
-     "nameDoc": newSecAct,
-     "extDoc": this.extencionDocumento,
-     "pesoDoc": this.seziDocumento
-   });
+     let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+    //  console.log('Entro en Funcion ' );
+     this.JsonOutgetListaDocumentos.push({
+       "nameDoc": newSecAct,
+       "extDoc": this.extencionDocumento,
+       "pesoDoc": this.seziDocumento
+     });
 
-   this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
+     this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
 
-   $("#newTable").append('<tr> ' +
-                      '   <th scope="row">'+ secActual +'</th> ' +
-                      '   <td>' + newSecAct + '</td> ' +
-                      '   <td>'+ this.extencionDocumento +'</td> ' +
-                      '   <td>'+ this.seziDocumento +'</td> ' +
-                      '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
-                      ' </tr>');
+     $("#newTable").append('<tr> ' +
+                        '   <th scope="row">'+ secActual +'</th> ' +
+                        '   <td>' + newSecAct + '</td> ' +
+                        '   <td>'+ this.extencionDocumento +'</td> ' +
+                        '   <td>'+ this.seziDocumento +'</td> ' +
+                        '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
+                        ' </tr>');
 
   } // FIN | FND-00011
 
@@ -1039,7 +1092,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             this.dataServiceFunc = this.completerService.local(this.JsonOutgetlistaFuncionarios, 'nombre1Funcionario,apellido1Funcionario',
                   'nombre1Funcionario,apellido1Funcionario,apellido2Funcionario,telefonoFuncionario,emailFuncionario');
 
-            console.log(this.JsonOutgetlistaFuncionarios);
+            // console.log(this.JsonOutgetlistaFuncionarios);
           }
         });
   } // FIN : FND-00001.2

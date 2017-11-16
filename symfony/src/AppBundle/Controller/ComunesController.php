@@ -62,7 +62,8 @@ class ComunesController extends Controller {
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" || 
+                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                    $ext == "xlsx" || $ext == "xls" || $ext == "ppt" || $ext == "pptx" ||
                     $ext == "png" || $ext == "jpeg" || $ext == "jpg") {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
@@ -267,6 +268,7 @@ class ComunesController extends Controller {
                 //$nameDoc = $file->guessName();
                 //Comprobamos que la Extencion sea Aceptada
                 if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                    $ext == "xlsx" || $ext == "xls" || $ext == "ppt" || $ext == "pptx" ||
                     $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;

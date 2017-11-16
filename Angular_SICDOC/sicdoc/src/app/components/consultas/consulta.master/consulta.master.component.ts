@@ -44,7 +44,7 @@ declare var $:any;
 })
 export class ConsultaMasterComponent implements OnInit {
 
-  public titulo = "Consulta de Comunicacion";
+  public titulo = "Consulta de Comunicación";
 
   minDate = Date.now();
   maxDate = new Date(2017, 12, 1);
@@ -270,7 +270,30 @@ export class ConsultaMasterComponent implements OnInit {
   fillDataTable(){
     setTimeout(function () {
       $ (function () {
-          $('#example').DataTable();
+          $('#example').DataTable({
+            // Barra Vertical de la Tabla
+            //scrollY:        '50vh',
+            //scrollCollapse: true,            
+            fixedHeader: true,
+            "autoWidth": false,
+            // Tamaño de la Pagina
+            "pageLength": 5,
+            // Cambiar las Propiedades de Lenguaje
+            "language":{
+                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+                "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrada de _MAX_ registros)",
+                    "loadingRecords": "Cargando...",
+                    "processing":     "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords":    "No se encontraron registros coincidentes",
+                    "paginate": {
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+            },
+          });
           this.loading_tableIn = 'show';
       });
     }, 8000);
