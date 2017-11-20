@@ -62,6 +62,9 @@ import { ContactosService } from './services/contactos/contacto.service';
 // Imports de los Mantenimientos
 import { MantenimientoInstitucionesComponent } from './components/mantenimientos/instituciones/mantenimiento.institucion.component';
 import { InstitucionesService } from './services/mantenimientos/instituciones.service';
+import { MantenimientoSolicitudCambioFechasComponent } from './components/mantenimientos/solicitud.cambio.fechas/mantenimiento.solicitud.cambio.fecha.component';
+import { SolicitudCambioFechaService } from './services/mantenimientos/solicitud.cambio.fecha.service';
+//import { InstitucionesService } from './services/mantenimientos/instituciones.service';
 
 
 // Imports de AutoComplete
@@ -78,6 +81,7 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     DefaultComponent,
     LoginComponent,
     RegisterComponent,
+    //Seccion de Comunicaciones
     IngresoComunicacionComponent,
     IngresoActividadComponent,
     NavbarComponent,
@@ -89,10 +93,13 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     IngresoComunicacionPorTipoComponent,
     SeguimientoActividadComponent,
     DatatablesActividadPendientesComponent,
+    //Seccion de Consultas
     ConsultaMasterComponent,
     ContactosComponent,
     ReporteGeneralComponent,
-    MantenimientoInstitucionesComponent
+    //Seccion de Mantenimientos
+    MantenimientoInstitucionesComponent,
+    MantenimientoSolicitudCambioFechasComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +124,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     FinalizarActividadService,
     SeguimientoActividadService,
     ContactosService,
-    InstitucionesService
+    InstitucionesService,
+    SolicitudCambioFechaService
   ],
   bootstrap: [AppComponent]
 })

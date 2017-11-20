@@ -20,6 +20,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
 
 // Imports de los Mantenimientos
 import { MantenimientoInstitucionesComponent } from './components/mantenimientos/instituciones/mantenimiento.institucion.component';
+import { MantenimientoSolicitudCambioFechasComponent } from './components/mantenimientos/solicitud.cambio.fechas/mantenimiento.solicitud.cambio.fecha.component';
+//import { MantenimientoInstitucionesComponent } from './components/mantenimientos/instituciones/mantenimiento.institucion.component';
 
 // Imports de los Contactos
 import { ContactosComponent } from './components/contactos/contacto.component';
@@ -50,8 +52,9 @@ export const APP_ROUTES: Routes = [
 
   // Mapeo de Menu de Mantenimientos
   { path: 'mantenimiento-instituciones', component: MantenimientoInstitucionesComponent },
-  // { path: 'consulta-generacion-reporte', component: ReporteGeneralComponent },
-
+  { path: 'solicitud-cambio-fecha', component: MantenimientoSolicitudCambioFechasComponent },
+  { path: 'cambio-fecha', component: MantenimientoInstitucionesComponent },
+  
   // Mapeo de Opcion de Contactos
   { path: 'contactos-sreci', component: ContactosComponent },
 
