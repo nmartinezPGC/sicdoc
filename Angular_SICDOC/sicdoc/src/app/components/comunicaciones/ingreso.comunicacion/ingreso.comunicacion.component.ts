@@ -518,7 +518,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
           }else{
             this.JsonOutgetlistaTiposDocumentos = response.data;
-            //console.log(response.data);
+            // console.log( this.JsonOutgetlistaTiposDocumentos );
           }
         });
   } // FIN : FND-00001
@@ -572,6 +572,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
+            // console.log(this.JsonOutgetlistaSubDireccionSRECIAcom);
           }
         });
   } // FIN : FND-00001.2
@@ -872,14 +873,23 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    listarCodigoCorrespondenciaOfiResp( idDocumento: number ){
+    // Generacion del Codigo a Generar para la Subsecretaria *******************
     this.paramsSecuenciaSCPI.codSecuencial = "SCPI";
     this.paramsSecuenciaSCPI.tablaSecuencia = "tbl_comunicacion_enc";
     // this.paramsSecuenciaSCPI.idTipoDocumento = "1";
     this.paramsSecuenciaSCPI.idTipoDocumento = idDocumento;
     //Llamar al metodo, de Login para Obtener Secuencia de SCPI | Oficio
     // console.log( this.paramsSecuenciaSCPI );
+    // Codigos
     let _subSecretariSreciId:number;
+    let _DireccionSreciId:number;
+    // Nombres
     let _subSecretariSRECIName:string = "";
+    let _DireccionSRECIName:string = "";
+    // Fecha
+    let _anioCod = this.fechaHoy.getFullYear();
+    //pull the last two digits of the year
+
 
     this._listasComunes.listasComunesToken( this.paramsSecuenciaSCPI, "gen-secuencia-comunicacion-in" ).subscribe(
         response => {
@@ -893,26 +903,51 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             console.log( this.JsonOutgetCodigoSecuenciaSCPI );
 
             // Generacion del Codigo Nuevo de SCPI
+            // Sub Secreatria de la SRECI
             _subSecretariSreciId = this.identity.idDireccion;
 
+            // Direccion de la SRECI
+            _DireccionSreciId = this.identity.idDeptoFuncional;
+
             // Evalua a que Sub Secreatria Pertenece el Usuario ****************
-            if( _subSecretariSreciId == 1 ){
-              _subSecretariSRECIName = "DCPI";
-            } else if ( _subSecretariSreciId == 2 ) {
-              _subSecretariSRECIName = "DPE";
-            } else if ( _subSecretariSreciId == 3 ) {
-              _subSecretariSRECIName = "ACPM";
-            }else if ( _subSecretariSreciId == 4 ) {
-              _subSecretariSRECIName = "SE";
+            // A Futuro, Utilizar la Llamada a la BD de las Direcciones | 2017-11-21
+            if( _DireccionSreciId == 1 ){
+              // _subSecretariSRECIName = "DCPI";
+              _DireccionSRECIName = "DGCI";
+            } else if ( _DireccionSreciId == 2 ) {
+              // _subSecretariSRECIName = "DPE";
+              _DireccionSRECIName = "DCB";
+            } else if ( _DireccionSreciId == 3 ) {
+              // _subSecretariSRECIName = "ACPM";
+              _DireccionSRECIName = "DCM";
+            } else if ( _DireccionSreciId == 4 ) {
+              // _subSecretariSRECIName = "SE";
+              _DireccionSRECIName = "DCPD";
+            } else if ( _DireccionSreciId == 5 ) {
+              // _subSecretariSRECIName = "SE";
+              _DireccionSRECIName = "DCSS";
+            } else if ( _DireccionSreciId == 6 ) {
+              // _subSecretariSRECIName = "SE";
+              _DireccionSRECIName = "DAEC";
+            } else if ( _DireccionSreciId == 7 ) {
+              // _subSecretariSRECIName = "SE";
+              _DireccionSRECIName = "DPI";
+            } else if ( _DireccionSreciId == 8 ) {
+              // _subSecretariSRECIName = "SE";
+              _DireccionSRECIName = "SSCPI";
             }
 
             // Concatenacion del Codigo de Comunicacion a Responder
             this.codigoSecuenciaGen = this.JsonOutgetCodigoSecuenciaSCPI.codSecuencial;
             this.valorSecuenciaGen =  this.JsonOutgetCodigoSecuenciaSCPI.valor2;
-            this.comunicacion.codReferenciaSreci = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+            // this.comunicacion.codReferenciaSreci = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+            this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
+                                                   this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
 
             // Enviamos la Secuencia con Nuevo Valor
-            this.comunicacion.secuenciaComunicacionSCPI = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+            // this.comunicacion.secuenciaComunicacionSCPI = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
+            this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
+                                                          this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod ;
 
           }
         });

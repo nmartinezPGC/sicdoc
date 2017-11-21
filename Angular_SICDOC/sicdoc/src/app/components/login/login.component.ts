@@ -24,7 +24,7 @@ import { APP_ROUTING } from '../../app.routes';
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  public titulo: string = "Por favor Identificate";
+  public titulo: string = "Inicio de sesión";
   //Parametros Generales
   //Objeto Json del Usuario
   public user;

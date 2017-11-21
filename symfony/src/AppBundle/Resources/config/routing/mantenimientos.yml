@@ -1,0 +1,15 @@
+## YAML Template.
+## 
+---
+
+# Ruta para la Solicitud de Cambio de Fechas
+default_solicitudCambioFecha:
+    path: /solicitud-cambio-fecha
+    defaults: { _controller: "AppBundle:MantCambioFechas:solicitudCambioFecha" }
+    methods: POST
+    
+ # Ruta para el Cambio de Fechas
+default_cambioFecha:
+    path: /cambio-fecha
+    defaults: { _controller: "AppBundle:MantCambioFechas:cambioFecha" }
+    methods: POST

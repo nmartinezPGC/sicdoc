@@ -1,34 +1,21 @@
 <div class="container">
-  
-    <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+
+    <h2> {{ titulo }} <small> | SCA.</small></h2>
     <hr class="colorgraph">
-  
+
     <!-- Loader de Carga de los Datos -->
     <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;">
       <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
       <img src="assets/images/832.gif" alt="Cargando Tareas">
     </div>
-  
-    <!-- Fila para el Area de Busqueda de los Oficios -->
-    <!-- <div class="row-fluid" *ngIf="loadTabla1 == true">
-      <div class="col-xs-12 col-md-12 col-lg-12">
-      <h4>Buscar por:
-      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="temaComunicacion" >Tema |
-      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codCorrespondenciaEnc"  >No. Interno |
-      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="codReferenciaSreci" >No. Ingresado |
-      <input type="radio" name="codCorr" [(ngModel)]="codCorr" value="descCorrespondenciaEnc" >Descripción
-      </h4>
-        <input class="form-control" type="text" name="search"  [(ngModel)]="search" placeholder="Buscar" >
-      </div>
-    </div> -->
-  
-    <hr>
-  
+
+    <!-- <hr> -->
+
     <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
     <div class="row">
       <div class="col-10">
         <!-- <label >No. Comunicacion</label> -->
-        <input type="text" name="codigoComunicacion" id="codigoComunicacion" class="form-control col-3" 
+        <input type="text" name="codigoComunicacion" id="codigoComunicacion" class="form-control col-4"
                placeholder="No. de Comunicacion a cambiar">
 
         <small class="form-text text-muted">
@@ -42,13 +29,13 @@
     <div class="row">
         <div class="col-8">
             <!-- <label >Tema Comunicacion</label> -->
-           
+
         <small class="form-text text-muted">
             Tema de la Comunicacion
-        </small>  
-          <input type="text" name="temaComunicacion" id="temaComunicacion" class="form-control col-6" 
+        </small>
+          <input type="text" name="temaComunicacion" id="temaComunicacion" class="form-control col-6"
                 placeholder="Tema de la Comunicacion" disabled>
-             
+
         </div>
     </div>
 
@@ -57,29 +44,51 @@
           <!-- <label >Descripcion Comunicacion</label> -->
           <small class="form-text text-muted">
               Descripcion de la Comunicacion
-          </small>  
+          </small>
           <textarea class="form-control" id="descComunicacion" name="descComunicacion" rows="3"
-                      placeholder="Descripcion de la Comunicacion" tabindex="2" required 
+                      placeholder="Descripcion de la Comunicacion" tabindex="2" required
                       minlength="10" disabled >
             </textarea>
-                 
+
+            <hr>
       </div>
     </div>
 
-    <br>
     <!-- Fechas de la Comunicacion   -->
     <div class="row">
       <div class="col-2">
-        <input type="text" name="fechaCreacion" id="fechaCreacion" class="form-control" 
+        <small class="form-text text-muted">
+            Fecha de Creación
+        </small>
+        <input type="text" name="fechaCreacion" id="fechaCreacion" class="form-control"
                placeholder="Fecha de Creacion" disabled>
       </div>
       <div class="col-2">
-        <input type="text" name="fechaEntregaAct" id="fechaEntregaAct" class="form-control" 
+        <small class="form-text text-muted">
+            Fecha de Entrega Actual
+        </small>
+        <input type="text" name="fechaEntregaAct" id="fechaEntregaAct" class="form-control"
                placeholder="Fecha de Entrega Actual" disabled>
+
+      </div>
+    </div>
+
+    <!-- Fila para los Comentarios de la Solicitud -->
+    <div class="row">
+      <div class="col-8">
+        <hr>
+          <!-- <label >Descripcion Comunicacion</label> -->
+          <small class="form-text text-muted">
+              Justificacion de Solicitud
+          </small>
+          <textarea class="form-control" id="justifyComunicacion" name="justifyComunicacion" rows="3"
+                      placeholder="Justificacion de Solicitud" tabindex="2" required
+                      minlength="10" >
+          </textarea>
+
       </div>
     </div>
 
     <!-- Fin de Formulario -->
-  
+
   </div> <!--  Fin de container -->
-  

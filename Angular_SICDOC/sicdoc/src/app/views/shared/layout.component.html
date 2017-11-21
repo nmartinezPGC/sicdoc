@@ -42,6 +42,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" *ngIf="identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">
+                    <img src="/assets/icons/comunicacion/management_green_24x24.png" class="d-inline-block align-top" alt="">
                     Asignar Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
                   <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">
@@ -78,7 +79,9 @@
                 Mantenimientos
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" [routerLink]="['solicitud-cambio-fecha']" routerLinkActive="active">Solicitud de Cambio de Fecha / Entrega</a>
+                    <a class="dropdown-item" [routerLink]="['solicitud-cambio-fecha']" routerLinkActive="active">
+                      <img src="/assets/icons/comunicacion/spring-desktop-calendar-variant_blue_24x24.png" class="d-inline-block align-top" alt="">
+                      Solicitud de Cambio de Fecha / Entrega</a>
                     <!-- <a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Cambio de Fecha / Entrega</a> -->
                     <!-- <li class="nav-item dropdown"><a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Solicitud de Cambio d Fecha</a></li> -->
 
@@ -222,5 +225,5 @@
 <router-outlet></router-outlet>
 
 <br>
-<p style="margin-left:35% ">Sistema de Control de Documentación | SICDOC </p>
-<small style="margin-left:26% " >Copyright &#169; 2017 Secretaría de Relaciones Exteriores y Cooperación Internacional | DCPD </small>
+<p style="margin-left:35% ">Sistema de Control de Actividades | SCA </p>
+<small style="margin-left:26% " >Copyright &#169; 2017 Secretaría de Relaciones Exteriores y Cooperación Internacional | SRECI </small>

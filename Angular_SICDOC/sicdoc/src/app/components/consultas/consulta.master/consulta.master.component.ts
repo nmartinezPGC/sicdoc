@@ -148,7 +148,7 @@ export class ConsultaMasterComponent implements OnInit {
     // Laoding
     this.loading = 'show';
     this.loadTabla1 = false;
-    // console.log( this.consultaMasterEnc );
+    console.log( this.consultaMasterEnc );
     // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
     this._consultaMasterService.comunicacionFind( this.consultaMasterEnc ).subscribe(
         response => {

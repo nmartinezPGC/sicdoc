@@ -196,4 +196,33 @@ class TblSecuenciales
     {
         return $this->reservada;
     }
+    /**
+     * @var string
+     */
+    private $actualizada;
+
+
+    /**
+     * Set actualizada
+     *
+     * @param string $actualizada
+     *
+     * @return TblSecuenciales
+     */
+    public function setActualizada($actualizada)
+    {
+        $this->actualizada = $actualizada;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizada
+     *
+     * @return string
+     */
+    public function getActualizada()
+    {
+        return $this->actualizada;
+    }
 }

@@ -1,0 +1,88 @@
+BackendBundle\Entity\TblCambioFechas:
+    type: entity
+    table: tbl_cambio_fechas
+    indexes:
+        idx_cod_cambio_fechas:
+            columns:
+                - cod_correspondencia
+        fki_user_solicitud:
+            columns:
+                - id_usuario_solicitud
+        fki_estados_solictud:
+            columns:
+                - id_estado_solicitud
+        fki_uer_cambio:
+            columns:
+                - id_usuario_creacion
+    id:
+        idCambioFecha:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_cambio_fecha
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codCorrespondencia:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: cod_correspondencia
+        justificacionSolicitud:
+            type: string
+            nullable: true
+            length: 300
+            options:
+                fixed: false
+            column: justificacion_solicitud
+        fechaCreacionSolicitud:
+            type: date
+            nullable: true
+            column: fecha_creacion_solicitud
+        fechaCambio:
+            type: date
+            nullable: true
+            column: fecha_cambio
+        observacionesSolicitud:
+            type: string
+            nullable: true
+            length: 300
+            options:
+                fixed: false
+            column: observaciones_solicitud
+    manyToOne:
+        idUsuarioCreacion:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario_creacion:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idUsuarioSolicitud:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario_solicitud:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idEstadoSolicitud:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado_solicitud:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
