@@ -15,9 +15,12 @@ import { NgForm }    from '@angular/forms';
 
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
-// Importamos la CLase Intituciones del Modelo
-import { Intituciones } from '../../../models/mantenimientos/instituciones.model'; //Model del Login
+// Importamos la CLase Solicitud de Cambio de Fecha del Modelo
+import { SolicitudCambioFecha } from '../../../models/mantenimientos/solicitud.cambio.fechas.model'; //Model del Login
 
+// Declaramos las variables para jQuery
+declare var jQuery:any;
+declare var $:any;
 
 @Component({
   selector: 'app-mantenimiento-instituciones',
@@ -29,8 +32,11 @@ import { Intituciones } from '../../../models/mantenimientos/instituciones.model
 export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   public titulo:string = "Solicitud de Cambio de Fecha";
 
+  public fechaHoy:Date = new Date();
+  public fechafin:string;
+
   // Instacia de la variable del Modelo
-  public _modIntituciones:Intituciones;
+  public _modSolicitudCambioFechas: SolicitudCambioFecha;
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -38,6 +44,7 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   public data;
   public errorMessage;
   public status;
+  public statusConsultaCom;
   public mensajes;
 
   public identity;
@@ -47,9 +54,18 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   private paramsSubDir;
   // public passwordConfirmation:string;
 
+  // Datos de la Consulta
+  public temaComunicacion:string;
+  public descComunicacion:string;
+  public temaFechaIngreso:string;
+  public temaFechaEntrega:string;
+
+  // Datos de la Consulta
+  public datosConsulta;
+
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
-  public JsonOutgetlistaEstados:any[];
+  public JsonOutgetComunicacionChange:any[];
   public JsonOutgetlistaTipoFuncionario:any[];
   public JsonOutgetlistaDeptosFuncionales:any[];
   public JsonOutgetlistaTipoUsuario:any[];
@@ -59,160 +75,131 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
 
 
   // Definicion del Constructor
-  constructor( private _loginService: SolicitudCambioFechaService,
+  constructor( private _solicitudCambioFechaService: SolicitudCambioFechaService,
                private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http){
-
-    // Construimos las Validaciones del Formulario
-    this.forma = new FormGroup({
-      // Arreglo de la Estructura del Form
-      'codigoUsuario': new FormControl('00002'),
-      'primerNombre': new FormControl('Juan'),
-      'primerApellido': new FormControl('Perez')
-    });
-
+    // Todo aqui
   }
 
   // Metodo OnInit
   ngOnInit(){
     // Iniciamos los Parametros de Sub Direcciones
-    this.paramsSubDir = {
-      "idDireccionSreci"  : ""
+    this.datosConsulta = {
+      "temaComunicacion"  : "",
+      "descComunicacion"  : "",
+      "temaFechaIngreso"  : "",
+      "temaFechaEntrega"  : ""
     };
 
-    // Inicializacion de las Listas
-    this.getlistaDireccionesSRECI();
-    // this.getlistaEstados();
-    this.getlistaTipoFuncionario();
+    // Convertimos las Fechas a una Default
+    this.convertirFecha();
+
     // this.getlistaDeptosFuncionales();
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this._modIntituciones = new Intituciones(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
-    //this.loadScript('../assets/js/register.component.js');
+    this._modSolicitudCambioFechas = new SolicitudCambioFecha ( "", "", 0, this.fechafin, "", "");
+
   }
 
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
-      console.log(this._modIntituciones);
-      // parseInt(this.user.idTipoUsuario);
-      this._loginService.registerUser(this._modIntituciones).subscribe(
-        response => {
-            // Obtenemos el Status de la Peticion
-            this.status = response.status;
-            this.mensajes = response.msg;
+      console.log(this._modSolicitudCambioFechas);
+      // Comprobamos que Existe la Comunicacion
+      if( this.statusConsultaCom != 'error' ){
+        // parseInt(this.user.idTipoUsuario);
+        this._solicitudCambioFechaService.solitarCambioFecha( this._modSolicitudCambioFechas ).subscribe(
+          response => {
+              // Obtenemos el Status de la Peticion
+              this.status = response.status;
+              this.mensajes = response.msg;
+              // console.log( this.mensajes );
+              // Condicionamos la Respuesta
+              if(this.status != "success"){
+                  this.status = "error";
+                  alert( this.mensajes );
+                  $("#codCorrespondencia").focus();
+              }else{
+                this.ngOnInit();
+              }
+          }, error => {
+              //Regisra cualquier Error de la Llamada a la API
+              this.errorMessage = <any>error;
 
-            // Condicionamos la Respuesta
-            if(this.status != "success"){
-                this.status = "error";
-            }else{
-              this.ngOnInit();
-            }
-        }, error => {
-            //Regisra cualquier Error de la Llamada a la API
-            this.errorMessage = <any>error;
+              //Evaluar el error
+              if(this.errorMessage != null){
+                console.log(this.errorMessage);
+                this.mensajes = this.errorMessage;
+                alert("Error en la Petición !!" + this.errorMessage);
+              }
+          });
+      }
 
-            //Evaluar el error
-            if(this.errorMessage != null){
-              console.log(this.errorMessage);
-              this.mensajes = this.errorMessage;
-              alert("Error en la Petición !!" + this.errorMessage);
-            }
-        });
-  }
+  } // FIN | Metodo onSubmit
 
 
-  /*****************************************************
-  * Funcion: FND-00002
-  * Fecha: 28-07-2017
-  * Descripcion: Carga la Lista de los Estados de la BD
-  * Objetivo: Obtener la lista de los Estados de los
-  * Usurios de la BD, Llamando a la API, por su metodo
-  * (estados-user-list).
-  ******************************************************/
-  getlistaEstados() {
+  /****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 22-11-2017
+  * Descripcion: Funcion que Obtiene los datos de la
+  * Consulta a la BD de la Comunicacion
+  * Objetivo: Datos de la Comunicacion
+  *****************************************************/
+  buscaComunicacion() {
+    console.log(this._modSolicitudCambioFechas);
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","estados-user-list").subscribe(
+    this._solicitudCambioFechaService.buscaComunicacion( this._modSolicitudCambioFechas ).subscribe(
         response => {
           // login successful so redirect to return url
           //alert(response.status);
+          this.statusConsultaCom = response.status;
+
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
             alert(response.msg);
-          }else{
-            this.JsonOutgetlistaEstados = response.data;
-            // console.log(response.data);
-
-          }
-        });
-  } // FIN : FND-00002
-
-
-
-  /******************************************************
-  * Funcion: FND-00003
-  * Fecha: 28-07-2017
-  * Descripcion: Carga la Lista de los Tipos de
-  * Funcionarios.
-  * Objetivo: Obtener la lista de los Tipos de Funciona.
-  * de la BD, Llamando a la API, por su metodo
-  * (tipo-funcionario-list).
-  *******************************************************/
-  getlistaTipoFuncionario() {
-    //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","tipo-funcionario-list").subscribe(
-        response => {
-          // login successful so redirect to return url
-          //alert(response.status);
-          if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
-            alert(response.msg);
+            this.JsonOutgetComunicacionChange = response.data;
           }else{
             //this.data = JSON.stringify(response.data);
-            this.JsonOutgetlistaTipoFuncionario = response.data;
-            // console.log(response.data);
+            this.JsonOutgetComunicacionChange = response.data;
 
+            // Asignacion de los datos de la Consulta
+            //this.temaComunicacion = this.JsonOutgetComunicacionChange[0].temaComunicacion;
+            //this.descComunicacion = this.JsonOutgetComunicacionChange[0].descCorrespondenciaEnc;
+            //this.datosConsulta.descCorrespondenciaEnc = this.JsonOutgetComunicacionChange[0].descCorrespondenciaEnc;
+            //this.fechaCom = this.JsonOutgetComunicacionChange[0].temaComunicacion;
+            console.log( this.JsonOutgetComunicacionChange );
           }
         });
-  } // FIN : FND-00003
+  } // FIN : FND-00001.1
 
 
+  /****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 11-09-2017
+  * Descripcion: Funcion que convierte las fechas a
+  * String y le suma 5 dias
+  * Objetivo: Sumar 5 dias a la fecha Maxima de entrega
+  *****************************************************/
+  convertirFecha() {
+    let day = String(this.fechaHoy.getDate() + 5 );
+    let month = String(this.fechaHoy.getMonth() + 1 );
+    const year = String(this.fechaHoy.getFullYear() );
 
-  /*****************************************************
-  * Funcion: FND-00004
-  * Fecha: 28-07-2017
-  * Descripcion: Carga la Lsita de los Departamentos
-  * Funcionales de la SRECI.
-  * Objetivo: Obtener la lista de los Departamentos Func.
-  * de la BD, Llamando a la API, por su metodo
-  * (depto-funcional-user-list).
-  ******************************************************/
-  getlistaDeptosFuncionales() {
-    //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","depto-funcional-user-list").subscribe(
-        response => {
-          // login successful so redirect to return url
-          //alert(response.status);
-          if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion
-            alert("Msg Error");
-            alert(response.msg);
-          }else{
-            //this.data = JSON.stringify(response.data);
-            this.JsonOutgetlistaDeptosFuncionales = response.data;
-            // console.log(response.data);
-
-          }
-        });
-  } // FIN : FND-00004
-
+    if(day.length < 2  ){
+      //alert("Dia Falta el 0");
+      day = "0" + day;
+    }else if(month.length < 2){
+      //alert("Mes Falta el 0");
+      month = "0" + month;
+    }
+    this.fechafin = year + "-" + month + "-" + day ;
+    //alert("Dia " + day + " Mes " + month + " Año " + year);
+  } // FIN : FND-00001.2
 
 
   /*****************************************************
@@ -237,97 +224,9 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaTipoUsuario = response.data;
             // console.log(response.data);
-
           }
         });
   } // FIN : FND-00005
-
-
-  /*****************************************************
-  * Funcion: FND-00006
-  * Fecha: 29-07-2017
-  * Descripcion: Carga la Imagen de usuario desde el File
-  * Objetivo: Obtener la imagen que se carga desde el
-  * control File de HTML
-  * (fileChangeEvent).
-  ******************************************************/
-  public filesToUpload: Array<File>;
-  public resultUpload;
-
-  fileChangeEvent(fileInput: any){
-    //console.log('Evento Chge Lanzado');
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-
-    let token = this._loginService.getToken();
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comu/upload-image-user";
-    // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comu/upload-image-user";
-    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comu/upload-image-user";
-
-    this._uploadService.makeFileRequest( token, url, ['image'], this.filesToUpload ).then(
-        ( result ) => {
-          this.resultUpload = result;
-          console.log(this.resultUpload);
-        },
-        ( error ) => {
-          alert("error");
-          console.log(error);
-        });
-  } // FIN : FND-00006
-
-
-  /*****************************************************
-  * Funcion: FND-00007
-  * Fecha: 18-09-2017
-  * Descripcion: Carga la Lista de las Direcciones de
-  * SRECI
-  * Objetivo: Obtener la lista de las Direcciones SRECI
-  * de la BD, Llamando a la API, por su metodo
-  * (dir-sreci-list).
-  ******************************************************/
-  getlistaDireccionesSRECI() {
-    //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
-        response => {
-          // login successful so redirect to return url
-          if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion
-            alert(response.msg);
-          }else{
-            //this.data = JSON.stringify(response.data);
-            this.JsonOutgetlistaDireccionSRECI = response.data;
-          }
-        });
-  } // FIN : FND-00007
-
-
-  /*****************************************************
-  * Funcion: FND-00007.1
-  * Fecha: 18-09-2017
-  * Descripcion: Carga la Lista de las Sub Direcciones de
-  * SRECI
-  * Objetivo: Obtener la lista de las Direcciones SRECI
-  * de la BD, Llamando a la API, por su metodo
-  * (subdir-sreci-list).
-  ******************************************************/
-  getlistaSubDireccionesSRECI() {
-    //Llamar al metodo, de Login para Obtener la Identidad
-    this.paramsSubDir.idDireccionSreci = this._modIntituciones.idDireccionSreci;
-
-    this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
-        response => {
-          // login successful so redirect to return url
-          if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion
-            this.JsonOutgetlistaSubDireccionSRECI = response.data;
-            alert(response.msg);
-          }else{
-            //this.data = JSON.stringify(response.data);
-            this.JsonOutgetlistaSubDireccionSRECI = response.data;
-          }
-        });
-  } // FIN : FND-00007.1
-
-
 
 
 }

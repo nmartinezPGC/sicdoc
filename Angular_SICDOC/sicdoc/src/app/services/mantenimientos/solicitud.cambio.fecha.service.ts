@@ -24,53 +24,55 @@ export class SolicitudCambioFechaService {
 
 
   /****************************************************
-  * Funcion: FND-00001
-  * Fecha: 28-07-2017
-  * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (login).
-  * Objetivo: Logearse a la Aplicacion
-  *****************************************************/
-  signUp( user_to_login ){
-      let json = JSON.stringify( user_to_login );
-      let params = "json=" + json;
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
-
-    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
-  }
-
-
-  /****************************************************
   * Funcion: FND-00002
-  * Fecha: 28-07-2017
+  * Fecha: 22-11-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (usuario/new).
-  * Objetivo: Agregar nuevo Usuario
+  * a la API ( mantenimientos/cambio-fecha ).
+  * Objetivo: Ralizar el Cambio de la Fecha, de
+  * Comunicacion
   *****************************************************/
-  registerUser( user_to_register ){
-      let json = JSON.stringify( user_to_register );
-      let params = "json=" + json;
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
-
-    return this._http.post(this.url + "/usuario/new", params, { headers:headers }).map( res => res.json());
-  }
-
-
-  /****************************************************
-  * Funcion: FND-00002.1
-  * Fecha: 09-10-2017
-  * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( usuario/change-pass-user ).
-  * Objetivo: Cambiar Password a Usuario
-  *****************************************************/
-  changePassUser( user_to_change_pass ){
-      let json = JSON.stringify( user_to_change_pass );
+  buscaComunicacion( busca_comunicacion ){
+      let json = JSON.stringify( busca_comunicacion );
       let params = "json=" + json + "&authorization=" + this.getToken();
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/usuario/change-pass-user", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/mantenimientos/busca-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN | FND-00002
+
+  /****************************************************
+  * Funcion: FND-00002
+  * Fecha: 22-11-2017
+  * Descripcion: Metodo Ajax, para Invocar el servicio
+  * a la API ( mantenimientos/cambio-fecha ).
+  * Objetivo: Ralizar el Cambio de la Fecha, de
+  * Comunicacion
+  *****************************************************/
+  cambioFecha( cambio_feha ){
+      let json = JSON.stringify( cambio_feha );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/mantenimientos/cambio-fecha", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002
+
+
+  /****************************************************
+  * Funcion: FND-00002.1
+  * Fecha: 22-11-2017
+  * Descripcion: Metodo Ajax, para Invocar el servicio
+  * a la API ( mantenimientos/solicitud-cambio-fecha ).
+  * Objetivo: Solicitud de Cambio Fecha, Comunicacion
+  *****************************************************/
+  solitarCambioFecha( solicitud_cambio_fecha ){
+      let json = JSON.stringify( solicitud_cambio_fecha );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/mantenimientos/solicitud-cambio-fecha", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002.1
 
 
   /****************************************************

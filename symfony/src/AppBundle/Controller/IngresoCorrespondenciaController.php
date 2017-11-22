@@ -431,7 +431,7 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         // Fin de Comunicacion Detalle *************************
                         
-                        // Envio de Correo despues de la Granacion de Datos
+                        // Envio de Correo despues de la Grabacion de Datos
                         // *****************************************************
                         //Instanciamos de la Clase TblFuncionarios, para Obtener
                         // los Datos de envio de Mail **************************

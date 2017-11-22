@@ -1,7 +1,6 @@
 <div class="container">
-
+<form #solicitudForm="ngForm" (ngSubmit)="onSubmit(solicitudForm)" name="solicitudForm" role="form">
     <h2> {{ titulo }} <small> | SCA.</small></h2>
-    <hr class="colorgraph">
 
     <!-- Loader de Carga de los Datos -->
     <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;">
@@ -14,13 +13,17 @@
     <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
     <div class="row">
       <div class="col-10">
-        <!-- <label >No. Comunicacion</label> -->
-        <input type="text" name="codigoComunicacion" id="codigoComunicacion" class="form-control col-4"
-               placeholder="No. de Comunicacion a cambiar">
+        <hr class="colorgraph">
 
+        <!-- <label >No. Comunicacion</label> -->
         <small class="form-text text-muted">
             Ingresa el No. de Comunicacion a solicitar el cambio de Fecha de Entrega
         </small>
+        <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-4"
+               placeholder="No. de Comunicacion a cambiar" (keyup.enter)="buscaComunicacion()"
+               ngControl="codCorrespondencia" [(ngModel)]="_modSolicitudCambioFechas.codCorrespondencia" required >
+
+        <!-- <small class="form-text text-muted" *ngIf="codigoComunicacion.errors?.required" >Debes ingresar el código de la Comunicacion</small> -->
       </div>
     </div>
 
@@ -34,7 +37,7 @@
             Tema de la Comunicacion
         </small>
           <input type="text" name="temaComunicacion" id="temaComunicacion" class="form-control col-6"
-                placeholder="Tema de la Comunicacion" disabled>
+                placeholder="Tema de la Comunicacion" disabled  value="{{ JsonOutgetComunicacionChange.temaComunicacion }}" >
 
         </div>
     </div>
@@ -43,12 +46,12 @@
       <div class="col-8">
           <!-- <label >Descripcion Comunicacion</label> -->
           <small class="form-text text-muted">
-              Descripcion de la Comunicacion
+              Descripción de la Comunicación
           </small>
-          <textarea class="form-control" id="descComunicacion" name="descComunicacion" rows="3"
-                      placeholder="Descripcion de la Comunicacion" tabindex="2" required
-                      minlength="10" disabled >
-            </textarea>
+          <textarea #descComunicacion="ngModel" class="form-control" id="descComunicacion" name="descComunicacion" id="descComunicacion"
+                      placeholder="Descripcion de la Comunicacion" tabindex="2" type="text" ngControl="descComunicacion"
+                       disabled id="exampleFormControlTextarea1" [(ngModel)]="_modSolicitudCambioFechas.descComunicacion" >
+            {{ JsonOutgetComunicacionChange.descCorrespondenciaEnc }}</textarea>
 
             <hr>
       </div>
@@ -79,16 +82,32 @@
         <hr>
           <!-- <label >Descripcion Comunicacion</label> -->
           <small class="form-text text-muted">
-              Justificacion de Solicitud
+              Justificación de Solicitud
           </small>
-          <textarea class="form-control" id="justifyComunicacion" name="justifyComunicacion" rows="3"
-                      placeholder="Justificacion de Solicitud" tabindex="2" required
-                      minlength="10" >
+          <textarea #justifiacionCom="ngModel" type="text" name="justifiacionCom" id="justifiacionCom"
+                  ngControl="justifiacionCom" [(ngModel)]="_modSolicitudCambioFechas.justifiacionCom" required maxlength="1400" minlength="15"
+                  class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de Solicitud" rows="3">
           </textarea>
 
       </div>
     </div>
 
+    <!-- Fila para la Fecha de la Solicitud -->
+    <div class="row">
+      <div class="col-2">
+          <!-- <label >Descripcion Comunicacion</label> -->
+          <small class="form-text text-muted">
+              Fecha Solicitada
+          </small>
+          <input #fechaMaxEntrega class="form-control" type="date"  value="{{ fechafin }}" tabindex="7" required
+            name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" [(ngModel)]="_modSolicitudCambioFechas.fechaMaxEntrega" >
+
+      </div>
+    </div>
+    <hr class="colorgraph">
+    <input type="submit" value="Enviar" class="btn btn-primary" tabindex="17" [disabled]="!solicitudForm.valid"  >
+    <!-- Boton de Enviar la Solicitud -->
+  </form>
     <!-- Fin de Formulario -->
 
   </div> <!--  Fin de container -->
