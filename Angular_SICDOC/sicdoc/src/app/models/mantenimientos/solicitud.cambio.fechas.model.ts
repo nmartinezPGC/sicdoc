@@ -4,6 +4,7 @@ export class SolicitudCambioFecha {
     constructor(
       // Datos Generales
       public codCorrespondencia:string,
+      public codCorrespondenciaExt:string,
       public justifiacionCom:string,
       public idUserCreador:number,
 

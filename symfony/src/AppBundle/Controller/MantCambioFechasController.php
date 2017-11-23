@@ -279,6 +279,10 @@ class MantCambioFechasController extends Controller {
                //Datos generales de la Tabla ***********************************                
                //Variables que vienen del Json *********************************
                 $cod_comunicacion     = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                $cod_referenciaSreci  = ($params->codCorrespondenciaExt != null) ? $params->codCorrespondenciaExt : null ;
+                
+                $tema_correspondencia  = ($params->temaComunicacion != null) ? $params->temaComunicacion : null ;
+                $desc_correspondencia  = ($params->descComunicacion != null) ? $params->descComunicacion : null ;
                 
                 // Observacion de Solicitu de Cambio
                 $justificacion_comunicacion = ($params->justifiacionCom != null) ? $params->justifiacionCom : null ;
@@ -380,7 +384,7 @@ class MantCambioFechasController extends Controller {
                                 // los Datos de envio de Mail **************************
                                 $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
                                     array(
-                                        "idFuncionario" => $cod_usuario                
+                                        "idUsuario" => $cod_usuario                
                                     ));
                                 // Parametros de Salida
                                 $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
@@ -413,13 +417,11 @@ class MantCambioFechasController extends Controller {
                                        ->setTo($mailSend)                                                        
                                        ->setBody(
                                             $this->renderView(                                            
-                                                'Emails/sendMail.html.twig',
+                                                'Emails/sendMailSolicitudCambFechas.html.twig',
                                                 array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
-                                                       'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia ,
-                                                       'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                                       'fechaIngresoOfi' => strval($fecha_maxima_entrega), 
-                                                       'fechaIngresoCom' => date_format($fecha_ingreso, "Y-m-d"), 'obsComunicacion' => $observacion_correspondencia,
-                                                       'institucionCom' => $institucion->getPerfilInstitucion())
+                                                       'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_comunicacion,
+                                                       'temaOficio' => $tema_correspondencia, 'obsComunicacion' => $justificacion_comunicacion,
+                                                       'fechaMaxEntrega' => $fecha_max_solicitada  )
                                             ), 'text/html' );                                                   
 
                                     // Envia el Correo con todos los Parametros
@@ -530,21 +532,32 @@ class MantCambioFechasController extends Controller {
                              "codCorrespondenciaEnc" => $cod_comunicacion
                     ));
                     
-                    // Asignacion de los valores de la Consulta
-                    //$cod_usuario_creador = $isset_corresp_cod->getIdUsuario();
-                    //Array de Mensajes
-                    $data = array(
-                       "status" => "success",                       
-                       "code"   => 200, 
-                       "msg"    => "Datos encontrados !!",
-                       "data"   => $isset_corresp_cod
-                    );                    
+                    //Verificamos que el retorno de la Funcion sea > 0 *****
+                    // Encontro los Datos de la Comunicacion Solicitada ****
+                    if( count($isset_corresp_cod) > 0 ){ 
+                        // Asignacion de los valores de la Consulta
+                        //$cod_usuario_creador = $isset_corresp_cod->getIdUsuario();
+                        //Array de Mensajes
+                        $data = array(
+                           "status" => "success",                       
+                           "code"   => 200, 
+                           "msg"    => "Datos encontrados !!",
+                           "data"   => $isset_corresp_cod
+                        );  
+                    } else {
+                        //Array de Mensajes
+                        $data = array(
+                           "status" => "error",                       
+                           "code"   => 400, 
+                           "msg"    => "Datos no encontrados, no existe información con este código de Comunicación !!"                           
+                        );
+                    }                 
                 }else{
                     //Array de Mensajes
                     $data = array(
                        "status" => "error",                      
                        "code"   => 400, 
-                       "msg"   => "Datos no encontrados, no existe una comunicación con esa información !!"
+                       "msg"   => "Falta ingresar el código de la comunicación!!"
                     );
                 }                                   
             }else{

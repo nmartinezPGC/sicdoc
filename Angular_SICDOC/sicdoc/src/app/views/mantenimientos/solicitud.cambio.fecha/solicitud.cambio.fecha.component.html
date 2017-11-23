@@ -20,7 +20,7 @@
             Ingresa el No. de Comunicacion a solicitar el cambio de Fecha de Entrega
         </small>
         <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-4"
-               placeholder="No. de Comunicacion a cambiar" (keyup.enter)="buscaComunicacion()"
+               placeholder="No. de Comunicacion a cambiar" (keyup.enter)="buscaComunicacion()" autofocus="true" autocapitalize="word"
                ngControl="codCorrespondencia" [(ngModel)]="_modSolicitudCambioFechas.codCorrespondencia" required >
 
         <!-- <small class="form-text text-muted" *ngIf="codigoComunicacion.errors?.required" >Debes ingresar el código de la Comunicacion</small> -->
@@ -34,10 +34,11 @@
             <!-- <label >Tema Comunicacion</label> -->
 
         <small class="form-text text-muted">
-            Tema de la Comunicacion
+            Tema de la Comunicación
         </small>
           <input type="text" name="temaComunicacion" id="temaComunicacion" class="form-control col-6"
-                placeholder="Tema de la Comunicacion" disabled  value="{{ JsonOutgetComunicacionChange.temaComunicacion }}" >
+                placeholder="Tema de la Comunicacion"
+                readonly value="{{ datosConsulta.temaComunicacion }}"  >
 
         </div>
     </div>
@@ -48,10 +49,11 @@
           <small class="form-text text-muted">
               Descripción de la Comunicación
           </small>
-          <textarea #descComunicacion="ngModel" class="form-control" id="descComunicacion" name="descComunicacion" id="descComunicacion"
-                      placeholder="Descripcion de la Comunicacion" tabindex="2" type="text" ngControl="descComunicacion"
-                       disabled id="exampleFormControlTextarea1" [(ngModel)]="_modSolicitudCambioFechas.descComunicacion" >
-            {{ JsonOutgetComunicacionChange.descCorrespondenciaEnc }}</textarea>
+          <textarea  class="form-control" id="descComunicacion" name="descComunicacion" id="descComunicacion" rows="3"
+                      placeholder="Descripcion de la Comunicacion" tabindex="2" type="text" autocapitalize="word"
+                      minlength="10" readonly id="exampleFormControlTextarea1" >
+                {{ datosConsulta.descComunicacion }}
+          </textarea>
 
             <hr>
       </div>
@@ -64,14 +66,14 @@
             Fecha de Creación
         </small>
         <input type="text" name="fechaCreacion" id="fechaCreacion" class="form-control"
-               placeholder="Fecha de Creacion" disabled>
+               placeholder="Fecha de Creacion" disabled  value="{{ datosConsulta.fechaFechaIngreso | generateDate }}" >
       </div>
       <div class="col-2">
         <small class="form-text text-muted">
             Fecha de Entrega Actual
         </small>
         <input type="text" name="fechaEntregaAct" id="fechaEntregaAct" class="form-control"
-               placeholder="Fecha de Entrega Actual" disabled>
+               placeholder="Fecha de Entrega Actual" disabled value="{{ datosConsulta.fechaFechaEntrega | generateDate }}" >
 
       </div>
     </div>
@@ -84,8 +86,9 @@
           <small class="form-text text-muted">
               Justificación de Solicitud
           </small>
-          <textarea #justifiacionCom="ngModel" type="text" name="justifiacionCom" id="justifiacionCom"
-                  ngControl="justifiacionCom" [(ngModel)]="_modSolicitudCambioFechas.justifiacionCom" required maxlength="1400" minlength="15"
+          <textarea #justifiacionCom="ngModel" type="text" name="justifiacionCom" id="justifiacionCom" spellcheck="true"
+                  ngControl="justifiacionCom" [(ngModel)]="_modSolicitudCambioFechas.justifiacionCom"
+                  required maxlength="1400" minlength="15"
                   class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de Solicitud" rows="3">
           </textarea>
 
@@ -94,7 +97,7 @@
 
     <!-- Fila para la Fecha de la Solicitud -->
     <div class="row">
-      <div class="col-2">
+      <div class="col-3">
           <!-- <label >Descripcion Comunicacion</label> -->
           <small class="form-text text-muted">
               Fecha Solicitada

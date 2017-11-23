@@ -8,6 +8,8 @@ import { SolicitudCambioFechaService } from '../../../services/mantenimientos/so
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Listas Comunes
 
+// Importamos los Pipes de la Forma
+import { GenerateDatePipe } from '../../../pipes/common/generate.date.pipe';
 
 import { AppComponent } from '../../../app.component'; //Servico del Login
 
@@ -62,10 +64,14 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
 
   // Datos de la Consulta
   public datosConsulta;
+  public temaComFind;
+  public descComFind;
 
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
   public JsonOutgetComunicacionChange:any[];
+  public JsonOutgetComunicacionFind:any[];
+
   public JsonOutgetlistaTipoFuncionario:any[];
   public JsonOutgetlistaDeptosFuncionales:any[];
   public JsonOutgetlistaTipoUsuario:any[];
@@ -91,8 +97,8 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
     this.datosConsulta = {
       "temaComunicacion"  : "",
       "descComunicacion"  : "",
-      "temaFechaIngreso"  : "",
-      "temaFechaEntrega"  : ""
+      "fechaFechaIngreso"  : "",
+      "fechaFechaEntrega"  : ""
     };
 
     // Convertimos las Fechas a una Default
@@ -102,16 +108,17 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this._modSolicitudCambioFechas = new SolicitudCambioFecha ( "", "", 0, this.fechafin, "", "");
+    this._modSolicitudCambioFechas = new SolicitudCambioFecha ( "", "", null, 0, this.fechafin, "", "");
 
   }
 
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
-      console.log(this._modSolicitudCambioFechas);
+      console.log( this._modSolicitudCambioFechas );
+      let confirmaResp = confirm('Esta Seguro de Grabar');
       // Comprobamos que Existe la Comunicacion
-      if( this.statusConsultaCom != 'error' ){
+      if( this.statusConsultaCom != 'error' && confirmaResp == true ){
         // parseInt(this.user.idTipoUsuario);
         this._solicitudCambioFechaService.solitarCambioFecha( this._modSolicitudCambioFechas ).subscribe(
           response => {
@@ -138,6 +145,8 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
                 alert("Error en la Petición !!" + this.errorMessage);
               }
           });
+      } else {
+        alert("Nos has Ingresado, la Comunicacion de Solicitud !!");
       }
 
   } // FIN | Metodo onSubmit
@@ -151,7 +160,7 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   * Objetivo: Datos de la Comunicacion
   *****************************************************/
   buscaComunicacion() {
-    console.log(this._modSolicitudCambioFechas);
+    // console.log(this._modSolicitudCambioFechas);
     //Llamar al metodo, de Login para Obtener la Identidad
     this._solicitudCambioFechaService.buscaComunicacion( this._modSolicitudCambioFechas ).subscribe(
         response => {
@@ -163,19 +172,51 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
             //Mensaje de alerta del error en cuestion
             alert(response.msg);
             this.JsonOutgetComunicacionChange = response.data;
+            //Reset de los datos
+            this.datosConsulta.temaComunicacion = "";
+            this.datosConsulta.descComunicacion = "";
+            this.datosConsulta.fechaFechaIngreso = "";
+            this.datosConsulta.fechaFechaEntrega = "";
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetComunicacionChange = response.data;
-
-            // Asignacion de los datos de la Consulta
-            //this.temaComunicacion = this.JsonOutgetComunicacionChange[0].temaComunicacion;
-            //this.descComunicacion = this.JsonOutgetComunicacionChange[0].descCorrespondenciaEnc;
-            //this.datosConsulta.descCorrespondenciaEnc = this.JsonOutgetComunicacionChange[0].descCorrespondenciaEnc;
-            //this.fechaCom = this.JsonOutgetComunicacionChange[0].temaComunicacion;
+            // Seteo de los Datos al JsonOutgetComunicacionFind
+            this.valoresdataEncJson( this.JsonOutgetComunicacionChange );
             console.log( this.JsonOutgetComunicacionChange );
           }
         });
   } // FIN : FND-00001.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 23-11-2017
+  * Descripcion: Seteo de los valores de la Busqueda del
+  * datosConsulta
+  ******************************************************/
+  valoresdataEncJson( dataIn ){
+    // Instanciamos los Valores al Json de retorno, que Utilizara el Html
+    if( dataIn != null ){
+      this.datosConsulta.temaComunicacion = dataIn.temaComunicacion;
+      this.datosConsulta.descComunicacion = dataIn.descCorrespondenciaEnc;
+      this.datosConsulta.fechaFechaIngreso = dataIn.fechaIngreso.timestamp;
+      this.datosConsulta.fechaFechaEntrega = dataIn.fechaMaxEntrega.timestamp;
+
+      //Datos de envio por el Model
+      this._modSolicitudCambioFechas.codCorrespondenciaExt = dataIn.codReferenciaSreci;
+      this._modSolicitudCambioFechas.descComunicacion = dataIn.descComunicacionEnc;
+      this._modSolicitudCambioFechas.temaComunicacion = dataIn.temaComunicacion;
+      this._modSolicitudCambioFechas.idUserCreador = dataIn.idUsuario.idUsuario;
+      //Fechas
+      //this._modSolicitudCambioFechas.fechaMaxEntrega = this.datosConsulta.fechaFechaEntrega;
+      // this._modSolicitudCambioFechas.idUserCreador = dataIn.idUsuario.idUsuario;
+    } else {
+      this.datosConsulta.temaComunicacion = "";
+      this.datosConsulta.descComunicacion = "";
+      this.datosConsulta.fechaFechaIngreso = "";
+      this.datosConsulta.fechaFechaEntrega = "";
+    }
+  } // FIN | FND-00001.2
 
 
   /****************************************************
