@@ -227,7 +227,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Asignación de Oficio | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -658,7 +658,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Finalización de Comunicacion | SICDOC')
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SCA" ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
@@ -1000,7 +1000,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1316,7 +1316,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(

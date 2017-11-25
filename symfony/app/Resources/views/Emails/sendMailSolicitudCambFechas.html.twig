@@ -74,8 +74,8 @@
 <body>   
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-3">Estimado(a): </h1>
-            <h2 class="display-3">{{ name }}  {{ apellidoOficio }} </h2>
+            <h1 class="display-3">Cambio de Fechas: </h1>
+            <h2 class="display-3">Solicitante: {{ name }}  {{ apellidoOficio }} </h2>
             <p class="lead">Solicitud de Cambio de Fecha de Comunicación, con la siguiente información: </p>
             <hr class="my-4">
             <br>
@@ -112,37 +112,43 @@
                     <td>Contenido</td>
                     <td>{{ descOficio }}</td>                    
                   </tr>
-                  <tr class="modo1">
-                    <th scope="row">5</th>
-                    <td>Fecha Entrega</td>
-                    <td>{{ fechaIngresoOfi }}</td>                    
-                  </tr>
-                  <tr class="modo1">
-                    <th scope="row">6</th>
-                    <td>Fecha Creacion</td>
-                    <td>{{ fechaIngresoCom }}</td>                    
-                  </tr>
+                  
                   <tr class="modo1">
                     <th scope="row">7</th>
                     <td>Observaciones / Instrucciones</td>
                     <td>{{ obsComunicacion }}</td>                    
                   </tr>
+
                   <tr class="modo1">
                     <th scope="row">8</th>
-                    <td>Fecha Solicitada</td>
+                    <td>Fecha Entrega Actual</td>
                     <td>{{ fechaMaxEntrega }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">8</th>
+                    <td>Fecha Entrega Solicitada</td>
+                    <td>{{ fechaMaxEntregaNew }}</td>                    
                   </tr>
             </table>
 
             <br>
+
             <h4> 
                 Saludos Cordiales.
-
+            </h4>    
+                
+             <p>
                 Nahúm Aaron Martínez Salgado
+             </p>
+             <p>
                 Administrador de la Plataforma de Gestión de la Cooperación (PGC)
-                Dirección de Cooperación Privada al Desarrollo
+             </p>
+             <p>
+                Dirección de Cooperación Privada al Desarrollo | DCPD            
+            </p>
+            <p>
                 Secretaria de relaciones Exteriores de Honduras y Cooperación Internacional
-            </h4>
+            </p>
             <img src="./secretaria_exterior.png" alt="SRECI" height="142" width="142">
         </div>
     </div>

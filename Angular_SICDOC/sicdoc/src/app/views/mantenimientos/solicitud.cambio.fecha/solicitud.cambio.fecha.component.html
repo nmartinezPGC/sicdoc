@@ -3,7 +3,7 @@
     <h2> {{ titulo }} <small> | SCA.</small></h2>
 
     <!-- Loader de Carga de los Datos -->
-    <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;">
+    <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:38%;">
       <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
       <img src="assets/images/832.gif" alt="Cargando Tareas">
     </div>
@@ -49,8 +49,9 @@
           <small class="form-text text-muted">
               Descripción de la Comunicación
           </small>
-          <textarea  class="form-control" id="descComunicacion" name="descComunicacion" id="descComunicacion" rows="3"
-                      placeholder="Descripcion de la Comunicacion" tabindex="2" type="text" autocapitalize="word"
+          <textarea #descComunicacion="ngModel" class="form-control" id="descComunicacion" name="descComunicacion" id="descComunicacion" rows="3"
+                      placeholder="Descripcion de la Comunicacion" tabindex="2" type="text"
+                      [(ngModel)]="_modSolicitudCambioFechas.descComunicacion" ngControl="descComunicacion"
                       minlength="10" readonly id="exampleFormControlTextarea1" >
                 {{ datosConsulta.descComunicacion }}
           </textarea>
@@ -72,8 +73,9 @@
         <small class="form-text text-muted">
             Fecha de Entrega Actual
         </small>
-        <input type="text" name="fechaEntregaAct" id="fechaEntregaAct" class="form-control"
-               placeholder="Fecha de Entrega Actual" disabled value="{{ datosConsulta.fechaFechaEntrega | generateDate }}" >
+        <input  type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
+               placeholder="Fecha de Entrega Actual" disabled               
+               value="{{ datosConsulta.fechaFechaEntrega | generateDate }}" >
 
       </div>
     </div>
@@ -102,8 +104,8 @@
           <small class="form-text text-muted">
               Fecha Solicitada
           </small>
-          <input #fechaMaxEntrega class="form-control" type="date"  value="{{ fechafin }}" tabindex="7" required
-            name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" [(ngModel)]="_modSolicitudCambioFechas.fechaMaxEntrega" >
+          <input #fechaMaxEntregaNew class="form-control" type="date"  value="{{ fechafin }}" tabindex="7" required
+            name="fechaMaxEntregaNew" id="fechaMaxEntregaNew" ngControl="fechaMaxEntregaNew" [(ngModel)]="_modSolicitudCambioFechas.fechaMaxEntregaNew" >
 
       </div>
     </div>

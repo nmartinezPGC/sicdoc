@@ -470,10 +470,10 @@ class IngresoCorrespondenciaController extends Controller{
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SCA')
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))    
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))                                       
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
                                ->setTo($mailSend)                                
                                //->addCc([ $setTo_array_convertIn ])                              
                                ->setBody(
@@ -1244,10 +1244,10 @@ class IngresoCorrespondenciaController extends Controller{
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')                               
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SCA')                               
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1361,7 +1361,9 @@ class IngresoCorrespondenciaController extends Controller{
     public function convertirFechasTimeStampAction( $fecha_time_stamp )
     {
         // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
-        $fecha_time_stamp_In = $fecha_time_stamp;
+        // Incidencia de Menos un Dia | Se suma 86400 que es un Dia en
+        // TimeStamp
+        $fecha_time_stamp_In = $fecha_time_stamp + 86400;
         
         // Decodificamos el Json con su Campo de Fechas | es nesesario que se **
         // haga la Consulta a la BD por medio de Doctrine( getFechaConsulta())**

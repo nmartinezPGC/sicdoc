@@ -39,6 +39,8 @@ class MantCambioFechasController extends Controller {
      */
     public function solicitudCambioFechaAction(Request $request, $search = null )
     {
+        //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -65,12 +67,30 @@ class MantCambioFechasController extends Controller {
                //Datos generales de la Tabla ***********************************                
                //Variables que vienen del Json *********************************
                 $cod_comunicacion     = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                $cod_referenciaSreci  = ($params->codCorrespondenciaExt != null) ? $params->codCorrespondenciaExt : null ;
+                
+                $tema_correspondencia  = ($params->temaComunicacion != null) ? $params->temaComunicacion : null ;
+                $desc_correspondencia  = ($params->descComunicacion != null) ? $params->descComunicacion : null ;
                 
                 // Observacion de Solicitu de Cambio
                 $justificacion_comunicacion = ($params->justifiacionCom != null) ? $params->justifiacionCom : null ;
                 
                 // Fecha de Solicitud de Cambio
                 $fecha_ingreso        = new \DateTime('now');
+                
+                $fecha_max_solicitada = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
+                $fecha_max_solicitada_new = ($params->fechaMaxEntregaNew != null) ? $params->fechaMaxEntregaNew : null ;
+                               
+                
+                // Llamamo a la Funcion Interna para que nos convierta *
+                // La Fecha a Calendario Gregoriano ********************
+
+                //Incrementando 2 dias
+                //$fecha_max_solicitada = strtotime($fecha_max_solicitada."+ 2 days");
+                
+                // Ejecucion de la Funcion *****************************
+                $fecha_maxima_entrega_convert = $this->convertirFechasTimeStampAction( $fecha_max_solicitada );
+                
                 
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
                 $cod_usuario          = $identity->sub;
@@ -93,11 +113,7 @@ class MantCambioFechasController extends Controller {
                                 ->getDoctrine()
                                 ->getManager();
                         
-                        // Recogemos los Parametros de la URL vi GET, esto con el Fin de *******
-                        // Incluirlos en el Query        
-                        //$idDeptoFuncional = $request->query->getInt("idDeptoFuncional", null);
-                        //$idFuncionarioAsignado = $request->query->getInt("idFuncionarioAsignado", null);
-                        //$idUsuario = $request->query->getInt("idUsuario", null);
+                        
                   
                         //Verificacion del Codigo de la Correspondencia *******************
                         $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
@@ -108,28 +124,7 @@ class MantCambioFechasController extends Controller {
                         //Verificamos que el retorno de la Funcion sea > 0 *****
                         // Encontro los Datos de la Comunicacion Solicitada ****
                         if( count($isset_corresp_cod) > 0 ){
-                           /*$dql = "SELECT v FROM BackendBundle:TblCambioFechas v "
-                                . "WHERE v.codCorrespondencia = :search "                
-                                . "ORDER BY v.idCambioFecha DESC";
-
-                            $query = $em->createQuery($dql)
-                                    ->setParameter("search", "%$search%");
-                            */
-                            
-                            /*$em = $this
-                                    ->getDoctrine()
-                                    ->getManager()
-                                    ->getRepository("BackendBundle:TblCambioFechas");
-                            
-                            // Declaracion del Alias de la tabla
-                            $qb = $em->createQueryBuilder('a');
-                            
-                            // Query a la BD
-                            $qb->select('COUNT(a)');
-                            $qb->where('a.codCorrespondencia = :paramCodCorrespondencia ');
-                            $qb->setParameter('paramCodCorrespondencia', $cod_comunicacion );
-                            
-                            $count = $qb->getQuery()->getSingleScalarResult();*/
+                           
                             
                             $isset_cambio_fehas = $em->getRepository("BackendBundle:TblCambioFechas")->findOneBy(
                                 array(
@@ -189,6 +184,60 @@ class MantCambioFechasController extends Controller {
                                 
                                 //Realizar la actualizacion en el storage de la BD
                                 $em->flush();
+                                
+                                // Envio de Correo despues de la Grabacion de Datos
+                                // *****************************************************
+                                //Instanciamos de la Clase TblFuncionarios, para Obtener
+                                // los Datos de envio de Mail **************************
+                                $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                                    array(
+                                        "idUsuario" => $cod_usuario                
+                                    ));
+                                // Parametros de Salida
+                                $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
+                                $nombreSend = $usuario_asignado_send->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
+                                $apellidoSend = $usuario_asignado_send->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
+
+                                    //Creamos la instancia con la configuración 
+                                    $transport = \Swift_SmtpTransport::newInstance()
+                                       ->setHost('smtp.gmail.com')
+                                       ->setPort(587)
+                                       ->setEncryption('tls')                               
+                                       ->setStreamOptions(array(
+                                                    'ssl' => array(
+                                                        'allow_self_signed' => true, 
+                                                        'verify_peer' => false, 
+                                                        'verify_peer_name' => false
+                                                         )
+                                                    )
+                                                 )                                
+                                       ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                                       ->setPassword('Despachomcns');
+                                   //echo "Paso 1";
+                                   //Creamos la instancia del envío
+                                   $mailer = \Swift_Mailer::newInstance($transport);
+
+                                   //Creamos el mensaje
+                                   $mail = \Swift_Message::newInstance()
+                                       ->setSubject('Solicitud de Cambio de Fecha | SCA')                                       
+                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
+                                       //->setTo($mailSend)                                                        
+                                       ->setTo("correspondenciascpi@sreci.gob.hn")                                                        
+                                       ->setBody(
+                                            $this->renderView(                                            
+                                                'Emails/sendMailSolicitudCambFechas.html.twig',
+                                                array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
+                                                       'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_comunicacion,
+                                                       'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
+                                                       'obsComunicacion' => $justificacion_comunicacion,
+                                                       'fechaMaxEntrega' => $fecha_maxima_entrega_convert, 
+                                                       'fechaMaxEntregaNew' => $fecha_max_solicitada_new,  )
+                                            ), 'text/html' );                                                   
+
+                                    // Envia el Correo con todos los Parametros
+                                    $resuly = $mailer->send( $mail );
+
+                                // ***** Fin de Envio de Correo ************************
                                                                
                                 // Mensaje de Respuesta
                                 $data = array(
@@ -253,6 +302,8 @@ class MantCambioFechasController extends Controller {
      */
     public function cambioFechaAction(Request $request)
     {
+        //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -420,7 +471,8 @@ class MantCambioFechasController extends Controller {
                                                 'Emails/sendMailSolicitudCambFechas.html.twig',
                                                 array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                        'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_comunicacion,
-                                                       'temaOficio' => $tema_correspondencia, 'obsComunicacion' => $justificacion_comunicacion,
+                                                       'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
+                                                       'obsComunicacion' => $justificacion_comunicacion,
                                                        'fechaMaxEntrega' => $fecha_max_solicitada  )
                                             ), 'text/html' );                                                   
 
@@ -492,6 +544,8 @@ class MantCambioFechasController extends Controller {
      */
     public function buscaComunicacionAction(Request $request)
     {
+        //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -579,5 +633,32 @@ class MantCambioFechasController extends Controller {
         // Retornamos la Data
         return $helpers->parserJson($data);
     }//FIN | FND00003
+    
+    
+    /**
+     * Creacion del Controlador: Transforma Fechas Time Stamp
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00001
+     */
+    public function convertirFechasTimeStampAction( $fecha_time_stamp )
+    {
+        //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
+        // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
+        // Incidencia de Menos un Dia | Se suma 86400 que es un Dia en
+        // TimeStamp
+        $fecha_time_stamp_In = $fecha_time_stamp + 86400;               
+        
+        // Itaciamosla fecha y le Seteamos el valor TimeStamp del campo de la **
+        // Consulta del Doctrine (getFechaConsulta()) **************************
+        $fecha_set = new \DateTime();
+        $fecha_set->setTimestamp( $fecha_time_stamp_In );
+        
+        //Salida del Formato a la fecha Convertida *****************************
+        $fecha_salida =  $fecha_set->format('Y-m-d');
+        
+        return $fecha_salida;
+    } // FIN | FND00001
     
 }

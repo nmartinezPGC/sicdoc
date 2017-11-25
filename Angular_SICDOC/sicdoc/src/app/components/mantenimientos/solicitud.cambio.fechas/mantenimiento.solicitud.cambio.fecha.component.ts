@@ -79,6 +79,9 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   public JsonOutgetlistaSubDireccionSRECI:any[];
   // public JsonOut:any[];
 
+  // Loader
+  public loading = "hide";
+
 
   // Definicion del Constructor
   constructor( private _solicitudCambioFechaService: SolicitudCambioFechaService,
@@ -98,17 +101,18 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
       "temaComunicacion"  : "",
       "descComunicacion"  : "",
       "fechaFechaIngreso"  : "",
-      "fechaFechaEntrega"  : ""
+      "fechaFechaEntrega"  : "",
+      "emailUserCreador"  : ""
     };
 
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
     // this.getlistaDeptosFuncionales();
-    this.getlistaTipoUsuarios();
+    // this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this._modSolicitudCambioFechas = new SolicitudCambioFecha ( "", "", null, 0, this.fechafin, "", "");
+    this._modSolicitudCambioFechas = new SolicitudCambioFecha ( "", "", "", 0, "", "", this.fechafin, "","");
 
   }
 
@@ -116,6 +120,9 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   // Metodo onSubmit
   onSubmit(forma:NgForm){
       console.log( this._modSolicitudCambioFechas );
+      // Mostramos el Loader
+      this.loading = "show";
+
       let confirmaResp = confirm('Esta Seguro de Grabar');
       // Comprobamos que Existe la Comunicacion
       if( this.statusConsultaCom != 'error' && confirmaResp == true ){
@@ -130,9 +137,14 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
               if(this.status != "success"){
                   this.status = "error";
                   alert( this.mensajes );
+
+                  // Ocultamos el Loader
+                  this.loading = "hide";
                   $("#codCorrespondencia").focus();
               }else{
                 this.ngOnInit();
+                // Ocultamos el Loader
+                this.loading = "hide";
               }
           }, error => {
               //Regisra cualquier Error de la Llamada a la API
@@ -146,7 +158,10 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
               }
           });
       } else {
-        alert("Nos has Ingresado, la Comunicacion de Solicitud !!");
+        // Ocultamos el Loader
+        this.loading = "hide";
+        //alert("Nos has Ingresado, la Comunicacion de Solicitud !!");
+        return;
       }
 
   } // FIN | Metodo onSubmit
@@ -161,7 +176,10 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   *****************************************************/
   buscaComunicacion() {
     // console.log(this._modSolicitudCambioFechas);
-    //Llamar al metodo, de Login para Obtener la Identidad
+    // Mostramos el Loader
+    this.loading = "show";
+
+    // Solicitud del Servicio de la Busqueda
     this._solicitudCambioFechaService.buscaComunicacion( this._modSolicitudCambioFechas ).subscribe(
         response => {
           // login successful so redirect to return url
@@ -177,11 +195,20 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
             this.datosConsulta.descComunicacion = "";
             this.datosConsulta.fechaFechaIngreso = "";
             this.datosConsulta.fechaFechaEntrega = "";
+            this.datosConsulta.emailUserCreador = "";
+
+            // Oculatamos el Loader
+            this.loading = "hide";
           }else{
             //this.data = JSON.stringify(response.data);
+
             this.JsonOutgetComunicacionChange = response.data;
             // Seteo de los Datos al JsonOutgetComunicacionFind
+
             this.valoresdataEncJson( this.JsonOutgetComunicacionChange );
+
+            // Ocultamos el Loader
+            this.loading = "hide";
             console.log( this.JsonOutgetComunicacionChange );
           }
         });
@@ -201,20 +228,27 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
       this.datosConsulta.descComunicacion = dataIn.descCorrespondenciaEnc;
       this.datosConsulta.fechaFechaIngreso = dataIn.fechaIngreso.timestamp;
       this.datosConsulta.fechaFechaEntrega = dataIn.fechaMaxEntrega.timestamp;
+      this.datosConsulta.emailUserCreador = dataIn.idUsuario.emailUsuario;
 
       //Datos de envio por el Model
+      // Codigos
       this._modSolicitudCambioFechas.codCorrespondenciaExt = dataIn.codReferenciaSreci;
-      this._modSolicitudCambioFechas.descComunicacion = dataIn.descComunicacionEnc;
+      // Contenido
+      this._modSolicitudCambioFechas.descComunicacion = dataIn.descCorrespondenciaEnc;
       this._modSolicitudCambioFechas.temaComunicacion = dataIn.temaComunicacion;
+      // Usuario Creador
       this._modSolicitudCambioFechas.idUserCreador = dataIn.idUsuario.idUsuario;
       //Fechas
-      //this._modSolicitudCambioFechas.fechaMaxEntrega = this.datosConsulta.fechaFechaEntrega;
+      this._modSolicitudCambioFechas.fechaMaxEntrega = this.datosConsulta.fechaFechaEntrega;
+      console.log( this._modSolicitudCambioFechas.fechaMaxEntrega );
+      this._modSolicitudCambioFechas.emailUserCreador = this.datosConsulta.emailUserCreador;
       // this._modSolicitudCambioFechas.idUserCreador = dataIn.idUsuario.idUsuario;
     } else {
       this.datosConsulta.temaComunicacion = "";
       this.datosConsulta.descComunicacion = "";
       this.datosConsulta.fechaFechaIngreso = "";
       this.datosConsulta.fechaFechaEntrega = "";
+      this.datosConsulta.emailUserCreador = "";
     }
   } // FIN | FND-00001.2
 
