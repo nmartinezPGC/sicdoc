@@ -639,7 +639,7 @@ class MantCambioFechasController extends Controller {
      * Creacion del Controlador: Transforma Fechas Time Stamp
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
-     * Funcion: FND00001
+     * Funcion: FND00004
      */
     public function convertirFechasTimeStampAction( $fecha_time_stamp )
     {
@@ -659,6 +659,6 @@ class MantCambioFechasController extends Controller {
         $fecha_salida =  $fecha_set->format('Y-m-d');
         
         return $fecha_salida;
-    } // FIN | FND00001
+    } // FIN | FND00004
     
 }
