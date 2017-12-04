@@ -97,6 +97,7 @@ class MantCambioFechasController extends Controller {
                 
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
                 $cod_usuario_creador  = ($params->idUserCreador != null) ? $params->idUserCreador : null ;
+                $email_usuario_creador  = ($params->emailUserCreador != null) ? $params->emailUserCreador : null ;
                 
                 // Fecha de Entrega Actual
                 //$fecha_entrega_act    = ($params->fechaEntregaActual != null) ? $params->fechaEntregaActual : null ;
@@ -222,7 +223,8 @@ class MantCambioFechasController extends Controller {
                                        ->setSubject('Solicitud de Cambio de Fecha | SCA')                                       
                                        ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
                                        //->setTo($mailSend)                                                        
-                                       ->setTo("correspondenciascpi@sreci.gob.hn")                                                        
+                                       ->setTo("correspondenciascpi@sreci.gob.hn")
+                                       ->addCc($email_usuario_creador) 
                                        ->setBody(
                                             $this->renderView(                                            
                                                 'Emails/sendMailSolicitudCambFechas.html.twig',
@@ -465,7 +467,8 @@ class MantCambioFechasController extends Controller {
                                    $mail = \Swift_Message::newInstance()
                                        ->setSubject('Solicitud de Cambio de Fecha | SCA')                                       
                                        ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
-                                       ->setTo($mailSend)                                                        
+                                       ->setTo($mailSend) 
+                                       //->addCc($address)
                                        ->setBody(
                                             $this->renderView(                                            
                                                 'Emails/sendMailSolicitudCambFechas.html.twig',
