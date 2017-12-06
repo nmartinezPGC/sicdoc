@@ -1,6 +1,6 @@
 <div class="container">
 <form #solicitudForm="ngForm" (ngSubmit)="onSubmit(solicitudForm)" name="solicitudForm" role="form">
-    <h2> {{ titulo }} <small> | SCA.</small></h2>
+    <h2> {{ titulo }} <small> | SICDOC.</small></h2>
 
     <!-- Loader de Carga de los Datos -->
     <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:38%;">
@@ -74,7 +74,7 @@
             Fecha de Entrega Actual
         </small>
         <input  type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
-               placeholder="Fecha de Entrega Actual" disabled               
+               placeholder="Fecha de Entrega Actual" disabled
                value="{{ datosConsulta.fechaFechaEntrega | generateDate }}" >
 
       </div>

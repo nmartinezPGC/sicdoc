@@ -829,6 +829,18 @@ export class IngresoComunicacionComponent implements OnInit{
        this.minlengthCodReferencia = "15";
        this.pattern ="";
 
+     }else if ( this.paramsSecuenciaIn.idTipoDocumento == 10 ) {
+       this.paramsSecuencia.codSecuencial = "COM-IN-EVENTO";
+       this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.comunicacion.codReferenciaSreci = "";
+       // Disable codReferenciaSreci
+       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       // Seteo de variable de validaciones | Llamada
+       this.maxlengthCodReferencia = "38";
+       this.minlengthCodReferencia = "15";
+       this.pattern ="";
+
      }// Fin de Condicion
 
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -892,6 +904,10 @@ export class IngresoComunicacionComponent implements OnInit{
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      } else if ( idTipoDocumentoIn == 9 ) {
        this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-REUNION";
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
+       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoDocumentoIn == 10 ) {
+       this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-EVENTO";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      }// Fin de Condicion
