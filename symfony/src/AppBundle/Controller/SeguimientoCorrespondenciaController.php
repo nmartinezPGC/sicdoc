@@ -227,7 +227,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Asignación de Oficio | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -257,7 +257,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $data = array(
                             "status" => "success", 
                             "code"   => 200, 
-                            "msg"    => "El Oficio: " . $codgio_oficio_interno . " se ha Asignado al Funcinario: " . 
+                            "msg"    => "La Comunicaion: " . $codgio_oficio_interno . " se ha Asignado al Funcinario: " . 
                                         $nombre1_funcionario_asignado . ", " .  $apellido1_funcionario_asignado . ""
                                       . " con fecha de entrega el : " . $fecha_maxima_entrega_convert ,
                             "data"   => $correspondenciaAsigna
@@ -285,7 +285,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
                        "code"   => 400, 
-                       "msg"   => "Oficio no asignado, falta ingresar parametros, revisar la información ingresada !!"
+                       "msg"   => "Comunicacion no asignada, falta ingresar parametros, revisar la información ingresada !!"
                     );
             } // Evalua el Json que no sea Null            
         } else {
@@ -658,7 +658,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Finalización de Comunicacion | SICDOC')
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SCA" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SICDOC " ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
@@ -708,7 +708,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $data = array(
                             "status" => "success", 
                             "code"   => 200, 
-                            "msg"    => "El Oficio: " . $codgio_oficio_interno . " se ha Finalizado por el Funcionario: " . 
+                            "msg"    => "La Comunicacion: " . $codgio_oficio_interno . " se ha Finalizado por el Funcionario: " . 
                                         $nombre1_funcionario_asignado . ", " .  $apellido1_funcionario_asignado . ""
                                       . " con fecha de finzalizacion el : " . $fecha_maxima_entrega_convert ,
                             "data"   => $correspondenciaAsigna
@@ -718,7 +718,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             "status" => "error",
                             "desc"   => "No existe un codigo",
                             "code"   => 400, 
-                            "msg"   => "Error al asignar, no existe un  el Oficio con este código, ". $codgio_oficio_interno . 
+                            "msg"   => "Error al asignar, no existe una comunicacion con este código, ". $codgio_oficio_interno . 
                                        " por favor ingrese otro !!"
                         );                       
                     } // Fin de Busqueda del Oficio que se esta Asignado
@@ -736,7 +736,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
                        "code"   => 400, 
-                       "msg"   => "Oficio no asignado, falta ingresar parametros, revisar la información ingresada !!"
+                       "msg"   => "Comunicacion no asignada, falta ingresar parametros, revisar la información ingresada !!"
                     );
             } // Evalua el Json que no sea Null            
         } else {
@@ -1000,7 +1000,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1031,7 +1031,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $data = array(
                             "status" => "success", 
                             "code"   => 200, 
-                            "msg"    => "El Oficio: " . $codgio_oficio_interno . " se ha Finalizado por el Funcionario: " . 
+                            "msg"    => "La Comunicacion: " . $codgio_oficio_interno . " se ha Finalizado por el Funcionario: " . 
                                         $nombre1_funcionario_asignado . ", " .  $apellido1_funcionario_asignado . ""
                                       . " con fecha de finzalizacion el : " . $fecha_maxima_entrega_convert ,
                             "data"   => $correspondenciaAsigna
@@ -1059,7 +1059,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
                        "code"   => 400, 
-                       "msg"   => "Oficio no asignado, falta ingresar parametros, revisar la información ingresada !!"
+                       "msg"   => "Comunicacion no asignada, falta ingresar parametros, revisar la información ingresada !!"
                     );
             } // Evalua el Json que no sea Null            
         } else {
@@ -1316,7 +1316,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                ->setSubject('Creacion de Actividad | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(
@@ -1375,7 +1375,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
                        "code"   => 400, 
-                       "msg"   => "Oficio no asignado, falta ingresar parametros, revisar la información ingresada !!"
+                       "msg"   => "Comunicacion no asignada, falta ingresar parametros, revisar la información ingresada !!"
                     );
             } // Evalua el Json que no sea Null            
         } else {

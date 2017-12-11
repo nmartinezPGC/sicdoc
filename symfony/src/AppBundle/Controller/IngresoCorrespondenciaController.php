@@ -470,10 +470,10 @@ class IngresoCorrespondenciaController extends Controller{
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Comunicacion | SCA')
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))    
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))                                       
                                ->setTo($mailSend)                                
                                //->addCc([ $setTo_array_convertIn ])                              
                                ->setBody(
@@ -1244,10 +1244,10 @@ class IngresoCorrespondenciaController extends Controller{
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Notificación de Ingreso de Comunicacion | SCA')                               
+                               ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')                               
                                //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
-                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))
+                               ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
                                ->setBody(
                                     $this->renderView(

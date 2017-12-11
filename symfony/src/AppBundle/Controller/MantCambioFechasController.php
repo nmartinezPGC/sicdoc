@@ -220,8 +220,8 @@ class MantCambioFechasController extends Controller {
 
                                    //Creamos el mensaje
                                    $mail = \Swift_Message::newInstance()
-                                       ->setSubject('Solicitud de Cambio de Fecha | SCA')                                       
-                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
+                                       ->setSubject('Solicitud de Cambio de Fecha | SICDOC')                                       
+                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))                                       
                                        //->setTo($mailSend)                                                        
                                        ->setTo("correspondenciascpi@sreci.gob.hn")
                                        ->addCc($email_usuario_creador) 
@@ -465,8 +465,8 @@ class MantCambioFechasController extends Controller {
 
                                    //Creamos el mensaje
                                    $mail = \Swift_Message::newInstance()
-                                       ->setSubject('Solicitud de Cambio de Fecha | SCA')                                       
-                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SCA" ))                                       
+                                       ->setSubject('Solicitud de Cambio de Fecha | SICDOC')                                       
+                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))                                       
                                        ->setTo($mailSend) 
                                        //->addCc($address)
                                        ->setBody(

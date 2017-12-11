@@ -1174,7 +1174,7 @@ class ListasComunesController extends Controller {
                 $data = array(
                     "status" => "error",
                     "code"   => 400,
-                    "msg"    => "No existe Datos de Oficios Asignados en la Tabla de Correspondencia para usted !!"
+                    "msg"    => "No existe Datos de Comunicacion Asignada en la Tabla de Correspondencia para usted !!"
                 );
             }
         }else {
@@ -1250,7 +1250,7 @@ class ListasComunesController extends Controller {
                 $data = array(
                     "status" => "error",
                     "code"   => 400,
-                    "msg"    => "No existe Datos de Oficios en ese Estado !!"
+                    "msg"    => "No existe Datos de Comunicacion en ese Estado !!"
                 );
             }
         }else {
