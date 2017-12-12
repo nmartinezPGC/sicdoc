@@ -296,7 +296,7 @@ export class ConsultaMasterComponent implements OnInit {
           });
           this.loading_tableIn = 'show';
       });
-    }, 8000);
+    }, 20000);
     this.loading_tableIn = 'hide';
   } // FIN | FND-00003
 
