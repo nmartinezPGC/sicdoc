@@ -40,7 +40,7 @@ class ListasComunesController extends Controller {
         if (count($estados) >= 1 ) {
             $data = array(
                 "status" => "success",
-                "code"   => 200,
+                "code"   => 200,                
                 "data"   => $estados
             );
         }else {
@@ -485,6 +485,10 @@ class ListasComunesController extends Controller {
             $data = array(
                 "status" => "success",
                 "code"   => 200,
+                "recordsTotal" => 8,
+                "recordsFiltered" => 8,
+                "pageLength" => 5,
+                "draw" => 8,
                 "data"   => $estados
             );
         }else {

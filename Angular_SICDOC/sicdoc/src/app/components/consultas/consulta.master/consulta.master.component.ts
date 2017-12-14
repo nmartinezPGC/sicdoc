@@ -72,6 +72,7 @@ export class ConsultaMasterComponent implements OnInit {
   // Parametros de los Json de la Aplicacion
   public JsonOutgetlistaComunicacionDet:any[];
   public JsonOutgetlistaComunicacionEnc:any[];
+  public JsonOutgetlistaComunicacionEncNew:any[];
 
 
   // Variables de envio al Json del Modelo
@@ -99,6 +100,8 @@ export class ConsultaMasterComponent implements OnInit {
                private _http: Http ){
      // Llenado de la Tabla de Encabezado
      this.fillDataTable();
+
+     this.otraFill();
   } // Fin | Definicion del Constructor
 
 
@@ -125,6 +128,7 @@ export class ConsultaMasterComponent implements OnInit {
 
     // Ejecucion de la Lista de Comunicacion de Usuario Logeado
     this.getlistaComunicacionEncTableFind();
+
 
     // console.log(this.JsonOutgetlistaComunicacionEnc);
 
@@ -156,15 +160,18 @@ export class ConsultaMasterComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaComunicacionEnc = response.data;
+            this.JsonOutgetlistaComunicacionEncNew = response;
 
             alert(response.msg);
           }else{
             this.JsonOutgetlistaComunicacionEnc = response.data;
+            this.JsonOutgetlistaComunicacionEncNew = response;
             //this.valoresdataDetJson ( response.data );
 
             this.loading = 'hidden';
             this.loadTabla1 = true;
-            console.log( this.JsonOutgetlistaComunicacionEnc );
+            // console.log( this.JsonOutgetlistaComunicacionEnc );
+
           }
         });
   } // FIN | FND-00001
@@ -259,6 +266,44 @@ export class ConsultaMasterComponent implements OnInit {
   } // FIN | FND-00002
 
 
+  otraFill(){
+    $ (function () {
+      $('#example2').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            //"url": "http://localhost/sicdoc/symfony/web/app_dev.php/listas/estados-comunicacion-list",
+            "url": "http://172.17.4.162/sicdoc/symfony/web/app.php/listas/estados-comunicacion-list",
+            "type": "POST"
+        },
+        "columns": [
+            { "data": "codEstado" },
+            { "data": "idEstado" },
+            { "data": "descripcionEstado" },
+            { "data": "inicalesEstado" },
+            { "data": "grupoEstado" }
+        ],
+        // Tamaño de la Pagina
+        //"pageLength": 5,
+        // Cambiar las Propiedades de Lenguaje
+        "language":{
+            "lengthMenu": "Mostrar _MENU_ registros por pagina",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrada de _MAX_ registros)",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+        },
+      } );
+    } );
+  }
+
   /*****************************************************
   * Funcion: FND-00003
   * Fecha: 06-10-2017
@@ -338,7 +383,7 @@ export class ConsultaMasterComponent implements OnInit {
 
   public datoEnc:DatosEnc[] = this.JsonOutgetlistaComunicacionEnc;
 
-  public datas:User[] =  [
+  public data:User[] = [
     {
       "id": "1",
       "name": "Tiger Nixon",

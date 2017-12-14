@@ -220,9 +220,8 @@
               <div class="col-xs-12 col-sm-6 col-md-12">
                 <div class="form-group">
                     <textarea #observaciones="ngModel" class="form-control" id="observaciones" name="observaciones" rows="3"
-                        placeholder="Ingresa la Observacion / Instruccion" tabindex="3" required minlength="10"
+                        placeholder="Ingresa la Observacion / Instruccion" tabindex="3" minlength="10"
                         ngControl="observaciones" [(ngModel)]="comunicacion.observaciones"></textarea>
-                    <small class="form-text text-muted" *ngIf="observaciones.errors?.required" >Ingresa la Observacion de la comunicacion</small>
                     <small class="form-text text-muted" *ngIf="observaciones.errors?.minlength" >Se nesesita por lo menos {{ observaciones.errors.minlength.requiredLength }} caracteres</small>
                 </div>
               </div>

@@ -116,6 +116,27 @@
         <strong>Que mal!</strong> {{ mensajes }}
       </div>
 
+      <table id="example2" class="ui celled table" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>codEstado</th>
+                <th>idEstado</th>
+                <th>descripcionEstado</th>
+                <th>inicalesEstado</th>
+                <th>grupoEstado</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+              <th>codEstado</th>
+              <th>idEstado</th>
+              <th>descripcionEstado</th>
+              <th>inicalesEstado</th>
+              <th>grupoEstado</th>
+            </tr>
+        </tfoot>
+    </table>
+
       <!-- Loader de Carga de los Datos -->
       <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-top:5%; margin-bottom:5%;">
         <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
@@ -136,7 +157,7 @@
                       <th>Fecha Creación</th>
                       <th>Fecha Entrega.</th>
                       <th>Institución Remitente</th>
-                      <th>Descripción / Comunicación</th>
+                      <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
                       <th>Estado / Comunicación</th>
                       <th>Ver</th>
@@ -149,9 +170,13 @@
                   <td >{{ item.idTipoDocumento.descTipoDocumento }}</td>
                   <td >{{ item.fechaIngreso.timestamp | generateDate  }}</td>
                   <td >{{ item.fechaMaxEntrega.timestamp | generateDate }}</td>
-                  <td >{{ item.idInstitucion.descInstitucion }} | {{ item.idInstitucion.perfilInstitucion }} </td>
-                  <td >{{ item.descCorrespondenciaEnc }}</td>
-                  <td >{{ item.temaComunicacion }}</td>
+                  <td style="cursor: help" title="{{ item.idInstitucion.perfilInstitucion }} ">
+                      {{ item.idInstitucion.descInstitucion }}
+                  </td>
+                  <!-- <td class="cortar">{{ item.descCorrespondenciaEnc }}</td> -->
+                  <td style="cursor: help" title="Descripción: {{ item.descCorrespondenciaEnc }} ">
+                      {{ item.temaComunicacion }}
+                  </td>
                   <td style="width:10px"> <a style="cursor: pointer;" class="nav-link">
                       <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
                                       'text-primary': item.idEstado.idEstado == 5,
