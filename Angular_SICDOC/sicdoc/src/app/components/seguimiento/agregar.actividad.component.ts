@@ -87,6 +87,21 @@ export class IngresoActividadComponent implements OnInit{
   private idEstadoModal:number;
   private descEstadoModal:string = "Asignar";
 
+
+  // Campos del Modal PopUp | Asignacion
+  private codOficioIntModalAsignacion:string;
+  private codOficioRefModalAsignacion:string;
+  private idDeptoFuncionalModalAsignacion:number;
+  private temaOficioModalAsignacion:string;
+  private institucionOficioModalAsignacion:string;
+  private nombre1FuncModalAsignacion:string;
+  private nombre2FuncModalAsignacion:string;
+  private apellido1FuncModalAsignacion:string;
+  private apellido2FuncModalAsignacion:string;
+  private idFuncModalAsignacion:number;
+  private idEstadoModalAsignacion:number;
+  private descEstadoModalAsignacion:string = "Asignar";
+
   public paramsTable;
 
   // Parametro de Depto. Funcional del User
@@ -113,6 +128,8 @@ export class IngresoActividadComponent implements OnInit{
   // public strEstadoVencido:string = "badge badge-pill badge-warning";
 
 
+  //variables de Confirmacion
+  public confirma;
 
   // Json de los listas de los Oficios por usuario
   public JsonOutgetlistaOficiosAll:any[];
@@ -265,7 +282,7 @@ export class IngresoActividadComponent implements OnInit{
   *****************************************************/
    timeConverter(UNIX_timestamp){
      let a = new Date( UNIX_timestamp * 1000);
-  //  alert(UNIX_timestamp);
+     //  alert(UNIX_timestamp);
        let diaFechamaxima = String( a.getDay() );
        let mesFechamaxima = String( a.getMonth() + 1 );
        let anioFechamaxima = String( a.getFullYear() );
@@ -414,6 +431,34 @@ export class IngresoActividadComponent implements OnInit{
 
 
 
+   /****************************************************
+   * Funcion: FND-00001.3.1
+   * Fecha: 15-12-2017
+   * Descripcion: Funcion que valida si el usuario es el
+   * valido a ingresar
+   * Utilizando parametros nombre y apellido
+   * Objetivo: Obtener la confirmacion del usuario seleccionado
+   *****************************************************/
+   confirmUser(codOficioIntModalAsignacionIn, codOficioRefModalAsignacionIn, idFuncModalAsignacionIn,
+              nombre1FuncModalAsignacionIn, apellido1FuncModalAsignacionIn, nombre2FuncModalAsignacionIn, apellido2FuncModalAsignacion){
+     this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncModalAsignacionIn + ' ' + apellido1FuncModalAsignacionIn + ' ?');
+     if(this.confirma == true){
+       //Asignamos las variables del Modal | usuario seleccionado
+       this.codOficioIntModalAsignacion = codOficioIntModalAsignacionIn;
+       this.codOficioRefModalAsignacion = codOficioRefModalAsignacionIn;
+       this.idFuncModalAsignacion = idFuncModalAsignacionIn;
+       this.nombre1FuncModalAsignacion = nombre1FuncModalAsignacionIn;
+       this.apellido1FuncModalAsignacion = apellido1FuncModalAsignacionIn;
+       this.nombre2FuncModalAsignacion = nombre2FuncModalAsignacionIn;
+       this.apellido2FuncModalAsignacion = apellido2FuncModalAsignacion;
+
+       return true;
+     }else{
+       return false;
+     }
+   }
+
+
   /****************************************************
   * Funcion: FND-00001.5
   * Fecha: 16-09-2017
@@ -443,8 +488,10 @@ export class IngresoActividadComponent implements OnInit{
    this.asignarOficios.apellido2FuncionarioAsigmado  = apellido2FuncionarioAsign;
 
    // 3 ) Confirmamos que el Usuario acepte el Cambio
-   let confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ' ?');
-   if( confirma == true){
+
+   if( this.confirmUser(this.asignarOficios.codOficioInterno, this.asignarOficios.codOficioExterno, this.asignarOficios.idFuncionarioAsigmado,
+                        this.asignarOficios.nombre1FuncionarioAsigmado, this.asignarOficios.apellido1FuncionarioAsigmado,
+                        this.asignarOficios.nombre2FuncionarioAsigmado, this.asignarOficios.apellido2FuncionarioAsigmado  ) == true){
    // 4 ) Ejecutamos el llamado al Metodo de la API ( /seguimiento/asignar-oficio )
       let token1 = this._asignaOficio.getToken();
       this.loading_table = 'show';

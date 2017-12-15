@@ -162,10 +162,8 @@
                   <td> {{ item.idTipoFuncionario.descTipoFuncionario }} </td>
                   <td> {{ item.emailFuncionario }} </td>
                   <td> {{ item.celularFuncionario }} </td>
-                  <td *ngIf="loading_tr == 'hide'" > <a style="cursor: pointer;" class="nav-link"
-                      (click)="asignarOficioFuncionario( codOficioIntModal, codOficioRefModal, item.idFuncionario,
-                            item.nombre1Funcionario, item.apellido1Funcionario,
-                            item.nombre2Funcionario, item.apellido2Funcionario )" >
+                  <td *ngIf="loading_tr == 'hide'" > <a style="cursor: pointer;" class="nav-link"                          
+                            data-toggle="modal" data-target="#myModalInstruccion">
                     <span [ngClass]="{ 'badge badge-pill badge-warning': item.nombre1Funcionario == nombre1FuncModal,
                                         'badge badge-pill badge-primary': item.nombre1Funcionario != nombre1FuncModal}"
                           data-toggle="tooltip" data-placement="top" title="Asigna Oficio al Funcionario seleccionado" > {{ descEstadoModal }} </span></a>
@@ -184,5 +182,46 @@
   		</div><!-- /.modal-content -->
   	</div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+
+  <!-- Segunda ventana Modal -->
+  <div id="myModalInstruccion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Instrucción de la Asignación</h4>
+        </div>
+        <div class="modal-body">
+          <form class="" action="index.html" method="post">
+            <div class="col-md-12 mb-4">
+              <label for="validationDefault01">Detalle de la Instrucción</label>
+              <!-- <input type="text" class="form-control" id="validationDefault01" placeholder="Detalle de la Instruccion"
+                     value="" > -->
+                 <textarea #buscadorOficio="ngModel" type="text" name="buscadorOficio" id="buscadorOficio"
+                         ngControl="buscadorOficio" [(ngModel)]="asignarOficios.buscadorOficio" required maxlength="1400" minlength="15"
+                         class="form-control" id="buscadorOficio" placeholder="Instrucción de la Comunicacion" rows="5">
+                 </textarea>
+
+               <hr class="colorgraph">
+               <button type="button" id="closeModalAsignaCom" class="btn btn-success" data-dismiss="modal" style="cursor: pointer"
+                     (click)="asignarOficioFuncionario( codOficioIntModalAsignacion, codOficioRefModalAsignacion, idFuncModalAsignacion,
+                           nombre1FuncModalAsignacion, apellido1FuncModalAsignacion,
+                           nombre2FuncModalAsignacion, apellido2FuncModalAsignacion )">Guardar
+              </button>
+               <button type="button" id="closeModalFinCom" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
+            </div>
+            <!-- <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" style="cursor: pointer">Guardar</button> -->
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          ...
+        </div> -->
+      </div>
+    </div>
+  </div>
 
 </div>

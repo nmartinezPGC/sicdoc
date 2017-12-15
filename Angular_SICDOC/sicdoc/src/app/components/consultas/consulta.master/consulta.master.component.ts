@@ -101,7 +101,7 @@ export class ConsultaMasterComponent implements OnInit {
      // Llenado de la Tabla de Encabezado
      this.fillDataTable();
 
-     this.otraFill();
+     // this.otraFill();
   } // Fin | Definicion del Constructor
 
 
@@ -266,7 +266,7 @@ export class ConsultaMasterComponent implements OnInit {
   } // FIN | FND-00002
 
 
-  otraFill(){
+  /*otraFill(){
     $ (function () {
       $('#example2').DataTable( {
         "processing": true,
@@ -302,7 +302,7 @@ export class ConsultaMasterComponent implements OnInit {
         },
       } );
     } );
-  }
+  }*/
 
   /*****************************************************
   * Funcion: FND-00003
