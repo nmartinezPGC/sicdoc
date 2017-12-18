@@ -49,13 +49,12 @@ export class ConsultaMasterComponent implements OnInit {
   minDate = Date.now();
   maxDate = new Date(2017, 12, 1);
 
-  displayedColumns = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new ExampleDataSource();
 
   // variables del localStorage
   public identity;
   public token;
   public userId;
+  public jwtUser;
 
   // parametros multimedia
   public loading  = 'hide';
@@ -101,7 +100,7 @@ export class ConsultaMasterComponent implements OnInit {
      // Llenado de la Tabla de Encabezado
      this.fillDataTable();
 
-     // this.otraFill();
+     this.otraFill();
   } // Fin | Definicion del Constructor
 
 
@@ -114,6 +113,10 @@ export class ConsultaMasterComponent implements OnInit {
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
     this.userId = this.identity.sub;
+
+    //Token de la session
+    this.token = localStorage.getItem('token');
+    this.jwtUser = this.token;
 
     // // Iniciamos los Parametros de Fechas de la Consulta
     this.tableConsultaFechas = {
@@ -170,7 +173,7 @@ export class ConsultaMasterComponent implements OnInit {
 
             this.loading = 'hidden';
             this.loadTabla1 = true;
-            // console.log( this.JsonOutgetlistaComunicacionEnc );
+            console.log( this.JsonOutgetlistaComunicacionEnc );
 
           }
         });
@@ -266,25 +269,40 @@ export class ConsultaMasterComponent implements OnInit {
   } // FIN | FND-00002
 
 
-  /*otraFill(){
+  otraFill(){
     $ (function () {
       $('#example2').DataTable( {
         "processing": true,
-        "serverSide": true,
+        //"serverSide": true,
+        "destroy": true,
         "ajax": {
+            "type": "POST",
+            "dataType": "json",
+            //"data" :JSON.stringify(formData),
+            "data" : "json=" + {"codOficioInterno":null,"codOficioExterno":null,"searchValueSend":null,
+                      "idFuncionarioAsignado":null,"idCorrespondenciaEnc":378,"optUserFind":null,
+                      "optUserFindId":1,"idEstado":[3,5,7,8],"idTipoComunicacion":[1,5,7,8]} + 
+                      "&authorization='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImNvZFVzZXIiOiIwODAxMTk4NjIwMjA3IiwiaW5pVXNlciI6Ik5NQSIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmFodW0uc3JlY2lAZ21haWwuY29tIiwibm9tYnJlIjoiTmFodW0iLCJhcGVsbGlkbyI6Ik1hcnRpbmV6IiwiaW1hZ2VuVXN1YXJpbyI6InNyZWNpLnBuZyIsImlkRGlyZWNjaW9uIjoxLCJpZERlcHRvRnVuY2lvbmFsIjo0LCJpZFRpcG9Vc2VyIjoyLCJpZFRpcG9GdW5jIjoxLCJpZEZ1bmNpb25hcmlvIjoyLCJpYXQiOjE1MTM0MDA4OTUsImV4cCI6MTUxNDAwNTY5NX0.eWmjB2lD2pb3ZhFF2QjNYWIpz_LqAKGyERAfR5vTCiI'" ,
+            "contentType": "application/json",
             //"url": "http://localhost/sicdoc/symfony/web/app_dev.php/listas/estados-comunicacion-list",
-            "url": "http://172.17.4.162/sicdoc/symfony/web/app.php/listas/estados-comunicacion-list",
-            "type": "POST"
+            "url": "http://localhost/sicdoc/symfony/web/app_dev.php/consultas/consulta-general",            
         },
-        "columns": [
+        "columns" : [
+          { "data": "codCorrespondenciaEnc" },
+          { "data": "codReferenciaSreci" },
+          { "data": "temaComunicacion" },
+          { "data": "idCorrespondenciaEnc" },
+          { "data": "descCorrespondenciaEnc" },
+        ],
+        /*"columns": [
             { "data": "codEstado" },
             { "data": "idEstado" },
             { "data": "descripcionEstado" },
             { "data": "inicalesEstado" },
             { "data": "grupoEstado" }
-        ],
+        ],*/
         // Tamaño de la Pagina
-        //"pageLength": 5,
+        "pageLength": 5,
         // Cambiar las Propiedades de Lenguaje
         "language":{
             "lengthMenu": "Mostrar _MENU_ registros por pagina",
@@ -302,7 +320,7 @@ export class ConsultaMasterComponent implements OnInit {
         },
       } );
     } );
-  }*/
+  }
 
   /*****************************************************
   * Funcion: FND-00003
@@ -383,65 +401,9 @@ export class ConsultaMasterComponent implements OnInit {
 
   public datoEnc:DatosEnc[] = this.JsonOutgetlistaComunicacionEnc;
 
-  public data:User[] = [
-    {
-      "id": "1",
-      "name": "Tiger Nixon",
-      "position": "System Architect",
-      "salary": "$320,800",
-      "start_date": "2011/04/25",
-      "office": "Edinburgh",
-      "extn": "5421"
-    },
-    {
-      "id": "2",
-      "name": "Garrett Winters",
-      "position": "Accountant",
-      "salary": "$170,750",
-      "start_date": "2011/07/25",
-      "office": "Tokyo",
-      "extn": "8422"
-    },
-    {
-      "id": "3",
-      "name": "Ashton Cox",
-      "position": "Junior Technical Author",
-      "salary": "$86,000",
-      "start_date": "2009/01/12",
-      "office": "San Francisco",
-      "extn": "1562"
-    },
-    {
-      "id": "4",
-      "name": "Cedric Kelly",
-      "position": "Senior Javascript Developer",
-      "salary": "$433,060",
-      "start_date": "2012/03/29",
-      "office": "Edinburgh",
-      "extn": "6224"
-    }];
-
 
 } // FIN de Clase | Consulta Master
 
-// Interface de la Clase
-export interface Element {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-// Interface de la Clase
-export interface User {
-  id: string;
-  name: string;
-  position: string;
-  salary: string;
-  start_date: string;
-  office: string;
-  extn: string;
-}
 
 // Interface de la Clase
 export interface DatosEnc {
@@ -452,34 +414,4 @@ export interface DatosEnc {
   descCorrespondenciaEnc: string;
 }
 
-const data: Element[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-];
 
-export class ExampleDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Element[]> {
-    return Observable.of(data);
-  }
-
-  disconnect() {}
-}

@@ -325,6 +325,7 @@ export class IngresoActividadComponent implements OnInit{
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosDisponibles = response.data;
+            console.log(this.JsonOutgetlistaFuncionariosDisponibles);
           }
         },
         error => {
@@ -437,12 +438,15 @@ export class IngresoActividadComponent implements OnInit{
    * Descripcion: Funcion que valida si el usuario es el
    * valido a ingresar
    * Utilizando parametros nombre y apellido
-   * Objetivo: Obtener la confirmacion del usuario seleccionado
+   * Objetivo: Obtener la confirmacion del usuario selec-
+   * cionado
    *****************************************************/
    confirmUser(codOficioIntModalAsignacionIn, codOficioRefModalAsignacionIn, idFuncModalAsignacionIn,
               nombre1FuncModalAsignacionIn, apellido1FuncModalAsignacionIn, nombre2FuncModalAsignacionIn, apellido2FuncModalAsignacion){
-     this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncModalAsignacionIn + ' ' + apellido1FuncModalAsignacionIn + ' ?');
-     if(this.confirma == true){
+     //this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncModalAsignacionIn + ' ' + apellido1FuncModalAsignacionIn + ' ?');
+     
+     //if(this.confirma == true){
+     if(codOficioIntModalAsignacionIn != null){
        //Asignamos las variables del Modal | usuario seleccionado
        this.codOficioIntModalAsignacion = codOficioIntModalAsignacionIn;
        this.codOficioRefModalAsignacion = codOficioRefModalAsignacionIn;
@@ -488,8 +492,9 @@ export class IngresoActividadComponent implements OnInit{
    this.asignarOficios.apellido2FuncionarioAsigmado  = apellido2FuncionarioAsign;
 
    // 3 ) Confirmamos que el Usuario acepte el Cambio
+   this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ' ?');
 
-   if( this.confirmUser(this.asignarOficios.codOficioInterno, this.asignarOficios.codOficioExterno, this.asignarOficios.idFuncionarioAsigmado,
+   if( this.confirma == true && this.confirmUser(this.asignarOficios.codOficioInterno, this.asignarOficios.codOficioExterno, this.asignarOficios.idFuncionarioAsigmado,
                         this.asignarOficios.nombre1FuncionarioAsigmado, this.asignarOficios.apellido1FuncionarioAsigmado,
                         this.asignarOficios.nombre2FuncionarioAsigmado, this.asignarOficios.apellido2FuncionarioAsigmado  ) == true){
    // 4 ) Ejecutamos el llamado al Metodo de la API ( /seguimiento/asignar-oficio )

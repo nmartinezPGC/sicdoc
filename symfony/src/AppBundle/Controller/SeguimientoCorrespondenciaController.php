@@ -73,6 +73,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                 $apellido2_funcionario_asignado = ($params->apellido2FuncionarioAsigmado != null) ? $params->apellido2FuncionarioAsigmado : null ;
                 
                 $estado_asignado = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
+                
+                //Instruccion de la Asignacion
+                $instruccion_asignado = ($params->buscadorOficio != null) ? $params->buscadorOficio : null ;
                                 
                 $fecha_modifcacion        = new \DateTime('now');
                 
@@ -157,6 +160,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         
                         // Empieza la Actualizacion
                         $correspondenciaDetAsigna->setIdFuncionarioAsignado( $funcionario_asignado ); //Set de Codigo de Funcionario Asignado                        
+                        $correspondenciaDetAsigna->setInstrucciones( $instruccion_asignado ); //Set de Instruccion de Asignacion
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaDetAsigna);
@@ -224,7 +228,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Asignación de Oficio | SICDOC')
+                               ->setSubject('Asignación de Comunicacion | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))
@@ -236,7 +240,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => strval($fecha_creacion_convert), 
+                                               'instruccion' => $instruccion_asignado, 'fechaIngresoOfi' => strval($fecha_creacion_convert), 
                                                'fechaMaxOfi' => strval($fecha_maxima_entrega_convert) )
                                     ), 'text/html' );                           
                            

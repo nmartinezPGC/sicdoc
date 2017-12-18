@@ -128,7 +128,10 @@ class ConsultasController extends Controller{
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
-                            "code"   => 200, 
+                            "code"   => 200,
+                            "recordsTotal" => 82,
+                            "recordsFiltered" => 82,
+                            "draw" => 82,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaFind
                         );                        
@@ -251,7 +254,7 @@ class ConsultasController extends Controller{
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
-                            "code"   => 200, 
+                            "code"   => 200,                            
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaDetFind
                         );                        

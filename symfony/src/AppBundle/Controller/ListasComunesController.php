@@ -877,6 +877,8 @@ class ListasComunesController extends Controller {
         //$com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findAll();
         $com_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(array(),array("codCorrespondenciaEnc" => "ASC")) ;
         // FIN | NMA | INC.00003
+        
+        $countAll = count($com_enc);
                 
         
         // Condicion de la Busqueda
