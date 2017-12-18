@@ -100,7 +100,7 @@ export class ConsultaMasterComponent implements OnInit {
      // Llenado de la Tabla de Encabezado
      this.fillDataTable();
 
-     this.otraFill();
+     //this.otraFill();
   } // Fin | Definicion del Constructor
 
 
@@ -128,6 +128,9 @@ export class ConsultaMasterComponent implements OnInit {
     this.idTipoComunicacionArray = [1, 5, 7, 8 ];
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.consultaMasterEnc = new ConsultaMaster (null, null, null, null, this.userId, null, 1, this.idEstadoArray, this.idTipoComunicacionArray);
+
+    // Carga la Tabla (Con el Model PreCargado)
+    this.otraFill( this.consultaMasterEnc, this.jwtUser );
 
     // Ejecucion de la Lista de Comunicacion de Usuario Logeado
     this.getlistaComunicacionEncTableFind();
@@ -269,38 +272,56 @@ export class ConsultaMasterComponent implements OnInit {
   } // FIN | FND-00002
 
 
-  otraFill(){
+  /*****************************************************
+  * Funcion: FND-00002.1
+  * Fecha: 18-12-2017
+  * Descripcion: Tabla de DataTable con Metodo Ajax y
+  *  envio de la Informacion son JSON
+  * Params: modelClass (Clase del Modelo), authorization
+  ******************************************************/
+  otraFill( modelClass, authorization ){
     $ (function () {
-      $('#example2').DataTable( {
+    var table =  $('#example2').DataTable( {
         "processing": true,
         //"serverSide": true,
         "destroy": true,
         "ajax": {
             "type": "POST",
             "dataType": "json",
-            //"data" :JSON.stringify(formData),
-            "data" : "json=" + {"codOficioInterno":null,"codOficioExterno":null,"searchValueSend":null,
-                      "idFuncionarioAsignado":null,"idCorrespondenciaEnc":378,"optUserFind":null,
-                      "optUserFindId":1,"idEstado":[3,5,7,8],"idTipoComunicacion":[1,5,7,8]} + 
-                      "&authorization='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImNvZFVzZXIiOiIwODAxMTk4NjIwMjA3IiwiaW5pVXNlciI6Ik5NQSIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmFodW0uc3JlY2lAZ21haWwuY29tIiwibm9tYnJlIjoiTmFodW0iLCJhcGVsbGlkbyI6Ik1hcnRpbmV6IiwiaW1hZ2VuVXN1YXJpbyI6InNyZWNpLnBuZyIsImlkRGlyZWNjaW9uIjoxLCJpZERlcHRvRnVuY2lvbmFsIjo0LCJpZFRpcG9Vc2VyIjoyLCJpZFRpcG9GdW5jIjoxLCJpZEZ1bmNpb25hcmlvIjoyLCJpYXQiOjE1MTM0MDA4OTUsImV4cCI6MTUxNDAwNTY5NX0.eWmjB2lD2pb3ZhFF2QjNYWIpz_LqAKGyERAfR5vTCiI'" ,
-            "contentType": "application/json",
+            /* "data" :JSON.stringify(formData),
+            * Preparacion de los Parametros del Json
+            * Param 1 : Datos del Modelo de la Clase
+            * Param 2 : Dato de la Autorizacion del Token */
+            "data" : { "json": JSON.stringify( modelClass ),
+                      "authorization":authorization } ,
+            //"contentType": "application/json",
+            "contentType": "application/x-www-form-urlencoded",
             //"url": "http://localhost/sicdoc/symfony/web/app_dev.php/listas/estados-comunicacion-list",
-            "url": "http://localhost/sicdoc/symfony/web/app_dev.php/consultas/consulta-general",            
+            "url": "http://localhost/sicdoc/symfony/web/app_dev.php/consultas/consulta-general",
         },
+
+        // Tabla response
+        "responsive": true,
+
+        // Seleccionable
+        "select": true,
+
+        // Definicion de las Columnas de la Tabla
         "columns" : [
           { "data": "codCorrespondenciaEnc" },
           { "data": "codReferenciaSreci" },
           { "data": "temaComunicacion" },
           { "data": "idCorrespondenciaEnc" },
           { "data": "descCorrespondenciaEnc" },
+          {
+            "data": null,
+            "defaultContent": "<a href='/#' data-toggle='modal' data-target='#t_and_c_m'> "+
+            " <img src='/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png'  "+
+                  "class='d-inline-block align-top' title='Ver Detalle de Comunicación'> "+
+            "</a>"
+          }
         ],
-        /*"columns": [
-            { "data": "codEstado" },
-            { "data": "idEstado" },
-            { "data": "descripcionEstado" },
-            { "data": "inicalesEstado" },
-            { "data": "grupoEstado" }
-        ],*/
+
         // Tamaño de la Pagina
         "pageLength": 5,
         // Cambiar las Propiedades de Lenguaje
@@ -319,7 +340,14 @@ export class ConsultaMasterComponent implements OnInit {
                 },
         },
       } );
-    } );
+
+
+      $('#example2 tr').on('click', function(){
+        var dato = $(this).find('td:first').html();
+        alert(dato);
+      });
+
+} ); // Fin de Funcion de Tabla
   }
 
   /*****************************************************
@@ -413,5 +441,3 @@ export interface DatosEnc {
   temaComunicacion: string;
   descCorrespondenciaEnc: string;
 }
-
-

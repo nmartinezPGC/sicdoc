@@ -129,9 +129,9 @@ class ConsultasController extends Controller{
                         $data = array(
                             "status" => "success", 
                             "code"   => 200,
-                            "recordsTotal" => 82,
-                            "recordsFiltered" => 82,
-                            "draw" => 82,
+                            "recordsTotal" => count($correspondenciaFind),
+                            "recordsFiltered" => count($correspondenciaFind),
+                            "draw" => count($correspondenciaFind),
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaFind
                         );                        
@@ -254,7 +254,10 @@ class ConsultasController extends Controller{
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
-                            "code"   => 200,                            
+                            "code"   => 200,
+                            "recordsTotal" => count($correspondenciaDetFind),
+                            "recordsFiltered" => count($correspondenciaDetFind),
+                            "draw" => count($correspondenciaDetFind),
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaDetFind
                         );                        
