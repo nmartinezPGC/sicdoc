@@ -364,7 +364,7 @@ export class ContactosComponent implements OnInit {
     // Direccion del Metodo de la API
     let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
     // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
-    // let url = "http://172.17.3.90/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.15/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
     // Variables del Metodo
@@ -421,7 +421,7 @@ export class ContactosComponent implements OnInit {
   downloadDocumento(downloadUrl){
     var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
     // var url= window.URL.createObjectURL("http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    // var url= window.URL.createObjectURL("http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/perfiles/");
+    // var url= window.URL.createObjectURL("http://172.17.3.141/sicdoc/symfony/web/uploads/contactos/perfiles/");
     //  let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005
