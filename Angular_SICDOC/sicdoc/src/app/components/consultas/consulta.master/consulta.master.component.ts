@@ -310,9 +310,12 @@ export class ConsultaMasterComponent implements OnInit {
         "columns" : [
           { "data": "codCorrespondenciaEnc" },
           { "data": "codReferenciaSreci" },
+          { "data": "idTipoDocumento.descTipoDocumento" },
+          { "data": "fechaIngreso.timestamp" },
+          { "data": "fechaMaxEntrega.timestamp" },
+          { "data": "idInstitucion.descInstitucion" },
           { "data": "temaComunicacion" },
-          { "data": "idCorrespondenciaEnc" },
-          { "data": "descCorrespondenciaEnc" },
+          { "data": "idEstado.descripcionEstado" },
           {
             "data": null,
             "defaultContent": "<a href='/#' data-toggle='modal' data-target='#t_and_c_m'> "+
@@ -362,10 +365,11 @@ export class ConsultaMasterComponent implements OnInit {
     setTimeout(function () {
       $ (function () {
           $('#example').DataTable({
+            "destroy": true,
             // Barra Vertical de la Tabla
             //scrollY:        '50vh',
             //scrollCollapse: true,
-            fixedHeader: true,
+            "fixedHeader": true,
             "autoWidth": false,
             // Tamaño de la Pagina
             "pageLength": 5,
