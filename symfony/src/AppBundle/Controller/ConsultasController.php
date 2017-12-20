@@ -122,16 +122,16 @@ class ConsultasController extends Controller{
                             break;
                     } // FIN | Case                    
                                         
-                    
+                    $totalCorrespondenciaFind = count($correspondenciaFind);
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
-                    if(count($correspondenciaFind) > 0 ){
+                    if($totalCorrespondenciaFind > 0 ){
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
                             "code"   => 200,
-                            "recordsTotal" => count($correspondenciaFind),
-                            "recordsFiltered" => count($correspondenciaFind),
-                            "draw" => count($correspondenciaFind),
+                            "recordsTotal" => $totalCorrespondenciaFind,
+                            "recordsFiltered" => $totalCorrespondenciaFind,
+                            "draw" => $totalCorrespondenciaFind,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaFind
                         );                        

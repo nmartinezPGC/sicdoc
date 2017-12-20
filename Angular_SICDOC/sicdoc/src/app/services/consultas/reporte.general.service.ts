@@ -11,10 +11,10 @@ import { Observable } from 'rxjs/Observable';
 export class ReporteGeneralService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
-  // public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
+  public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
   // public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
   // public url = "http://172.17.3.141/sicdoc/symfony/web/app.php";
-  public url = "http://192.168.0.23/sicdoc/symfony/web/app.php";
+  // public url = "http://192.168.0.23/sicdoc/symfony/web/app.php";
 
   //Variables para el localStorage
   public identity;
