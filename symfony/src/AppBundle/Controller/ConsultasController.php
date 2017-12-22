@@ -87,11 +87,18 @@ class ConsultasController extends Controller{
                     switch ( $id_tipo_funcionario )
                     {
                         case 1: // Administrador del Sistema
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findBy(
                                     array(                                        
                                         "idEstado" => [3,4,5,6,7,8]
-                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") );
+                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") )  ;
+                            */
+                            $query = $em->createQuery('SELECT c FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8)' );
+                                    //. 'c.idCorrespondenciaEnc = d.idCorrespondenciaEnc') ;
+                            $correspondenciaFind = $query->getResult() ;
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 4: // Administrador de Correspondencia
