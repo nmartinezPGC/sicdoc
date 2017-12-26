@@ -68,10 +68,13 @@ export class ConsultaMasterComponent implements OnInit {
   // Instacia del Objeto Model de la Clase
   public consultaMasterEnc: ConsultaMaster;
 
+  public paramsDocumentos;
+
   // Parametros de los Json de la Aplicacion
   public JsonOutgetlistaComunicacionDet:any[];
   public JsonOutgetlistaComunicacionEnc:any[];
   public JsonOutgetlistaComunicacionEncNew:any[];
+  public JsonOutgetlistaDocumentos:any[];
 
 
   // Variables de envio al Json del Modelo
@@ -118,10 +121,15 @@ export class ConsultaMasterComponent implements OnInit {
     this.token = localStorage.getItem('token');
     this.jwtUser = this.token;
 
-    // // Iniciamos los Parametros de Fechas de la Consulta
+    //Iniciamos los Parametros de Fechas de la Consulta
     this.tableConsultaFechas = {
       "fechaCreacion"    : "",
       "fechaMaxEntrega"  : ""
+    };
+
+    //Iniciamos los Parametros de Json de Documentos
+    this.paramsDocumentos = {
+      "searchValueSend" : ""
     };
 
     this.idEstadoArray = [3, 5, 7, 8 ];
@@ -130,7 +138,7 @@ export class ConsultaMasterComponent implements OnInit {
     this.consultaMasterEnc = new ConsultaMaster (null, null, null, null, this.userId, null, 1, this.idEstadoArray, this.idTipoComunicacionArray);
 
     // Carga la Tabla (Con el Model PreCargado)
-    this.otraFill( this.consultaMasterEnc, this.jwtUser );
+    // this.otraFill( this.consultaMasterEnc, this.jwtUser );
 
     // Ejecucion de la Lista de Comunicacion de Usuario Logeado
     this.getlistaComunicacionEncTableFind();
@@ -214,10 +222,52 @@ export class ConsultaMasterComponent implements OnInit {
             //this.valoresdataDetJson ( response.data );
             this.loading_table = 'hide';
             this.loadTabla2 = true;
-            console.log( this.JsonOutgetlistaComunicacionDet );
+            // console.log( this.JsonOutgetlistaComunicacionDet );
+            
+            //Llamado de la Funcion de los Documentos
+            this.paramsDocumentos.searchValueSend =  this.codOficioIntModal;
+            console.log( this.paramsDocumentos.searchValueSend );
+            this.getlistaDocumentosTable();
+    
           }
         });
   } // FIN | FND-00001.1
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 01-11-2017
+  * Descripcion: Carga la Lista de los Documentos de la
+  * Comunicacion de la BD que pertenecen al usaurio
+  * Logeado, en el Detalle
+  * Objetivo: Obtener la lista de los Documentos de las
+  * Comunicaciones de la BD, Llamando a la API, por su
+  * metodo ( documentos/listar-documentos ).
+  ******************************************************/
+  getlistaDocumentosTable() {
+    // Laoding
+    this.loading_table = 'show';
+    this.loadTabla2 = false;
+    // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+    this._listasComunes.listasDocumentosToken( this.paramsDocumentos, "listar-documentos" ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaDocumentos = response.data;
+            // Oculta los Loaders            
+            this.loading_table = 'hide';
+            this.loadTabla2 = true;
+            alert(response.msg);
+          }else{
+            this.JsonOutgetlistaDocumentos = response.data;
+            //this.valoresdataDetJson ( response.data );
+            this.loading_table = 'hide';
+            this.loadTabla2 = true;
+            // console.log( this.JsonOutgetlistaDocumentos );
+          }
+        });
+  } // FIN | FND-00001.2
 
 
   /*****************************************************

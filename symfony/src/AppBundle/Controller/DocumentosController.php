@@ -409,14 +409,13 @@ class DocumentosController extends Controller{
             //Recogemos el ID de Comunicacion Enc ******************************
             $cod_correspondencia = (isset($params->searchValueSend)) ? $params->searchValueSend : null; 
                         
-            
+            //Validacion de los Datos
             // Verificacion del Codigo de la Correspondenia*
             // Encabezado  *********************************
             $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                 array(
                     "codCorrespondenciaEnc" => $cod_correspondencia
                 ));
-            
             
             // Query para Obtener todos los Funcionarios de la Tabla: TblDocumentos
             $lista_documentos = $em->getRepository("BackendBundle:TblDocumentos")->findBy(

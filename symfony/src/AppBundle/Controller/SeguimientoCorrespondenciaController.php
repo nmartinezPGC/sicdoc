@@ -162,6 +162,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $correspondenciaDetAsigna->setIdFuncionarioAsignado( $funcionario_asignado ); //Set de Codigo de Funcionario Asignado                        
                         $correspondenciaDetAsigna->setInstrucciones( $instruccion_asignado ); //Set de Instruccion de Asignacion
                         
+                        /*
+                         * 2017-12-24
+                         * Se incluyo el Seteo del idEstado, para que pueda
+                         * Trabajar el usuario Asignado
+                         */
+                        $correspondenciaDetAsigna->setIdestado( $estadoAsigna ); //Set de Estado del Detalle
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaDetAsigna);
                         

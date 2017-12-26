@@ -54,7 +54,7 @@
               </td>
               <td> {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
-              <td> {{ item.idInstitucion.descInstitucion }} | {{ item.idInstitucion.perfilInstitucion }} </td>
+              <td title="{{ item.idInstitucion.perfilInstitucion }}"> {{ item.idInstitucion.descInstitucion }} </td>
               <td> {{ item.temaComunicacion }} </td>
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso.timestamp | generateDate }} </td>

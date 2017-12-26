@@ -749,9 +749,9 @@ class ListasComunesController extends Controller {
 
             // Query a la BD
             $qb->select('COUNT(a)');
-            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento and '
+            $qb->where('a.idEstado IN (:validEstado) and a.idTipoDocumento = :validDocumento and '
                     . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
-            $qb->setParameter('validEstado', 3 )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+            $qb->setParameter('validEstado', [3,7] )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
                         ->setParameter('validUsuario', $user_comunicacion );
 
             $count = $qb->getQuery()->getSingleScalarResult();
@@ -1161,14 +1161,24 @@ class ListasComunesController extends Controller {
             
             // Query para Obtener todos los Oficios de ese Funcionario de la ***
             // Tabla: TblCorrespondenciaEnc ************************************
-            $usuario_asignado = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+            /*$usuario_asignado = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                     array(
                         "idDeptoFuncional"      => $depto_funcional,                        
                         "idFuncionarioAsignado" => $id_funcionario,
                         "idEstado"              => [3,8,7]                        
                         //"idTipoDocumento"       => [1]
-                    ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );
-
+                    ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );*/
+            $query = $em->createQuery('SELECT c FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    //. 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    //. 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dep WITH dep.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios func WITH func.idFuncionario = c.idFuncionarioAsignado '
+                                    //. 'INNER JOIN BackendBundle:TblInstituciones inst WITH inst.idInstitucion = c.idInstitucion '
+                                    . 'WHERE c.idEstado IN (3,7,8) AND c.idDeptoFuncional = :idDeptoFuncional AND '
+                                    . 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' )
+                    ->setParameter('idDeptoFuncional', $depto_funcional)->setParameter('idFuncionarioAsignado', $id_funcionario ) ;
+                    
+            $usuario_asignado = $query->getResult();
             // Condicion de la Busqueda
             if (count( $usuario_asignado ) >= 1 ) {
                 $data = array(

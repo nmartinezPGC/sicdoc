@@ -423,7 +423,7 @@ export class ContactosComponent implements OnInit {
     // var url= window.URL.createObjectURL("http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/");
     // var url= window.URL.createObjectURL("http://172.17.3.141/sicdoc/symfony/web/uploads/contactos/perfiles/");
     // var url= window.URL.createObjectURL("http://192.168.0.23/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    //  let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
+     let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005
 

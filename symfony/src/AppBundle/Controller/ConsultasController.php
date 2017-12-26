@@ -98,7 +98,7 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8)' );
                                     //. 'c.idCorrespondenciaEnc = d.idCorrespondenciaEnc') ;
-                            $correspondenciaFind = $query->getResult() ;
+                            $correspondenciaFind = $query->getResult();
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 4: // Administrador de Correspondencia

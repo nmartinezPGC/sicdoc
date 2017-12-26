@@ -61,7 +61,7 @@
               </td>
               <td> {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
-              <td> {{ item.idInstitucion.descInstitucion }} | {{ item.idInstitucion.perfilInstitucion }} </td>
+              <td style="cursor: help" title="Descripcion: {{ item.idInstitucion.perfilInstitucion }}"> {{ item.idInstitucion.descInstitucion }} </td>
               <td> {{ item.temaComunicacion }} </td>
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso.timestamp | generateDate }} </td>
@@ -79,6 +79,7 @@
                      <!-- <i class="material-icons" data-placement="top" title="Comunicacion de Respuesta">create_new_folder</i> -->
                      <img src="/assets/icons/comunicacion/test_green_24x24.png" class="d-inline-block align-top" alt="" title="Comunicacion de Respuesta" >
                   </a>
+                  <!-- <a *ngIf="item.idEstado.idEstado == 3 " -->
                   <a *ngIf="item.idEstado.idEstado == 3 && item.idTipoDocumento.idTipoDocumento != 1 "
                      href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional.idDeptoFuncional,
@@ -330,8 +331,5 @@
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
-
 
 </div> <!--  Fin de container -->
