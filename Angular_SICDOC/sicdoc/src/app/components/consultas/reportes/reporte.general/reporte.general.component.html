@@ -100,59 +100,59 @@
               <div class="card-block">
                 <h3 class="card-title">Tipo de Comunicación</h3>
                 <!-- Todas las Opciones -->
-                <!-- <label class="custom-control custom-checkbox">
-                  <input type="checkbox" name="chkAllTipoCom[]" class="custom-control-input">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="checkTodos[]" (click)="checkTodosTipoCom()" class="custom-control-input chkAllTiposCom">
                   <span class="custom-control-indicator"></span>
                   <span class="custom-control-description">Todas las opciones</span>
-                </label> -->
+                </label>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
 
                     <!-- Oficios -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComOficio }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComOficio }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Oficios</span>
                     </label>
                     <!-- Memoramdums -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComMemo }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom"  value="{{ idTipoComMemo }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Memoramdums</span>
                     </label>
                     <!-- Nota Verbal -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComNotVerb }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComNotVerb }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Nota Verbal</span>
                     </label>
                     <!-- Circulares -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCircular }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCircular }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Circulares</span>
                     </label>
                     <!-- Correos -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCorreos }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComCorreos }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Correos</span>
                     </label>
                     <!-- Llamadas -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComLlamadas }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComLlamadas }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Llamadas</span>
                     </label>
                     <!-- Verbal -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComVerbal }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComVerbal }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Reuniones</span>
                     </label>
                     <!-- Reuniones / Video Conferencias -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComReunion }}" class="custom-control-input">
+                      <input type="checkbox" name="chkTipoCom" value="{{ idTipoComReunion }}" class="custom-control-input chkAllTiposCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Video Conferencias</span>
                     </label>
@@ -167,34 +167,34 @@
               <div class="card-block">
                 <h3 class="card-title">Estado de Comunicación</h3>
                 <!-- Todas las Opciones -->
-                <!-- <label class="custom-control custom-checkbox">
-                  <input type="checkbox" name="chkEstComAll" id="chkEstComAll"  (click)="checkTodos()" class="custom-control-input 0">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkEstComAll" (click)="checkTodosEstadosCom()" class="custom-control-input chkAllEstadosCom">
                   <span class="custom-control-indicator"></span>
                   <span class="custom-control-description">Todas las opciones</span>
-                </label> -->
+                </label>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
                     <!-- Oficios -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoIngreso }}" id="chkEstCom" class="custom-control-input 1">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoIngreso }}" id="chkEstCom" class="custom-control-input chkAllEstadosCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Ingreso</span>
                     </label>
                     <!-- Correos -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoAsignado }}" id="chkEstCom" class="custom-control-input 1">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoAsignado }}" id="chkEstCom" class="custom-control-input chkAllEstadosCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Asignado</span>
                     </label>
                     <!-- Llamadas -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoEnRespuesta }}" id="chkEstCom" class="custom-control-input 1">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoEnRespuesta }}" id="chkEstCom" class="custom-control-input chkAllEstadosCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">En Respuesta</span>
                     </label>
                     <!-- Verbal -->
                     <label class="custom-control custom-checkbox">
-                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoFinalizado }}" id="chkEstCom" class="custom-control-input 1">
+                      <input type="checkbox" name="chkEstCom" value="{{ idEstadoFinalizado }}" id="chkEstCom" class="custom-control-input chkAllEstadosCom">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description">Finalizado</span>
                     </label>
@@ -250,11 +250,11 @@
             <th scope="row">{{ item.idTipoComunicacion.descTipoComunicacion }}</th>
             <th scope="row">{{ item.idTipoDocumento.descTipoDocumento }}</th>
             <td>{{ item.codCorrespondenciaEnc }}</td>
-            <td>{{ item.idDeptoFuncional.inicialesDeptoFuncional }} | {{ item.idDeptoFuncional.descDeptoFuncional }}</td>
+            <td style="cursor:help" title="Nombre: {{ item.idDeptoFuncional.descDeptoFuncional }}">{{ item.idDeptoFuncional.inicialesDeptoFuncional }}</td>
             <td>{{ item.idFuncionarioAsignado.nombre1Funcionario }} - {{ item.idFuncionarioAsignado.apellido1Funcionario }}</td>
             <td>{{ item.fechaIngreso.timestamp | generateDate }}</td>
             <td>{{ item.fechaFinalizacion.timestamp | generateDate }}</td>
-            <td>{{ item.idInstitucion.descInstitucion }} | {{ item.idInstitucion.perfilInstitucion }}</td>
+            <td style="cursor:help" title="Nombre: {{ item.idInstitucion.perfilInstitucion }}" >{{ item.idInstitucion.descInstitucion }}</td>
             <td>{{ item.temaComunicacion }}</td>
             <td>{{ item.descCorrespondenciaEnc }}</td>
             <td>{{ item.idEstado.descripcionEstado }}</td>

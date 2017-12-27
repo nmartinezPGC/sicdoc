@@ -306,7 +306,7 @@ export class ReporteGeneralComponent implements OnInit {
         } );
         this.loading_tableIn = 'show';
       });
-    }, 8000);
+    }, 1000);
     this.loading_tableIn = 'hide';
   } // FIN | FND-00006
 
@@ -374,20 +374,21 @@ export class ReporteGeneralComponent implements OnInit {
                 this.mensajes = response.msg;
                 if(this.loading_tableIn = 'show'){
                   this.loading_tableIn = 'hide';
+                  this.JsonOutgetReporteComunicaion = response.data;
+                  alert('Error 404: ' +  this.mensajes);
+                  this.fillDataTable();
                 }
-                //alert('Error Data ' +  this.mensajes);
             }else{
               //this.resetForm();
               this.loading_tableIn = 'hide';
               // window.location.reload();
               //alert(response.msg);
-
+              //Json de la Data Consultada
               this.JsonOutgetReporteComunicaion = response.data;
+              // Cargamos la Tabla con las Instancias
+              this.fillDataTable();
               console.log(this.JsonOutgetReporteComunicaion);
 
-              // Cargamos la Tabla con las Instancias
-
-              this.fillDataTable();
               // this.ngOnInit();
 
             }
@@ -433,14 +434,31 @@ export class ReporteGeneralComponent implements OnInit {
   /*****************************************************
   * Funcion: FND-00001
   * Fecha: 14-10-2017
-  * Descripcion: Chekear todas las Opciones
+  * Descripcion: Chekear todas las Opciones, de Estados
+  * de Comunicación
   ******************************************************/
-  checkTodos(){
-    $('.custom-control-input 1').each(function () {
+  checkTodosEstadosCom(){
+    $('.chkAllEstadosCom').each(function () {
+    //$('#chkAll').each(function () {
         if (this.checked) $(this).attr("checked", false);
         else $(this).prop("checked", true);
     });
   } // FIN | FND-00001
+
+
+  /*****************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 26-12-2017
+  * Descripcion: Chekear todas las Opciones, de Tipo de
+  * Comunicación
+  ******************************************************/
+  checkTodosTipoCom(){
+    $('.chkAllTiposCom').each(function () {
+    //$('#chkAll').each(function () {
+        if (this.checked) $(this).attr("checked", false);
+        else $(this).prop("checked", true);
+    });
+  } // FIN | FND-00001.1
 
 
   /*****************************************************

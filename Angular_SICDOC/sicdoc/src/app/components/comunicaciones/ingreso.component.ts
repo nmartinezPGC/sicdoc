@@ -950,11 +950,11 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
     // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    
+
 
     // Parametros de las Secuencias
     // this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;

@@ -162,11 +162,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $correspondenciaDetAsigna->setIdFuncionarioAsignado( $funcionario_asignado ); //Set de Codigo de Funcionario Asignado                        
                         $correspondenciaDetAsigna->setInstrucciones( $instruccion_asignado ); //Set de Instruccion de Asignacion
                         
-                        /*
-                         * 2017-12-24
-                         * Se incluyo el Seteo del idEstado, para que pueda
-                         * Trabajar el usuario Asignado
-                         */
+                        /* Incidencia: INC.00001 | Generacion de Secuencia SCPI | Automatica
+                        * Fecha : 2017-12-24 | 02:00 pm
+                        * Reportada : Nahum Martinez | Admon. SICDOC
+                        * INI | NMA | INC.00001
+                        * Se incluyo el Seteo del idEstado, para que pueda
+                         * Trabajar el usuario Asignado */                        
                         $correspondenciaDetAsigna->setIdestado( $estadoAsigna ); //Set de Estado del Detalle
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         $em->persist($correspondenciaDetAsigna);

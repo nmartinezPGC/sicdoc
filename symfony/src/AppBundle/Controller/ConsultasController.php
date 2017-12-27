@@ -37,6 +37,10 @@ class ConsultasController extends Controller{
      */
     public function consultaGeneralEncListAction(Request $request )
     {
+        //Seteo de variables Globales
+        ini_set('memory_limit', '512M');
+        date_default_timezone_set('America/Tegucigalpa');
+        
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -61,6 +65,10 @@ class ConsultasController extends Controller{
                 //Parametros a Convertir                           
                 //Datos generales de la Tabla
                 $id_funcionario_asignado   = $identity->sub;
+                
+                //Nombre de Usuario
+                $name_funcionario_asignado   = $identity->nombre;
+                $apellido_funcionario_asignado   = $identity->apellido;
                 
                 // Tipo de Funcionario
                 $id_tipo_funcionario       = $identity->idTipoFunc;
@@ -87,14 +95,29 @@ class ConsultasController extends Controller{
                     switch ( $id_tipo_funcionario )
                     {
                         case 1: // Administrador del Sistema
-                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
-                                ->findBy(
-                                    array(                                        
-                                        "idEstado" => [3,4,5,6,7,8]
-                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") )  ;
-                            */
-                            $query = $em->createQuery('SELECT c FROM BackendBundle:TblCorrespondenciaEnc c '
+                            // Query para Obtener los Datos de la Consulta******                            
+                            // Incidencia: INC.00001 | Consulta Lenta | Metodo *
+                            // ->findBy ... No es factible; porque hace varias *
+                            // consultas, por las tablas Relacionadas **********
+                            // Fecha : 2017-12-26 | 4:40 pm
+                            // Reportada : Nahum Martinez | Admon. SICDOC
+                            // INI | NMA | INC.00001
+                            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+                            $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
+                                    //. 'DAY([c.fechaIngreso]) AS fecha, c.fechaMaxEntrega, '
+                                    . 'tdoc.descTipoDocumento, '
+                                    . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '                                    
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8)' );
                                     //. 'c.idCorrespondenciaEnc = d.idCorrespondenciaEnc') ;
@@ -102,31 +125,88 @@ class ConsultasController extends Controller{
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 4: // Administrador de Correspondencia
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) ' );
+                                   
+                            $correspondenciaFind = $query->getResult();                            
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findBy(
                                     array(                                        
                                         "idEstado" => [3,4,5,6,7,8]
-                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") );
+                                    ), array("idCorrespondenciaEnc" => "ASC", "idEstado" => "ASC") );                             
+                             */
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 6: // Director de Area
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' ' );
+                                   
+                            $correspondenciaFind = $query->getResult();
+                            
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findBy(
                                     array(                                        
                                         "idDeptoFuncional"    => $id_depto_funcional,                                        
                                         "idEstado"            => [3,4,5,6,7,8]
-                                    ));
+                                    ));                             
+                             */
                             $opcion_salida = $codigo_oficio_externo;
                             break;
                         case 2: // Analista de Cartera / Funcionario
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' ' );
+                                    
+                            $correspondenciaFind = $query->getResult();
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findBy(
                                     array(                                        
                                         "idFuncionarioAsignado"  => $id_funcionario_asignado,                                        
                                         "idEstado"               => [3,4,5,6,7,8]
-                                    ));
+                                    ));                             
+                             */
                             $opcion_salida = $codigo_oficio_externo;
                             break;
+                        
+                        // FIN | NMA | INC.00001
                     } // FIN | Case                    
                                         
                     $totalCorrespondenciaFind = count($correspondenciaFind);
@@ -145,9 +225,10 @@ class ConsultasController extends Controller{
                     } else{
                         $data = array(
                             "status" => "error",                            
-                            "code"   => 404, 
-                            "msg"   => "Error al buscar, no existe una Comunicacion con este código, ". $opcion_salida . 
-                                       " por favor ingrese otro !!"
+                            "code"   => 504, 
+                            "msg"   => "Error 504, No Existe Comunicaciones asignadas a: " 
+                            . $name_funcionario_asignado . " - " . $apellido_funcionario_asignado . 
+                                       " por favor contacte al Administrador !!"
                         );                       
                     } // Fin de Busqueda de la Comunicacion
                 } else{
@@ -193,6 +274,10 @@ class ConsultasController extends Controller{
      */
     public function consultaGeneralDetListAction(Request $request )
     {
+        //Seteo de variables Globales
+        ini_set('memory_limit', '512M');
+        date_default_timezone_set('America/Tegucigalpa');
+        
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash

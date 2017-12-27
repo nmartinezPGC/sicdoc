@@ -1133,6 +1133,10 @@ class ListasComunesController extends Controller {
      */
     public function finalizarOficiosListAction(Request $request )
     {
+        //Seteo de variables Globales
+        ini_set('memory_limit', '512M');
+        date_default_timezone_set('America/Tegucigalpa');
+        
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -1168,12 +1172,21 @@ class ListasComunesController extends Controller {
                         "idEstado"              => [3,8,7]                        
                         //"idTipoDocumento"       => [1]
                     ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );*/
-            $query = $em->createQuery('SELECT c FROM BackendBundle:TblCorrespondenciaEnc c '
-                                    //. 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
-                                    //. 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+            $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
+                                    . 'tcom.idTipoComunicacion, dfunc.idDeptoFuncional, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dep WITH dep.idDeptoFuncional = c.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblFuncionarios func WITH func.idFuncionario = c.idFuncionarioAsignado '
-                                    //. 'INNER JOIN BackendBundle:TblInstituciones inst WITH inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = c.idTipoComunicacion '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN (3,7,8) AND c.idDeptoFuncional = :idDeptoFuncional AND '
                                     . 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' )
                     ->setParameter('idDeptoFuncional', $depto_funcional)->setParameter('idFuncionarioAsignado', $id_funcionario ) ;
@@ -1184,6 +1197,7 @@ class ListasComunesController extends Controller {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "total"  => count( $usuario_asignado ),
                     "data"   => $usuario_asignado
                 );
             }else {

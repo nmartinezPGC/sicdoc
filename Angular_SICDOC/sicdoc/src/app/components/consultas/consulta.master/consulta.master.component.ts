@@ -101,7 +101,7 @@ export class ConsultaMasterComponent implements OnInit {
                private _appComponent: AppComponent,
                private _http: Http ){
      // Llenado de la Tabla de Encabezado
-     this.fillDataTable();
+     // this.fillDataTable();
 
      //this.otraFill();
   } // Fin | Definicion del Constructor
@@ -176,7 +176,10 @@ export class ConsultaMasterComponent implements OnInit {
             this.JsonOutgetlistaComunicacionEnc = response.data;
             this.JsonOutgetlistaComunicacionEncNew = response;
 
+            //Mensaje de Respuesta al Error de la Consulta
             alert(response.msg);
+            this.loading = 'hidden';
+            this.loadTabla1 = true;
           }else{
             this.JsonOutgetlistaComunicacionEnc = response.data;
             this.JsonOutgetlistaComunicacionEncNew = response;
@@ -184,6 +187,8 @@ export class ConsultaMasterComponent implements OnInit {
 
             this.loading = 'hidden';
             this.loadTabla1 = true;
+
+            this.fillDataTable();
             console.log( this.JsonOutgetlistaComunicacionEnc );
 
           }
@@ -223,12 +228,12 @@ export class ConsultaMasterComponent implements OnInit {
             this.loading_table = 'hide';
             this.loadTabla2 = true;
             // console.log( this.JsonOutgetlistaComunicacionDet );
-            
+
             //Llamado de la Funcion de los Documentos
             this.paramsDocumentos.searchValueSend =  this.codOficioIntModal;
             console.log( this.paramsDocumentos.searchValueSend );
             this.getlistaDocumentosTable();
-    
+
           }
         });
   } // FIN | FND-00001.1
@@ -255,7 +260,7 @@ export class ConsultaMasterComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaDocumentos = response.data;
-            // Oculta los Loaders            
+            // Oculta los Loaders
             this.loading_table = 'hide';
             this.loadTabla2 = true;
             alert(response.msg);
@@ -441,7 +446,7 @@ export class ConsultaMasterComponent implements OnInit {
           });
           this.loading_tableIn = 'show';
       });
-    }, 20000);
+    }, 500);
     this.loading_tableIn = 'hide';
   } // FIN | FND-00003
 

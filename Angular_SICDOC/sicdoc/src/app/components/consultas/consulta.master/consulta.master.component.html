@@ -4,7 +4,7 @@
   <hr class="colorgraph">
   <!-- <div class="row"> -->
     <!-- Segunda Columna -->
-    
+
   <div class="row-fluid">
     <div class="col-xs-12 col-md-12 col-lg-12" >
       <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status == 'success'" >
@@ -69,8 +69,8 @@
                       <th>Código Interno</th>
                       <th>Código Referencia</th>
                       <th>Tipo Comunicación</th>
-                      <th>Fecha Creación</th>
-                      <th>Fecha Entrega.</th>
+                      <!-- <th>Fecha Creación</th> -->
+                      <!-- <th>Fecha Entrega.</th> -->
                       <th>Institución Remitente</th>
                       <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
@@ -82,30 +82,30 @@
                 <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc">
                   <td style="width:80px">{{ item.codCorrespondenciaEnc }}</td>
                   <td style="width:80px">{{ item.codReferenciaSreci }}</td>
-                  <td >{{ item.idTipoDocumento.descTipoDocumento }}</td>
-                  <td >{{ item.fechaIngreso.timestamp | generateDate  }}</td>
-                  <td >{{ item.fechaMaxEntrega.timestamp | generateDate }}</td>
-                  <td style="cursor: help" title="{{ item.idInstitucion.perfilInstitucion }} ">
-                      {{ item.idInstitucion.descInstitucion }}
+                  <td >{{ item.descTipoDocumento }}</td>
+                  <!-- <td >{{ item.fechaIngreso.timestamp | generateDate  }}</td> -->
+                  <!-- <td >{{ item.fechaMaxEntrega.timestamp | generateDate }}</td> -->
+                  <td style="cursor: help" title="{{ item.perfilInstitucion }} ">
+                      {{ item.descInstitucion }}
                   </td>
                   <!-- <td class="cortar">{{ item.descCorrespondenciaEnc }}</td> -->
                   <td style="cursor: help" title="Descripción: {{ item.descCorrespondenciaEnc }} ">
                       {{ item.temaComunicacion }}
                   </td>
                   <td style="width:10px"> <a style="cursor: pointer;" class="nav-link">
-                      <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
-                                      'text-primary': item.idEstado.idEstado == 5,
-                                      'text-success': item.idEstado.idEstado == 7,
-                                       'text-info': item.idEstado.idEstado == 8 }"
+                      <span [ngClass]="{ 'text-warning': item.idEstado == 3,
+                                      'text-primary': item.idEstado == 5,
+                                      'text-success': item.idEstado == 7,
+                                       'text-info': item.idEstado == 8 }"
                         data-toggle="tooltip" data-placement="top" title="Estados de Comunicación" >
-                        {{ item.idEstado.descripcionEstado }} </span> </a>
+                        {{ item.descripcionEstado }} </span> </a>
                   </td>
                   <!-- <td style="width:20px"><a href="/#" data-toggle="modal" data-target="#t_and_c_m" ><i class="material-icons">pageview</i></a></td> -->
                   <td> <a  href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
-                                   item.idDeptoFuncional.idDeptoFuncional,
-                                   item.idFuncionarioAsignado.nombre1Funcionario, item.idFuncionarioAsignado.apellido1Funcionario,
-                                   item.idFuncionarioAsignado.nombre2Funcionario, item.idFuncionarioAsignado.apellido2Funcionario,
-                                   item.idFuncionarioAsignado.idFuncionario, item.idEstado.idEstado, item.idCorrespondenciaEnc );"
+                                   item.idDeptoFuncional,
+                                   item.nombre1Funcionario, item.apellido1Funcionario,
+                                   item.nombre2Funcionario, item.apellido2Funcionario,
+                                   item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc );"
                                    data-toggle="modal" data-target="#t_and_c_m" >
                             <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Ver Detalle de Comunicación" >pageview</i> -->
                             <img src="/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png" class="d-inline-block align-top" alt="" title="Ver Detalle de Comunicación">
@@ -160,7 +160,7 @@
                             <h4><a class="nav-link" data-toggle="tab" href="#panel6" role="tab">
                               <i class="fa fa-heart"></i> Información de Documentos
                             </a></h4>
-                        </li>                        
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -169,11 +169,11 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                   <a data-toggle="collapse" href="#demo1">Accciones de Seguimiento</a>
-                                </h4>                                
+                                </h4>
                                 <!-- Tabla de Funcionarios disponibles para asignar -->
                                 <div class="table table-striped table-bordered" id="demo1" style="height: 300px; overflow: auto">
                                     <!-- Loader de Carga de los Datos -->
-                                    <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:45%; margin-top:5%;" >
+                                    <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;" >
                                       <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" > -->
                                       <img src="assets/images/832.gif" alt="Cargando Tareas" >
                                     </div>
@@ -196,7 +196,7 @@
                                           <td> {{ item.actividadRealizar }} </td>
                                           <td> {{ item.descCorrespondenciaDet }} </td>
                                           <!-- <td> {{ item.idEstado.descripcionEstado }} </td> -->
-                                          <td *ngIf="loading_tr == 'hide'" > 
+                                          <td *ngIf="loading_tr == 'hide'" >
                                               <a style="cursor: pointer;" class="nav-link">
                                                 <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
                                                                 'text-primary': item.idEstado.idEstado == 5,
@@ -205,7 +205,7 @@
                                                   data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
                                                   {{ item.idEstado.descripcionEstado }} </span>
                                               </a>
-                                          </td>                            
+                                          </td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -218,15 +218,15 @@
                         <div class="tab-pane fade" id="panel6" role="tabpanel">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a data-toggle="collapse" href="#demo1">Documentos</a>
-                                </h4>                                
-                                <div class="row">
+                                  <a data-toggle="collapse" href="#demo2">Documentos Ingresados</a>
+                                </h4>
+                                  <!-- Tabla de Funcionarios disponibles para asignar -->
+                                  <div class="table table-striped table-bordered" id="demo2" style="height: 300px; overflow: auto">
                                     <!-- Loader de Carga de los Datos -->
-                                    <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:45%;" >
-                                      <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" > -->
+                                    <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;" >
                                       <img src="assets/images/832.gif" alt="Cargando Tareas" >
                                     </div>
-                    
+
                                     <table class="table table-striped" cellspacing="0" width="100%"
                                         *ngIf="loadTabla2 == true">
                                       <thead>
@@ -246,9 +246,9 @@
                                           <td>{{ item.urlDocumento }}</td>
                                           <td>
                                             <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
-                                              href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                                              href="http://172.17.4.162/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                                              <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                               <!-- href="http://192.168.0.23/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                                              <!-- href="http://172.17.4.162/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                               <!-- href="http://172.17.3.141/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                                 <i class="material-icons">photo</i>
                                             </a>
@@ -256,8 +256,9 @@
                                         </tr>
                                       </tbody>
                                     </table>
-                              </div>
-                        </div>      
+                                  </div>
+                              <!-- Fin de Tabla de documentos -->
+                        </div>
                     </div>
                   </div>
                   </div>
