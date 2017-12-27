@@ -1174,6 +1174,7 @@ class ListasComunesController extends Controller {
                     ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );*/
             $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     //. 'c.fechaIngreso, c.fechaMaxEntrega, '
+                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'tcom.idTipoComunicacion, dfunc.idDeptoFuncional, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
