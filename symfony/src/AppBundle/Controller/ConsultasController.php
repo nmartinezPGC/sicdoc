@@ -102,9 +102,9 @@ class ConsultasController extends Controller{
                             // Fecha : 2017-12-26 | 4:40 pm
                             // Reportada : Nahum Martinez | Admon. SICDOC
                             // INI | NMA | INC.00001
-                            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+                            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento                       
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
+                                    . 'c.fechaIngreso, '
                                     //. 'format_datetime(c.fechaIngreso, "d/M/y") AS fecha, c.fechaMaxEntrega, '
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
