@@ -105,7 +105,7 @@ class ConsultasController extends Controller{
                             // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     //. 'c.fechaIngreso, c.fechaMaxEntrega, '
-                                    //. 'DAY([c.fechaIngreso]) AS fecha, c.fechaMaxEntrega, '
+                                    //. 'format_datetime(c.fechaIngreso, "d/M/y") AS fecha, c.fechaMaxEntrega, '
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
