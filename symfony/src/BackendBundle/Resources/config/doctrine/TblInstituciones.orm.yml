@@ -2,15 +2,18 @@ BackendBundle\Entity\TblInstituciones:
     type: entity
     table: tbl_instituciones
     indexes:
+        fki_pais_inst:
+            columns:
+                - id_pais
+        fki_user_institucion:
+            columns:
+                - id_usuario_creador
         fki_inst_tipo:
             columns:
                 - id_tipo_institucion
         tbl_instituciones_cod_institucion_idx:
             columns:
                 - cod_institucion
-        fki_pais_inst:
-            columns:
-                - id_pais
     uniqueConstraints:
         tbl_instituciones_cod_institucion_key:
             columns:
@@ -73,6 +76,12 @@ BackendBundle\Entity\TblInstituciones:
             options:
                 fixed: false
             column: email_institucion
+        fechaIngreso:
+            type: date
+            nullable: true
+            options:
+                default: '2999-12-31'
+            column: fecha_ingreso
     manyToOne:
         idTipoInstitucion:
             targetEntity: TblTipoInstitucion
@@ -93,5 +102,15 @@ BackendBundle\Entity\TblInstituciones:
             joinColumns:
                 id_pais:
                     referencedColumnName: id_pais
+            orphanRemoval: false
+        idUsuarioCreador:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario_creador:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -985,7 +985,7 @@ class ListasComunesController extends Controller {
                         . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                         . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                         . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                        . 'WHERE c.idDeptoFuncional = :search '
+                        . 'WHERE c.idDeptoFuncional LIKE :search '
                         . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ) ;
 
                 //$correspondenciaFind = $query->getResult();

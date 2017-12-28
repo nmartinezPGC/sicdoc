@@ -2,15 +2,15 @@ BackendBundle\Entity\TblCambioFechas:
     type: entity
     table: tbl_cambio_fechas
     indexes:
-        idx_cod_cambio_fechas:
-            columns:
-                - cod_correspondencia
-        fki_user_solicitud:
-            columns:
-                - id_usuario_solicitud
         fki_estados_solictud:
             columns:
                 - id_estado_solicitud
+        fki_user_solicitud:
+            columns:
+                - id_usuario_solicitud
+        idx_cod_cambio_fechas:
+            columns:
+                - cod_correspondencia
         fki_uer_cambio:
             columns:
                 - id_usuario_creacion
@@ -55,6 +55,16 @@ BackendBundle\Entity\TblCambioFechas:
                 fixed: false
             column: observaciones_solicitud
     manyToOne:
+        idEstadoSolicitud:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado_solicitud:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
         idUsuarioCreacion:
             targetEntity: TblFuncionarios
             cascade: {  }
@@ -74,15 +84,5 @@ BackendBundle\Entity\TblCambioFechas:
             joinColumns:
                 id_usuario_solicitud:
                     referencedColumnName: id_funcionario
-            orphanRemoval: false
-        idEstadoSolicitud:
-            targetEntity: TblEstados
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_estado_solicitud:
-                    referencedColumnName: id_estado
             orphanRemoval: false
     lifecycleCallbacks: {  }

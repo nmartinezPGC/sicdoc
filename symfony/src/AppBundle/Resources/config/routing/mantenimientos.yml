@@ -19,3 +19,9 @@ default_buscaComunicacion:
     path: /busca-comunicacion
     defaults: { _controller: "AppBundle:MantCambioFechas:buscaComunicacion" }
     methods: POST
+    
+# Ruta para el Mantenimiento de Instituciones
+default_mantenimientoInstitucionNew:
+    path: /mantenimiento-institucion-new
+    defaults: { _controller: "AppBundle:MantInstituciones:mantenimientoInstitucionNew" }
+    methods: POST

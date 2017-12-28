@@ -2,12 +2,12 @@ BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
     indexes:
-        fki_secuncia_doc:
-            columns:
-                - id_tipo_documento
         idx_cod_secuencia:
             columns:
                 - cod_secuencial
+        fki_secuncia_doc:
+            columns:
+                - id_tipo_documento
     uniqueConstraints:
         Unique_cod_tipo_doc:
             columns:
