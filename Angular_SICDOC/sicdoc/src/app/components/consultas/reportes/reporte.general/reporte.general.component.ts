@@ -306,7 +306,7 @@ export class ReporteGeneralComponent implements OnInit {
         } );
         this.loading_tableIn = 'show';
       });
-    }, 1000);
+    }, 500);
     this.loading_tableIn = 'hide';
   } // FIN | FND-00006
 

@@ -909,6 +909,9 @@ class ListasComunesController extends Controller {
      */
     public function asignarOficiosPageListAction(Request $request, $search = null )
     {
+        //Seteo de variables Globales        
+        date_default_timezone_set('America/Tegucigalpa');
+        
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -944,6 +947,9 @@ class ListasComunesController extends Controller {
             array(
                 "idUsuario" => $idUsuario
             ));
+        
+        //Variable para veficar la Opcion de las Condiciones
+        $opt = 0;
             
         // Parametro de Tipo de Funcionario | Director ID (6)
         $tipo_funcionario_entitie = $tipo_usuario->getIdTipoFuncionario(); // Obtenemos la Entidad Completa
@@ -952,31 +958,85 @@ class ListasComunesController extends Controller {
         if ( $tipo_funcionario === 6 ) {        
             // Evaluamos si si hizo una consulta desde la caja Search
             if ( $search != null ) {
-               $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
+               //Consulta con ParamSearch
+               $opt = 1;
+               
+               /**************************************************************** 
+                * Query para Obtener los Datos de la Consulta                 **                            
+                * Incidencia: INC.00001 | Consulta Lenta | Metodo             **
+                * ->createQuery (dql)... No es factible; porque hace varias   **
+                * consultas, por las tablas Relacionadas                      **
+                * Fecha : 2017-12-27 | 03:08 pm                               **  
+                * Reportada : Nahum Martinez | Admon. SICDOC                  **
+                * INI | NMA | INC.00001 ***************************************/
+                
+                $dql = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
+                        . 'tdoc.descTipoDocumento, '
+                        . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
+                        . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                        . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                        . 'inst.descInstitucion, inst.perfilInstitucion '
+                        . 'FROM BackendBundle:TblCorrespondenciaEnc c '                                    
+                        . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                        . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                        . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                        . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                        . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                        . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                        . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                        . 'WHERE c.idDeptoFuncional = :search '
+                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ) ;
+
+                //$correspondenciaFind = $query->getResult();
+               
+               /*$dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
                     . "WHERE v.idDeptoFuncional = :search "                
-                    . "ORDER BY v.idCorrespondenciaEnc DESC";
+                    . "ORDER BY v.idCorrespondenciaEnc DESC";*/
 
                $query = $em->createQuery($dql)
                         ->setParameter("search", "%$search%");
             }else{
-                $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
+                //Consulta con Parametros de SubDireccion
+                $opt = 2;
+                                
+                $dql = 'SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                         
+                        . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, '
+                        . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                        . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                        . 'inst.descInstitucion, inst.perfilInstitucion '
+                        . 'FROM BackendBundle:TblCorrespondenciaEnc c '                         
+                        . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                        . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '                        
+                        . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                        . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '                        
+                        . 'WHERE c.idDeptoFuncional = '. $idDeptoFuncional .' AND '
+                        . "c.idEstado IN (7) "
+                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ;
+                
+                //$correspondenciaFind = $query->getResult();
+                
+                /*$dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
                     . "WHERE v.idDeptoFuncional = '". $idDeptoFuncional ."' AND v.idEstado IN (7) "
-                    . "ORDER BY v.idCorrespondenciaEnc DESC";
+                    . "ORDER BY v.idCorrespondenciaEnc DESC";*/
 
-                $query = $em->createQuery($dql);
+                $query = $em->createQuery($dql);                 
             }        
-
+            
             // Parametros de la Paginacion
             $page = $request->query->getInt("page", 1);
             $paginator = $this->get("knp_paginator");
             $item_per_page = 10;
-
+            
             $pagination = $paginator->paginate($query, $page, $item_per_page);
+            
             $total_items_count = $pagination->getTotalItemCount();
-
+            
             $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "opction" => $opt,
                     "total_items_count"   => $total_items_count,
                     "page_actual"   => $page,
                     "items_per_page"   => $item_per_page,
@@ -984,6 +1044,8 @@ class ListasComunesController extends Controller {
                     "data"   => $pagination
                 );
         }else{
+            //Consulta falsa
+            $opt = 3;
             // Lanzamos la Consulta Errornea para Llenar la Condicion
             $dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
                     . "WHERE v.idDeptoFuncional = 100000 "
@@ -995,6 +1057,7 @@ class ListasComunesController extends Controller {
             $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "option" => $opt,
                     "total_items_count"   => 0,
                     "page_actual"   => 1,
                     "items_per_page"   => 0,
@@ -1173,8 +1236,7 @@ class ListasComunesController extends Controller {
                         //"idTipoDocumento"       => [1]
                     ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );*/
             $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
-                                    //. 'c.fechaIngreso, c.fechaMaxEntrega, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'inst.descInstitucion, inst.perfilInstitucion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'tcom.idTipoComunicacion, dfunc.idDeptoFuncional, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -1189,16 +1251,20 @@ class ListasComunesController extends Controller {
                                     . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = c.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN (3,7,8) AND c.idDeptoFuncional = :idDeptoFuncional AND '
-                                    . 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' )
+                                    . 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' 
+                                    . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') 
                     ->setParameter('idDeptoFuncional', $depto_funcional)->setParameter('idFuncionarioAsignado', $id_funcionario ) ;
                     
             $usuario_asignado = $query->getResult();
+            
+            //Total de Resgitros por la Consulta
+            $total_consulta = count( $usuario_asignado );
             // Condicion de la Busqueda
-            if (count( $usuario_asignado ) >= 1 ) {
+            if ( $total_consulta >= 1 ) {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
-                    "total"  => count( $usuario_asignado ),
+                    "recordsTotal"  => $total_consulta,
                     "data"   => $usuario_asignado
                 );
             }else {

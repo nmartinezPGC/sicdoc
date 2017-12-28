@@ -69,12 +69,12 @@
                       <th>Código Interno</th>
                       <th>Código Referencia</th>
                       <th>Tipo Comunicación</th>
-                      <!-- <th>Fecha Creación</th> -->
-                      <!-- <th>Fecha Entrega.</th> -->
+                      <th>Fecha Creación</th>
+                      <th>Fecha Entrega.</th>
                       <th>Institución Remitente</th>
                       <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
-                      <th>Estado / Comunicación</th>
+                      <th>Estado</th>
                       <th>Ver</th>
                   </tr>
               </thead>
@@ -83,8 +83,8 @@
                   <td style="width:80px">{{ item.codCorrespondenciaEnc }}</td>
                   <td style="width:80px">{{ item.codReferenciaSreci }}</td>
                   <td >{{ item.descTipoDocumento }}</td>
-                  <!-- <td >{{ item.fechaIngreso.timestamp | generateDate  }}</td> -->
-                  <!-- <td >{{ item.fechaMaxEntrega.timestamp | generateDate }}</td> -->
+                  <td >{{ item.fechaIngreso | date :'dd-MMM-yyyy' }}</td>
+                  <td >{{ item.fechaMaxEntrega | date :'dd-MMM-yyyy' }}</td>
                   <td style="cursor: help" title="{{ item.perfilInstitucion }} ">
                       {{ item.descInstitucion }}
                   </td>
@@ -192,18 +192,18 @@
                                         <tr *ngFor="let item of JsonOutgetlistaComunicacionDet | searchfilter:'codCorrespondenciaDet':search2 ">
                                           <td style="width:80px"> {{ item.codCorrespondenciaDet }}  </td>
                                           <td style="width:80px"> {{ item.codReferenciaSreci }} </td>
-                                          <td > {{ item.fechaIngreso.timestamp | generateDate }} </td>
+                                          <td > {{ item.fechaIngreso | date :'dd-MMM-yyyy' }} </td>
                                           <td> {{ item.actividadRealizar }} </td>
                                           <td> {{ item.descCorrespondenciaDet }} </td>
                                           <!-- <td> {{ item.idEstado.descripcionEstado }} </td> -->
                                           <td *ngIf="loading_tr == 'hide'" >
                                               <a style="cursor: pointer;" class="nav-link">
-                                                <span [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3,
-                                                                'text-primary': item.idEstado.idEstado == 5,
-                                                                'text-success': item.idEstado.idEstado == 7,
-                                                                'text-info': item.idEstado.idEstado == 8 }"
+                                                <span [ngClass]="{ 'text-warning': item.idEstado == 3,
+                                                                'text-primary': item.idEstado == 5,
+                                                                'text-success': item.idEstado == 7,
+                                                                'text-info': item.idEstado == 8 }"
                                                   data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
-                                                  {{ item.idEstado.descripcionEstado }} </span>
+                                                  {{ item.descripcionEstado }} </span>
                                               </a>
                                           </td>
                                         </tr>
@@ -242,7 +242,7 @@
                                         <tr *ngFor="let item of JsonOutgetlistaDocumentos; let i = index">
                                           <th scope="row">{{ i + 1 }}</th>
                                           <td>{{ item.codDocumento }}</td>
-                                          <td>{{ item.fechaIngreso.timestamp | generateDate }}</td>
+                                          <td>{{ item.fechaIngreso | date :'dd-MMM-yyyy' }}</td>
                                           <td>{{ item.urlDocumento }}</td>
                                           <td>
                                             <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"

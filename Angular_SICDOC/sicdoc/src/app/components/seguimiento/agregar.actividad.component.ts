@@ -444,7 +444,7 @@ export class IngresoActividadComponent implements OnInit{
    confirmUser(codOficioIntModalAsignacionIn, codOficioRefModalAsignacionIn, idFuncModalAsignacionIn,
               nombre1FuncModalAsignacionIn, apellido1FuncModalAsignacionIn, nombre2FuncModalAsignacionIn, apellido2FuncModalAsignacion){
      //this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncModalAsignacionIn + ' ' + apellido1FuncModalAsignacionIn + ' ?');
-     
+
      //if(this.confirma == true){
      if(codOficioIntModalAsignacionIn != null){
        //Asignamos las variables del Modal | usuario seleccionado

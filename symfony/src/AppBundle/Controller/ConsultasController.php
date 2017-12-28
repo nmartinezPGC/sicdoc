@@ -18,6 +18,8 @@ use BackendBundle\Entity\TblDireccionesSreci;
 use BackendBundle\Entity\TblSecuenciales;
 use Swift_MessageAcceptanceTest;
 
+use AppBundle\DQL\DateFormatFunction;
+
 /**
  * Description of ConsultasController
  * Objetivo: Obtener las consultas a ala BD
@@ -39,7 +41,7 @@ class ConsultasController extends Controller{
     {
         //Seteo de variables Globales
         ini_set('memory_limit', '512M');
-        date_default_timezone_set('America/Tegucigalpa');
+        date_default_timezone_set('America/Tegucigalpa');               
         
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
@@ -86,7 +88,7 @@ class ConsultasController extends Controller{
                 if( $id_funcionario_asignado != 0 )
                 {
                     //Instancia del Doctrine
-                    $em = $this->getDoctrine()->getManager();
+                    $em = $this->getDoctrine()->getManager();                                       
                     
                     // Seteo de Datos Generales de la tabla: TblCorrespondenciaEnc
                     // Localizamos el Oficio que se va a Buscar
@@ -95,17 +97,17 @@ class ConsultasController extends Controller{
                     switch ( $id_tipo_funcionario )
                     {
                         case 1: // Administrador del Sistema
-                            // Query para Obtener los Datos de la Consulta******                            
-                            // Incidencia: INC.00001 | Consulta Lenta | Metodo *
-                            // ->findBy ... No es factible; porque hace varias *
-                            // consultas, por las tablas Relacionadas **********
-                            // Fecha : 2017-12-26 | 4:40 pm
-                            // Reportada : Nahum Martinez | Admon. SICDOC
-                            // INI | NMA | INC.00001
+                            /*************************************************** 
+                            * Query para Obtener los Datos de la Consulta ******                            
+                            * Incidencia: INC.00001 | Consulta Lenta | Metodo  *
+                            * ->findBy ... No es factible; porque hace varias  *
+                            * consultas, por las tablas Relacionadas  **********
+                            * Fecha : 2017-12-26 | 4:40 pm
+                            * Reportada : Nahum Martinez | Admon. SICDOC
+                            * INI | NMA | INC.00001 ***************************/
                             // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento                       
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    . 'c.fechaIngreso, '
-                                    //. 'format_datetime(c.fechaIngreso, "d/M/y") AS fecha, c.fechaMaxEntrega, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
@@ -119,14 +121,16 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8)' );
-                                    //. 'c.idCorrespondenciaEnc = d.idCorrespondenciaEnc') ;
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
+                            
                             $correspondenciaFind = $query->getResult();
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 4: // Administrador de Correspondencia
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -139,7 +143,8 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) ' );
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();                            
                             /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
@@ -152,7 +157,8 @@ class ConsultasController extends Controller{
                             break;
                         case 6: // Director de Area
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -165,7 +171,8 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' ' );
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' '
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();
                             
@@ -180,7 +187,8 @@ class ConsultasController extends Controller{
                             break;
                         case 2: // Analista de Cartera / Funcionario
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    . 'c.fechaIngreso, c.fechaMaxEntrega, tdoc.descTipoDocumento, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -193,7 +201,8 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' ' );
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' '
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
                                     
                             $correspondenciaFind = $query->getResult();
                             /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
@@ -217,8 +226,8 @@ class ConsultasController extends Controller{
                             "status" => "success", 
                             "code"   => 200,
                             "recordsTotal" => $totalCorrespondenciaFind,
-                            "recordsFiltered" => $totalCorrespondenciaFind,
-                            "draw" => $totalCorrespondenciaFind,
+                            //"recordsFiltered" => $totalCorrespondenciaFind,
+                            //"draw" => $totalCorrespondenciaFind,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaFind
                         );                        
@@ -333,23 +342,47 @@ class ConsultasController extends Controller{
                            
                     
                     // Obtenemos los Datos de Detalle de la Actividad **********
-                    // Busqueda de Detale de la tabla: TblCorrespondenciaDet           
-                    $correspondenciaDetFind = $em->getRepository("BackendBundle:TblCorrespondenciaDet")
-                        ->findBy(
-                            array(
-                                "idCorrespondenciaEnc"  => $correspondenciaFind
-                            ), array("idCorrespondenciaDet" => "ASC", "idEstado" => "ASC")  );
-                                        
+                    // Busqueda de Detale de la tabla: TblCorrespondenciaDet  
+                    /*************************************************** 
+                    * Query para Obtener los Datos de la Consulta ******                            
+                    * Incidencia: INC.00002 | Consulta Lenta | Metodo  *
+                    * ->findBy ... No es factible; porque hace varias  *
+                    * consultas, por las tablas Relacionadas  **********
+                    * Fecha : 2017-12-26 | 4:40 pm
+                    * Reportada : Nahum Martinez | Admon. SICDOC
+                    * INI | NMA | INC.00002 ***************************/
+                    // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento                       
+                    $query = $em->createQuery('SELECT DISTINCT d.idCorrespondenciaDet, d.codCorrespondenciaDet, '
+                            . ' '. $correspondenciaFind->getIdCorrespondenciaEnc() .' idCorrespondenciaEnc, d.codReferenciaSreci, '
+                            ."DATE_SUB(d.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(d.fechaSalida, 0, 'DAY') AS fechaSalida, "                            
+                            . 'p.idUsuario, '
+                            . 'd.descCorrespondenciaDet, d.actividadRealizar, '
+                            .'est.idEstado, est.descripcionEstado, '
+                            . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, '
+                            . 'fasig.apellido1Funcionario, fasig.apellido2Funcionario '                            
+                            . 'FROM BackendBundle:TblCorrespondenciaDet d '                            
+                            . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = d.idEstado '
+                            . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = d.idUsuario '
+                            . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = d.idFuncionarioAsignado '                            
+                            . 'WHERE d.idEstado IN (3,4,5,6,7,8) AND d.idCorrespondenciaEnc = '. $correspondenciaFind->getIdCorrespondenciaEnc() .' '
+                            . 'ORDER BY d.idCorrespondenciaDet, d.codCorrespondenciaDet ASC' ) ;
+
+                    $correspondenciaDetFind = $query->getResult();
+                    
+                    // FIN | NMA | INC.00001  
+                    
+                    // Total de Registros de la Consulta
+                    $total_query = count($correspondenciaDetFind);
                     
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
-                    if(count($correspondenciaDetFind) > 0 ){
+                    if( $total_query  > 0 ){
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
                             "code"   => 200,
-                            "recordsTotal" => count($correspondenciaDetFind),
-                            "recordsFiltered" => count($correspondenciaDetFind),
-                            "draw" => count($correspondenciaDetFind),
+                            "recordsTotal" => $total_query,
+                            //"recordsFiltered" => $total_query,
+                            //"draw" => $total_query,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaDetFind
                         );                        

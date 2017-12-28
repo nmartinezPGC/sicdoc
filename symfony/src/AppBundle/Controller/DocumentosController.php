@@ -387,7 +387,8 @@ class DocumentosController extends Controller{
     
     
     /* Funcion de Listar Documentos ********************************************
-     * Parametros:                                                             * 
+     * Parametros:                                                             *
+     * @Route("/listar-documentos", name="listar-documentos")                  * 
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      * 2 ) Lista los docuemntos segun parametro ( codCorrespondenciaEnc )      *
@@ -395,6 +396,10 @@ class DocumentosController extends Controller{
      ***************************************************************************/
     public function listaDocumentosAction(Request $request)
     {
+        //Seteo de variables Globales
+        ini_set('memory_limit', '512M');
+        date_default_timezone_set('America/Tegucigalpa');
+        
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -418,16 +423,30 @@ class DocumentosController extends Controller{
                 ));
             
             // Query para Obtener todos los Funcionarios de la Tabla: TblDocumentos
-            $lista_documentos = $em->getRepository("BackendBundle:TblDocumentos")->findBy(
-                    array(
-                        "idCorrespondenciaEnc" => $id_correspondencia_enc_docu                      
-                    ));
-
+            
+            $query = $em->createQuery('SELECT doc.idDocumento, doc.codDocumento, doc.descDocumento, doc.urlDocumento, '
+                                    ."DATE_SUB(doc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(doc.fechaModificacion, 0, 'DAY') AS fechaModificacion, "
+                                    . 'p.idUsuario '
+                                    . 'FROM BackendBundle:TblDocumentos doc '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = doc.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaDet = doc.idCorrespondenciaDet '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaEnc c WITH c.idCorrespondenciaEnc = doc.idCorrespondenciaEnc '
+                                    . 'WHERE doc.idCorrespondenciaEnc = :idCorrespondenciaEnc '                                    
+                                    . 'ORDER BY doc.codDocumento, doc.idDocumento ASC') 
+                    ->setParameter('idCorrespondenciaEnc', $id_correspondencia_enc_docu->getIdCorrespondenciaEnc() ) ;
+                    
+            $lista_documentos = $query->getResult();
+                       
+            
+            // Total de Registros de la Query
+            $total_documentos = count( $lista_documentos );
+            
             // Condicion de la Busqueda
-            if (count( $lista_documentos ) >= 1 ) {
+            if ( $total_documentos >= 1 ) {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "recordsTotal"  => $total_documentos,
                     "data"   => $lista_documentos
                 );
             }else {
