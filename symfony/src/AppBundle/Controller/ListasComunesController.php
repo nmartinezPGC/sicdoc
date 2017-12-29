@@ -334,12 +334,20 @@ class ListasComunesController extends Controller {
             
             // Evaluamos que Parametro nos enviaron
             if( $pais_institucion != null && $tipo_institucion != null){
-                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
-                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(
-                    array(
-                        "idTipoInstitucion" => $tipo_institucion, //Tipo de Institucion
-                        "idPais"            => $pais_institucion //Pais de la Institucion
-                    ));
+                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones                
+                $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    ."DATE_SUB(inst.fechaIngreso, 0, 'DAY') AS fechaIngreso " 
+                                    . 'FROM BackendBundle:TblInstituciones inst '                                    
+                                    . 'INNER JOIN BackendBundle:TblPais pa WITH pa.idPais = inst.idPais '
+                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = inst.idTipoInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = inst.idUsuarioCreador '
+                                    . 'WHERE inst.idPais = :idPais AND inst.idTipoInstitucion = :idTipoInstitucion ' 
+                                    . 'ORDER BY inst.descInstitucion ASC')
+                    ->setParameter('idPais', $pais_institucion)->setParameter('idTipoInstitucion', $tipo_institucion ) ;
+                    
+                $institucionesSreci = $query->getResult();
+                
             }else {
                 // Query para Obtener todos las Instituciones de la Tabla: TblInstituciones                    
                 // Tabla: TblDepartamentosFuncionales ******************************            
@@ -349,16 +357,33 @@ class ListasComunesController extends Controller {
                 // INI | NMA | INC.00007
                 // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
                 // $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findAll();
-                $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(array(),array("descInstitucion" => "ASC")) ;
+                //$institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(array(),array("descInstitucion" => "ASC")) ;
+                
+                $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    ."DATE_SUB(inst.fechaIngreso, 0, 'DAY') AS fechaIngreso " 
+                                    . 'FROM BackendBundle:TblInstituciones inst '                                    
+                                    . 'INNER JOIN BackendBundle:TblPais pa WITH pa.idPais = inst.idPais '
+                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = c.idTipoInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = c.idUsuario '
+                                    //. 'WHERE c.idEstado IN (3,7,8) AND c.idDeptoFuncional = :idDeptoFuncional AND '
+                                    //. 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' 
+                                    . 'ORDER BY inst.descInstitucion ASC') ;                    
+                    
+                $institucionesSreci = $query->getResult();
+                
                 // FIN | NMA | INC.00007                
             }         
             
-
+            //Total de Instituciones
+            $totalInstituciones = count($institucionesSreci);
+            
             // Condicion de la Busqueda
-            if (count($institucionesSreci) >= 1 ) {
+            if ( $totalInstituciones  >= 1 ) {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "recordsTotal" => $totalInstituciones,
                     "data"   => $institucionesSreci
                 );
             }else {
@@ -986,13 +1011,7 @@ class ListasComunesController extends Controller {
                         . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                         . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                         . 'WHERE c.idDeptoFuncional LIKE :search '
-                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ) ;
-
-                //$correspondenciaFind = $query->getResult();
-               
-               /*$dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
-                    . "WHERE v.idDeptoFuncional = :search "                
-                    . "ORDER BY v.idCorrespondenciaEnc DESC";*/
+                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ) ;                              
 
                $query = $em->createQuery($dql)
                         ->setParameter("search", "%$search%");
@@ -1013,13 +1032,7 @@ class ListasComunesController extends Controller {
                         . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '                        
                         . 'WHERE c.idDeptoFuncional = '. $idDeptoFuncional .' AND '
                         . "c.idEstado IN (7) "
-                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ;
-                
-                //$correspondenciaFind = $query->getResult();
-                
-                /*$dql = "SELECT v FROM BackendBundle:TblCorrespondenciaEnc v "
-                    . "WHERE v.idDeptoFuncional = '". $idDeptoFuncional ."' AND v.idEstado IN (7) "
-                    . "ORDER BY v.idCorrespondenciaEnc DESC";*/
+                        . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ' ;                               
 
                 $query = $em->createQuery($dql);                 
             }        

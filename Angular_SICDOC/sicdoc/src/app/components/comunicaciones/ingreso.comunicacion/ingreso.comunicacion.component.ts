@@ -794,8 +794,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
             console.log( this.JsonOutgetCodigoSecuenciaNew );
-            // Ejecutamos la Funcion de Secuencia de Detalle
+            //Ejecutamos la Funcion de Secuencia de Detalle
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
+
+            //Ejecutamos la function de Seleccion Automatica de Institucion
+            this.cambiaHND( this.paramsSecuenciaIn.idTipoDocumento, this.paramsSecuenciaIn.descTipoDocumento );
 
           }
         });
@@ -1415,7 +1418,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
   /*****************************************************
   * Funcion: FND-00016
-  * Fecha: 08-11-2017
+  * Fecha: 29-12-2017
   * Descripcion: Carga de los Correos que se estan Pend.
   * a la Tabla tbl_comunicacion_enc
   * Objetivo: Obtener la lista de los Oficios Llamadas
@@ -1444,6 +1447,23 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }
         });
   } // FIN : FND-00016
+
+
+  /*****************************************************
+  * Funcion: FND-000017
+  * Fecha: 25-09-2017
+  * Descripcion: Cambio de Instituciones de HND Automatica
+  * Objetivo: Cambio de Instituciones de HND Automatica
+  * ( cambiaHND ).
+  ******************************************************/
+  cambiaHND( idtipoDocumento, descTipoInstitucion ){
+    //Evaluamos si el El Documento Pertenece al Grupo de Comunicacion de Casa
+    if( idtipoDocumento == 1 || idtipoDocumento == 2 ||
+        idtipoDocumento == 3 || idtipoDocumento == 4 ){
+      alert('Tipo de Documento : ' + idtipoDocumento + ' Descripcion: ' + descTipoInstitucion);
+    }
+
+  }// FIN : FND-00016
 
 
 }
