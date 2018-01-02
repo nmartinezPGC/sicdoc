@@ -302,7 +302,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/instituciones-sreci", name="/instituciones-sreci")
+     * @Route("/instituciones-sreci-list", name="/instituciones-sreci-list")
      * Creacion del Controlador: Instituciones
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -364,8 +364,8 @@ class ListasComunesController extends Controller {
                                     ."DATE_SUB(inst.fechaIngreso, 0, 'DAY') AS fechaIngreso " 
                                     . 'FROM BackendBundle:TblInstituciones inst '                                    
                                     . 'INNER JOIN BackendBundle:TblPais pa WITH pa.idPais = inst.idPais '
-                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = c.idTipoInstitucion '
-                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = inst.idTipoInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = inst.idUsuarioCreador '
                                     //. 'WHERE c.idEstado IN (3,7,8) AND c.idDeptoFuncional = :idDeptoFuncional AND '
                                     //. 'c.idFuncionarioAsignado = :idFuncionarioAsignado ' 
                                     . 'ORDER BY inst.descInstitucion ASC') ;                    
@@ -399,7 +399,7 @@ class ListasComunesController extends Controller {
     
     
     /**
-     * @Route("/tipo-instituciones-sreci", name="tipo-instituciones-sreci")
+     * @Route("/tipo-instituciones-sreci-list", name="tipo-instituciones-sreci-list")
      * Creacion del Controlador: Tipo de Instirucion
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0

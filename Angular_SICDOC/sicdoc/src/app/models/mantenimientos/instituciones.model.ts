@@ -1,36 +1,24 @@
-export class Intituciones {
+export class Instituciones {
 
   //Constructor de la Clase
     constructor(
-      public id:number,
+      public idInstitucion:number,
       // Datos Generales
-      public codUsuario:string,
-      public primerNombre:string,
-      public segundoNombre:string,
-      public primerApellido:string,
-      public segundoApellido:string,
-
-      // Credenciales de Usuarios
-      public emailUsuario:string,
-      public inicialesUsuario:string,
-      public passwordUsuairo:string,
-      // public imagenUsuario:string,
-      //public fechaCreacion:string,
-
+      public codInstitucion:string,
+      public descInstitucion:string,
+      public perfilInstitucion:string,
+      
+      // Datos de Comunicacion
+      public direccionInstitucion:string,
+      public telefonoInstitucion:number,
+      public celularInstitucion:number,
+      public emailInstitucion:string,
+      
       // Datos de Relaciones de Tablas
-      public idEstado:string,
-      public idTipoFuncionario:number,
-      public idDeptoFuncional:number,
-      public idDireccionSreci:number,
-      public idTipoUsuario:number,
-
-      //Variables de Validacion
-      public passwordConfirmation:string,
-
-      // Variables Telefonos
-      public celularFuncionario:number,
-      public telefonoFuncionario:number,
-
+      public idPaisInstitucion:number,
+      public idTipoInstitucion:number,
+      public idUsuarioCreador:number,
+    
     ){}
 
 }

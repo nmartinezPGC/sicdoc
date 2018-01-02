@@ -62,7 +62,7 @@ class MantInstitucionesController extends Controller {
                //Parametros a Convertir                           
                //Datos generales de la Tabla ***********************************                
                //Variables que vienen del Json *********************************
-                $cod_institucion        = ($params->codInstitucion != null) ? $params->codInstitucion : null ;
+                //$cod_institucion        = ($params->codInstitucion != null) ? $params->codInstitucion : null ;
                 $desc_institucion       = ($params->descInstitucion != null) ? $params->descInstitucion : null ;
                 
                 $perfil_institucion     = ($params->perfilInstitucion != null) ? $params->perfilInstitucion : null ;
@@ -237,7 +237,7 @@ class MantInstitucionesController extends Controller {
      * @since 1.0                                                              * 
      * Funcion: FND00002                                                       * 
      ***************************************************************************/
-    public function mantenimientoInstitucionEditAction(Request $request, $idInstitucion = null) 
+    public function mantenimientoInstitucionEditAction(Request $request) 
     {
         //Instanciamos el Servicio Helpers
         date_default_timezone_set('America/Tegucigalpa');
@@ -266,7 +266,8 @@ class MantInstitucionesController extends Controller {
                //Parametros a Convertir                           
                //Datos generales de la Tabla ***********************************                
                //Variables que vienen del Json *********************************
-                $cod_institucion        = ($params->codInstitucion != null) ? $params->codInstitucion : null ;
+                $id_institucion         = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
+                //$cod_institucion        = ($params->codInstitucion != null) ? $params->codInstitucion : null ;
                 $desc_institucion       = ($params->descInstitucion != null) ? $params->descInstitucion : null ;
                 
                 $perfil_institucion     = ($params->perfilInstitucion != null) ? $params->perfilInstitucion : null ;
@@ -286,7 +287,7 @@ class MantInstitucionesController extends Controller {
                 $id_usuario_creador     = $identity->sub;                                                
                 
                 //Evalua si la Informacion de los Parametros es Null
-                if( $id_usuario_creador != null && $id_usuario_creador != 0 ){
+                if( $id_institucion != null && $id_institucion != 0 ){
                     // Evalua si se Ingreso la descripcion de la Solicitud *****
                     if( $desc_institucion != null && $perfil_institucion != null ){
                         // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
@@ -301,43 +302,48 @@ class MantInstitucionesController extends Controller {
 
                         // Query a la BD
                         $qb->select('COUNT(a) ');
-                        $qb->where('a.descInstitucion = :validDescInstitucion OR '
-                                . 'a.perfilInstitucion LIKE :validperfilInstitucion ');
-                        $qb->setParameter('validDescInstitucion', $desc_institucion )
-                           ->setParameter('validperfilInstitucion', $perfil_institucion );
+                        $qb->where('a.idInstitucion = :validIdInstitucion ');
+                        $qb->setParameter('validIdInstitucion', $id_institucion );
 
                         $count = $qb->getQuery()->getSingleScalarResult();
                         
                         //Verificamos que el retorno de la Funcion sea > 0 *****
                         // Encontro los Datos de la Comunicacion Solicitada ****
-                        if( $count == 0 ){
+                        if( $count > 0 ){
                             
                             $em = $this
                                 ->getDoctrine()
                                 ->getManager();
                                                                                   
                             // Ingresa en la BD la Solicitud ***************
-                            //Seteo de Datos Generales de la tabla: TblInstituciones
-                            $mantInstitucionNew = new TblInstituciones();
+                            //Seteo de Datos Generales de la tabla: TblInstituciones                            
+                            // Busca el Id del Oficio Detalle **********************
+                            // Primero Buscamos el idCorrespondenciaEnc de la Tabla*
+                            // Padre para Ubicarlo en la Tabla Hijo ****************
+                            $mantInstitucionEdit = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                                array(
+                                    "idInstitucion" => $id_institucion
+                                ));
 
-                            $mantInstitucionNew->setCodInstitucion( $cod_institucion );
-                            $mantInstitucionNew->setFechaIngreso( $fecha_ingreso );
+
+                            //$mantInstitucionEdit->setCodInstitucion( $cod_institucion );
+                            //$mantInstitucionEdit->setFechaIngreso( $fecha_ingreso );
                             
                             // Seteo de las Fechas de la Solicitud
-                            $mantInstitucionNew->setDescInstitucion( $desc_institucion );
-                            $mantInstitucionNew->setPerfilInstitucion ( $perfil_institucion );
-                            $mantInstitucionNew->setDireccionInstitucion( $direccion_institucion );
-                            $mantInstitucionNew->setTelefonoInstitucion( $telefono_institucion );
-                            $mantInstitucionNew->setCelularInstitucion( $celular_institucion );
-                            $mantInstitucionNew->setEmailInstitucion( $email_institucion );
+                            $mantInstitucionEdit->setDescInstitucion( $desc_institucion );
+                            $mantInstitucionEdit->setPerfilInstitucion ( $perfil_institucion );
+                            $mantInstitucionEdit->setDireccionInstitucion( $direccion_institucion );
+                            $mantInstitucionEdit->setTelefonoInstitucion( $telefono_institucion );
+                            $mantInstitucionEdit->setCelularInstitucion( $celular_institucion );
+                            $mantInstitucionEdit->setEmailInstitucion( $email_institucion );
                             
 
                             //Instanciamos de la Clase TblUsuarios    **********
-                            $usuarioCreador = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                            $usuarioModificador = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                                 array(
                                    "idUsuario" => $id_usuario_creador                        
                                 ));                    
-                            $mantInstitucionNew->setIdUsuarioCreador( $usuarioCreador ); //Set de Id de Usuario Creador
+                            $mantInstitucionEdit->setIdUsuarioCreador( $usuarioModificador ); //Set de Id de Usuario Creador
                             
 
                             //Instanciamos de la Clase TblPais    **************
@@ -345,7 +351,7 @@ class MantInstitucionesController extends Controller {
                                 array(
                                    "idPais" => $id_pais_institucion                        
                                 ));                    
-                            $mantInstitucionNew->setIdPais( $paisInstitucion ); //Set de Id Pais de Institucion
+                            $mantInstitucionEdit->setIdPais( $paisInstitucion ); //Set de Id Pais de Institucion
                             
 
                             //Instanciamos de la Clase TblTipoInstitucion  *****
@@ -353,11 +359,11 @@ class MantInstitucionesController extends Controller {
                                 array(
                                    "idTipoInstitucion" => $id_tipo_institucion                        
                                 ));                    
-                            $mantInstitucionNew->setIdTipoInstitucion( $tipoInstitucion ); //Set de Id Tipo de Institucion
+                            $mantInstitucionEdit->setIdTipoInstitucion( $tipoInstitucion ); //Set de Id Tipo de Institucion
                                                         
                             
                             //Realizar la Persistencia de los Datos y enviar a la BD
-                            $em->persist( $mantInstitucionNew );
+                            $em->persist( $mantInstitucionEdit );
 
                             //Realizar la actualizacion en el storage de la BD
                             $em->flush();                         
@@ -367,9 +373,9 @@ class MantInstitucionesController extends Controller {
                             $data = array(
                                 "status" => "success",                                
                                 "code"   => 200, 
-                                "option"   => "datos ingresados",
+                                "option"   => "datos modificados",
                                 "totalCount" => $count,
-                                "msg"    => "La Solicitud fue creada de manera exitosa",
+                                "msg"    => "La Solicitud fue Modificada de manera exitosa",
                                 //"data"   => count( $isset_cambio_fehas )
                             );                                                                                                                                            
                         }else{
@@ -396,7 +402,7 @@ class MantInstitucionesController extends Controller {
                        "status" => "error",                       
                        "code"   => 400, 
                        "option" => "falta ingresar el id de usuario",
-                       "msg"   => "Institucion no creada, falta ingresar el Usuario creador !!"
+                       "msg"   => "Institucion no modificada, contacte al Administrador !!"
                     );
                 }                
             }else{
@@ -431,93 +437,86 @@ class MantInstitucionesController extends Controller {
      ***************************************************************************/
     public function mantenimientoInstitucionSearchAction(Request $request)
     {
-        //Instanciamos el Servicio Helpers
-        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
-        //Recogemos el Hash y la Autorizacion del Mismo        
-        $hash = $request->get("authorization", null);
-        //Se Chekea el Token
-        $checkToken = $helpers->authCheck($hash);        
+        $em = $this->getDoctrine()->getManager();
         
-        // Valida el Token de la Peticion
-        if($checkToken == true){
-           // Seteo  de la Identidad del Ususario, con las variables del
-           // Localsotrage
-           $identity = $helpers->authCheck($hash, true); 
+        $json = $request->get("json", null);
+        $params = json_decode($json);
         
-           // Parametros enviados por el Json
-           $json = $request->get("json", null);
-                      
-            //Comprobamos que Json no es Null
-            if ($json != null) {
-               // Decodificamos el Json
-               $params = json_decode($json);
-               
-               $em = $this
-                ->getDoctrine()
-                ->getManager();
-               
-               //Parametros a Convertir                           
-               //Datos generales de la Tabla ***********************************                
-               //Variables que vienen del Json *********************************
-               //$cod_comunicacion = $request->query->get("codCorrespondencia ", null);
-               $cod_comunicacion     = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;                             
-                
-                //Evalua si la Informacion de los Parametros es Null
-                if( $cod_comunicacion != null ){
-                    //Verificacion del Codigo de la Correspondencia *******************
-                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
-                        array(
-                             "codCorrespondenciaEnc" => $cod_comunicacion
-                    ));
-                    
-                    //Verificamos que el retorno de la Funcion sea > 0 *****
-                    // Encontro los Datos de la Comunicacion Solicitada ****
-                    if( count($isset_corresp_cod) > 0 ){ 
-                        // Asignacion de los valores de la Consulta
-                        //$cod_usuario_creador = $isset_corresp_cod->getIdUsuario();
-                        //Array de Mensajes
-                        $data = array(
-                           "status" => "success",                       
-                           "code"   => 200, 
-                           "msg"    => "Datos encontrados !!",
-                           "data"   => $isset_corresp_cod
-                        );  
-                    } else {
-                        //Array de Mensajes
-                        $data = array(
-                           "status" => "error",                       
-                           "code"   => 400, 
-                           "msg"    => "Datos no encontrados, no existe información con este código de Comunicación !!"                           
-                        );
-                    }                 
-                }else{
-                    //Array de Mensajes
-                    $data = array(
-                       "status" => "error",                      
-                       "code"   => 400, 
-                       "msg"   => "Falta ingresar el código de la comunicación!!"
-                    );
-                }                                   
-            }else{
-             //Array de Mensajes
-             $data = array(
+        //Array de Mensajes
+        $data = $data = array(
                 "status" => "error",                
-                "code"   => 400, 
-                "msg"   => "Datos no encontrados, falta ingresar los parametros !!"
-             );
-            }         
-        }else{
-            $data = array(
-                "status" => "error",
-                "desc"   => "El Token, es invalido",    
                 "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
-            );
+                "msg" => "No se ha podido obtener los Datos, los parametros son erroneos !!"                
+        ); 
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ***********************************************
+            ////Recogemos el Pais y el Tipo de Institucion ********************************
+            $pais_institucion    = (isset($params->idPais)) ? $params->idPais : null;
+            $tipo_institucion    = (isset($params->idTipoInstitucion)) ? $params->idTipoInstitucion : null;
+            
+            // Evaluamos que Parametro nos enviaron
+            if( $pais_institucion != null && $tipo_institucion != null){
+                // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones                
+                $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    . 'inst.direccionInstitucion, inst.telefonoInstitucion, '
+                                    . 'inst.celularInstitucion, inst.emailInstitucion, '
+                                    ."DATE_SUB(inst.fechaIngreso, 0, 'DAY') AS fechaIngreso, " 
+                                    ."pa.idPais, pa.descPais, tinst.idTipoInstitucion, tinst.descTipoInstitucion " 
+                                    . 'FROM BackendBundle:TblInstituciones inst '                                    
+                                    . 'INNER JOIN BackendBundle:TblPais pa WITH pa.idPais = inst.idPais '
+                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = inst.idTipoInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = inst.idUsuarioCreador '
+                                    . 'WHERE inst.idPais = :idPais AND inst.idTipoInstitucion = :idTipoInstitucion ' 
+                                    . 'ORDER BY inst.descInstitucion, pa.descPais ASC')
+                    ->setParameter('idPais', $pais_institucion)->setParameter('idTipoInstitucion', $tipo_institucion ) ;
+                    
+                $institucionesSreci = $query->getResult();
+                
+            } else {
+                // Query para Obtener todos las Instituciones de la Tabla: TblInstituciones                    
+                // Tabla: TblDepartamentosFuncionales ******************************            
+                $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    . 'inst.direccionInstitucion, inst.telefonoInstitucion, '
+                                    . 'inst.celularInstitucion, inst.emailInstitucion, '
+                                    ."DATE_SUB(inst.fechaIngreso, 0, 'DAY') AS fechaIngreso, "
+                                    ."pa.idPais, pa.descPais, tinst.idTipoInstitucion, tinst.descTipoInstitucion "
+                                    . 'FROM BackendBundle:TblInstituciones inst '                                    
+                                    . 'INNER JOIN BackendBundle:TblPais pa WITH pa.idPais = inst.idPais '
+                                    . 'INNER JOIN BackendBundle:TblTipoInstitucion tinst WITH  tinst.idTipoInstitucion = inst.idTipoInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios user WITH  user.idUsuario = inst.idUsuarioCreador '                                    
+                                    . 'ORDER BY inst.descInstitucion, pa.descPais ASC') ;                    
+                    
+                $institucionesSreci = $query->getResult();
+                
+                // FIN | NMA | INC.00007                
+            }         
+            
+            //Total de Instituciones
+            $totalInstituciones = count($institucionesSreci);
+            
+            // Condicion de la Busqueda
+            if ( $totalInstituciones  >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "recordsTotal" => $totalInstituciones,
+                    "data"   => $institucionesSreci
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Instituciones, comuniquese con el Administrador !!"
+                );
+            }
         }
-        // Retornamos la Data
         return $helpers->parserJson($data);
     }//FIN | FND00003
     

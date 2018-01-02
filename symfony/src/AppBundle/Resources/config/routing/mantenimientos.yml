@@ -25,3 +25,15 @@ default_mantenimientoInstitucionNew:
     path: /mantenimiento-institucion-new
     defaults: { _controller: "AppBundle:MantInstituciones:mantenimientoInstitucionNew" }
     methods: POST
+    
+# Ruta para el Edicion de Instituciones
+default_mantenimientoInstitucionEdit:
+    path: /mantenimiento-institucion-edit
+    defaults: { _controller: "AppBundle:MantInstituciones:mantenimientoInstitucionEdit" }
+    methods: POST
+    
+# Ruta para la Busqueda de Instituciones
+default_mantenimientoInstitucionSearch:
+    path: /mantenimiento-institucion-busca
+    defaults: { _controller: "AppBundle:MantInstituciones:mantenimientoInstitucionSearch" }
+    methods: POST

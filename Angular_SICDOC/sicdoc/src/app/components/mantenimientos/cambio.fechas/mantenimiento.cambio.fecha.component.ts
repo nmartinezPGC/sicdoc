@@ -16,7 +16,7 @@ import { NgForm }    from '@angular/forms';
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
 // Importamos la CLase Intituciones del Modelo
-import { Intituciones } from '../../../models/mantenimientos/instituciones.model'; //Model del Login
+import { Instituciones } from '../../../models/mantenimientos/instituciones.model'; //Model del Login
 
 
 @Component({
@@ -30,7 +30,7 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   public titulo:string = "Mantenimiento de Instituciones";
 
   // Instacia de la variable del Modelo
-  public _modIntituciones:Intituciones;
+  public _modIntituciones:Instituciones;
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -92,7 +92,9 @@ export class MantenimientoInstitucionesComponent implements OnInit{
     this.getlistaTipoUsuarios();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this._modIntituciones = new Intituciones(1, "", "", "", "", "",   "", "", "",   "7", 0, 0, 0, 0,  "", null, null);
+    this._modIntituciones = new Instituciones(0, "", "", "", 
+    "", null, null, "",
+    0, 0, 0);
     //this.loadScript('../assets/js/register.component.js');
   }
 
@@ -312,7 +314,7 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   ******************************************************/
   getlistaSubDireccionesSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this.paramsSubDir.idDireccionSreci = this._modIntituciones.idDireccionSreci;
+    // this.paramsSubDir.idDireccionSreci = this._modIntituciones.idDireccionSreci;
 
     this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
         response => {

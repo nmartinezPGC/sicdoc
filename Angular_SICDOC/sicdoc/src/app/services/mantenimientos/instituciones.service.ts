@@ -10,8 +10,8 @@ import { Observable } from 'rxjs/Observable';
 export class InstitucionesService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
-  // public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
-  public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
+  public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
+  // public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
   // public url = "http://172.17.3.141/sicdoc/symfony/web/app.php";
   // public url = "http://192.168.0.23/sicdoc/symfony/web/app.php";
 
@@ -26,52 +26,55 @@ export class InstitucionesService {
 
   /****************************************************
   * Funcion: FND-00001
-  * Fecha: 28-07-2017
+  * Fecha: 01-01-2018
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (login).
-  * Objetivo: Logearse a la Aplicacion
+  * a la API (mantenimientos/mantenimiento-institucion-new).
+  * Objetivo: Solicitud de Nueva Institucion
   *****************************************************/
-  signUp( user_to_login ){
-      let json = JSON.stringify( user_to_login );
-      let params = "json=" + json;
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+  solitarNuevaInstitucion( solicitud_institucion_new ){
+    let json = JSON.stringify( solicitud_institucion_new );
+    let params = "json=" + json + "&authorization=" + this.getToken();
+    //console.log(json);
+    let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/login", params, { headers:headers }).map( res => res.json());
-  }
+    return this._http.post(this.url + "/mantenimientos/mantenimiento-institucion-new", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00001
 
 
   /****************************************************
-  * Funcion: FND-00002
-  * Fecha: 28-07-2017
+  * Funcion: FND-00001
+  * Fecha: 01-01-2018
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API (usuario/new).
-  * Objetivo: Agregar nuevo Usuario
+  * a la API (mantenimientos/mantenimiento-institucion-edit).
+  * Objetivo: Solicitud de Nueva Institucion
   *****************************************************/
-  registerUser( user_to_register ){
-      let json = JSON.stringify( user_to_register );
-      let params = "json=" + json;
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+  solitarEditInstitucion( solicitud_institucion_edit ){
+    let json = JSON.stringify( solicitud_institucion_edit );
+    let params = "json=" + json + "&authorization=" + this.getToken();
+    //console.log(json);
+    let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/usuario/new", params, { headers:headers }).map( res => res.json());
-  }
+    return this._http.post(this.url + "/mantenimientos/mantenimiento-institucion-edit", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00001
 
 
-  /****************************************************
-  * Funcion: FND-00002.1
-  * Fecha: 09-10-2017
-  * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( usuario/change-pass-user ).
-  * Objetivo: Cambiar Password a Usuario
-  *****************************************************/
-  changePassUser( user_to_change_pass ){
-      let json = JSON.stringify( user_to_change_pass );
-      let params = "json=" + json + "&authorization=" + this.getToken();
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+  /*****************************************************
+  * Funcion: FND-00001
+  * Fecha: 01-01-2018
+  * Descripcion: Carga la lista con Paramtros Json
+  * Objetivo: Obtener la lista serializada, con autoriza-
+  * cion del Token (tiene que estar logeado)
+  * (/mantenimientos/mantenimiento-institucion-busca).
+  ******************************************************/
+  listaIntitucionesGet( lista_comun, lista ){
+    let json = JSON.stringify( lista_comun );
 
-    return this._http.post(this.url + "/usuario/change-pass-user", params, { headers:headers }).map( res => res.json());
-  } // FIN | FND-00002
+    let params = "json=" + json;
+    let listaIn = lista;
+    let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/mantenimientos/"+listaIn, params, { headers:headers }).map( res => res.json());
+} // FIN : FND-00001
 
 
   /****************************************************
