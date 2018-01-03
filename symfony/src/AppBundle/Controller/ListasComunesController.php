@@ -776,7 +776,7 @@ class ListasComunesController extends Controller {
             $qb->select('COUNT(a)');
             $qb->where('a.idEstado IN (:validEstado) and a.idTipoDocumento = :validDocumento and '
                     . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
-            $qb->setParameter('validEstado', [3,7] )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+            $qb->setParameter('validEstado', [3,7,8] )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
                         ->setParameter('validUsuario', $user_comunicacion );
 
             $count = $qb->getQuery()->getSingleScalarResult();

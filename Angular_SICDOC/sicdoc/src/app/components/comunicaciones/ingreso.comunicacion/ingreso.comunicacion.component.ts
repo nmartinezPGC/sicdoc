@@ -468,13 +468,16 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                 if(this.loading = 'show'){
                   this.loading = 'hidden';
                 }
-
                 //alert(this.mensajes);
             }else{
               //this.resetForm();
               this.loading = 'hidden';
               this.ngOnInit();
               // this.alertShow();
+              //Oculta el Div de Alerta despues de 3 Segundos
+              setTimeout(function() {
+                  $("#alertSuccess").fadeOut(1500);
+              },3000);
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -484,7 +487,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             if(this.errorMessage != null){
               console.log(this.errorMessage);
               this.mensajes = this.errorMessage;
-              alert("Error en la Petición !!" + this.errorMessage);
+              // alert("Error en la Petición !!" + this.errorMessage);
+              //Oculta el Div de Alerta despues de 3 Segundos
+              setTimeout(function() {
+                  $("#alertError").fadeOut(1500);
+              },3000);
 
               if(this.loading = 'show'){
                 this.loading = 'hidden';

@@ -186,6 +186,49 @@ class UsuarioController extends Controller{
                     
                     // Termina TblFuncionarios *********************************                    
                     
+                    
+                    // Envio de Correo despues de la Grabacion de Datos
+                    // *************************************************
+
+                    // los Datos de envio de Mail **********************
+                        //Creamos la instancia con la configuración 
+                        $transport = \Swift_SmtpTransport::newInstance()
+                           ->setHost('smtp.gmail.com')
+                           ->setPort(587)
+                           ->setEncryption('tls')                               
+                           ->setStreamOptions(array(
+                                        'ssl' => array(
+                                            'allow_self_signed' => true, 
+                                            'verify_peer' => false, 
+                                            'verify_peer_name' => false
+                                            )
+                                        )
+                                     )                                                                                                
+                           ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                           ->setPassword('Despachomcns');
+                       //echo "Paso 1";
+                       //Creamos la instancia del envío
+                       $mailer = \Swift_Mailer::newInstance($transport);
+
+                       //Creamos el mensaje
+                       $mail = \Swift_Message::newInstance()
+                           ->setSubject('Creacion de Usuario | SICDOC')                           
+                           ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" )) 
+                           ->addCc('correspondenciascpi@sreci.gob.hn') 
+                           ->setTo($email)                               
+                           ->setBody(
+                                $this->renderView(                               
+                                    'Emails/newUser.html.twig',
+                                    array( 'name' => $nombre1, 'apellidoOficio' => $apellido1,
+                                        'fechaCreated' => date_format($createdAt, "Y-m-d"), 'userActual' => $email, 
+                                        'passActual' => $password )
+                                ), 'text/html' );                                
+
+                        // Envia el Correo con todos los Parametros
+                        $resuly = $mailer->send($mail);
+
+                    // ***** Fin de Envio de Correo ********************
+                    
                     //Seteamos el array de Mensajes a enviar *******************
                     $data = array(
                         "status" => "success",                

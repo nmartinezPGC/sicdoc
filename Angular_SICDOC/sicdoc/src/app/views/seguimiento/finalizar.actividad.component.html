@@ -57,7 +57,7 @@
               <td> {{ item.fechaMaxEntrega | date :'dd-MMM-yyyy' }} </td>
               <td>
                   <!-- Boton de Oficio de Respusta para la Comunicacion de Entrada -->
-                  <a *ngIf="item.idEstado == 3 && (item.idTipoDocumento == 1 || item.idTipoDocumento == 2)
+                  <a *ngIf="(item.idEstado == 3 || item.idEstado == 7 ) && (item.idTipoDocumento == 1 || item.idTipoDocumento == 2)
                         && item.idTipoComunicacion == 1 "
                     href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,
@@ -72,7 +72,7 @@
                   </a>
 
                   <!-- <a *ngIf="item.idEstado == 3 && item.idTipoDocumento != 1 " -->
-                  <a *ngIf="item.idEstado == 3 "
+                  <a *ngIf="(item.idEstado == 3 || item.idEstado == 7) "
                      href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,
                                                          item.nombre1Funcionario, item.apellido1Funcionario,
@@ -82,22 +82,7 @@
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m3" >
                     <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicacion">
-                  </a>
-
-                    <!-- Boton para Comunicacion en Estado Ingresado -->
-                    <a *ngIf="item.idEstado == 7 && item.idTipoDocumento != 1 "
-                       href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
-                                                           item.idDeptoFuncional,
-                                                           item.nombre1Funcionario, item.apellido1Funcionario,
-                                                           item.nombre2Funcionario, item.apellido2Funcionario,
-                                                           item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
-                                                           item.idTipoDocumento, item.idTipoComunicacion );
-                                                           listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
-                        data-toggle="modal" data-target="#t_and_c_m3" >
-
-                    <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Agregar Actividad a Comunicacion" >assignment</i> -->
-                    <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicacion">
-                  </a>
+                  </a>                    
 
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,

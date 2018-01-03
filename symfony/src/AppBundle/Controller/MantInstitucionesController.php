@@ -184,7 +184,7 @@ class MantInstitucionesController extends Controller {
                                 "code"       => 400,
                                 "totalCount" => $count,                                
                                 "msg"   => "Error 400, Ya existe una institucion con este nombre: ". $perfil_institucion . 
-                                           " , por favor, valide que los Datos sean correctos !!"
+                                           " , y Iniciales " . $desc_institucion  . " por favor, valide que los Datos sean correctos !!"
                             ); 
                         }
                     }else{

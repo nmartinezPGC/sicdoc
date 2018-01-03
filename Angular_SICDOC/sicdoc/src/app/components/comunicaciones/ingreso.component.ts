@@ -410,13 +410,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
-      // console.log(this.comunicacion);
-      // console.log(this.comunicacion.pdfDocumento);
-
-      //  let convert = JSON.stringify(this.comunicacion.pdfDocumento);
-      //  this.comunicacion.pdfDocumento = convert;
-      //  console.log(this.comunicacion.pdfDocumento);
-
+      
       // Llamado al Procedo de Registro de Comunicacion
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
@@ -438,6 +432,10 @@ export class IngresoComunicacionComponent implements OnInit{
               this.loading = 'hidden';
               this.ngOnInit();
               // this.alertShow();
+              //Oculta el Div de Alerta despues de 3 Segundos
+              setTimeout(function() {
+                  $("#alertSuccess").fadeOut(1500);
+              },3000);
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
@@ -447,7 +445,11 @@ export class IngresoComunicacionComponent implements OnInit{
             if(this.errorMessage != null){
               console.log(this.errorMessage);
               this.mensajes = this.errorMessage;
-              alert("Error en la Petición !!" + this.errorMessage);
+              //alert("Error en la Petición !!" + this.errorMessage);
+              //Oculta el Div de Alerta despues de 3 Segundos
+              setTimeout(function() {
+                  $("#alertError").fadeOut(1500);
+              },3000);
 
               if(this.loading = 'show'){
                 this.loading = 'hidden';

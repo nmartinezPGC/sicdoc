@@ -49,12 +49,15 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   //Parametro de Opcion a Ejecutar
   public optEjecutar:string;
 
+  //Opcion para Habilitar Controles
+  public habControls:boolean = false;
+
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
   public JsonOutgetlistaPaises:any[];
   public JsonOutgetlistaInstitucion:any[];
   public JsonOutgetlistaTipoInstitucion:any[];
-  
+
   // parametros multimedia
   public loading  = 'show';
 
@@ -73,41 +76,54 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   ngOnInit(){
     //Instancia de las Listas
     this.getlistaPaises();
-        
-    //Lista de Todas Instituciones
-    this.getlistaInstituciones();
-    
+
     //Lista de Tipo de Intituciones
     this.getlistaTipoInstitucion();
 
     // Definicion de la Insercion de los Datos de Nuevo Usuario
-    this._modIntituciones = new Instituciones(0, "", "", "", 
+    this._modIntituciones = new Instituciones(0, "", "", "",
                                             "", 0, 0, "",
-                                            0, 0, 0);    
+                                            0, 0, 0);
+
+    //Lista de Todas Instituciones
+    this.getlistaInstituciones();
+
+    //InHabilitamos el Fomulario
+    this.habControls = false;
   }
 
 
   // Metodo onSubmit
   onSubmit(forma:NgForm){
+    //Validacion de Seleccion de Pais y Tipo de Institucion
+    if( this._modIntituciones.idPaisInstitucion == 0 ){
+      alert('Debes de seleccionar el País, para continuar');
+      return ;
+    }else if ( this._modIntituciones.idTipoInstitucion == 0 ){
+      alert('Debes de seleccionar el Tipo de Institución, para continuar');
+      return ;
+    }
+
       console.log(this._modIntituciones);
       //Opcion a Ejecutar
       //Asignacion de variable de Opcion a Ejecutar | optEjecutar
-      //this.optEjecutar = "modificarInstitucion";
-        if( this.optEjecutar == "modificarInstitucion" ){         
+        if( this.optEjecutar == "modificarInstitucion" ){
           //Ejecucion del Llamado a la APIRest
         this._mantIntitucionService.solitarEditInstitucion(this._modIntituciones).subscribe(
           response => {
               // Obtenemos el Status de la Peticion
               this.status = response.status;
               this.mensajes = response.msg;
-              
+
               // Condicionamos la Respuesta
               if(this.status != "success"){
                   this.status = "error";
-                  this.ngOnInit();
               }else{
-                this.ngOnInit();                
-                // alert(this.mensajes);
+                this.ngOnInit();
+                //Oculta el Div de Alerta despues de 3 Segundos
+                setTimeout(function() {
+                    $("#alertSuccess").fadeOut(1500);
+                },3000);
               }
           }, error => {
               //Regisra cualquier Error de la Llamada a la API
@@ -117,10 +133,14 @@ export class MantenimientoInstitucionesComponent implements OnInit{
               if(this.errorMessage != null){
                 console.log(this.errorMessage);
                 this.mensajes = this.errorMessage;
-                alert("Error en la Petición !!" + this.errorMessage);
+                //alert("Error en la Petición !!" + this.errorMessage);
+                //Oculta el Div de Alerta despues de 3 Segundos
+                setTimeout(function() {
+                    $("#alertError").fadeOut(1500);
+                },3000);
               }
           });
-      }else if( this.optEjecutar == "nuevaInstitucion" ){        
+      }else if( this.optEjecutar == "nuevaInstitucion" ){
         //Ejecucion del Llamado a la APIRest
         this._mantIntitucionService.solitarNuevaInstitucion(this._modIntituciones).subscribe(
           response => {
@@ -133,7 +153,10 @@ export class MantenimientoInstitucionesComponent implements OnInit{
                   this.status = "error";
               }else{
                 this.ngOnInit();
-                // alert(this.mensajes);
+                //Oculta el Div de Alerta despues de 3 Segundos
+                setTimeout(function() {
+                    $("#alertSuccess").fadeOut(1500);
+                },3000);
               }
           }, error => {
               //Regisra cualquier Error de la Llamada a la API
@@ -143,12 +166,16 @@ export class MantenimientoInstitucionesComponent implements OnInit{
               if(this.errorMessage != null){
                 console.log(this.errorMessage);
                 this.mensajes = this.errorMessage;
-                alert("Error en la Petición !!" + this.errorMessage);
+                //alert("Error en la Petición !!" + this.errorMessage);
+                //Oculta el Div de Alerta despues de 3 Segundos
+                setTimeout(function() {
+                    $("#alertError").fadeOut(1500);
+                },3000);
               }
           });
       }
 
-      
+
   }
 
 
@@ -165,17 +192,20 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   getlistaInstituciones() {
     /*Llamar al metodo, Lista de Instituciones All, sin
     * sin Parametros*/
+    // Laoding
+    this.loading = 'show';
     this._mantIntitucionService.listaIntitucionesGet("","mantenimiento-institucion-busca").subscribe(
         response => {
-          //Intituciones Lista All successful          
+          //Intituciones Lista All successful
           if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion            
+            //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaInstitucion = response.data;
             alert(response.msg);
-          }else{            
+          }else{
             this.JsonOutgetlistaInstitucion = response.data;
             console.log(this.JsonOutgetlistaInstitucion);
             this.fillDataTable();
+            this.loading = 'hide';
           }
         });
   } // FIN : FND-00001
@@ -194,12 +224,12 @@ export class MantenimientoInstitucionesComponent implements OnInit{
     //Llamar al metodo, de Tipo de Instituciones
     this._listasComunes.listasComunes("","tipo-instituciones-sreci-list").subscribe(
         response => {
-          // Tipo Institucion successful          
+          // Tipo Institucion successful
           if(response.status == "error"){
-            //Mensaje de alerta del error en cuestion            
+            //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTipoInstitucion = response.data;
             alert(response.msg);
-          }else{            
+          }else{
             this.JsonOutgetlistaTipoInstitucion = response.data;
             console.log(this.JsonOutgetlistaTipoInstitucion);
 
@@ -221,7 +251,7 @@ export class MantenimientoInstitucionesComponent implements OnInit{
     setTimeout(function () {
       $ (function () {
           $('#example').DataTable({
-            "destroy": true,            
+            "destroy": true,
             "fixedHeader": true,
             "autoWidth": false,
             // Tamaño de la Pagina
@@ -241,6 +271,14 @@ export class MantenimientoInstitucionesComponent implements OnInit{
                         "previous":   "Anterior"
                     },
             },
+            // Ocultar Columnas
+            "columnDefs": [
+                  { // Columna de Ingreso / Salida
+                      "targets": [ 2 ],
+                      "visible": false,
+                      "searchable": true
+                  }
+            ],
           });
           // this.loading = 'show';
       });
@@ -279,7 +317,7 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   * Descripcion: Funcion de Seleccion unica de Institucion
   * Objetivo: Obtener el Detalle de la Institucion Selecc.
   *******************************************************/
-  datoInstitucion( idInstitucionIN:number, codInstitucionIN:string, 
+  datoInstitucion( idInstitucionIN:number, codInstitucionIN:string,
                    descInstitucionIN:string, perfilInstitucionIN:string,
                    direccionInstitucionIN:string, telefonoInstitucionIN:number, celularInstitucionIN:number,
                    emailInstitucionIN:string, idPaisIN:number, idTipoInstitucionIN:number  ) {
@@ -300,6 +338,11 @@ export class MantenimientoInstitucionesComponent implements OnInit{
 
     //Asignacion de variable de Opcion a Ejecutar | optEjecutar
     this.optEjecutar = "modificarInstitucion";
+
+    //Habilitamos el Fomulario
+    // this.habControls = true;
+    this.habilitarControl();
+
   } // FIN : FND-00005
 
 
@@ -311,14 +354,47 @@ export class MantenimientoInstitucionesComponent implements OnInit{
   *******************************************************/
   resetForm(){
     // Limpieza del Formulario
-    this._modIntituciones = new Instituciones(0, "", "", "", 
+    this._modIntituciones = new Instituciones(0, "", "", "",
     "", null, null, "",
     0, 0, 0);
 
     //Asignacion de variable de Opcion a Ejecutar | optEjecutar
     this.optEjecutar = "nuevaInstitucion";
+
+    //Habilitamos el Fomulario
+    // this.habControls = true;
+    this.habilitarControl();
   } // FIN : FND-00006
 
+
+  /******************************************************
+  * Funcion: FND-00007
+  * Fecha: 01-02-2018
+  * Descripcion: Funcion de Habilitamos de Formulario
+  * Objetivo: Habilitamos de Formulario
+  *******************************************************/
+  habilitarControl(){
+    //Habilitamos los Controles
+    this.habControls = true;
+    $("#descInstitucion").focus();
+  }
+
+
+  /******************************************************
+  * Funcion: FND-00008
+  * Fecha: 01-02-2018
+  * Descripcion: Funcion de Inabilitamos de Formulario
+  * Objetivo: Inabilitamos de Formulario
+  *******************************************************/
+  inHabilitarControl(){
+    //hinabilitamos los Controles
+    this.habControls = false;
+
+    // Limpieza del Formulario
+    this._modIntituciones = new Instituciones(0, "", "", "",
+    "", null, null, "",
+    0, 0, 0);
+  }
 
 
 }

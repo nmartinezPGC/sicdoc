@@ -5,14 +5,14 @@
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
       <!-- Div que representan las Acciones al Ingresar un Usuario -->
       <br>
-      <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status == 'success'" >
+      <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         <strong>Bien hecho!</strong> {{ mensajes }}
       </div>
 
-      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status == 'error'" >
+      <div class="alert alert-danger alert-dismissible fade show" id="alertError" role="alert" *ngIf="status == 'error'" >
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
