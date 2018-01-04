@@ -805,7 +805,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             this.getCodigoCorrespondenciaDet( this.paramsSecuenciaIn.idTipoDocumento );
 
             //Ejecutamos la function de Seleccion Automatica de Institucion
-            this.cambiaHND( this.paramsSecuenciaIn.idTipoDocumento, this.paramsSecuenciaIn.descTipoDocumento );
+            // this.cambiaHND( this.paramsSecuenciaIn.idTipoDocumento, this.paramsSecuenciaIn.descTipoDocumento );
 
           }
         });

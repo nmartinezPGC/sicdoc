@@ -70,6 +70,10 @@ import { SolicitudCambioFechaService } from './services/mantenimientos/solicitud
 // Imports de AutoComplete
 import { Ng2CompleterModule } from "ng2-completer";
 
+// import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 // Imports de Pluguin de Subir Imagenes
 import { ImageUploadModule } from "angular2-image-upload";
 import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
@@ -114,6 +118,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     MdCheckboxModule, MdNativeDateModule, MdTableModule*/
     Ng2CompleterModule,
     ImageUploadModule.forRoot(),
+    //Seccion de AngularMultiSelectModule
+    AngularMultiSelectModule
   ],
   providers: [
     UsuariosService,

@@ -504,24 +504,15 @@ export class FinalizarActividadComponent implements OnInit {
     // Use a regular expression to trim everything before final dot
     this.extencionDocumento = filename.replace(/^.*\./, '');
 
+    alert('Ext Doc ' + this.extencionDocumento);
+
 
     // Seteamos el valore del Nombre del Documento
     // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
     let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
     // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
     codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
-    // console.log(codigoSec);
 
-    // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
-    //                                 + this.consultaContactos.apellido1Contacto;
-
-    //  this.paramsDocs.optDocumento = optDoc;
-
-    //  let sendParms = "json=" + this.paramsDocs;
-
-    //  console.log(this.paramsDocs);
-
-    // Ejecutamos el Servicio con los Parametros
     this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', codigoSec], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
@@ -1041,6 +1032,7 @@ export class FinalizarActividadComponent implements OnInit {
    setTimeout(function () {
      $ (function () {
          $('#example').DataTable({
+           "destroy": true,
            // Tamaño de la Pagina
            "pageLength": 5,
            // Cambiar las Propiedades de Lenguaje

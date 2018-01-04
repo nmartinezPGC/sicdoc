@@ -122,7 +122,7 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
-                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                             
                             $correspondenciaFind = $query->getResult();
                             $opcion_salida = $codigo_oficio_interno;
@@ -144,7 +144,7 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
-                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();                            
                             /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
@@ -172,7 +172,7 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' '
-                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();
                             
@@ -202,7 +202,7 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
                                     . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' '
-                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC' ) ;
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                     
                             $correspondenciaFind = $query->getResult();
                             /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")

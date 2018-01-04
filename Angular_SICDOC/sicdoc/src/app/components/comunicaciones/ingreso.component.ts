@@ -52,6 +52,9 @@ export class IngresoComunicacionComponent implements OnInit{
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
+  //variables del AtuoComplete
+
+
   private params;
   private paramsSecuencia;
   private paramsSecuenciaDet;
@@ -202,6 +205,12 @@ export class IngresoComunicacionComponent implements OnInit{
   // public  status:string;
   public  codigoSec:string;
 
+  itemList = [];
+   // selectedItems = [];
+   selectedItems = [];
+   settings = {};
+
+   userForm: FormGroup;
 
   // Ini | Definicion del Constructor
   constructor( private _loginService: LoginService,
@@ -220,8 +229,53 @@ export class IngresoComunicacionComponent implements OnInit{
   } // Fin | Definicion del Constructor
 
 
+  onItemSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
+
+
   // INI | Metodo OnInit
   ngOnInit(){
+    //ini prueba
+    this.itemList = [
+      { "id": 1, "itemName": "India" },
+      { "id": 2, "itemName": "Singapore" },
+      { "id": 3, "itemName": "Australia" },
+      { "id": 4, "itemName": "Canada" },
+      { "id": 5, "itemName": "South Korea" },
+      { "id": 6, "itemName": "Brazil" }
+    ];
+
+    this.selectedItems = [
+      { "id": 1, "itemName": "India" },
+      { "id": 2, "itemName": "Singapore" },
+      { "id": 3, "itemName": "Australia" },
+      { "id": 4, "itemName": "Canada" }];
+    this.settings = {
+      singleSelection: false,
+      text: "Select Countries",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true,
+      badgeShowLimit: 3
+    };
+
+
+
+    ///FIN prueba
+
+
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
 
@@ -410,7 +464,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
-      
+
       // Llamado al Procedo de Registro de Comunicacion
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {

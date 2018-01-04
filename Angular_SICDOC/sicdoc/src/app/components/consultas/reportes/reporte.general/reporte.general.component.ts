@@ -244,11 +244,11 @@ export class ReporteGeneralComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },
-                  // { // Columna de Funcionario
-                  //     "targets": [ 4 ],
-                  //     "visible": false,
-                  //     "searchable": true
-                  // }
+                  { // Columna de Funcionario
+                      "targets": [ 9 ],
+                      "visible": false,
+                      "searchable": true
+                  },
             ],
 
             // paging: false,

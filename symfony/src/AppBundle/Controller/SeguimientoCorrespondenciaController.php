@@ -321,6 +321,7 @@ class SeguimientoCorrespondenciaController extends Controller {
      */
     public function convertirFechasTimeStampAction( $fecha_time_stamp )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
         $fecha_time_stamp_In = $fecha_time_stamp;
         
@@ -701,6 +702,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 // Cambiamos el Tipo de extencion jpg => jpeg
                                 if( $extDoc == "jpg" ){
                                     $extDoc = "jpeg";
+                                }
+                                
+                                // Cambiamos el Tipo de extencion PDF => pdf
+                                //Fecha: 2017-01-03 | Incidencia con PDF
+                                if( $extDoc == "PDF" ){
+                                    $extDoc = "pdf";
                                 }
                                 
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            

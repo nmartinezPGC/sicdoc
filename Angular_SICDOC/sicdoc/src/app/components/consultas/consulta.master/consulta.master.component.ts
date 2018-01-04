@@ -443,6 +443,19 @@ export class ConsultaMasterComponent implements OnInit {
                         "previous":   "Anterior"
                     },
             },
+            // Ocultar Columnas
+            "columnDefs": [
+                  { // Columna de Ingreso / Salida
+                      "targets": [ 6 ],
+                      "visible": false,
+                      "searchable": true
+                  },
+                  // { // Columna de Funcionario
+                  //     "targets": [ 4 ],
+                  //     "visible": false,
+                  //     "searchable": true
+                  // }
+            ],
           });
           this.loading_tableIn = 'show';
       });

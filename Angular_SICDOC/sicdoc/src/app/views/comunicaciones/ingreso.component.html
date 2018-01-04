@@ -28,6 +28,20 @@
 		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
+<div class="form-group">
+      <angular2-multiselect [data]="itemList"
+                    [(ngModel)]="selectedItems"
+                    [settings]="settings"
+                    (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)">
+</angular2-multiselect>
+
+</div>
+
+      <br>
+
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" href="#datosGen">Datos Generales</a>
@@ -35,7 +49,6 @@
       </div>
       <hr>
       <div class="panel-collapse collapse" id="datosGen">
-
         <!-- Fila de Tipo de Comunicaciones -->
         <div class="row">
           <!-- Direccion Encargada del tema de la Comunicacion -->
