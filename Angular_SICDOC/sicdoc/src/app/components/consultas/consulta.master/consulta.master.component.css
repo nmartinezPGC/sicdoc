@@ -93,3 +93,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.loader-new {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background:  rgb(230, 232, 233);
+  opacity: .8;
+}
+
+#imgload{
+  margin-left: 40%;
+  margin-top: 20%
+}

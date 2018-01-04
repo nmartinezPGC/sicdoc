@@ -23,14 +23,13 @@
       <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
         <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
         <img src="assets/images/832.gif" alt="Cargando Tareas">
-      </div>
+      </div>      
 
 		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
 <div class="form-group">
-      <angular2-multiselect [data]="itemList"
-                    [(ngModel)]="selectedItems"
+      <angular2-multiselect [data]="itemList"                   
                     [settings]="settings"
                     (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)"

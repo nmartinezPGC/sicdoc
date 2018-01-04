@@ -58,6 +58,13 @@
         <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
 
+      
+        <!-- Loader de Carga de la Pagina -->
+        <div class="loader-new" *ngIf="loading == 'show' " >          
+          <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+        </div>
+      
+
             <table id="example" class="table table-striped table-bordered"
                 cellspacing="0" width="100%" style="font-size:15px;" *ngIf="loadTabla1 == true">
               <!-- Loader de Carga de los Datos -->

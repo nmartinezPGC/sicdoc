@@ -229,22 +229,6 @@ export class IngresoComunicacionComponent implements OnInit{
   } // Fin | Definicion del Constructor
 
 
-  onItemSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
-  }
-  OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-  onDeSelectAll(items: any) {
-    console.log(items);
-  }
-
-
   // INI | Metodo OnInit
   ngOnInit(){
     //ini prueba
@@ -415,6 +399,22 @@ export class IngresoComunicacionComponent implements OnInit{
     // this.getlistaSubDireccionesSRECIAcom();
     // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
+
+
+  onItemSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
 
 
 
