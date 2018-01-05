@@ -94,7 +94,7 @@ export class ContactosComponent implements OnInit {
     // Ejecucion de la Lista de Contactos
     this.getlistaContactosTableFind();
     // Llenado de la Tabla de Encabezado
-    this.fillDataTable();
+    // this.fillDataTable();
   } // Fin | Definicion del Constructor
 
 
@@ -241,6 +241,8 @@ export class ContactosComponent implements OnInit {
             this.JsonLimpio = this.JsonOutgetlistaContactosEnc;
             this.loading = 'hidden';
             this.loadTabla1 = true;
+            // Llenado de la Tabla de Encabezado
+            this.fillDataTable();
             //console.log(this.dataServiceFunc);
           }
         });
@@ -316,7 +318,7 @@ export class ContactosComponent implements OnInit {
           $('#example').DataTable();
           this.loading_tableIn = 'show';
       });
-    }, 8000);
+    }, 500);
     //this.loading_tableIn = 'hide';
   } // FIN | FND-00002
 

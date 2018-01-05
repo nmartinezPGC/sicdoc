@@ -62,11 +62,19 @@ class ComunesController extends Controller {
                 //Obtenemos la extencion del Fichero
                 $ext = $file->guessExtension();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                if ($ext == "pdf" || $ext == "PDF" ||  $ext == "doc" || $ext == "docs" || $ext == "docx" ||
                     $ext == "xlsx" || $ext == "xls" || $ext == "ppt" || $ext == "pptx" ||
                     $ext == "png" || $ext == "jpeg" || $ext == "jpg") {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
+                    /* INC00001 | 2018-01-04
+                    * Corregir la Extencion del PDF a pdf
+                    */
+                    if( $ext == "PDF" ){
+                        $ext = "pdf";
+                    }
+                    //FIN | INC00001
+                    
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //$file_name = $file_nameIn . "." .$ext; 
                     //Movemos el Fichero
@@ -154,9 +162,11 @@ class ComunesController extends Controller {
                         "idTipoDocumento" => $tipo_documento, // Tipo de Documento (Oficio)
                         //"reservada"       => "N"
                     ));
-            
+            $optSec = 0;
             // Condicion para Actualizar Datos de la Secuencia
-            if( $secuencias->getReservada() === "N" ){
+            if( $secuencias->getReservada() === "N"  ){
+                //Opcion de Secuencia
+                $optSec = 1;
                 $secuencias->setReservada('S'); 
             
                 //Realizar la Persistencia de los Datos y enviar a la BD
@@ -166,6 +176,8 @@ class ComunesController extends Controller {
                 $em->flush();
             } else if ( $secuencias->getReservada() === "S" ) {
                 //$secuencias->setReservada('N'); 
+                //Opcion de Secuencia
+                $optSec = 2;
                 $secuencias->setValor2( $secuencias->getValor2() + 1 ); //Set de valor2 de Secuencia de Comunicacion
                 //$secuencias->setReservada('N'); 
             
@@ -190,7 +202,8 @@ class ComunesController extends Controller {
                 $data = array(
                     "status" => "success",
                     "msg"    => "Seceuncia Encontrada",
-                    "code"   => 200,                    
+                    "code"   => 200, 
+                    "optSec" => $optSec,
                     "data"   => $secuencias
                 );                
                                 
@@ -215,6 +228,7 @@ class ComunesController extends Controller {
                 $data = array(
                     "status" => "error",
                     "code"   => 400,
+                    "optSec" => $optSec,
                     "msg"    => "No existe Datos en la Tabla de Secuencias, comuniquese con el Administrador !!"
                 );
             }
@@ -267,7 +281,7 @@ class ComunesController extends Controller {
                 $ext = $file->guessExtension();
                 //$nameDoc = $file->guessName();
                 //Comprobamos que la Extencion sea Aceptada
-                if ($ext == "pdf" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
+                if ($ext == "pdf" || $ext == "PDF" || $ext == "doc" || $ext == "docs" || $ext == "docx" ||
                     $ext == "xlsx" || $ext == "xls" || $ext == "ppt" || $ext == "pptx" ||
                     $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion

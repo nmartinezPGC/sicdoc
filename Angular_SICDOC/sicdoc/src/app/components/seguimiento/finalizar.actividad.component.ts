@@ -504,7 +504,13 @@ export class FinalizarActividadComponent implements OnInit {
     // Use a regular expression to trim everything before final dot
     this.extencionDocumento = filename.replace(/^.*\./, '');
 
-    alert('Ext Doc ' + this.extencionDocumento);
+    //alert('Ext Doc ' + this.extencionDocumento);
+
+    //Modificacion; Cuando la extencion es PDF => pdf
+      if( this.extencionDocumento == "PDF" ){
+        //alert(this.extencionDocumento);
+        this.extencionDocumento = "pdf"
+      }
 
 
     // Seteamos el valore del Nombre del Documento

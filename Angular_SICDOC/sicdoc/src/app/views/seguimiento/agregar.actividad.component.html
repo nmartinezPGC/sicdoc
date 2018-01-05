@@ -8,6 +8,12 @@
     <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
     <img src="assets/images/832.gif" alt="Cargando Tareas">
   </div>
+
+  <!-- Loader de Carga de la Pagina -->
+  <div class="loader-new" *ngIf="loading == 'show' " >
+    <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+  </div>
+
   <!-- Fila para el Area de Busqueda de los Oficios -->
   <div class="row-fluid" *ngIf=" loadTabla1 == true">
     <div class="col-xs-12 col-md-12 col-lg-12">

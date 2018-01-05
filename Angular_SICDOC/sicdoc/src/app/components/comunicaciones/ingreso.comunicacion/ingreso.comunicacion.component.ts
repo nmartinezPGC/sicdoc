@@ -1023,7 +1023,13 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     // Use a regular expression to trim everything before final dot
     this.extencionDocumento = filename.replace(/^.*\./, '');
-        // alert(this.extencionDocumento);
+
+    //Modificacion; Cuando la extencion es PDF => pdf
+      if( this.extencionDocumento == "PDF" ){
+        //alert(this.extencionDocumento);
+        this.extencionDocumento = "pdf"
+      }
+
 
     // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
                                     // + this.consultaContactos.apellido1Contacto;

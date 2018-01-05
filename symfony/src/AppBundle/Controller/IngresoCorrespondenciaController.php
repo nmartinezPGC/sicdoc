@@ -382,6 +382,13 @@ class IngresoCorrespondenciaController extends Controller{
                                 if( $extDoc == "jpg" ){
                                     $extDoc = "jpeg";
                                 }
+                                
+                                /* INC00001 | 2018-01-04
+                                * Corregir la Extencion del PDF a pdf
+                                */
+                                if( $extDoc == "PDF" ){
+                                    $extDoc = "pdf";
+                                }
                                 //var_dump($nameDoc);
                                 
                                 $documentosIn = new TblDocumentos();
@@ -1153,6 +1160,15 @@ class IngresoCorrespondenciaController extends Controller{
                                 if( $extDoc == "jpg" ){
                                     $extDoc = "jpeg";
                                 }
+                                
+                                /* INC00001 | 2018-01-04
+                                * Corregir la Extencion del PDF a pdf
+                                */
+                                if( $extDoc == "PDF" ){
+                                    $extDoc = "pdf";
+                                }
+                                //FIN | INC00001
+                                
                                 //var_dump($nameDoc);
                                 
                                 // Ingresa el Documento ************************

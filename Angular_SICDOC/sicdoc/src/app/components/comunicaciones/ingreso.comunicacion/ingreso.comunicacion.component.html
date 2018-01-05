@@ -25,6 +25,11 @@
         <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
 
+      <!-- Loader de Carga de la Pagina -->
+      <div class="loader-new" *ngIf="loading == 'show' " >          
+        <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+      </div>
+
 		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerTipoComunicacion)" name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">

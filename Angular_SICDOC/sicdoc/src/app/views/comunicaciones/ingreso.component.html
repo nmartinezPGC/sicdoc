@@ -23,23 +23,28 @@
       <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
         <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
         <img src="assets/images/832.gif" alt="Cargando Tareas">
-      </div>      
+      </div>
 
-		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)" name="ingresoComunicacionForm" role="form">
+      <!-- Loader de Carga de la Pagina -->
+      <div class="loader-new" *ngIf="loading == 'show' " >
+        <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+      </div>
+
+		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)"  name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
-<div class="form-group">
-      <angular2-multiselect [data]="itemList"                   
-                    [settings]="settings"
-                    (onSelect)="onItemSelect($event)"
-                    (onDeSelect)="OnItemDeSelect($event)"
-                    (onSelectAll)="onSelectAll($event)"
-                    (onDeSelectAll)="onDeSelectAll($event)">
-</angular2-multiselect>
 
-</div>
-
-      <br>
+      <!-- <div class="form-group">
+            <angular2-multiselect  [data]="itemList"
+                          [settings]="settings"
+                          [(ngModel)]="selectedItems"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)">
+            </angular2-multiselect>
+      </div>
+      <br> -->
 
       <div class="panel-heading">
         <h4 class="panel-title">

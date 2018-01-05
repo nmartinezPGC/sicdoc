@@ -326,11 +326,19 @@ class DocumentosController extends Controller{
                         $ext = $file->guessExtension();
 
                         //Comprobamos la extencion sea Correcta
-                        if ($ext == "jpg" || $ext == "png" || $ext == "jpeg" || $ext == "pdf" ||
+                        if ($ext == "jpg" || $ext == "PDF" ||  $ext == "png" || $ext == "jpeg" || $ext == "pdf" ||
                             $ext == "doc" || $ext == "docs" || $ext == "docx" || $ext == "txt") {
                             //Secuencia para Definir la Fecha y la Extencion del
                             //Archivo a Subir
-                            //$file_name = time(). "." .$ext;                            
+                            //$file_name = time(). "." .$ext; 
+                            /* INC00001 | 2018-01-04
+                             * Corregir la Extencion del PDF a pdf
+                             */
+                            if( $ext == "PDF" ){
+                                $ext = "pdf";
+                            }
+                            //FIN | INC00001
+                            
                             $file_name = $documentoEM->getCodDocumento() . "-" . date('Y-m-d'). "." .$ext;                            
                             //$path_of_file = "uploads/correspondencia/correspondencia_".$documentoEM->getCodDocumento();
                             $path_of_file = "uploads/correspondencia/";

@@ -9,6 +9,11 @@
     <img src="assets/images/832.gif" alt="Cargando Tareas">
   </div>
 
+  <!-- Loader de Carga de la Pagina -->
+  <div class="loader-new" *ngIf="loading == 'show' " >
+    <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+  </div>
+
   <!-- Fila para el Area de Busqueda de los Oficios -->
   <!-- <div class="row-fluid" *ngIf="loadTabla1 == true">
     <div class="col-xs-12 col-md-12 col-lg-12">
@@ -82,7 +87,7 @@
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m3" >
                     <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicacion">
-                  </a>                    
+                  </a>
 
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,
