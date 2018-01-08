@@ -980,7 +980,7 @@ class ListasComunesController extends Controller {
         $tipo_funcionario_entitie = $tipo_usuario->getIdTipoFuncionario(); // Obtenemos la Entidad Completa
         $tipo_funcionario = $tipo_funcionario_entitie->getIdTipoFuncionario(); // Obtenemos el Tipo de Funcionario
         // Es Director y solo el Puede Asignar Oficios
-        if ( $tipo_funcionario === 6 ) {        
+        if ( $tipo_funcionario === 6 || $tipo_funcionario === 3 ) {        
             // Evaluamos si si hizo una consulta desde la caja Search
             if ( $search != null ) {
                //Consulta con ParamSearch
@@ -1093,25 +1093,39 @@ class ListasComunesController extends Controller {
     public function funcionariosAsignadosListAction(Request $request)
     {
         //Instanciamos el Servicio Helpers y Jwt
-        $helpers = $this->get("app.helpers");
+        $helpers = $this->get("app.helpers");                
         
+        //Entity Manager
         $em = $this->getDoctrine()->getManager();
         
         $json = $request->get("json", null);
         $params = json_decode($json);
         
         //Evaluamos el Json
-        if ($json != null) {
+        if ($json != null) {            
             //Variables que vienen del Json ************************************
             //Recogemos el ID del Depto. Funcional *****************************
-            $tipo_funcionario = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null;                       
+            $depto_funcional = (isset($params->idDeptoFunc)) ? $params->idDeptoFunc : null; 
+            $tipo_usuario = (isset($params->idTipoFuncionarioModal)) ? $params->idTipoFuncionarioModal : null; 
             
-            // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
-            $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+            
+            //Evaluamos, Si el Tipo de Usuario es Director General, solo vea los
+            //Directores Subordinados ( TipoUsuario = 6 )
+            if( $tipo_usuario == 5 ){
+                // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
+                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
                     array(
-                        "idDeptoFuncional" => $tipo_funcionario                        
+                        //"idDeptoFuncional" => $depto_funcional                        
+                        "idTipoFuncionario" => [6]                        
                     ));
-
+            }else {
+                // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
+                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                array(
+                    "idDeptoFuncional" => $depto_funcional                        
+                ));
+            }            
+            
             // Condicion de la Busqueda
             if (count( $usuario_asignado ) >= 1 ) {
                 $data = array(

@@ -79,6 +79,11 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 
                 $fecha_modifcacion        = new \DateTime('now');
                 
+                //Depto Funcional | Datos del Token
+                $id_depto_funcional   = $identity->idDeptoFuncional;
+                
+                $id_tipo_usuario   = $identity->idTipoUser;
+                
                 //Evaluamos que los Campos del Json  no sean Null ni 0. ********
                 if($codgio_oficio_interno != null && $codgio_oficio_externo != null && $id_funcionario_asignado != 0 )
                 {
@@ -100,14 +105,39 @@ class SeguimientoCorrespondenciaController extends Controller {
                     
                     
                     // Verificacion del Estado de la Correspondenia ************
-                    $estadoAsigna = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                    // Valida el Perfil del Usuario | Si es Director General, 
+                    // No cambia el Estado 
+                    if( $id_tipo_usuario != 5 ){
+                        //Actualiza el Estado
+                        $estadoAsigna = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
                         array(
                           "idEstado" => $estado_asignado
-                        ));
-                    
-                    $correspondenciaAsigna->setIdestado( $estadoAsigna );
-                    
-                    //$correspondenciaAsigna->setIdEstado( 3 );
+                        ));                    
+                        $correspondenciaAsigna->setIdestado( $estadoAsigna );
+                                                
+                    }else if ( $id_tipo_usuario == 5 ) { 
+                        //Actualiza el Estado
+                        $estadoAsigna = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                            array(
+                              "idEstado" => 7
+                            ));                    
+                        $correspondenciaAsigna->setIdestado( $estadoAsigna );
+                        
+                        //Obtenemos el idDeptoFuncional, del Director Asignado
+                        //Actualiza el Estado | TblUsuarios
+                        $deptoFuncAsigna = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                            array(
+                              "idUsuario" => $id_funcionario_asignado
+                            ));                    
+                        
+                        
+                        //Instanciamos de la Clase TblDepartamentosFuncionales
+                        $depto_funcional = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                            array(
+                               "idDeptoFuncional" => $deptoFuncAsigna->getIdDeptoFuncional()                
+                            ));                    
+                        $correspondenciaAsigna->setIdDeptoFuncional( $depto_funcional ); //Set de Codigo de Depto Funcional
+                    }// FIN | Condicion de Director General
                     
                     // ---------------------------------------------------------
                     //Instanciamos de la Clase TblFuncionarios
@@ -116,8 +146,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                            "idFuncionario" => $id_funcionario_asignado                
                         ));                    
                     $correspondenciaAsigna->setIdFuncionarioAsignado( $funcionario_asignado ); //Set de Codigo de Funcionario Asignado
+                                                            
                     
-                    
+                    //----------------------------------------------------------
                     //Verificacion del Codigo de la Correspondenia *******************
                     $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
                         array(

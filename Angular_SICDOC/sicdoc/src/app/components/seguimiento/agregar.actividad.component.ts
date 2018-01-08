@@ -163,7 +163,8 @@ export class IngresoActividadComponent implements OnInit{
       "idDeptoFunc":"",
       "nombreFuncAsig":"",
       "apellidoFuncAsig":"",
-      "idFuncionarioModal":""
+      "idFuncionarioModal":"",
+      "idTipoFuncionarioModal":""
     };
 
     // Iniciamos los Parametros de Usuarios a Depto Funcionales
@@ -186,7 +187,7 @@ export class IngresoActividadComponent implements OnInit{
     //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Oficio Asignado
-    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null, 3);
+    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null, 3, null);
 
     // Lista de la tabla de Funcionarios
     this.deptoFuncional();
@@ -315,6 +316,9 @@ export class IngresoActividadComponent implements OnInit{
     // Parametros de la Lista de los Funcionarios
     this.tableAgregarActividad.idDeptoFunc = idDeptoFuncIn;
     // console.log( this.tableAgregarActividad);
+    this.identity = JSON.parse(localStorage.getItem('identity'));
+    this.tableAgregarActividad.idTipoFuncionarioModal = this.identity.idTipoUser;
+
     this._listasComunes.listasComunes( this.tableAgregarActividad ,"funcionarios-depto-list").subscribe(
         response => {
           // login successful so redirect to return url

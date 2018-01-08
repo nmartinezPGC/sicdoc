@@ -192,7 +192,8 @@ export class IngresoComunicacionComponent implements OnInit{
   // Variabls para validaciones de Seleccionado
   public maxlengthCodReferencia = "38"; // Defaul Correo
   public minlengthCodReferencia = "5"; // Defaul Correo
-  public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
+  // public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
+  public pattern ="^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$"; // Defaul Correo
 
 
   // Variables para la Persistencia de los Datos en los Documentos
@@ -847,8 +848,9 @@ export class IngresoComunicacionComponent implements OnInit{
        // Seteo de variable de validaciones | Correo
        this.maxlengthCodReferencia = "38";
        this.minlengthCodReferencia = "10";
-       this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
-
+      //  this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
+       this.pattern ="^[^@]+@[^@]+\.[a-zA-Z]{2,}$";
+       
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
        this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";

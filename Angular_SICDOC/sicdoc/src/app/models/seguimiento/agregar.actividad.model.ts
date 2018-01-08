@@ -18,8 +18,9 @@ export class AgregarActividad{
 
       //Datos de la Tabla
       public idDeptoFuncional:number,
-      public idEstadoAsigna:number
-
+      public idEstadoAsigna:number,
+      
+      public idTipoFuncionario:number,
 
     ){}
 
