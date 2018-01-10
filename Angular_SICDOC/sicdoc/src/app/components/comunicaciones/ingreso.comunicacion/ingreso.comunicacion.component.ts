@@ -312,7 +312,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.paramsSecuenciaSCPI = {
       "codSecuencial"  : "",
       "tablaSecuencia"  : "",
-      "idTipoDocumento"  : ""
+      "idTipoDocumento"  : "",
+      "idTipoUsuario"  : "",
+      "idDeptoFuncional"  : ""
     };
 
     // Iniciamos los Parametros de Encabezado de Conunicacion
@@ -515,7 +517,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * ( tipo-documento-list ).
   ******************************************************/
     getlistaTipoDocumentos() {
-    this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+      this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
@@ -822,7 +824,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    getCodigoCorrespondenciaDet( idTipoDocumentoIn:number ){
-     //Llamar al metodo, de Login para Obtener la Identidad
+     //Llamar al metodo, de Generar Secuencia para Obtener la Nueva
     //  this.paramsSecuenciaDetIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
      //Evaluamos el valor del Tipo de Documento
      if( idTipoDocumentoIn == 1 ){
@@ -878,6 +880,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             console.log(response.data);
             // Secuencia de Generacion Automatica | Ejm: SCPI
             // Evalua si por el Tipo de Documento envia los Datos
+            /*******************************************************************
+            * INC. 00001 | Enviar Parametros de Identificacion para su Propio,
+            * Trabajo (Ejm. idTipoDocumento, idTipoFunc, idDeptoFuncional).
+            * Params New: idTipoFunc, idDeptoFuncional
+            */
             if ( idTipoDocumentoIn == 1 || idTipoDocumentoIn == 2 ||
                  idTipoDocumentoIn == 3 || idTipoDocumentoIn == 4  ) {
                 this.listarCodigoCorrespondenciaOfiResp( this.paramsSecuenciaIn.idTipoDocumento );
@@ -892,10 +899,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   /*****************************************************
   * Funcion: FND-00003.2
   * Fecha: 27-09-2017
-  * Descripcion: Obtiene la siguiente secuencia
+  * Descripcion: Obtiene la siguiente secuencia SCPI
   * Objetivo: Obtener el secuencial de la tabla
   * indicada con su codigo
-  * Params: idDocumento
+  * Params: idDocumento, idTipoFunc, idDeptoFuncional
+  * INC.0001 | 2018-01-08 (mas params)
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    listarCodigoCorrespondenciaOfiResp( idDocumento: number ){
@@ -904,7 +912,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.paramsSecuenciaSCPI.tablaSecuencia = "tbl_comunicacion_enc";
     // this.paramsSecuenciaSCPI.idTipoDocumento = "1";
     this.paramsSecuenciaSCPI.idTipoDocumento = idDocumento;
-    //Llamar al metodo, de Login para Obtener Secuencia de SCPI | Oficio
+    //2018-01-08 | Agregar mas Parametros para la Secuencia
+    this.paramsSecuenciaSCPI.idTipoUsuario = this.identity.idTipoUser;
+    this.paramsSecuenciaSCPI.idDeptoFuncional = this.identity.idDeptoFuncional;
+
+    //Llamar al metodo, de Generar Secuencia para Obtener Secuencia de SCPI | Oficio
     // console.log( this.paramsSecuenciaSCPI );
     // Codigos
     let _subSecretariSreciId:number;
@@ -929,51 +941,43 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             console.log( this.JsonOutgetCodigoSecuenciaSCPI );
 
             // Generacion del Codigo Nuevo de SCPI
-            // Sub Secreatria de la SRECI
+            // Sub Secreatria de la SRECI | Id
             _subSecretariSreciId = this.identity.idDireccion;
+            //_subSecretariSreciInciales = this.identity.inicialesDireccion;
+
+            // Direccion de la SRECI | Id
+            _DireccionSreciId = this.identity.idDeptoFuncional;
+            _DireccionSRECIName = this.identity.inicialesDeptoFuncional;
 
             // Direccion de la SRECI
-            _DireccionSreciId = this.identity.idDeptoFuncional;
-
-            // Evalua a que Sub Secreatria Pertenece el Usuario ****************
-            // A Futuro, Utilizar la Llamada a la BD de las Direcciones | 2017-11-21
-            if( _DireccionSreciId == 1 ){
-              // _subSecretariSRECIName = "DCPI";
-              _DireccionSRECIName = "DGCI";
-            } else if ( _DireccionSreciId == 2 ) {
-              // _subSecretariSRECIName = "DPE";
-              _DireccionSRECIName = "DCB";
-            } else if ( _DireccionSreciId == 3 ) {
-              // _subSecretariSRECIName = "ACPM";
-              _DireccionSRECIName = "DCM";
-            } else if ( _DireccionSreciId == 4 ) {
-              // _subSecretariSRECIName = "SE";
-              _DireccionSRECIName = "DCPD";
-            } else if ( _DireccionSreciId == 5 ) {
-              // _subSecretariSRECIName = "SE";
-              _DireccionSRECIName = "DCSS";
-            } else if ( _DireccionSreciId == 6 ) {
-              // _subSecretariSRECIName = "SE";
-              _DireccionSRECIName = "DAEC";
-            } else if ( _DireccionSreciId == 7 ) {
-              // _subSecretariSRECIName = "SE";
-              _DireccionSRECIName = "DPI";
-            } else if ( _DireccionSreciId == 8 ) {
-              // _subSecretariSRECIName = "SE";
-              _DireccionSRECIName = "SSCPI";
-            }
+            //_DireccionSreciId = this.identity.idTipoFunc;
+            // *****************************************************************
 
             // Concatenacion del Codigo de Comunicacion a Responder
             this.codigoSecuenciaGen = this.JsonOutgetCodigoSecuenciaSCPI.codSecuencial;
             this.valorSecuenciaGen =  this.JsonOutgetCodigoSecuenciaSCPI.valor2;
-            // this.comunicacion.codReferenciaSreci = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
-            this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
-                                                   this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
 
-            // Enviamos la Secuencia con Nuevo Valor
-            // this.comunicacion.secuenciaComunicacionSCPI = _subSecretariSRECIName + '-' +  this.codigoSecuenciaGen + '-' + this.valorSecuenciaGen;
-            this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
-                                                          this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod ;
+             /* Evalua a que Sub Secreatria Pertenece el Usuario ***************
+                Valido que el Tipo de Usuario sea de Despacho | Administrador de
+                Correspondencia = 2
+             ******************************************************************/
+             if( _DireccionSreciId == 8 ){ //"SSCPI"
+               // Enviamos la Secuencia con Nuevo Valor | SCPI
+               //Codigo de la Referencia, el cual se Utiliza en el Documento a Send
+               this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
+                                                      this.codigoSecuenciaGen + '-' + _anioCod;
+               //Codigo SCPI | Generado por el Sistema | Sin el Nombre Dir
+               this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
+                                                             this.codigoSecuenciaGen + '-' + _anioCod ;
+             }else {
+               // Enviamos la Secuencia con Nuevo Valor | SCPI
+               this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
+                                                      this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
+               //Codigo SCPI | Generado por el Sistema, con Toda la Contatenacion
+               this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
+                                                             this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod ;
+
+             }
 
           }
         });

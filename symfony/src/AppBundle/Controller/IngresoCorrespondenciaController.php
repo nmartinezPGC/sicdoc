@@ -865,7 +865,7 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Se convierte el Array en String
                 $setTo_array_convert = explode(",", $setTomail);
-                $setTo_array_convertIn = implode(",", $setTo_array_convert);
+                $setTo_array_convertIn = implode(",", $setTo_array_convert);                                             
                 
                 
                 //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
@@ -901,7 +901,8 @@ class IngresoCorrespondenciaController extends Controller{
                         $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
                                "codSecuencial"  => "SCPI",
-                               "idTipoDocumento" => $cod_tipo_documento
+                               "idTipoDocumento" => $cod_tipo_documento,
+                               "idDeptoFuncional" => $identity->idDeptoFuncional                                
                             ));
                         
                         $cod_referenciaSCPI = $secuenciaSCPI->getCodSecuencial();

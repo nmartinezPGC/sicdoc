@@ -1,0 +1,68 @@
+BackendBundle\Entity\TblBitacoraSecuencias:
+    type: entity
+    table: tbl_bitacora_secuencias
+    indexes:
+        IDX_202F3AD7FCF8192D:
+            columns:
+                - id_usuario
+        IDX_202F3AD7FBD636DF:
+            columns:
+                - id_depto_funcional
+    id:
+        idBitacoraSecuencia:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_bitacora_secuencia
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codSecuencia:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: cod_secuencia
+        valor2Old:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: valor_2_old
+        valor2New:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: valor_2_new
+        actSecuencia:
+            type: boolean
+            nullable: true
+            options:
+                default: false
+            column: act_secuencia
+    manyToOne:
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -225,4 +225,62 @@ class TblSecuenciales
     {
         return $this->actualizada;
     }
+    /**
+     * @var \BackendBundle\Entity\TblTipoUsuario
+     */
+    private $idTipoUsuario;
+
+    /**
+     * @var \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    private $idDeptoFuncional;
+
+
+    /**
+     * Set idTipoUsuario
+     *
+     * @param \BackendBundle\Entity\TblTipoUsuario $idTipoUsuario
+     *
+     * @return TblSecuenciales
+     */
+    public function setIdTipoUsuario(\BackendBundle\Entity\TblTipoUsuario $idTipoUsuario = null)
+    {
+        $this->idTipoUsuario = $idTipoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoUsuario
+     *
+     * @return \BackendBundle\Entity\TblTipoUsuario
+     */
+    public function getIdTipoUsuario()
+    {
+        return $this->idTipoUsuario;
+    }
+
+    /**
+     * Set idDeptoFuncional
+     *
+     * @param \BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional
+     *
+     * @return TblSecuenciales
+     */
+    public function setIdDeptoFuncional(\BackendBundle\Entity\TblDepartamentosFuncionales $idDeptoFuncional = null)
+    {
+        $this->idDeptoFuncional = $idDeptoFuncional;
+
+        return $this;
+    }
+
+    /**
+     * Get idDeptoFuncional
+     *
+     * @return \BackendBundle\Entity\TblDepartamentosFuncionales
+     */
+    public function getIdDeptoFuncional()
+    {
+        return $this->idDeptoFuncional;
+    }
 }

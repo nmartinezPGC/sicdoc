@@ -96,6 +96,9 @@ export class FinalizarActividadComponent implements OnInit {
   public apellido2FuncModal;
   public idFuncModal;
   public idCorrepEncModal;
+  //Nueva variable
+  public idTipoComunicacionModal;
+  public idTipoDocumentoModal;
 
 
   // Instacia del Modelo
@@ -194,7 +197,9 @@ export class FinalizarActividadComponent implements OnInit {
     this.paramsSecuenciaOficioRespuesta = {
       "codSecuencial"  : "",
       "tablaSecuencia" : "",
-      "idTipoDocumento" : ""
+      "idTipoDocumento" : "",
+      "idTipoUsuario"  : "",
+      "idDeptoFuncional"  : ""
     };
 
 
@@ -262,6 +267,17 @@ export class FinalizarActividadComponent implements OnInit {
 
     this.finalizarOficios.idDeptoFuncional = this.identity.idDeptoFuncional;
     this.finalizarOficios.idFuncionarioAsigmado = this.identity.sub;
+
+    //Prueba de Ejejcucion de Secuencia | NAM
+    /*MOD.00001 ***************************************************************
+    * Fecha: 2018-01-09 | Movemos el lugar del Llamado de la Carga de los Código
+    * Funciones: listarCodigoCorrespondenciaAgregarActividad(),
+    *            listarCodigoCorrespondenciaDet()
+    ***************************************************************************/
+    // this.listarCodigoCorrespondenciaAgregarActividad(this.idTipoDocumentoModal, this.idTipoComunicacionModal);
+
+    this.listarCodigoCorrespondenciaDet( this.idTipoDocumentoModal, this.idTipoComunicacionModal );
+
 
     // Parametros de l Secuenciales
     // this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
@@ -623,7 +639,7 @@ export class FinalizarActividadComponent implements OnInit {
 
             // Buscamos el Codigo de la Secuencia que vamos a Grabar | SCPI ****
             // Antes el llamdado venia desde:FND-00002
-            this.listarCodigoCorrespondenciaDet( idTipoDocumento, idTipoComunicacion );
+            // this.listarCodigoCorrespondenciaDet( idTipoDocumento, idTipoComunicacion );
 
             //console.log( response.data.codCorrespondenciaDet );
           }
@@ -658,6 +674,11 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.actividadOficio = "";
     this.idCorrepEncModal = "";
 
+    //Asignacion de las variables del  Modal, que se usaran en el Submit
+    //2018-01-09 | Asignacion de variables
+    this.idTipoDocumentoModal = idTipoDocumento;
+    this.idTipoComunicacionModal = idTipoComunicacion;
+
     // Llamamos el Oficio Detalle que tiene el estado Asignado
     this.getlistaOficiosDetalle( idOficioEnc, idEstadoAsign, idTipoDocumento, idTipoComunicacion );
 
@@ -668,7 +689,7 @@ export class FinalizarActividadComponent implements OnInit {
 
     // Cambia el valor de optionModal
     this.optionModal = 2;
- } // FIN : FND-00002
+  } // FIN : FND-00002
 
 
  /****************************************************
@@ -704,7 +725,7 @@ export class FinalizarActividadComponent implements OnInit {
  ******************************************************/
   listarCodigoCorrespondenciaDet( idTipoDocumento:number, idTipoComunicacion:number ){
     //Llamar al metodo, de Login para Obtener la Identidad
-
+    console.log('Paso 1 FND-00004');
     if( idTipoDocumento == 1 ){
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
@@ -818,7 +839,7 @@ export class FinalizarActividadComponent implements OnInit {
            this.JsonOutgetCodigoSecuenciaDet = response.data;
            // Ejecutamos el llamado al la Segunda Secuencia
            this.listarCodigoCorrespondenciaOfiResp( idTipoDocumento );
-          //  console.log( this.JsonOutgetCodigoSecuenciaDet );
+           console.log( this.JsonOutgetCodigoSecuenciaDet );
            //this.listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoFuc );
          }
        });
@@ -834,30 +855,46 @@ export class FinalizarActividadComponent implements OnInit {
  * (gen-secuencia-comunicacion-in).
  ******************************************************/
   listarCodigoCorrespondenciaOfiResp( idTipoDocumento:number ){
-
+    console.log('Paso 2 FND-00005');
     // Validamos que el Tipo de Documentos pertenesaca al Adecuado
     let idTipoDocumentoIN = idTipoDocumento;
+
+    //this.finalizarOficios.idDeptoFuncional = this.identity.idDeptoFuncional;
 
     if( idTipoDocumentoIN == 1 ){
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+      //New params
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
     } else if ( idTipoDocumentoIN == 2 ) {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+      //New params
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
     } else if ( idTipoDocumentoIN == 3 ) {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+      //New params
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     } else if ( idTipoDocumentoIN == 4 ) {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
+      //New params
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     }else {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
+      //New params
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
+      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     }
 
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -887,7 +924,7 @@ export class FinalizarActividadComponent implements OnInit {
 
 
  /*****************************************************
- * Funcion: FND-00005
+ * Funcion: FND-00005.1
  * Fecha: 23-09-2017
  * Descripcion: Obtiene la siguiente secuencia
  * Objetivo: Obtener el secuencial de la tabla
@@ -897,9 +934,9 @@ export class FinalizarActividadComponent implements OnInit {
   listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoIn:number, idTipoComunicacion:number ){
     // Condicion del Secuencial Segun el Tipo de Documento
     //Evaluamos el valor del Tipo de Documento
-    // console.log('Tipo Documento ' + idTipoDocumentoIn);
-    // console.log('Tipo Comunicacion ' + idTipoComunicacion);
-
+    console.log('Paso 2 FND-00005.1');
+    console.log('Paso 2.1 idTipoDocumentoIn FND-00005.1 ' + idTipoDocumentoIn);
+    console.log('Paso 2.2 idTipoComunicacion FND-00005.1 ' + idTipoComunicacion);
     // Iniciamos los Parametros de Secuenciales | Agregar Actividad
     this.paramsSecuenciaActividadAgregar = {
       "codSecuencial"  : "",
@@ -1020,10 +1057,10 @@ export class FinalizarActividadComponent implements OnInit {
              alert('ha ocurrido un error, pulsa F5 para recargar la pagina, si persiste comunicate con el Administrador');
            }else{
              this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
-            //  console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
+             console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
            }
          });
- } // FIN : FND-00005
+ } // FIN : FND-00005.1
 
 
  /*****************************************************

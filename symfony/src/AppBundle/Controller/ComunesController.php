@@ -14,6 +14,8 @@ use BackendBundle\Entity\TblTipoUsuario;
 use BackendBundle\Entity\TblTiposFuncionarios;
 use BackendBundle\Entity\TblDepartamentosFuncionales;
 
+use BackendBundle\Entity\TblBitacoraSecuencias;
+
 
 /**
  * Description of ComunesController
@@ -133,7 +135,15 @@ class ComunesController extends Controller {
         //Se Chekea el Token
         $checkToken = $helpers->authCheck($hash);
         //Evaluamos la Autoriuzacion del Token
-        if($checkToken == true){
+        if($checkToken == true){            
+            //Ejecutamos todo el Codigo restante            
+            $identity = $helpers->authCheck($hash, true);
+            //Datos del Perfil del Usuario
+            $id_usuario = $identity->sub; // Id de Usuario
+                        
+            $id_tipo_usuario = $identity->idTipoUser; // Tipo de Usuario            
+            
+            //Declaracion del Entity Manager
             $em = $this->getDoctrine()->getManager();
 
             $json = $request->get("json", null);
@@ -153,41 +163,94 @@ class ComunesController extends Controller {
             $codigo_secuencia = (isset($params->codSecuencial)) ? $params->codSecuencial : null;
             $tabla_secuencia  = (isset($params->tablaSecuencia)) ? $params->tablaSecuencia : null;
             $tipo_documento   = (isset($params->idTipoDocumento)) ? $params->idTipoDocumento : null;
+                        
+            /* INC.00001 | 2018-01-08 ******************************************
+             * Nuevos Parametros, esto con el fin de Segmentar las Secuencias 
+             * por Direccion
+            ********************************************************************/
+            $tipo_funcionario   = (isset($params->idTipoUsuario)) ? $params->idTipoUsuario : null;
+            $depto_funcional    = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
+            
             
             // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones
             $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
                     array(
-                        "codSecuencial"   => $codigo_secuencia, // Codigo de la Secuencia
-                        "tablaSecuencia"  => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
-                        "idTipoDocumento" => $tipo_documento, // Tipo de Documento (Oficio)
+                        "codSecuencial"     => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
+                        //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
+                        "idDeptoFuncional"  => $depto_funcional, // Depto Funcional (Direccion)
                         //"reservada"       => "N"
                     ));
+            
+            //Opcion de Seleccion **********************************************
             $optSec = 0;
+            
+            
+            //Instacias de Usuarios y Deptos Funcionales
+            //Usuarios 
+            // Query para Obtener el Usuario de la Tabla: TblUsuarios
+            $usuarioBitacora = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                array(
+                    "idUsuario"   => $id_usuario, // Id de Usuario                    
+                ));
+            
+            // Query para Obtener el Usuario de la Tabla: TblDepartamentosFuncionales
+            $usuarioDeptoBitacora = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                array(
+                    "idDeptoFuncional"   => $depto_funcional, // Id de Usuario                    
+                ));
+
+            
             // Condicion para Actualizar Datos de la Secuencia
             if( $secuencias->getReservada() === "N"  ){
                 //Opcion de Secuencia
                 $optSec = 1;
-                $secuencias->setReservada('S'); 
-            
-                //Realizar la Persistencia de los Datos y enviar a la BD
+                $secuencias->setReservada('S');                          
+                
+                // INI MOD.000001 | Ingresamos en la Bitacora | TblBitacoraSecuencias                             
+                // 2018-01-08
+                $bitacoraSecuencias = new TblBitacoraSecuencias(); 
+                
+                $bitacoraSecuencias->setCodSecuencia( $secuencias->getCodSecuencial() );
+                $bitacoraSecuencias->setValor2Old( $secuencias->getValor2() );
+                $bitacoraSecuencias->setValor2New( $secuencias->getValor2() );
+                $bitacoraSecuencias->setIdUsuario( $usuarioBitacora );
+                $bitacoraSecuencias->setIdDeptoFuncional( $usuarioDeptoBitacora );
+                
+                 //Realizar la Persistencia de los Datos y enviar a la BD
                 $em->persist($secuencias);
+                $em->persist($bitacoraSecuencias);
 
                 //Realizar la actualizacion en el storage de la BD
                 $em->flush();
+                // *************************************************************
             } else if ( $secuencias->getReservada() === "S" ) {
                 //$secuencias->setReservada('N'); 
                 //Opcion de Secuencia
                 $optSec = 2;
                 $secuencias->setValor2( $secuencias->getValor2() + 1 ); //Set de valor2 de Secuencia de Comunicacion
                 //$secuencias->setReservada('N'); 
-            
+             
+                //MOD.000001 | Ingresamos en la Bitacora | TblBitacoraSecuencias                             
+                $bitacoraSecuencias = new TblBitacoraSecuencias(); 
+                
+                $bitacoraSecuencias->setCodSecuencia( $secuencias->getCodSecuencial() );
+                $bitacoraSecuencias->setValor2Old( $secuencias->getValor2() );
+                $bitacoraSecuencias->setValor2New( $secuencias->getValor2() + 1);
+                $bitacoraSecuencias->setIdUsuario( $usuarioBitacora );
+                $bitacoraSecuencias->setIdDeptoFuncional( $usuarioDeptoBitacora );
+                
                 //Realizar la Persistencia de los Datos y enviar a la BD
                 $em->persist($secuencias);
+                $em->persist($bitacoraSecuencias);
 
                 //Realizar la actualizacion en el storage de la BD
                 $em->flush();
+                // *************************************************************
             }
             
+            //FIN | MOD.000001
             
             // Validar que la Secuencia no ha sido, reservada por Otro Usuario
             $count_Sec = count($secuencias);
@@ -197,8 +260,8 @@ class ComunesController extends Controller {
             if ( $count_Sec >= 1 ) {
                 // Actualizamos la Suencia a Reservada
                 //Seteo de Datos Generales de la tabla
-                //$secueciasNew = new TblDocumentos();
-                             
+                
+                //Mensaje de Data Obtenida
                 $data = array(
                     "status" => "success",
                     "msg"    => "Seceuncia Encontrada",

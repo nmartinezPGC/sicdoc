@@ -355,4 +355,62 @@ class TblInstituciones
     {
         return $this->idPais;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fechaIngreso = '2999-12-31';
+
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuarioCreador;
+
+
+    /**
+     * Set fechaIngreso
+     *
+     * @param \DateTime $fechaIngreso
+     *
+     * @return TblInstituciones
+     */
+    public function setFechaIngreso($fechaIngreso)
+    {
+        $this->fechaIngreso = $fechaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaIngreso
+     *
+     * @return \DateTime
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
+    }
+
+    /**
+     * Set idUsuarioCreador
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuarioCreador
+     *
+     * @return TblInstituciones
+     */
+    public function setIdUsuarioCreador(\BackendBundle\Entity\TblUsuarios $idUsuarioCreador = null)
+    {
+        $this->idUsuarioCreador = $idUsuarioCreador;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuarioCreador
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuarioCreador()
+    {
+        return $this->idUsuarioCreador;
+    }
 }

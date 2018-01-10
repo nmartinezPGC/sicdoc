@@ -446,7 +446,7 @@ export class ConsultaMasterComponent implements OnInit {
             // Ocultar Columnas
             "columnDefs": [
                   { // Columna de Ingreso / Salida
-                      "targets": [ 6 ],
+                      "targets": [ 7 ],
                       "visible": false,
                       "searchable": true
                   },
