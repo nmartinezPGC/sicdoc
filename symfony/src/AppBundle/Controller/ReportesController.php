@@ -119,7 +119,8 @@ class ReportesController extends Controller{
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
                         $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "                                    
+                                    . "DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
+                                    . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional,  '
                                     . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -166,7 +167,8 @@ class ReportesController extends Controller{
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
                         $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "                                    
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
+                                    . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional,  '
                                     . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -208,7 +210,8 @@ class ReportesController extends Controller{
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
                         $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "                                    
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
+                                    . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional,  '
                                     . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
@@ -251,7 +254,8 @@ class ReportesController extends Controller{
                          *Params: Fechas, Arrays(Estados, Tipos)               *           
                          ******************************************************/
                         $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
-                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "                                    
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
+                                    . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional,  '
                                     . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '

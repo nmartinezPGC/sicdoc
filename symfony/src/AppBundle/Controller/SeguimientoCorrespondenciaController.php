@@ -606,7 +606,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 $pesoDoc = $arr->pesoDoc;
                                 
                                 // Cambiamos el Tipo de extencion jpg => jpeg
-                                if( $extDoc == "jpg" ){
+                                if( $extDoc == "jpg" || $extDoc == "JPG" ){
                                     $extDoc = "jpeg";
                                 }
                                 
@@ -616,6 +616,15 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 if( $extDoc == "PDF" ){
                                     $extDoc = "pdf";
                                 }
+                                //FIN | INC00001
+                                
+                                /* INC00002 | 2018-01-09
+                                * Corregir la Extencion del PNG a png
+                                */
+                                if( $extDoc == "PNG" ){
+                                    $extDoc = "png";
+                                }
+                                //FIN | INC00002
                                 //var_dump($nameDoc);
                                 
                                 $documentosIn = new TblDocumentos();
@@ -738,15 +747,24 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 $pesoDoc = $attachMail->pesoDoc;
                                 
                                 // Cambiamos el Tipo de extencion jpg => jpeg
-                                if( $extDoc == "jpg" ){
+                                if( $extDoc == "jpg" || $extDoc == "JPG" ){
                                     $extDoc = "jpeg";
                                 }
                                 
-                                // Cambiamos el Tipo de extencion PDF => pdf
+                                // INC00001 | Cambiamos el Tipo de extencion PDF => pdf
                                 //Fecha: 2017-01-03 | Incidencia con PDF
                                 if( $extDoc == "PDF" ){
                                     $extDoc = "pdf";
                                 }
+                                //FIN | INC00001
+                                
+                                /* INC00002 | 2018-01-09
+                                * Corregir la Extencion del PNG a png
+                                */
+                                if( $extDoc == "PNG" ){
+                                    $extDoc = "png";
+                                }
+                                //FIN | INC00002
                                 
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
                                                         
