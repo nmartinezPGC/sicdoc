@@ -39,7 +39,7 @@ BackendBundle\Entity\TblInstituciones:
         descInstitucion:
             type: string
             nullable: true
-            length: 60
+            length: 120
             options:
                 fixed: false
             column: desc_institucion
@@ -72,7 +72,7 @@ BackendBundle\Entity\TblInstituciones:
         emailInstitucion:
             type: string
             nullable: true
-            length: 60
+            length: 120
             options:
                 fixed: false
             column: email_institucion

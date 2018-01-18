@@ -30,7 +30,7 @@ BackendBundle\Entity\TblPais:
         descPais:
             type: string
             nullable: true
-            length: 30
+            length: 100
             options:
                 fixed: false
             column: desc_pais

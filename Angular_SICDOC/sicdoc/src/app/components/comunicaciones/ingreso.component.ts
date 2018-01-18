@@ -850,7 +850,7 @@ export class IngresoComunicacionComponent implements OnInit{
        this.minlengthCodReferencia = "10";
       //  this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
        this.pattern ="^[^@]+@[^@]+\.[a-zA-Z]{2,}$";
-       
+
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
        this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";
@@ -1724,6 +1724,10 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   protected onSelectedFunc( item: CompleterItem ) {
     // Validar si hay datos Previos
+
+    if( this.comunicacion.setTomail == '' ){
+      this.selectedFuncionarioAll = '';
+    }
 
     if( this.selectedFuncionarioAll == '' ){
       // alert( this.selectedFuncionarioAll );

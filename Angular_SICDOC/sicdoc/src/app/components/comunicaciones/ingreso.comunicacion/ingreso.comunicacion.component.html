@@ -26,7 +26,7 @@
       </div>
 
       <!-- Loader de Carga de la Pagina -->
-      <div class="loader-new" *ngIf="loading == 'show' " >          
+      <div class="loader-new" *ngIf="loading == 'show' " >
         <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
       </div>
 
@@ -76,9 +76,10 @@
   					<div class="form-group" >
                <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia"
                     ngControl="temaCorrespondencia" [(ngModel)]="comunicacion.temaCorrespondencia"
-                   class="form-control input-lg" required placeholder="Tema de la Comunicacion" tabindex="2" minlength="7">
-                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Ingresa el Tema de la Comunicacion</small>
+                   class="form-control input-lg" required placeholder="Tema de la Comunicación" tabindex="2" maxlength="60" minlength="7">
+                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Ingresa el Tema de la Comunicación</small>
                   <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
+                  <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.maxlength" >Has sobrepasado el limite del campo {{ temaCorrespondencia.errors.maxlength.requiredLength }} caracteres</small>
   					</div>
   				</div>
 
@@ -214,10 +215,10 @@
                    placeholder="Selecciona un Funcionario de contacto" (selected)="onSelectedFunc($event)" >
                </ng2-completer>
 
-               <textarea #observaciones="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
-                   tabindex="3" disabled="true"
+               <textarea #setTomail="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
+                   tabindex="3"
                    ngControl="setTomail" [(ngModel)]="comunicacion.setTomail">{{selectedFuncionarioAll}}</textarea>
-                <!-- <p><strong>Copia a:</strong> {{selectedFuncionarioAll}}</p> -->
+                <p><strong>Copia a:</strong> {{comunicacion.setTomail}}</p>
               </div>
             </div>
 

@@ -1125,8 +1125,12 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   protected onSelectedFunc( item: CompleterItem ) {
     // Validar si hay datos Previos
 
+    if( this.comunicacion.setTomail == '' ){
+      this.selectedFuncionarioAll = '';
+    }
+
     if( this.selectedFuncionarioAll == '' ){
-      // alert( this.selectedFuncionarioAll );
+      //alert( this.selectedFuncionarioAll );
       this.selectedFuncionario = item? item.originalObject.emailFuncionario : "";
       this.selectedFuncionarioAll = this.selectedFuncionario;
     }else {
