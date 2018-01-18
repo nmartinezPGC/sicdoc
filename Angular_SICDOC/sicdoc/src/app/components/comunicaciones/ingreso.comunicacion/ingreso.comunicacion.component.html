@@ -216,9 +216,11 @@
                </ng2-completer>
 
                <textarea #setTomail="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
-                   tabindex="3"
+                   tabindex="3" disabled="true"
                    ngControl="setTomail" [(ngModel)]="comunicacion.setTomail">{{selectedFuncionarioAll}}</textarea>
-                <p><strong>Copia a:</strong> {{comunicacion.setTomail}}</p>
+                <!-- <p><strong>Copia a:</strong> {{comunicacion.setTomail}}</p> -->
+                <!-- Boton para limpiar la Data de Contactos -->
+                <button type="button" (click)="cleanContact()" class="btn btn-primary btn-sm">Borrar Contactos</button>
               </div>
             </div>
 

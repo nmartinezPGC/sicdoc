@@ -257,9 +257,16 @@ export class IngresoComunicacionComponent implements OnInit{
     };
 
 
-
     ///FIN prueba
 
+    //Llamamos el evento de Borrar ña Fila Seleccionada
+    // $(document).on('click', '.delDoc', function (event) {
+    //   event.preventDefault();
+    //     var valores = $(this).parents("tr").find("td")[0].innerHTML;
+    //     $(this).closest('tr').remove();
+    //
+    //     alert('Hola ' + valores);
+    // });
 
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
@@ -1459,6 +1466,18 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
+  * Funcion: FND-00011.1
+  * Fecha: 17-01-2018
+  * Descripcion: Limpia el Arreglo de Contactos
+  * ( cleanContact ).
+  ******************************************************/
+  cleanContact(){
+    //Borra el Contenido del Arreglo de Contactos
+    this.comunicacion.setTomail = "";
+  } // FIN : FND-00011.1
+
+
+  /*****************************************************
   * Funcion: FND-00012
   * Fecha: 08-11-2017
   * Descripcion: Carga de los Memos que se estan Pend.
@@ -1624,7 +1643,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
-  * Funcion: FND-00011
+  * Funcion: FND-00017
   * Fecha: 18-10-2017
   * Descripcion: Creacion de nuevo File input
   * ( createNewFileInput ).
@@ -1664,14 +1683,28 @@ export class IngresoComunicacionComponent implements OnInit{
                       '   <td>' + newSecAct + '</td> ' +
                       '   <td>'+ this.extencionDocumento +'</td> ' +
                       '   <td>'+ this.seziDocumento +'</td> ' +
-                      '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
+                      // '   <td><a style="cursor: pointer" class="delDoc"> Borrar </a></td> ' +
                       ' </tr>');
 
-  } // FIN | FND-00011
+   console.log(this.JsonOutgetListaDocumentos);
 
+  } // FIN | FND-00017
 
   /*****************************************************
-  * Funcion: FND-00012
+  * Funcion: FND-00017
+  * Fecha: 18-10-2017
+  * Descripcion: Creacion de nuevo File input
+  * ( createNewFileInput ).
+  ******************************************************/
+  deleteItemTable(){
+    $(document).on('click', '.delDoc', function (event) {
+      event.preventDefault();
+      $(this).closest('tr').remove();
+    });
+  }
+
+  /*****************************************************
+  * Funcion: FND-00018
   * Fecha: 19-10-2017
   * Descripcion: Remove File input
   * ( removeFileInput ).
@@ -1684,7 +1717,7 @@ export class IngresoComunicacionComponent implements OnInit{
         alert('Ejecuto Fun');
           console.log( this.JsonOutgetListaDocumentos );
       });
-  } // FIN | FND-00012
+  } // FIN | FND-00018
 
 
   /*****************************************************

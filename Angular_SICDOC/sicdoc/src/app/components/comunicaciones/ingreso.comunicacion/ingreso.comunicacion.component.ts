@@ -1109,11 +1109,22 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                         '   <td>' + newSecAct + '</td> ' +
                         '   <td>'+ this.extencionDocumento +'</td> ' +
                         '   <td>'+ this.seziDocumento +'</td> ' +
-                        '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
+                        // '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
                         ' </tr>');
 
   } // FIN | FND-00011
 
+
+  /*****************************************************
+  * Funcion: FND-00011.1
+  * Fecha: 17-01-2018
+  * Descripcion: Limpia el Arreglo de Contactos
+  * ( cleanContact ).
+  ******************************************************/
+  cleanContact(){
+    //Borra el Contenido del Arreglo de Contactos
+    this.comunicacion.setTomail = "";
+  } // FIN : FND-00011.1
 
   /*****************************************************
   * Funcion: FND-00003.1
