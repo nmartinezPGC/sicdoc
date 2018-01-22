@@ -30,12 +30,17 @@
         <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
       </div>
 
-		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)"  name="ingresoComunicacionForm" role="form">
+
+
+
+
+		<form #ingresoComunicacionForm="ngForm" (ngSubmit)="onSubmit(registerComunicacion)"   name="ingresoComunicacionForm" role="form">
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
 
-      <!-- <div class="form-group">
-            <angular2-multiselect  [data]="itemList"
+
+      <!-- <div class="form-group"> -->
+            <angular2-multiselect [data]="itemList" name="selectPaises"
                           [settings]="settings"
                           [(ngModel)]="selectedItems"
                           (onSelect)="onItemSelect($event)"
@@ -43,8 +48,9 @@
                           (onSelectAll)="onSelectAll($event)"
                           (onDeSelectAll)="onDeSelectAll($event)">
             </angular2-multiselect>
-      </div>
-      <br> -->
+      <!-- </div> -->
+      <br>
+
 
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -55,7 +61,7 @@
       <div class="panel-collapse collapse" id="datosGen">
         <!-- Fila de Tipo de Comunicaciones -->
         <div class="row">
-          <!-- Direccion Encargada del tema de la Comunicacion -->
+          <!-- Tipo de Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-4">
             <div class="form-group">
               <select #idTipoDocumento="ngModel" class="form-control" name="idTipoDocumento" id="idTipoDocumento" required
@@ -67,6 +73,20 @@
               <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicacion</small>
             </div>
          </div>
+
+         <!-- Comunicacion sin Seguimiento | Estado = 5 -->
+         <!-- <div class="col-xs-12 col-sm-6 col-md-6"> -->
+           <!-- <fieldset class="scheduler-border">
+           <legend class="scheduler-border">Comunicación sin Seguimiento</legend> -->
+             <!-- <div class="form-group">
+               <label class="custom-control custom-checkbox">
+                 <input type="checkbox" name="chkTipoCom"  value="{{ idTipoComMemo }}" class="custom-control-input chkAllTiposCom">
+                 <span class="custom-control-indicator"></span>
+                 <span class="custom-control-description">Sin Respuesta</span>
+               </label>
+            </div> -->
+           <!-- </fieldset> -->
+         <!-- </div> -->
         </div>
 
         <!-- Informacion General -->
@@ -76,7 +96,7 @@
                <input #codReferenciaSreci="ngModel" type="text" name="codReferenciaSreci" id="codReferenciaSreci"
                     ngControl="codReferenciaSreci" [(ngModel)]="comunicacion.codReferenciaSreci" pattern="{{ pattern }}"
                    class="form-control input-lg" required placeholder="Codigo de Referencia" tabindex="1" maxlength="{{ maxlengthCodReferencia }}" minlength="5">
-                  <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Codigo de Referencia</small>
+                  <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.required" >Ingresa el Código de Referencia</small>
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.pattern" >El campo no tiene formato correcto</small>
                   <small class="form-text text-muted" *ngIf="codReferenciaSreci.errors?.minlength" >Se nesesita por lo menos {{ codReferenciaSreci.errors.minlength.requiredLength }} caracteres</small>
   					</div>
@@ -96,20 +116,22 @@
           <div class="col-xs-12 col-sm-6 col-md-12">
             <div class="form-group">
                 <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="3"
-                    placeholder="Ingresa la Descripcion de la Comunicacion" tabindex="3" required minlength="10"
+                    placeholder="Ingresa la Descripción de la Comunicación" tabindex="3" required minlength="10"
                     ngControl="descCorrespondencia" [(ngModel)]="comunicacion.descCorrespondencia"></textarea>
-                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Descripcion de la comunicacion</small>
+                <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Ingresa el Descripción de la comunicación</small>
                 <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
             </div>
           </div>
         </div>
 
-
+        <hr class="hr-new">
         <div class="row">
           <!-- Lista de Paises -->
-          <div class="col-xs-12 col-sm-6 col-md-3">
+          <div class="col-xs-12 col-sm-6 col-md-4">
             <div class="form-group">
-              <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+             <h6>País / Entidad de Comunicación</h6>
+              <select title="País / Entidad donde viene la Comunicación"
+                    #idPais="ngModel" class="form-control" name="idPais" id="idPais"
                     ngControl="idPais" [(ngModel)]="comunicacion.idPais" tabindex="4" >
                   <option value="0">País</option>
                   <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
@@ -119,9 +141,11 @@
           </div>
 
           <!-- Tipo de Institucion -->
-          <div class="col-xs-12 col-sm-6 col-md-4">
+          <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
-              <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+              <h6>Tipo de Institución</h6>
+              <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
+                    #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
                     ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" tabindex="5" (change)="getlistaInstituciones()" >
                   <option value="0" >Tipo de Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
@@ -133,7 +157,9 @@
           <!-- Instituciones de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-5">
             <div class="form-group">
-              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion" required
+              <h6>Institución de Comunicación</h6>
+              <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación "
+                    #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion" required
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6" (change)="getlistaInstituciones()" >
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }} - {{ list.perfilInstitucion }}</option>
@@ -144,8 +170,8 @@
              <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
             </div>
           </div>
-
         </div>
+
 
         <!-- Fecha de Entrega -->
         <div class="row">
@@ -189,7 +215,7 @@
          <div class="col-xs-12 col-sm-6 col-md-6">
            <div class="form-group">
              <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional" required
-                   ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional" tabindex="9"  >
+                   ngControl="idDeptoFuncional" [(ngModel)]="comunicacion.idDeptoFuncional" tabindex="9"  (change)="getlistaUsuariosDirectorSRECI()" >
                  <option value="0">Dirección Responsable</option>
                  <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECI" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
              </select>
@@ -200,8 +226,8 @@
        </div>
 
       <!-- Fila de los Funcionarios -->
-      <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1" >
-        <!-- Tipo Funcionario Encargado de la Comunicacion -->
+      <!-- Tipo Funcionario Encargado de la Comunicacion -->
+      <!-- <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1" >
         <div class="col-xs-12 col-sm-6 col-md-6">
           <div class="form-group">
             <select #idTipoFuncionario="ngModel" class="form-control" name="idTipoFuncionario" id="idTipoFuncionario" required
@@ -212,11 +238,11 @@
             <small class="form-text text-muted" *ngIf="idTipoFuncionario.value == 0 || idTipoFuncionario.value == null " >Debes Seleccionar un Tipo de Funcionario</small>
             <small class="form-text text-muted" *ngIf="idTipoFuncionario.errors?.required" >Debes Seleccionar un Tipo de Funcionario</small>
           </div>
-       </div>
+       </div> -->
 
 
        <!-- Funcionario Encargado de la Comunicacion -->
-       <div class="col-xs-12 col-sm-6 col-md-6">
+       <!-- <div class="col-xs-12 col-sm-6 col-md-6">
          <div class="form-group">
            <select #idUsuarioAsaignado="ngModel" class="form-control" name="idUsuarioAsaignado" id="idUsuarioAsaignado" required
                  ngControl="idUsuarioAsaignado" [(ngModel)]="comunicacion.idUsuarioAsaignado" tabindex="11"  >
@@ -228,11 +254,11 @@
            <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.errors?.required" >Debes Seleccionar un Funcionario</small>
          </div>
       </div>
-
-      </div>
+      </div>-->
 
         <!-- Boton de Agregar Nueva Direcion Acompañante -->
         <!-- <input type="button" id="btAdd" value="Añadir Elemento" class="bt" (click)="fnd()" /> -->
+        <hr>
         <div class="row">
           <!-- Direccion Acompañante del tema de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-6">
@@ -387,7 +413,7 @@
       <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
       <div class="card-block" style="margin-left:8px">
         <h4 class="card-title">Resumen</h4>
-        <p class="card-text">Resumen de la informacion registrada de las Comunicaniones.</p>
+        <p class="card-text">Resumen de la información registrada de las Comunicaciones.</p>
       </div>
       <ul class="list-group list-group-flush">
 

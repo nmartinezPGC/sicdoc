@@ -42,3 +42,11 @@
   margin-left: 40%;
   margin-top: 20%
 }
+
+.hr-new {
+  border: 1px solid #30A7EE;
+  border-radius: 200px /8px;
+  height: 0px;
+  width: 90%;
+  text-align: center;
+ }

@@ -1208,6 +1208,63 @@ class ListasComunesController extends Controller {
     }//FIN | FND00017
     
     
+    
+    /**
+     * @Route("/funcionarios-list-director", name="funcionarios-list-director")
+     * Creacion del Controlador: Funcionarios Tipo Director
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.1
+     * Funcion: FND00017.1
+     */
+    public function funcionariosDirectorListAction(Request $request)
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Tipo de Funcionario***************************
+            $id_depto_funcional = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
+            
+            // Query para Obtener el Dato del Funcionario de la Tabla: TblFuncionarios
+            $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                    array(
+                        "idDeptoFuncional" => $id_depto_funcional,
+                        "idTipoFuncionario" => 6
+                    ));
+
+            // Condicion de la Busqueda
+            if (count( $usuario_asignado ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $usuario_asignado
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos de Director en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "Hay un Error con los Parametros enviados, revise la información o comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00017.1
+    
+    
     /**
      * @Route("/finalizar-oficios-list", name="finalizar-oficios-list")
      * Creacion del Controlador: Finalizar Oficio asignado

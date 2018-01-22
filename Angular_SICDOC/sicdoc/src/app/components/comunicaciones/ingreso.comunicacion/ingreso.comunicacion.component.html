@@ -94,12 +94,15 @@
           </div>
         </div>
 
+        <hr class="hr-new">
         <!-- Institucion de COmunicacion -->
         <div class="row">
           <!-- Lista de Paises -->
-  				<div class="col-xs-12 col-sm-6 col-md-3">
+  				<div class="col-xs-12 col-sm-6 col-md-4">
   					<div class="form-group">
+              <h6>País / Entidad de Comunicación</h6>
               <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+                    title="País / Entidad donde viene la Comunicación"
                     ngControl="idPais" [(ngModel)]="comunicacion.idPais" tabindex="4">
                   <option value="0">País</option>
                   <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
@@ -109,9 +112,11 @@
   				</div>
 
           <!-- Tipo de Institucion -->
-          <div class="col-xs-12 col-sm-6 col-md-4">
+          <div class="col-xs-12 col-sm-6 col-md-3">
   					<div class="form-group">
-              <select #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+              <h6>Tipo de Institución</h6>
+              <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
+                    #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
                     ngControl="idTipoInstitucion" [(ngModel)]="comunicacion.idTipoInstitucion" tabindex="5"
                     (change)="getlistaInstituciones()" >
                   <option value="0" >Tipo de Institución</option>
@@ -124,7 +129,9 @@
           <!-- Instituciones de la Comunicacion -->
           <div class="col-xs-12 col-sm-6 col-md-5">
             <div class="form-group">
-              <select #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+              <h6>Institución de Comunicación</h6>
+              <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación"
+                    #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6">
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.perfilInstitucion }} | {{ list.descInstitucion }}</option>
@@ -311,7 +318,7 @@
       <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
       <div class="card-block" style="margin-left:8px">
         <h4 class="card-title">Resumen</h4>
-        <p class="card-text">Resumen de la informacion registrada de las Comunicaniones.</p>
+        <p class="card-text">Resumen de la información registrada de las Comunicaciones.</p>
       </div>
       <ul class="list-group list-group-flush">
         <!-- Oficios -->

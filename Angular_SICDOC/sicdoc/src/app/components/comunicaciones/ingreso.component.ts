@@ -152,6 +152,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
   public JsonOutgetlistaTipoFuncionariosSRECI:any[];
   public JsonOutgetlistaFuncionariosSRECI:any[];
+  public JsonOutgetlistaFuncionariosDirectoresSRECI:any[];
   public JsonOutgetlistaTiposDocumentos:any[];
 
   // public JsonOutgetCodigoSecuenciaNew:any[];
@@ -234,24 +235,28 @@ export class IngresoComunicacionComponent implements OnInit{
   ngOnInit(){
     //ini prueba
     this.itemList = [
-      { "id": 1, "itemName": "India" },
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" },
-      { "id": 5, "itemName": "South Korea" },
-      { "id": 6, "itemName": "Brazil" }
+      { "id": 1, "itemName": "India", "name":"Nahum" },
+      { "id": 2, "itemName": "Singapore", "name":"Aaron" },
+      { "id": 3, "itemName": "Australia", "name":"Eva" },
+      { "id": 4, "itemName": "Canada", "name":"Maria" },
+      { "id": 5, "itemName": "South Korea", "name":"Meredith" },
+      { "id": 6, "itemName": "Brazil", "name":"Diego" },
+      { "id": 7, "itemName": "Argentina", "name":"Evangeline" },
+      { "id": 8, "itemName": "Perú", "name":"Vannessa" }
     ];
 
     this.selectedItems = [
       { "id": 1, "itemName": "India" },
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" }];
+      // { "id": 2, "itemName": "Singapore" },
+      // { "id": 3, "itemName": "Australia" },
+      // { "id": 4, "itemName": "Canada" }
+    ];
+
     this.settings = {
       singleSelection: false,
-      text: "Select Countries",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      text: "Selecciona los Paises",
+      selectAllText: 'Selecciona Todos',
+      unSelectAllText: 'Deselecciona Todos',
       enableSearchFilter: true,
       badgeShowLimit: 3
     };
@@ -322,7 +327,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Iniciamos los Parametros de Usuarios a Asignar el Oficio
     this.paramsTipoFuncionario = {
-      "idTipoFuncionario"  : ""
+      "idTipoFuncionario"  : "",
+      "idDeptoFuncional"  : ""
     };
 
 
@@ -578,7 +584,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Iniciamos los Parametros de Usuarios a Asignar Oficios
     this.paramsTipoFuncionario = {
-      "idTipoFuncionario"  : ""
+      "idTipoFuncionario"  : "",
+      "idDeptoFuncional"  : ""
     };
 
     this.status = "hide";
@@ -1287,6 +1294,7 @@ export class IngresoComunicacionComponent implements OnInit{
   getlistaUsuariosAsinadosSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
     this.paramsTipoFuncionario.idTipoFuncionario = this.comunicacion.idTipoFuncionario;
+    // this.paramsTipoFuncionario.idTipoFuncionario = this.comunicacion.idDeptoFuncional;
 
     this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list").subscribe(
         response => {
@@ -1298,10 +1306,43 @@ export class IngresoComunicacionComponent implements OnInit{
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosSRECI = response.data;
+            this.getlistaUsuariosDirectorSRECI();
             // console.log(this.JsonOutgetlistaFuncionariosSRECI);
           }
         });
   } // FIN : FND-00007.1.1.3
+
+
+  /*****************************************************
+  * Funcion: FND-00007.1.1.4
+  * Fecha: 18-01-2018
+  * Descripcion: Carga la Lista de las Funcionaios de
+  * la SRECI, Tipo Director para poder asignarles el Oficios
+  * a Ingresar.
+  * Objetivo: Obtener la lista de Funcionarios SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * ( funcionarios-list-director ).
+  * Params = paramsIdDeptoFuncional
+  ******************************************************/
+  getlistaUsuariosDirectorSRECI() {
+    //Llamar al metodo, de listasComunes para Obtener la Identidad
+    this.paramsTipoFuncionario.idDeptoFuncional = this.comunicacion.idDeptoFuncional;
+
+    this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list-director").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaFuncionariosDirectoresSRECI = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaFuncionariosDirectoresSRECI = response.data;
+            console.log(this.JsonOutgetlistaFuncionariosDirectoresSRECI);
+            // this.comunicacion.idFuncionario = JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
+          }
+        });
+  } // FIN : FND-00007.1.1.4
 
 
   /*****************************************************
