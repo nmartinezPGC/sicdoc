@@ -466,18 +466,20 @@ export class IngresoComunicacionComponent implements OnInit{
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
           this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+      //}else if( this.identity.idTipoFunc == 4 || this.identity.idTipoFunc == 6 ){
       }else if( this.identity.idTipoFunc == 6 ){
         this.comunicacion.idEstado = "7";
         this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
         this.comunicacion.idDireccionSreci = this.identity.idDireccion;
         this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-      }else
-      {
+      }else {
         this.comunicacion.idEstado = "7";
       }
 
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
+
+      console.log(this.comunicacion);
 
       // Llamado al Procedo de Registro de Comunicacion
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
@@ -1339,6 +1341,9 @@ export class IngresoComunicacionComponent implements OnInit{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosDirectoresSRECI = response.data;
             console.log(this.JsonOutgetlistaFuncionariosDirectoresSRECI);
+            this.comunicacion.idDeptoFuncional = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
+            this.comunicacion.idDireccionSreci = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
+            this.comunicacion.idUsuarioAsaignado = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idUsuario;
             // this.comunicacion.idFuncionario = JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
           }
         });
