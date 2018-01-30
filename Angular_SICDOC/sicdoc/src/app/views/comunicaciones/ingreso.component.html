@@ -178,8 +178,9 @@
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
                 <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega </label>
-                <input #fechaMaxEntrega class="form-control" type="date"  value="2017-09-11" tabindex="4" required
-                name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" tabindex="7" [(ngModel)]="comunicacion.fechaMaxEntrega" >
+                <input #fechaMaxEntrega class="form-control" type="date"  value="{{ fechafin }}" tabindex="4" required
+                  name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" tabindex="7" 
+                  [(ngModel)]="comunicacion.fechaMaxEntrega" >
 
             </div>
           </div>

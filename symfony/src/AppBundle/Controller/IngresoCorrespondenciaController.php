@@ -1304,7 +1304,7 @@ class IngresoCorrespondenciaController extends Controller{
                                         array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
                                                'oficioExtNo' => $cod_referenciaSreci, 'oficioInNo' => $cod_correspondencia . "-" . $new_secuencia,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
-                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => $fecha_maxima_entrega_convert,
+                                               'fechaIngresoOfi' => strval($fecha_maxima_entrega), 'fechaMax' => date_format($fecha_ingreso, "Y-m-d"),
                                                 'obsComunicacion' => $observacion_correspondencia, 'institucionCom' => $institucion->getPerfilInstitucion())
                                     ), 'text/html' );  
                            
@@ -1426,6 +1426,7 @@ class IngresoCorrespondenciaController extends Controller{
         // Recibe los Parametros de la Funcion, en un Formato TimeStamp ********
         // Incidencia de Menos un Dia | Se suma 86400 que es un Dia en
         // TimeStamp
+        //$fecha_time_stamp_In = $fecha_time_stamp + 86400;
         $fecha_time_stamp_In = $fecha_time_stamp + 86400;
         
         // Decodificamos el Json con su Campo de Fechas | es nesesario que se **

@@ -71,6 +71,9 @@ export class FinalizarActividadComponent implements OnInit {
   public JsonOutgetCodigoSecuenciaDet;
   // public JsonOutgetCodigoSecuenciaOfiResp:any[];
   public JsonOutgetCodigoSecuenciaOfiResp;
+  public SendCodigoSecuenciaOfiResp;
+  public SendValorSecuenciaOfiResp;
+
   // public JsonOutgetCodigoSecuenciaActividadAgregar:any[];
   public JsonOutgetCodigoSecuenciaActividadAgregar;
 
@@ -283,14 +286,18 @@ export class FinalizarActividadComponent implements OnInit {
     // this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
     this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet.codSecuencial;
     // this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
-    this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
+    // this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
+    this.codigoSecuenciaOficioRespuesta = this.SendCodigoSecuenciaOfiResp;
+    // console.log('Gen SCPI');
+    // console.log(this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial);
 
     // this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial;
     this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
     // this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
     this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet.valor2 + 1;
     // this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
-    this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp.valor2 + 1;
+    // this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp.valor2 + 1;
+    this.valorSecuenciaOficioRespuesta  = this.SendValorSecuenciaOfiResp + 1;
     // this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
     this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
     //console.log( this.JsonOutgetCodigoSecuenciaDet );
@@ -324,7 +331,7 @@ export class FinalizarActividadComponent implements OnInit {
       let token1 = this._finalizarOficio.getToken();
       this.loading = 'show';
       this.loading_table = 'show';
-      // console.log( this.finalizarOficios );
+      console.log( this.finalizarOficios );
 
       // Evalua que Opcion va a Enviar por el Formulario ***********************
       // Opcion de Finalizar Oficio ********************************************
@@ -659,7 +666,7 @@ export class FinalizarActividadComponent implements OnInit {
              nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
              idFuncionarioIn:number, idEstadoAsign:number, idOficioEnc:number,
              idTipoDocumento:number, idTipoComunicacion:number ){
-   // Seteo de las varibles de la Funcion
+    // Seteo de las varibles de la Funcion
     this.codOficioIntModal = codOficioIntIn;
     this.codOficioRefModal = codOficioRefIn;
     this.idDeptoFuncionalModal = idDeptoIn;
@@ -826,7 +833,7 @@ export class FinalizarActividadComponent implements OnInit {
 
 
     //Llamar al metodo, de Login para Obtener la Identidad
-    // console.log('Entro en 1 listarCodigoCorrespondenciaDet');
+    console.log('Entro en 1 listarCodigoCorrespondenciaDet');
     this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
          // login successful so redirect to return url
@@ -899,8 +906,8 @@ export class FinalizarActividadComponent implements OnInit {
 
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);
-     // console.log('Entro en 2 listarCodigoCorrespondenciaOfiResp');
-     // console.log(this.paramsSecuenciaOficioRespuesta);
+     console.log('Entro en 2 listarCodigoCorrespondenciaOfiResp');
+     console.log(this.paramsSecuenciaOficioRespuesta);
 
    this._listasComunes.listasComunesToken( this.paramsSecuenciaOficioRespuesta, "gen-secuencia-comunicacion-in" ).subscribe(
        response => {
@@ -913,7 +920,10 @@ export class FinalizarActividadComponent implements OnInit {
 
          }else{
            this.JsonOutgetCodigoSecuenciaOfiResp = response.data;
-           // console.log( this.JsonOutgetCodigoSecuenciaOfiResp );
+          //  console.log('Gen SCPI');
+          this.SendCodigoSecuenciaOfiResp = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
+          this.SendValorSecuenciaOfiResp = this.JsonOutgetCodigoSecuenciaOfiResp.valor2;
+          //  console.log( this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial );
          }
        },
          ( error ) => {

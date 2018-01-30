@@ -73,13 +73,14 @@
               </div> -->
               <thead>
                   <tr>
+                      <th style="width:5px">No</th>
                       <th>Código Interno</th>
-                      <th>Código Referencia</th>
-                      <th>Tipo Comunicación</th>
-                      <th>Dirección</th>
-                      <th>Fecha Creación</th>
-                      <th>Fecha Entrega.</th>
-                      <th>Institución Remitente</th>
+                      <th >Código Referencia</th>
+                      <th>Tipo Com.</th>
+                      <th>Dirección / SRECI</th>
+                      <th>Fecha / Creación</th>
+                      <th>Fecha / Entrega</th>
+                      <th>Institución / Com.</th>
                       <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
                       <th>Funcionario Asignado</th>
@@ -88,7 +89,8 @@
                   </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc">
+                <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc; let i = index">
+                  <td>{{ i + 1 }}</td>
                   <td style="width:80px">{{ item.codCorrespondenciaEnc }}</td>
                   <td style="width:80px">{{ item.codReferenciaSreci }}</td>
                   <td >{{ item.descTipoDocumento }}</td>
@@ -101,10 +103,10 @@
                     {{ item.descInstitucion }}
                   </td>
                   <!-- <td class="cortar">{{ item.descCorrespondenciaEnc }}</td> -->
-                  <td > {{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }} </td>
                   <td style="cursor: help" title="Descripción: {{ item.descCorrespondenciaEnc }} ">
-                      {{ item.temaComunicacion }}
+                    {{ item.temaComunicacion }}
                   </td>
+                  <td > {{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }} </td>
                   <td style="width:10px"> <a style="cursor: pointer;" class="nav-link">
                       <span [ngClass]="{ 'text-warning': item.idEstado == 3,
                                       'text-primary': item.idEstado == 5,
@@ -134,7 +136,7 @@
             		<div class="modal-content">
             			<div class="modal-header">
             				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="material-icons">close</i> </button>
-            				<h4 class="modal-title" id="myModalLabel">Oficio No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+            				<h4 class="modal-title" id="myModalLabel">Com. / No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
 
                   </div>
 

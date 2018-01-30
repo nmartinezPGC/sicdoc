@@ -377,31 +377,32 @@ export class SeguimientoActividadComponent implements OnInit {
   valoresdataEncJson( dataIn ){
     // Instanciamos los Valores al Json de retorno, que Utilizara el Html
     // Area de Identificacion
-    this.tableSeguimientoActividadList.codComunicacionInterno    = dataIn.codCorrespondenciaEnc;
-    this.tableSeguimientoActividadList.codComunicacionReferencia = dataIn.codReferenciaSreci;
+    console.log(dataIn[0].codCorrespondenciaEnc);
+    this.tableSeguimientoActividadList.codComunicacionInterno    = dataIn[0].codCorrespondenciaEnc;
+    this.tableSeguimientoActividadList.codComunicacionReferencia = dataIn[0].codReferenciaSreci;
     // Area de Fechas
-    this.tableSeguimientoActividadList.fechaIngreso      = dataIn.fechaIngreso.timestamp;
-    this.tableSeguimientoActividadList.fechaEntrega      = dataIn.fechaMaxEntrega.timestamp;
+    this.tableSeguimientoActividadList.fechaIngreso      = dataIn[0].fechaIngreso;
+    this.tableSeguimientoActividadList.fechaEntrega      = dataIn[0].fechaMaxEntrega;
     // this.tableSeguimientoActividadList.fechaModificacion = dataIn.fechaModificacion.timestamp;
-    this.tableSeguimientoActividadList.fechaFinalizacion = dataIn.fechaFinalizacion.timestamp;
+    this.tableSeguimientoActividadList.fechaFinalizacion = dataIn[0].fechaFinalizacion;
     // Area de Informacion General
-    this.tableSeguimientoActividadList.institucionReceptora = dataIn.idInstitucion.descInstitucion + ' | ' + dataIn.idInstitucion.perfilInstitucion;
-    this.tableSeguimientoActividadList.direccionSreci = dataIn.idDireccionSreci.inicialesDireccionSreci + ' | ' + dataIn.idDireccionSreci.descDireccionSreci;
-    this.tableSeguimientoActividadList.subDireccionSreci = dataIn.idDeptoFuncional.inicialesDeptoFuncional + ' | ' + dataIn.idDeptoFuncional.descDeptoFuncional;
-    this.tableSeguimientoActividadList.tipoComunicacion = dataIn.idTipoDocumento.descTipoDocumento;
-    this.tableSeguimientoActividadList.estadoComunicacion = dataIn.idEstado.descripcionEstado;
+    this.tableSeguimientoActividadList.institucionReceptora = dataIn[0].descInstitucion + ' | ' + dataIn[0].perfilInstitucion;
+    this.tableSeguimientoActividadList.direccionSreci = dataIn[0].inicialesDireccionSreci + ' | ' + dataIn[0].descDireccionSreci;
+    this.tableSeguimientoActividadList.subDireccionSreci = dataIn[0].inicialesDeptoFuncional + ' | ' + dataIn[0].descDeptoFuncional;
+    this.tableSeguimientoActividadList.tipoComunicacion = dataIn[0].descTipoDocumento;
+    this.tableSeguimientoActividadList.estadoComunicacion = dataIn[0].descripcionEstado;
     this.tableSeguimientoActividadList.usuarioCreador =
-          dataIn.idUsuario.nombre1Usuario + ' ' +  dataIn.idUsuario.nombre2Usuario
+          dataIn[0].nombre1Usuario + ' ' +  dataIn[0].nombre2Usuario
           + ' ' +
-          dataIn.idUsuario.apellido1Usuario + ' ' +  dataIn.idUsuario.apellido2Usuario ;
+          dataIn[0].apellido1Usuario + ' ' +  dataIn[0].apellido2Usuario ;
     this.tableSeguimientoActividadList.usuarioAsignado =
-          dataIn.idFuncionarioAsignado.nombre1Funcionario + ' ' + dataIn.idFuncionarioAsignado.nombre2Funcionario
+          dataIn[0].nombre1Funcionario + ' ' + dataIn[0].nombre2Funcionario
           + ' ' +
-          dataIn.idFuncionarioAsignado.apellido1Funcionario + ' ' + dataIn.idFuncionarioAsignado.apellido2Funcionario;
+          dataIn[0].apellido1Funcionario + ' ' + dataIn[0].apellido2Funcionario;
     // Area de Descripcion de Comunicacion
-    this.tableSeguimientoActividadList.temaComunicacion = dataIn.temaComunicacion;
-    this.tableSeguimientoActividadList.contenidoComunicacion = dataIn.descCorrespondenciaEnc;
-    this.tableSeguimientoActividadList.observacionesComunicacion = dataIn.observaciones;
+    this.tableSeguimientoActividadList.temaComunicacion = dataIn[0].temaComunicacion;
+    this.tableSeguimientoActividadList.contenidoComunicacion = dataIn[0].descCorrespondenciaEnc;
+    this.tableSeguimientoActividadList.observacionesComunicacion = dataIn[0].observaciones;
   } // FIN | FND-00003
 
 

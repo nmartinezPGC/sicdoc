@@ -332,8 +332,10 @@ class ListasComunesController extends Controller {
             $pais_institucion    = (isset($params->idPais)) ? $params->idPais : null;
             $tipo_institucion    = (isset($params->idTipoInstitucion)) ? $params->idTipoInstitucion : null;
             
+            $opt = 0;
             // Evaluamos que Parametro nos enviaron
             if( $pais_institucion != null && $tipo_institucion != null){
+                $opt = 1;
                 // Query para Obtener todos las Instituciones segun Parametros de la Tabla: TblInstituciones                
                 $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, '
@@ -358,6 +360,7 @@ class ListasComunesController extends Controller {
                 // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
                 // $institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findAll();
                 //$institucionesSreci = $em->getRepository("BackendBundle:TblInstituciones")->findBy(array(),array("descInstitucion" => "ASC")) ;
+                $opt = 2;
                 
                 $query = $em->createQuery('SELECT inst.idInstitucion, inst.codInstitucion, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, '
@@ -383,6 +386,7 @@ class ListasComunesController extends Controller {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "opt"    => $opt,
                     "recordsTotal" => $totalInstituciones,
                     "data"   => $institucionesSreci
                 );

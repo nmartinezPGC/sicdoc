@@ -939,6 +939,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         //Seteo de Datos Generales de la tabla: TblCorrespondenciaEnc
                         $correspondenciaDetAsigna = new TblCorrespondenciaDet();
                         
+                        /*
                         //Instanciamos de la Clase TblSecuenciales
                         //Seteo del nuevo secuencial de la tabla: TblSecuenciales
                         $secuenciaNew = new TblSecuenciales();
@@ -967,6 +968,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $em->persist($secuenciaNew);
                         //Realizar la actualizacion en el storage de la BD
                         $em->flush();
+                        
+                        */
                         
                         // Consulta a los Datos del Depto Funcinal *************
                         $deptoFuncConsulta = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
@@ -1516,6 +1519,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();
                     
+                    $opt = 0;
                     // Seteo de Datos Generales de la tabla: TblCorrespondenciaEnc
                     // Localizamos el Oficio que se va a Buscar
                     // Verificacion del Codigo de la Correspondenia ************
@@ -1523,15 +1527,43 @@ class SeguimientoCorrespondenciaController extends Controller {
                     switch ( $opcion_busqueda )
                     {
                         case "1": // Case por codCorrespondenciaEnc
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findOneBy(
                                     array(
                                         "codCorrespondenciaEnc" => $codigo_oficio_interno,
                                         "idFuncionarioAsignado"     => $id_funcionario_asignado
                                     ));
+                            */
+                            $opt = 1;
+                            
+                            $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                    ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    . 'tdoc.codTipoDocumento, tdoc.descTipoDocumento, '
+                                    . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, '
+                                    . 'dsreci.idDireccionSreci, dsreci.descDireccionSreci, dsreci.inicialesDireccionSreci, '
+                                    . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    . 'p.idUsuario, p.nombre1Usuario, p.nombre2Usuario, p.apellido1Usuario, p.apellido2Usuario  '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblDireccionesSreci dsreci WITH  dsreci.idDireccionSreci = c.idDireccionSreci '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
+                                    . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . "WHERE c.codCorrespondenciaEnc = '". $codigo_oficio_interno ."' AND "
+                                    . 'c.idFuncionarioAsignado = '. $id_funcionario_asignado .' '
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
+                                   
+                            $correspondenciaFind = $query->getResult();
+                            
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case "2":
+                            $opt = 2;
                             $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findOneBy(
                                     array(
@@ -1548,7 +1580,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
-                            "code"   => 200, 
+                            "code"   => 200,
+                            "opt"    => $opt,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaFind
                         );                        
@@ -1650,7 +1683,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                     {
                         case "1": // Case por codCorrespondenciaEnc
                             $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
-                                ->findBy(
+                                ->findOneBy(
                                     array(
                                         "codCorrespondenciaEnc" => $codigo_oficio_interno,
                                         "idFuncionarioAsignado"     => $id_funcionario_asignado
@@ -1659,7 +1692,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             break;
                         case "2":
                             $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
-                                ->findBy(
+                                ->findOneBy(
                                     array(
                                         "codReferenciaSreci" => $codigo_oficio_externo,
                                         "idFuncionarioAsignado"  => $id_funcionario_asignado

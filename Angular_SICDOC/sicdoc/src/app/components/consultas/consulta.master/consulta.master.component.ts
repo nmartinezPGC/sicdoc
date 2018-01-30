@@ -422,10 +422,12 @@ export class ConsultaMasterComponent implements OnInit {
           $('#example').DataTable({
             "destroy": true,
             // Barra Vertical de la Tabla
-            //scrollY:        '50vh',
-            //scrollCollapse: true,
-            "fixedHeader": true,
-            "autoWidth": false,
+            scrollY:       "450px",
+            scrollX:        true,
+            scrollCollapse: true,
+            
+            /*"fixedHeader": true,
+            "autoWidth": false,*/
             // Tamaño de la Pagina
             "pageLength": 5,
             // Cambiar las Propiedades de Lenguaje
@@ -450,12 +452,16 @@ export class ConsultaMasterComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },
+                  { "width": "5px", "targets": 1 },
                   // { // Columna de Funcionario
                   //     "targets": [ 4 ],
                   //     "visible": false,
                   //     "searchable": true
                   // }
             ],
+            fixedColumns:   {
+              leftColumns: 2
+            }
           });
           this.loading_tableIn = 'show';
       });
