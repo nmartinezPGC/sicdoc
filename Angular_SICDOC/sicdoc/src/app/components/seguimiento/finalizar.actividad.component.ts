@@ -385,6 +385,7 @@ export class FinalizarActividadComponent implements OnInit {
           });
       // Opcion de Oficio de respuesta *****************************************
       }else if ( opcion == 2 ) {
+        opcionExecute = "creacionOficioAsignado";
         this.finalizarOficios.idEstadoAsigna = 8;
         // console.log(this.finalizarOficios);
         // Opcion de Creacion de Comunicacion de Respuesta
@@ -483,7 +484,53 @@ export class FinalizarActividadComponent implements OnInit {
                 }
               }
           });
-      }
+       // Opcion de Anular Comunicacion******************************************
+      }else if ( opcion == 4 ){
+          // Opcion de Anular la Comunicacion
+          opcionExecute = "anularComunicacion";
+          this.finalizarOficios.idEstadoAsigna = 8;
+          console.log(this.finalizarOficios);
+          this._finalizarOficio.anulaComunicacion(token1, this.finalizarOficios).subscribe(
+            response => {
+                // Obtenemos el Status de la Peticion
+                this.status = response.status;
+                this.mensajes = response.msg;
+
+                // Condicionamos la Respuesta
+                if(this.status != "success"){
+                    this.status = "error";
+                    this.mensajes = response.msg;
+                    if(this.loading = 'show'){
+                      this.loading = 'hidden';
+                      this.loading_table = 'hide';
+                    }
+                    alert(this.mensajes);
+                }else{
+                  //this.resetForm();
+                  this.loading = 'hidden';
+                  this.loading_table = 'hide';
+                  this.ngOnInit();
+
+                  this.closeModal('#closeModalAnulaCom');
+                  // this.alertShow();
+                }
+            }, error => {
+                //Regisra cualquier Error de la Llamada a la API
+                this.errorMessage = <any>error;
+
+                //Evaluar el error
+                if(this.errorMessage != null){
+                  console.log(this.errorMessage);
+                  this.mensajes = this.errorMessage;
+                  alert("Error en la Petición !!" + this.errorMessage);
+
+                  if(this.loading = 'show'){
+                    this.loading = 'hidden';
+                    this.loading_table = 'hidden';
+                  }
+                }
+            });
+        }
   } // Fin | Metodo onSubmit
 
 

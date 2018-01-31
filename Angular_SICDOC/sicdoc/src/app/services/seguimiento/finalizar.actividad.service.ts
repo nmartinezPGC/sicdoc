@@ -97,7 +97,7 @@ export class FinalizarActividadService {
         //console.log(json);
         let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-      return this._http.post(this.url + "/seguimiento/creacion-oficio-asignado", params, { headers:headers }).map( res => res.json());
+       return this._http.post(this.url + "/seguimiento/creacion-oficio-asignado", params, { headers:headers }).map( res => res.json());
     } // FIN : FND-00004
 
 
@@ -118,5 +118,22 @@ export class FinalizarActividadService {
 
       return this._http.post(this.url + "/seguimiento/creacion-actividad-resp", params, { headers:headers }).map( res => res.json());
     } // FIN : FND-00005
+
+    /****************************************************
+    * Funcion: FND-00006
+    * Fecha: 30-01-2018
+    * Descripcion: Metodo Ajax, para Invocar el servicio
+    * a la API ( anula-comunicacion ).
+    * Objetivo: Anular la Comunicacion
+    * Parametros: Descripcion, Actividad.
+    *****************************************************/
+    anulaComunicacion( token, correspondencia_to_anula_com ){
+        let json = JSON.stringify( correspondencia_to_anula_com );
+        let params = "json=" + json + "&authorization=" + token;
+        //console.log(json);
+        let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+      return this._http.post(this.url + "/seguimiento/anula-comunicacion", params, { headers:headers }).map( res => res.json());
+    } // FIN : FND-00006
 
 }

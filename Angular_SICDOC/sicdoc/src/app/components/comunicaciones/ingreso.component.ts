@@ -380,7 +380,7 @@ export class IngresoComunicacionComponent implements OnInit{
                                            "", "", "", "", "", "", "", "",
                                            "", null);
 
-    
+
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
@@ -423,7 +423,7 @@ export class IngresoComunicacionComponent implements OnInit{
    * Fecha: 2018-01-15
    * Casos de uso: Lista de Instituciones, Paises, Tipo
    * de Institucion, Contactos
-  *******************************************************/  
+  *******************************************************/
   onItemSelect(item: any) {
     console.log(item);
     console.log(this.selectedItems);
@@ -478,8 +478,8 @@ export class IngresoComunicacionComponent implements OnInit{
           console.log('Paso 1 Funcionario');
           console.log(this.comunicacion);
       // Caso 2 ) Evaluamos si el Tipo de User es Administrador ( 1, 4 ) sin Asignacion a Director
-      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) && 
-                 this.comunicacion.idUsuarioAsaignado == 0 ){      
+      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
+                 this.comunicacion.idUsuarioAsaignado == 0 ){
           this.comunicacion.idEstado = "3";
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
@@ -487,9 +487,9 @@ export class IngresoComunicacionComponent implements OnInit{
           console.log('Paso 2 Admin Corr / Sist');
           console.log(this.comunicacion);
       // Caso 3 ) Evaluamos si el Tipo de User Administrador ( 1 ) con Asignacion a Director
-      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) && 
-                 this.comunicacion.idUsuarioAsaignado != 0 ){        
-          this.comunicacion.idEstado = "7";        
+      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
+                 this.comunicacion.idUsuarioAsaignado != 0 ){
+          this.comunicacion.idEstado = "7";
           console.log('Paso 3 Admin Correspondencia');
           console.log(this.comunicacion);
       // Caso 4 ) Evaluamos si el Tipo de User Director ( 6 )
@@ -505,7 +505,7 @@ export class IngresoComunicacionComponent implements OnInit{
       //Asignacion de Token de Sesion
       let token1 = this._ingresoComunicacion.getToken();
       this.loading = 'show';
-      
+
       // Llamado al Procedo de Registro de Comunicacion
       this._ingresoComunicacion.registerComunicacion(token1, this.comunicacion).subscribe(
         response => {
@@ -1050,8 +1050,8 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
     // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
     // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comunes/upload-documento";
 
@@ -1355,7 +1355,7 @@ export class IngresoComunicacionComponent implements OnInit{
   getlistaUsuariosDirectorSRECI() {
     //Llamar al metodo, de listasComunes para Obtener la Identidad
     this.paramsTipoFuncionario.idDeptoFuncional = this.comunicacion.idDeptoFuncional;
-    
+
     this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list-director").subscribe(
         response => {
           // login successful so redirect to return url
@@ -1370,7 +1370,7 @@ export class IngresoComunicacionComponent implements OnInit{
             this.comunicacion.idDeptoFuncional = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idDeptoFuncional.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idDeptoFuncional.idDireccionSreci.idDireccionSreci;
             this.comunicacion.idUsuarioAsaignado = this.JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
-            // this.comunicacion.idFuncionario = JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;            
+            // this.comunicacion.idFuncionario = JsonOutgetlistaFuncionariosDirectoresSRECI[0].idFuncionario;
           }
         });
   } // FIN : FND-00007.1.1.4

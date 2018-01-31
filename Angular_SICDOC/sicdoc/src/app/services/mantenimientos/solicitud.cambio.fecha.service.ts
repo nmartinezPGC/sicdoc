@@ -10,8 +10,8 @@ import { Observable } from 'rxjs/Observable';
 export class SolicitudCambioFechaService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
-  // public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
-  public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
+  public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
+  // public url = "http://172.17.4.162/sicdoc/symfony/web/app.php";
   // public url = "http://172.17.3.141/sicdoc/symfony/web/app.php";
   // public url = "http://192.168.0.23/sicdoc/symfony/web/app.php";
 
@@ -41,7 +41,7 @@ export class SolicitudCambioFechaService {
     return this._http.post(this.url + "/mantenimientos/busca-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN | FND-00002
 
-  
+
 
   /****************************************************
   * Funcion: FND-00002
