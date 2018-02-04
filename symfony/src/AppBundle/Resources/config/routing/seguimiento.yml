@@ -41,3 +41,9 @@ seguimiento_seguimientoDetList:
     path: /seguimiento-search-comunicacion-det
     defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:seguimientoDetList" }
     methods: POST
+    
+## Anulacion de Comunicacion | Modulo Seguimiento
+seguimiento_anulaComunicacion:
+    path: /anula-comunicacion
+    defaults: { _controller: "AppBundle:SeguimientoCorrespondencia:anulaComunicacion" }
+    methods: POST

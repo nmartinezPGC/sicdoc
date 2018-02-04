@@ -102,6 +102,10 @@ export class FinalizarActividadComponent implements OnInit {
   //Nueva variable
   public idTipoComunicacionModal;
   public idTipoDocumentoModal;
+  //Datos de Representacion
+  public temaComunicacionModal;
+  public institucionComunicaiconModal;
+  public descinstitucionComunicaiconModal;
 
 
   // Instacia del Modelo
@@ -488,7 +492,8 @@ export class FinalizarActividadComponent implements OnInit {
       }else if ( opcion == 4 ){
           // Opcion de Anular la Comunicacion
           opcionExecute = "anularComunicacion";
-          this.finalizarOficios.idEstadoAsigna = 8;
+          this.finalizarOficios.idEstadoAsigna = 4;
+
           console.log(this.finalizarOficios);
           this._finalizarOficio.anulaComunicacion(token1, this.finalizarOficios).subscribe(
             response => {
@@ -712,7 +717,9 @@ export class FinalizarActividadComponent implements OnInit {
              nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
              nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
              idFuncionarioIn:number, idEstadoAsign:number, idOficioEnc:number,
-             idTipoDocumento:number, idTipoComunicacion:number ){
+             idTipoDocumento:number, idTipoComunicacion:number,
+             temaComunicacion:string, institucionComunicacion:string, descinstitucionComunicacion:string ){
+    
     // Seteo de las varibles de la Funcion
     this.codOficioIntModal = codOficioIntIn;
     this.codOficioRefModal = codOficioRefIn;
@@ -722,6 +729,10 @@ export class FinalizarActividadComponent implements OnInit {
     this.apellido1FuncModal = apellido1funcionarioAsignadoIn;
     this.apellido2FuncModal = apellido2funcionarioAsignadoIn;
     this.idFuncModal = idFuncionarioIn;
+
+    this.temaComunicacionModal            = temaComunicacion;
+    this.institucionComunicaiconModal     = institucionComunicacion;
+    this.descinstitucionComunicaiconModal = descinstitucionComunicacion;
 
     // Limpia los Campos de las Descripciones
     this.finalizarOficios.descripcionOficio = "";
