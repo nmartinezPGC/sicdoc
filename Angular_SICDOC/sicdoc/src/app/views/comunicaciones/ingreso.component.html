@@ -75,18 +75,21 @@
          </div>
 
          <!-- Comunicacion sin Seguimiento | Estado = 5 -->
-         <!-- <div class="col-xs-12 col-sm-6 col-md-6"> -->
-           <!-- <fieldset class="scheduler-border">
-           <legend class="scheduler-border">Comunicación sin Seguimiento</legend> -->
-             <!-- <div class="form-group">
-               <label class="custom-control custom-checkbox">
-                 <input type="checkbox" name="chkTipoCom"  value="{{ idTipoComMemo }}" class="custom-control-input chkAllTiposCom">
-                 <span class="custom-control-indicator"></span>
-                 <span class="custom-control-description">Sin Respuesta</span>
-               </label>
-            </div> -->
-           <!-- </fieldset> -->
-         <!-- </div> -->
+         <div class="col-xs-12 col-sm-6 col-md-4">
+           <div class="panel panel-primary">
+            <div class="panel-body">
+              <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary"><strong class="text-uppercase">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Comunicación sin Seguimiento</span>
+                </label>
+              </strong>
+            </h6>
+            </div>
+          </div>
+         </div>
+
         </div>
 
         <!-- Informacion General -->
@@ -178,8 +181,8 @@
           <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="form-group">
                 <label for="example-date-input" class="form-text text-muted">Fecha Maxima de Entrega </label>
-                <input #fechaMaxEntrega class="form-control" type="date"  value="{{ fechafin }}" tabindex="4" required
-                  name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" tabindex="7" 
+                <input #fechaMaxEntrega class="form-control" type="date"  value="2017-09-11" tabindex="4" required
+                  name="fechaMaxEntrega" id="fechaMaxEntrega" ngControl="fechaMaxEntrega" tabindex="7"
                   [(ngModel)]="comunicacion.fechaMaxEntrega" >
 
             </div>

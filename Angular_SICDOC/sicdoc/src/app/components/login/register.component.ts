@@ -280,7 +280,7 @@ export class RegisterComponent implements OnInit{
 
     let token = this._loginService.getToken();
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comu/upload-image-user";
-    let url = "http://172.17.4.162/sicdoc/symfony/web/app.php/comu/upload-image-user";
+    let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comu/upload-image-user";
     // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comu/upload-image-user";
     // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comu/upload-image-user";
 

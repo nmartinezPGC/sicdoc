@@ -53,9 +53,25 @@
                   <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > {{ list.descTipoDocumento }}</option>
               </select>
               <small class="form-text text-muted" *ngIf="idTipoDocumento.value == 0 || idTipoDocumento.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
-              <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicacion</small>
+              <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicación</small>
             </div>
          </div>
+
+         <div class="col-xs-12 col-sm-6 col-md-4">
+           <div class="panel panel-primary">
+            <div class="panel-body">
+              <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary"><strong class="text-uppercase">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Comunicación sin Seguimiento</span>
+                </label>
+              </strong>
+            </h6>
+            </div>
+          </div>
+         </div>
+
         </div>
 
         <!-- Informacion General -->
@@ -135,7 +151,7 @@
                     ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6">
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">
-                      {{ list.descInstitucion }} | {{ list.perfilInstitucion }} 
+                      {{ list.descInstitucion }} | {{ list.perfilInstitucion }}
                   </option>
               </select>
               <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>

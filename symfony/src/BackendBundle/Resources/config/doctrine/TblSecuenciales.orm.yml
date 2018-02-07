@@ -2,12 +2,12 @@ BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
     indexes:
-        fki_id_depto_funcional_secuencias:
-            columns:
-                - id_depto_funcional
         idx_cod_secuencia:
             columns:
                 - cod_secuencial
+        fki_id_depto_funcional_secuencias:
+            columns:
+                - id_depto_funcional
         fki_secuncia_doc:
             columns:
                 - id_tipo_documento
@@ -71,6 +71,16 @@ BackendBundle\Entity\TblSecuenciales:
             options:
                 fixed: false
     manyToOne:
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
         idTipoDocumento:
             targetEntity: TblTipoDocumento
             cascade: {  }
@@ -90,15 +100,5 @@ BackendBundle\Entity\TblSecuenciales:
             joinColumns:
                 id_tipo_usuario:
                     referencedColumnName: id_tipo_usuario
-            orphanRemoval: false
-        idDeptoFuncional:
-            targetEntity: TblDepartamentosFuncionales
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_depto_funcional:
-                    referencedColumnName: id_depto_funcional
             orphanRemoval: false
     lifecycleCallbacks: {  }

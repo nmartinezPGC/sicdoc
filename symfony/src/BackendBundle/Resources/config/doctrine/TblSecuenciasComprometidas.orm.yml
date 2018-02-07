@@ -1,0 +1,116 @@
+BackendBundle\Entity\TblSecuenciasComprometidas:
+    type: entity
+    table: tbl_secuencias_comprometidas
+    indexes:
+        fki_depto_sec:
+            columns:
+                - id_depto_funcional
+        fki_user_sec:
+            columns:
+                - id_usuario
+        fki_tipo_doc_secu:
+            columns:
+                - id_tipo_documento
+        fki_estado_secuencias:
+            columns:
+                - id_estado_secuencia
+    id:
+        idSecuenciaComp:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_secuencia_comp
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codSecuencial:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: cod_secuencial
+        valor1:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        valor2:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        idCorrespondenciaEnc:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: id_correspondencia_enc
+        codCorrespondenciaSreci:
+            type: string
+            nullable: true
+            length: 60
+            options:
+                fixed: false
+            column: cod_correspondencia_sreci
+        fechaCreacion:
+            type: date
+            nullable: true
+            column: fecha_creacion
+        fechaActualizacion:
+            type: date
+            nullable: true
+            column: fecha_actualizacion
+        horaCreacion:
+            type: time
+            nullable: true
+            column: hora_creacion
+        horaActualizacion:
+            type: time
+            nullable: true
+            column: hora_actualizacion
+    manyToOne:
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
+            orphanRemoval: false
+        idEstadoSecuencia:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado_secuencia:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

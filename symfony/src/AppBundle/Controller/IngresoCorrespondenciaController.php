@@ -20,6 +20,9 @@ use BackendBundle\Entity\TblTipoComunicacion;
 
 use Swift_MessageAcceptanceTest;
 
+// Tabla de Secuencias Comprometidas
+use BackendBundle\Entity\TblSecuenciasComprometidas;
+
 
 
 /********************************************************************
@@ -842,6 +845,9 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
                 
                 $fecha_ingreso        = new \DateTime('now');
+                $hora_actualizacion = new \DateTime('now');            
+                $hora_actualizacion->format('H:i');
+                
                 $fecha_maxima_entrega = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
                 // Seteo de la Fecha, viene en Json (String) se tiene que convertir a su dato Nativo (Date)
                 $fecha_maxima_entrega_date = new \DateTime($fecha_maxima_entrega);
@@ -1023,7 +1029,7 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     
                     //Verificacion del Codigo de la Correspondenia *************
-                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findBy(
+                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                           "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                         ));
@@ -1053,6 +1059,41 @@ class IngresoCorrespondenciaController extends Controller{
                         //Seteo del nuevo secuencial de la tabla: TblSecuenciales
                         $secuenciaNew = new TblSecuenciales();
                         
+                        /* Incidencia: INC.00002 | Actualizacion de la Secuencia Comprometida
+                        * Fecha : 2018-02-07 | 11:00 am
+                        * Reportada : Nahum Martinez | Admon. SICDOC
+                        * INI | NMA | INC.00002
+                        * Buscamos si el Usuario tiene una Secuencia pendiente y
+                        * comprometida, luego Actualizamos el Estado (12) y la
+                        * fecha que se actualizo 
+                        *******************************************************/                         
+                        // Query para Obtener todos las Sec. de la Tabla: TblSecuenciasComprometidas
+                        $comprometidasSecuencias = $em->getRepository("BackendBundle:TblSecuenciasComprometidas")->findOneBy(
+                            array(
+                                "codSecuencial"    => "SCPI", // Codigo de la Secuencia,
+                                "idTipoDocumento"  => $cod_tipo_documento, // Tipo de Documentos de la Secuencia,
+                                "idDeptoFuncional" => $cod_depto_funcional, // Depto Funcional de la Secuencia,
+                                "idUsuario"        => $cod_usuario, // Usuario de la Secuencia,
+                                "idEstadoSecuencia" => 11 // Estado de la Secuencia,                            
+                            ));
+                        
+                        $countComprometidas = count($comprometidasSecuencias);
+                        if( $countComprometidas > 0 ){                            
+                            // Query para Obtener el Estado de la Tabla: TblEstados
+                            $estadoSecuencia = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                                array(
+                                    "idEstado" => 12, // Id de Estado (Secuencia Grabada)
+                                ));
+                            
+                            $comprometidasSecuencias->setIdEstadoSecuencia( $estadoSecuencia ); // Actualiza El Estado de la Secuencia Comprometida
+                            $comprometidasSecuencias->setFechaActualizacion( $fecha_ingreso ); // Fecha de Actualizacion 
+                            $comprometidasSecuencias->setHoraActualizacion( $hora_actualizacion ); // Hora de Creacion
+                            //$comprometidasSecuencias->setIdCorrespondenciaEnc( $isset_corresp_cod->getIdCorrespondenciaEnc() ); // Id_Correspindencia_Enc                                                    
+                            // Persistencia de los datos                            
+                            //$em->persist( $comprometidasSecuencias );
+                        }                        
+                        // FIN | INC.00002                        
+                        // *****************************************************
                         
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
@@ -1078,6 +1119,9 @@ class IngresoCorrespondenciaController extends Controller{
                         $em->persist($correspondenciaNew);
                         
                         $em->persist($secuenciaNew);
+                        
+                        $em->persist( $comprometidasSecuencias );
+                        
                         //Realizar la actualizacion en el storage de la BD
                         $em->flush();
                         
@@ -1406,8 +1450,8 @@ class IngresoCorrespondenciaController extends Controller{
             $data = array(
                 "status" => "error",
                 "desc"   => "El Token, es invalido",    
-                "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
+                "code" => "300",                
+                "msg" => "Autorización no valida, la sesión ha sido vencida !!"                
             );
         }        
         //Retorno de la Funcion ************************************************

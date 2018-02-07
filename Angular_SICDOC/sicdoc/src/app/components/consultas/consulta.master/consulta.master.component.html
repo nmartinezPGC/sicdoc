@@ -73,7 +73,7 @@
               </div> -->
               <thead>
                   <tr>
-                      <th style="width:5px">No</th>
+                      <th >No</th>
                       <th>Código Interno</th>
                       <th >Código Referencia</th>
                       <th>Tipo Com.</th>
@@ -85,14 +85,14 @@
                       <th>Tema / Comunicación</th>
                       <th>Funcionario Asignado</th>
                       <th>Estado</th>
-                      <th>Ver</th>
+                      <th >Ver</th>
                   </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td style="width:80px">{{ item.codCorrespondenciaEnc }}</td>
-                  <td style="width:80px">{{ item.codReferenciaSreci }}</td>
+                  <td >{{ i + 1 }}</td>
+                  <td >{{ item.codCorrespondenciaEnc }}</td>
+                  <td >{{ item.codReferenciaSreci }}</td>
                   <td >{{ item.descTipoDocumento }}</td>
                   <td style="cursor: help" title="{{ item.descDeptoFuncional }} ">
                     {{ item.inicialesDeptoFuncional }}
@@ -107,7 +107,7 @@
                     {{ item.temaComunicacion }}
                   </td>
                   <td > {{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }} </td>
-                  <td style="width:10px"> <a style="cursor: pointer;" class="nav-link">
+                  <td > <a style="cursor: pointer;" class="nav-link">
                       <span [ngClass]="{ 'text-warning': item.idEstado == 3,
                                       'text-primary': item.idEstado == 5,
                                       'text-success': item.idEstado == 7,
@@ -261,7 +261,7 @@
                                           <td>{{ item.urlDocumento }}</td>
                                           <td>
                                             <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
-                                              href="http://172.17.4.162/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
+                                              href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
                                               <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                               <!-- href="http://192.168.0.23/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                               <!-- href="http://172.17.3.141/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->

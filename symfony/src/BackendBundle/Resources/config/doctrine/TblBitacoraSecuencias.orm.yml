@@ -2,12 +2,12 @@ BackendBundle\Entity\TblBitacoraSecuencias:
     type: entity
     table: tbl_bitacora_secuencias
     indexes:
-        IDX_202F3AD7FCF8192D:
-            columns:
-                - id_usuario
-        IDX_202F3AD7FBD636DF:
+        fki_id_depto_func:
             columns:
                 - id_depto_funcional
+        fki_id_user_bitacora:
+            columns:
+                - id_usuario
     id:
         idBitacoraSecuencia:
             type: integer
@@ -45,16 +45,6 @@ BackendBundle\Entity\TblBitacoraSecuencias:
                 default: false
             column: act_secuencia
     manyToOne:
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
         idDeptoFuncional:
             targetEntity: TblDepartamentosFuncionales
             cascade: {  }
@@ -64,5 +54,15 @@ BackendBundle\Entity\TblBitacoraSecuencias:
             joinColumns:
                 id_depto_funcional:
                     referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }
