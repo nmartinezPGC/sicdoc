@@ -87,6 +87,7 @@ class JwtAuth {
                 "inicialesDireccion"      => $direccion_user->getInicialesDireccionSreci(),
                 "idDeptoFuncional" => $depto_user->getIdDeptoFuncional(),
                 "inicialesDeptoFuncional" => $depto_user->getInicialesDeptoFuncional(),
+                "despacho"         => $depto_user->getDespacho(),
                 "idTipoUser"       => $tipo_user->getIdTipoUsuario(),
                 "idTipoFunc"       => $tipo_func_user->getIdTipoFuncionario(),
                 "idFuncionario"    => $funcionario_user->getIdFuncionario(),

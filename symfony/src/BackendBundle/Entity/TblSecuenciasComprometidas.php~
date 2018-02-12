@@ -341,4 +341,62 @@ class TblSecuenciasComprometidas
     {
         return $this->fechaActualizacion;
     }
+    /**
+     * @var \DateTime
+     */
+    private $horaCreacion;
+
+    /**
+     * @var \DateTime
+     */
+    private $horaActualizacion;
+
+
+    /**
+     * Set horaCreacion
+     *
+     * @param \DateTime $horaCreacion
+     *
+     * @return TblSecuenciasComprometidas
+     */
+    public function setHoraCreacion($horaCreacion)
+    {
+        $this->horaCreacion = $horaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get horaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getHoraCreacion()
+    {
+        return $this->horaCreacion;
+    }
+
+    /**
+     * Set horaActualizacion
+     *
+     * @param \DateTime $horaActualizacion
+     *
+     * @return TblSecuenciasComprometidas
+     */
+    public function setHoraActualizacion($horaActualizacion)
+    {
+        $this->horaActualizacion = $horaActualizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get horaActualizacion
+     *
+     * @return \DateTime
+     */
+    public function getHoraActualizacion()
+    {
+        return $this->horaActualizacion;
+    }
 }

@@ -50,14 +50,16 @@
                     ngControl="idTipoDocumento" [(ngModel)]="comunicacion.idTipoDocumento"
                     (change)="getCodigoCorrespondencia()" >
                   <option value="0">Tipo de comunicación </option>
-                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > {{ list.descTipoDocumento }}</option>
+                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > 
+                    {{ list.descTipoDocumento }}
+                  </option>
               </select>
               <small class="form-text text-muted" *ngIf="idTipoDocumento.value == 0 || idTipoDocumento.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
               <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicación</small>
             </div>
          </div>
 
-         <div class="col-xs-12 col-sm-6 col-md-4">
+         <div class="col-xs-12 col-sm-6 col-md-6">
            <div class="panel panel-primary">
             <div class="panel-body">
               <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary"><strong class="text-uppercase">

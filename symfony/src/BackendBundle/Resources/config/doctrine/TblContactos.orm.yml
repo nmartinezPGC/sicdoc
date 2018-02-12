@@ -2,9 +2,6 @@ BackendBundle\Entity\TblContactos:
     type: entity
     table: tbl_contactos
     indexes:
-        fki_func_contacto:
-            columns:
-                - id_funcionario
         fki_institucion_contacto:
             columns:
                 - id_institucion
@@ -14,6 +11,9 @@ BackendBundle\Entity\TblContactos:
         fki_contact_user_modif:
             columns:
                 - id_usuario_modifica
+        fki_func_contacto:
+            columns:
+                - id_funcionario
     id:
         idContacto:
             type: integer

@@ -56,11 +56,11 @@
   background: #fff none repeat scroll 0 0;
   height: auto;
   margin-left: 2px;
-  padding: 3px 5px;
+  padding: 5px 0 0 10px;
   position: absolute;
-  margin-top: -47px;
+  margin-top: -40px;
   border: 1px solid #337ab7;
-  border-radius: 8px;
+  border-radius: 6px;
   width: auto;
 }
 

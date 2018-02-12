@@ -5,15 +5,15 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
         fki_depto_sec:
             columns:
                 - id_depto_funcional
-        fki_user_sec:
-            columns:
-                - id_usuario
-        fki_tipo_doc_secu:
-            columns:
-                - id_tipo_documento
         fki_estado_secuencias:
             columns:
                 - id_estado_secuencia
+        fki_tipo_doc_secu:
+            columns:
+                - id_tipo_documento
+        fki_user_sec:
+            columns:
+                - id_usuario
     id:
         idSecuenciaComp:
             type: integer
@@ -73,25 +73,15 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
             nullable: true
             column: hora_actualizacion
     manyToOne:
-        idUsuario:
-            targetEntity: TblUsuarios
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
-        idTipoDocumento:
-            targetEntity: TblTipoDocumento
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_tipo_documento:
-                    referencedColumnName: id_tipo_documento
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
             orphanRemoval: false
         idEstadoSecuencia:
             targetEntity: TblEstados
@@ -103,14 +93,24 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
                 id_estado_secuencia:
                     referencedColumnName: id_estado
             orphanRemoval: false
-        idDeptoFuncional:
-            targetEntity: TblDepartamentosFuncionales
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                id_depto_funcional:
-                    referencedColumnName: id_depto_funcional
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

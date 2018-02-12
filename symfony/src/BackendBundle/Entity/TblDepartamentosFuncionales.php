@@ -209,4 +209,33 @@ class TblDepartamentosFuncionales
     {
         return $this->emailDireccion;
     }
+    /**
+     * @var boolean
+     */
+    private $despacho = false;
+
+
+    /**
+     * Set despacho
+     *
+     * @param boolean $despacho
+     *
+     * @return TblDepartamentosFuncionales
+     */
+    public function setDespacho($despacho)
+    {
+        $this->despacho = $despacho;
+
+        return $this;
+    }
+
+    /**
+     * Get despacho
+     *
+     * @return boolean
+     */
+    public function getDespacho()
+    {
+        return $this->despacho;
+    }
 }

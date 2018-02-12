@@ -283,4 +283,120 @@ class TblSecuenciales
     {
         return $this->idDeptoFuncional;
     }
+    /**
+     * @var \BackendBundle\Entity\TblDireccionesSreci
+     */
+    private $idDireccionSreci;
+
+
+    /**
+     * Set idDireccionSreci
+     *
+     * @param \BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci
+     *
+     * @return TblSecuenciales
+     */
+    public function setIdDireccionSreci(\BackendBundle\Entity\TblDireccionesSreci $idDireccionSreci = null)
+    {
+        $this->idDireccionSreci = $idDireccionSreci;
+
+        return $this;
+    }
+
+    /**
+     * Get idDireccionSreci
+     *
+     * @return \BackendBundle\Entity\TblDireccionesSreci
+     */
+    public function getIdDireccionSreci()
+    {
+        return $this->idDireccionSreci;
+    }
+    /**
+     * @var boolean
+     */
+    private $habilitada = false;
+
+
+    /**
+     * Set habilitada
+     *
+     * @param boolean $habilitada
+     *
+     * @return TblSecuenciales
+     */
+    public function setHabilitada($habilitada)
+    {
+        $this->habilitada = $habilitada;
+
+        return $this;
+    }
+
+    /**
+     * Get habilitada
+     *
+     * @return boolean
+     */
+    public function getHabilitada()
+    {
+        return $this->habilitada;
+    }
+    /**
+     * @var boolean
+     */
+    private $despacho = false;
+
+    /**
+     * @var \BackendBundle\Entity\TblTiposFuncionarios
+     */
+    private $idTipoFuncionario;
+
+
+    /**
+     * Set despacho
+     *
+     * @param boolean $despacho
+     *
+     * @return TblSecuenciales
+     */
+    public function setDespacho($despacho)
+    {
+        $this->despacho = $despacho;
+
+        return $this;
+    }
+
+    /**
+     * Get despacho
+     *
+     * @return boolean
+     */
+    public function getDespacho()
+    {
+        return $this->despacho;
+    }
+
+    /**
+     * Set idTipoFuncionario
+     *
+     * @param \BackendBundle\Entity\TblTiposFuncionarios $idTipoFuncionario
+     *
+     * @return TblSecuenciales
+     */
+    public function setIdTipoFuncionario(\BackendBundle\Entity\TblTiposFuncionarios $idTipoFuncionario = null)
+    {
+        $this->idTipoFuncionario = $idTipoFuncionario;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipoFuncionario
+     *
+     * @return \BackendBundle\Entity\TblTiposFuncionarios
+     */
+    public function getIdTipoFuncionario()
+    {
+        return $this->idTipoFuncionario;
+    }
 }

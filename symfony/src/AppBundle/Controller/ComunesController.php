@@ -146,6 +146,9 @@ class ComunesController extends Controller {
             $iniciales_depto     = $identity->inicialesDeptoFuncional; // Iniciales Depto
                         
             $id_tipo_usuario = $identity->idTipoUser; // Tipo de Usuario 
+            $id_tipo_funcionario = $identity->idTipoFunc; // Tipo de Funcionario
+            
+            $despacho = $identity->despacho; // Tipo de Funcionario
             
             // Año actual con 4 dígitos, ej 2013
             $anio_actual = date("Y");
@@ -192,6 +195,9 @@ class ComunesController extends Controller {
             $tipo_funcionario   = (isset($params->idTipoUsuario)) ? $params->idTipoUsuario : null;
             $depto_funcional    = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
             
+            // Para el uso de las Secuencias por Direccion
+            $direccion_sreci     = (isset($params->idDireccion)) ? $params->idDireccion : null;
+            
             
             //Instacias de Usuarios y Deptos Funcionales
             //Usuarios 
@@ -199,6 +205,12 @@ class ComunesController extends Controller {
             $usuarioBitacora = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                 array(
                     "idUsuario"   => $id_usuario, // Id de Usuario                    
+                ));
+            
+            // Query para Obtener la Direccion SRECI de la Tabla: TblDireccionesSreci
+            $usuarioDireccionBitacora = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
+                array(
+                    "idDireccionSreci"   => $direccion_sreci, // Id de Direcion SRECI
                 ));
             
             // Query para Obtener el Depto Funcional de la Tabla: TblDepartamentosFuncionales
@@ -220,17 +232,84 @@ class ComunesController extends Controller {
                     "idTipoDocumento" => $tipo_documento, // Id de Tipo de Documento
                 ));
             
+           
+            //$new_depto_funcional = $depto_funcional;
+            /*Ejecucion de la Secuencia  segun Parametros *********************/
+            if( $depto_funcional == 8 && $codigo_secuencia == "SCPI" ){
+                $despacho = 1;
+                $sec = 1.1;
+                //$new_depto_funcional = $depto_funcional;
+                // Query para Obtener todos las secuencias segun Parametros de la Tabla: TblSecuenciales
+                $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
+                    array(
+                        "codSecuencial"     => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
+                        //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
+                        "idDeptoFuncional"  => 8, // Depto Funcional (Direccion)
+                        //"idDireccionSreci"  => $direccion_sreci, // Direccion SRECI
+                        //"idTipoFuncionario"  => $id_tipo_funcionario, // Direccion SRECI
+                        //"reservada"       => "N"
+                        "habilitada"       => TRUE,
+                        "despacho"       => $despacho
+                    ));
+
+            }else if( $depto_funcional != 8 && $codigo_secuencia == "SCPI" ) {
+                $despacho = 0;
+                $sec = 1.2;
+                // Query para Obtener todos las secuencias segun Parametros de la Tabla: TblSecuenciales
+                $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
+                    array(
+                        "codSecuencial"     => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
+                        //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
+                        "idDeptoFuncional"  => 4, // Depto Funcional (Direccion)
+                        //"idDireccionSreci"  => $direccion_sreci, // Direccion SRECI
+                        //"idTipoFuncionario"  => $id_tipo_funcionario, // Direccion SRECI
+                        //"reservada"       => "N"
+                        "habilitada"       => TRUE,
+                        "despacho"       => $despacho
+                    ));
+            }else{
+                $despacho = 0;
+                $sec = 1.3;
+                // Query para Obtener todos las secuencias segun Parametros de la Tabla: TblSecuenciales
+                $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
+                    array(
+                        "codSecuencial"     => $codigo_secuencia, // Codigo de la Secuencia
+                        "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
+                        "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
+                        //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
+                        //"idDeptoFuncional"  => $depto_funcional, // Depto Funcional (Direccion)
+                        //"idDireccionSreci"  => $direccion_sreci, // Direccion SRECI
+                        //"idTipoFuncionario"  => $id_tipo_funcionario, // Direccion SRECI
+                        //"reservada"       => "N"
+                        "habilitada"       => TRUE,
+                        "despacho"       => $despacho
+                    ));
+            }
             
-            // Query para Obtener todos las secuencias segun Parametros de la Tabla: TblSecuenciales
-            $secuencias  = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(
-                array(
-                    "codSecuencial"     => $codigo_secuencia, // Codigo de la Secuencia
-                    "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
-                    "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
-                    //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
-                    "idDeptoFuncional"  => $depto_funcional, // Depto Funcional (Direccion)
-                    //"reservada"       => "N"
-                ));
+            //var_dump($sec);
+            // Query para Obtener todos la Secuencia de los Listados segun 
+            // Parametros de la Tabla: TblSecuenciales
+                /*$querySec = $em->createQuery('SELECT scom.valor1, scom.valor2, '
+                                    . 'scom.codSecuencial, scom.reservada, scom.idTipoDocumento '                                    
+                                    . 'FROM BackendBundle:TblSecuenciales scom '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales depto WITH depto.idDeptoFuncional = scom.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH tdoc.idTipoDocumento = scom.idTipoDocumento '
+                                    . 'WHERE scom.idEstadoSecuencia = :idEstadoSec AND '
+                                    . 'scom.habilitada = :habilitada AND scom.tablaSecuencia = :tablaSecuencia AND '
+                                    . 'scom.idTipoDocumento = :idTipoDocumento AND ' 
+                                    . 'scom.idDeptoFuncional = :idDeptoFuncional AND ' 
+                                    . 'scom.codSecuencial = :codSecuencial ' )
+                    ->setParameter('idEstadoSec', 11)->setParameter('habilitada', TRUE)
+                    ->setParameter('idTipoDocumento', $tipo_documento )
+                    ->setParameter('tablaSecuencia', $tabla_secuencia)
+                    ->setParameter('idDeptoFuncional', $depto_funcional)
+                    ->setParameter('codSecuencial', $codigo_secuencia );
+                    
+                $secuencias = $querySec->getResult();*/
             
             
             

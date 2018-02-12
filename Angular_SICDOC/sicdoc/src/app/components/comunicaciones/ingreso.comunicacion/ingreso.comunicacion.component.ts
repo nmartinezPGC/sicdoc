@@ -314,7 +314,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       "tablaSecuencia"  : "",
       "idTipoDocumento"  : "",
       "idTipoUsuario"  : "",
-      "idDeptoFuncional"  : ""
+      "idDeptoFuncional"  : "",
+      "idDireccionSreci"  : ""
     };
 
     // Iniciamos los Parametros de Encabezado de Conunicacion
@@ -908,18 +909,21 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   ******************************************************/
    listarCodigoCorrespondenciaOfiResp( idDocumento: number ){
     // Generacion del Codigo a Generar para la Subsecretaria *******************
-    this.paramsSecuenciaSCPI.codSecuencial = "SCPI";
+    // this.paramsSecuenciaSCPI.codSecuencial = "SCPI";
+    this.paramsSecuenciaSCPI.codSecuencial = this.identity.inicialesDireccion;
     this.paramsSecuenciaSCPI.tablaSecuencia = "tbl_comunicacion_enc";
     // this.paramsSecuenciaSCPI.idTipoDocumento = "1";
     this.paramsSecuenciaSCPI.idTipoDocumento = idDocumento;
     //2018-01-08 | Agregar mas Parametros para la Secuencia
     this.paramsSecuenciaSCPI.idTipoUsuario = this.identity.idTipoUser;
     this.paramsSecuenciaSCPI.idDeptoFuncional = this.identity.idDeptoFuncional;
+    this.paramsSecuenciaSCPI.idDireccionSreci = this.identity.idDireccion;
 
     //Llamar al metodo, de Generar Secuencia para Obtener Secuencia de SCPI | Oficio
     // console.log( this.paramsSecuenciaSCPI );
     // Codigos
     let _subSecretariSreciId:number;
+    let _subSecretariSreciDespacho; // Variable que Identifica si El usuario Pertenece a Despacho
     let _DireccionSreciId:number;
     // Nombres
     let _subSecretariSRECIName:string = "";
@@ -943,6 +947,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             // Generacion del Codigo Nuevo de SCPI
             // Sub Secreatria de la SRECI | Id
             _subSecretariSreciId = this.identity.idDireccion;
+            _subSecretariSreciDespacho = this.identity.despacho;
             //_subSecretariSreciInciales = this.identity.inicialesDireccion;
 
             // Direccion de la SRECI | Id
@@ -961,7 +966,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                 Valido que el Tipo de Usuario sea de Despacho | Administrador de
                 Correspondencia = 2
              ******************************************************************/
-             if( _DireccionSreciId == 8 ){ //"SSCPI"
+            //  if( _DireccionSreciId == 8 ){ //"SSCPI"
+             if( _subSecretariSreciDespacho == true ){ //"SSCPI"
                // Enviamos la Secuencia con Nuevo Valor | SCPI
                //Codigo de la Referencia, el cual se Utiliza en el Documento a Send
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
@@ -970,7 +976,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
                                                              this.codigoSecuenciaGen + '-' + _anioCod ;
              }else {
-               // Enviamos la Secuencia con Nuevo Valor | SCPI
+               // Enviamos la Secuencia con Nuevo Valor | sin SCPI
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
                                                       this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
                //Codigo SCPI | Generado por el Sistema, con Toda la Contatenacion
