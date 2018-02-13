@@ -126,7 +126,9 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Ruta del Pdf a Subir
                 $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
-                               
+                            
+                // 2018-02-13
+                $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
                 
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
@@ -231,6 +233,35 @@ class IngresoCorrespondenciaController extends Controller{
                         ));                    
                     $correspondenciaNew->setIdTipoComunicacion($tipo_comunicacion); //Set de Tipo de Comunicacion 
                     
+                    
+                     /* 2018-02-13
+                         * Campo de las Sub Direcciones Acompanantes
+                         * MEJ-000001
+                         */
+                        // *****************************************************
+                        if( $subDir_send != null ){
+                            // Se convierte el Array en String
+                            $subDir_array_convert   = json_encode($subDir_send);
+                            $subDir_array_convert2  = json_decode($subDir_array_convert);
+
+                            // Recorreros los Items del Array
+                            $descDeptoFuncionalAcum = "";
+                            
+                            foreach ( $subDir_array_convert2 as $arr ){                                
+                                $idDeptoFuncional  = $arr->id;
+                                $descDeptoFuncional = $arr->itemName;
+                                //$inicialesDeptoFuncional = $arr->name2;
+                                if( $descDeptoFuncionalAcum != "" ){
+                                    $descDeptoFuncionalAcum = $descDeptoFuncionalAcum . ', ' . $descDeptoFuncional;
+                                }else {
+                                    $descDeptoFuncionalAcum = $descDeptoFuncional;
+                                }
+                                // Asignamos las Sub Direcciones al Listado
+                                $correspondenciaNew->setdireccionesAcompanantes( $descDeptoFuncionalAcum );
+                            }
+                        }
+                        // FIN | MEJ-000001
+                                        
                     //Finaliza Busqueda de Integridad entre Tablas *************
                     
                     
@@ -305,9 +336,24 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
-                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Actividad a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion Inicial
-                        $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta"); //Set de Actividad Inicial
-                        $correspondenciaDet->setInstrucciones($observacion_correspondencia); 
+                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Actividad a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion Inicial                        
+                        
+                        //Instanciamos de la Clase TblEstados                        
+                        $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                            array(
+                                "idEstado" => $estado
+                            ));                    
+                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados 
+                        
+                        // Estado de la Consulta
+                        if( $estadoDet->getIdEstado() == 5 ){
+                            $correspondenciaDet->setActividadRealizar("La Comunicación: " . $cod_correspondencia . "-" . $new_secuencia . " No tiene seguimiento, se ha Finalizado."  ); //Set de Actividad Inicial
+                        }else {
+                            $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta a comunicación: " . $cod_correspondencia . "-" . $new_secuencia); //Set de Actividad Inicial
+                        }
+                        
+                        $correspondenciaDet->setInstrucciones($observacion_correspondencia);
+                        
                        
                         //Verificacion del Codigo de la Correspondenia *********
                         $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
@@ -315,13 +361,6 @@ class IngresoCorrespondenciaController extends Controller{
                                 "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                             ));
                         $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
-                        
-                        //Instanciamos de la Clase TblEstados                        
-                        $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
-                            array(
-                                "idEstado" => $estado
-                            ));                    
-                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados                        
                         
                         //Instanciamos de la Clase TblUsuario
                         $usuarioDetalle = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
@@ -806,7 +845,8 @@ class IngresoCorrespondenciaController extends Controller{
     /* Funcion de Nuevo Correspondencia ****************************************
      * Parametros:                                                             * 
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
-     *     Informacion.                                                        * 
+     *     Informacion.                                                        *
+     * @Route("/correspondencia/new-correspondencia-tipo", name="/correspondencia/new-correspondencia-tipo") 
      ***************************************************************************/
     public function newCorrespondenciaTipoAction(Request $request) 
     {
@@ -909,7 +949,7 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     
                     // Buscamos el Id de la Secuencia y Generamos el Codigo
-                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia. "-" . $new_secuencia);                    
+                    $correspondenciaNew->setCodCorrespondenciaEnc($cod_correspondencia. "-" . $new_secuencia);
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setObservaciones($observacion_correspondencia); 
@@ -937,11 +977,11 @@ class IngresoCorrespondenciaController extends Controller{
                         $valor2_secuenciaSCPI = $secuenciaSCPI->getValor2() + 1;
                         $secuenciaSCPI->setValor2($valor2_secuenciaSCPI);
                         $secuenciaSCPI->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
-
+                        
                         $em->persist($secuenciaSCPI);
                         //Realizar la actualizacion en el storage de la BD
                         $em->flush();
-
+                        
                         // Consulta a los Datos del Depto Funcional *************
                         $deptoFuncConsulta = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
                             array(
@@ -959,7 +999,7 @@ class IngresoCorrespondenciaController extends Controller{
                         $cod_referenciaSreci = $act_secuencia_scpi;
                         // FIN | NMA | INC.00001
                     } // Fin Codicion de Oficio Secuencial SCPI ****************
-                    
+                                                           
                     // Seteamos el Valor de Codigo de Referencia | SCPI-DEPTO-CORRELATIVO
                     $correspondenciaNew->setCodReferenciaSreci( $cod_referenciaSreci );
                     $correspondenciaNew->setTemaComunicacion($tema_correspondencia);
@@ -1033,7 +1073,7 @@ class IngresoCorrespondenciaController extends Controller{
                         array(
                           "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                         ));
-                    
+                     
                     //Verificacion del Codigo de Referencia de la Correspondenia *******************
                     // Verifica el Tipo de Documento valido para las Repeticiones
                     if( $cod_tipo_documento == 1 || $cod_tipo_documento == 2 ||
@@ -1090,7 +1130,7 @@ class IngresoCorrespondenciaController extends Controller{
                             $comprometidasSecuencias->setHoraActualizacion( $hora_actualizacion ); // Hora de Creacion
                             //$comprometidasSecuencias->setIdCorrespondenciaEnc( $isset_corresp_cod->getIdCorrespondenciaEnc() ); // Id_Correspindencia_Enc                                                    
                             // Persistencia de los datos                            
-                            //$em->persist( $comprometidasSecuencias );
+                            $em->persist( $comprometidasSecuencias );
                         }                        
                         // FIN | INC.00002                        
                         // *****************************************************
@@ -1120,7 +1160,7 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $em->persist($secuenciaNew);
                         
-                        $em->persist( $comprometidasSecuencias );
+                        //$em->persist( $comprometidasSecuencias );
                         
                         //Realizar la actualizacion en el storage de la BD
                         $em->flush();
@@ -1140,8 +1180,25 @@ class IngresoCorrespondenciaController extends Controller{
                         
                         $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
                         
-                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Comunicacion: " . $cod_correspondencia . "-" . $new_secuencia_det); //Set de Descripcion Inicial
-                        $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta a comunicación: " . $cod_correspondencia . "-" . $new_secuencia_det); //Set de Actividad Inicial
+                        $correspondenciaDet->setDescCorrespondenciaDet("Creacion de Comunicacion: " . $cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Descripcion Inicial
+                        
+                        // 2018-02-12
+                        // Validacion del estado; asi sera la Descripcion de la Actividad
+                        
+                        //Instanciamos de la Clase TblEstados                        
+                        $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                            array(
+                                "idEstado" => $estado
+                            ));                    
+                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados
+                        
+                        // Estado de la Consulta
+                        if( $estadoDet->getIdEstado() == 5 ){
+                            $correspondenciaDet->setActividadRealizar("La Comunicación: " . $cod_correspondencia . "-" . $new_secuencia . " No tiene seguimiento, se ha Finalizado."  ); //Set de Actividad Inicial
+                        }else {
+                            $correspondenciaDet->setActividadRealizar("Pendiente de Crear respuesta a comunicación: " . $cod_correspondencia . "-" . $new_secuencia); //Set de Actividad Inicial
+                        }
+                                               
                         $correspondenciaDet->setInstrucciones($observacion_correspondencia); 
                        
                         //Verificacion del Codigo de la Correspondenia *********
@@ -1150,13 +1207,7 @@ class IngresoCorrespondenciaController extends Controller{
                                 "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
                             ));
                         $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
-                        
-                        //Instanciamos de la Clase TblEstados                        
-                        $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
-                            array(
-                                "idEstado" => $estado
-                            ));                    
-                        $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados                        
+                                                
                         
                         //Instanciamos de la Clase TblUsuario
                         $usuarioDetalle = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(

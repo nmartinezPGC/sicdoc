@@ -179,7 +179,20 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
   // Json de AutoCompleter Funcionarios
   public JsonOutgetlistaFuncionarios:any[];
+  public JsonOutgetlistaSubDireccionesSrec:any[];
 
+
+  // 218-02-12
+  // Variable de Comunicacion Sin Seguimiento
+  public comunicacionSinSeguimiento:number = 0;
+  public comunicacionSinSeguimientoNew:number = 0;
+
+
+  
+  itemList = [];
+  // selectedItems = [];
+  selectedItems = [];
+  settings = {};
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -198,6 +211,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
               private completerService: CompleterService){
       // Llamado al Servicio de lista de Los Funcionarios SRECI
       this.getlistaFuncionariosSreci();
+
+      this.getlistaSubDireccionesSreciAll();
   } // Fin | Definicion del Constructor
 
 
@@ -261,6 +276,16 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   ngOnInit() {
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
+
+
+    this.settings = {
+      singleSelection: false,
+      text: "Selecciona las Direcciones acompañantes ... ",
+      selectAllText: 'Selecciona Todos',
+      unSelectAllText: 'Deselecciona Todos',
+      enableSearchFilter: true,
+      badgeShowLimit: 6
+    };
 
     // Inicio de Encabezados
     this.JsonOutgetCodigoSecuenciaNew = {
@@ -345,7 +370,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0,
                             "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,
-                            "", "", "", "", "", "", "",  "",  "", null);
+                            "", "", "", "", "", "", "",  "",  "", null, null);
 
     // Eventos de Señaloizacion
     this.loading = "hide";
@@ -354,6 +379,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     // Limpiamos el Textarea de los COntactos
     $("#contacAddCC").val();
+
+    // Deselecciona la Opcion de Sin Seguimiento
+    $("#estadoFin").val(2);
+
+    $(".chkSinSeguimiento").attr("checked", false);
 
     // Resumenes de la Pantalla
     // Oficios
@@ -385,6 +415,28 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
   } // Fin Metodo onInit()
 
+
+  /******************************************************
+   * Funiones de Seleccion en Nuevo Control del Listas
+   * Metodologia: ng-selectec2
+   * Fecha: 2018-01-15
+   * Casos de uso: Lista de Instituciones, Paises, Tipo
+   * de Institucion, Contactos
+  *******************************************************/
+  onItemSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
 
   /****************************************************
   * Funcion: FND-00001.2
@@ -438,22 +490,43 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       this.comunicacion.secuenciaComunicacionDet = this.valorSecuenciaDet;
       this.comunicacion.secuenciaComunicacionDetAct = this.valorSecuenciaDetAct;
 
+      console.log(this.comunicacionSinSeguimientoNew);
       // Parametro para documento Seleccionado
       // Evaluamos si el Tipo de User no es Administrador
       if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 6){
-          this.comunicacion.idEstado = "3";
-          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
-          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
-          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-      }else if( this.identity.idTipoFunc == 6 ){
-        this.comunicacion.idEstado = "7";
-        this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
-        this.comunicacion.idDireccionSreci = this.identity.idDireccion;
-        this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-      }else
-      {
-        this.comunicacion.idEstado = "7";
-      }
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso                     
+            this.comunicacion.idEstado = "5";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }else {            
+            this.comunicacion.idEstado = "3";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }            
+      }else if( this.identity.idTipoFunc == 6 ){ // Perfil Tipo Director
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $("#estadoFin").val() == 1 ){            
+            this.comunicacion.idEstado = "5";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }else{                     
+            this.comunicacion.idEstado = "7";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }
+      }else{
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $("#estadoFin").val() == 1 ){            
+            this.comunicacion.idEstado = "5";
+          }else{            
+            this.comunicacion.idEstado = "7";
+          }
+      } // Fin de Condicion de Estados y Comunicacion Sin Seguimiento
 
       console.log( this.comunicacion );
       let token1 = this._ingresoComunicacion.getToken();
@@ -1502,6 +1575,53 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     }
 
   }// FIN : FND-00016
+
+
+   /*****************************************************
+  * Funcion: FND-00001.2.1
+  * Fecha: 12-02-2018
+  * Descripcion: Carga la Lista de Todas Sub Direcciones
+  * Objetivo: Obtener la lista de Todas Sub Direcciones
+  * de la BD, Llamando a la API, por su metodo
+  * ( sub-direcciones-sreci-list ).
+  ******************************************************/
+  getlistaSubDireccionesSreciAll() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    let direcconSreci = 1;
+    this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci  ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            
+            this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
+            //console.log( this.itemList  );
+          }
+        });
+  } // FIN : FND-00001.2.1
+
+
+  /*****************************************************
+  * Funcion: FND-000017
+  * Fecha: 12-02-2018
+  * Descripcion: Chekear Comunicacion sin Seguimiento
+  ******************************************************/
+  checkSinSinSeguimiento(){          
+      $('.chkSinSeguimiento').each(function () {        
+          if (this.checked) {            
+            //alert('Activado ' + this.comunicacionSinSeguimientoNew );
+            $("#estadoFin").val(1);
+          } else{                                      
+            // alert('Activado ' + this.comunicacionSinSeguimientoNew );
+            $("#estadoFin").val(2);
+          } 
+      });
+  } // FIN | FND-000017
 
 
 }

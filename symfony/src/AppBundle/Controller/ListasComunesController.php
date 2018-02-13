@@ -15,6 +15,68 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ListasComunesController extends Controller {
     
+    /**
+     * @Route("/sub-direcciones-sreci-list", name="sub-direcciones-sreci-list")
+     * Creacion del Controlador: Sub Direcciones de SRECI
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00001.1
+     */
+    public function subDireccionesSreciListAction(Request $request, $idDireccionSreci = null )
+    {
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // Parametros de la Consulta
+        $idDireccionSreciIn = $request->query->getInt("idDireccionSreci", null);
+        
+        $opt = 0;
+        // Condicion de Direccion SRECI
+        if( $idDireccionSreciIn != 0 || $idDireccionSreciIn != null ){
+            $opt = 1;
+            $dql = $em->createQuery('SELECT deptoF.idDeptoFuncional as id , '                    
+                    . "deptoF.descDeptoFuncional as itemName, "
+                    . 'deptoF.codDeptoFuncional as name, deptoF.inicialesDeptoFuncional as name2 '                                    
+                    . 'FROM BackendBundle:TblDepartamentosFuncionales deptoF '
+                    . 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = deptoF.idDireccionSreci '
+                    . 'WHERE deptoF.idDireccionSreci = :idDireccionSreci '
+                    . 'ORDER BY deptoF.idDeptoFuncional ' )
+                    ->setParameter('idDireccionSreci', $idDireccionSreciIn); 
+        }else {
+            $opt = 2;
+            $dql = $em->createQuery('SELECT deptoF.idDeptoFuncional as id , '
+                                //. "CONCAT( deptoF.inicialesDeptoFuncional , ' | ', deptoF.descDeptoFuncional) as itemName, "
+                                . "deptoF.descDeptoFuncional as itemName, "
+                                . 'deptoF.codDeptoFuncional as name, deptoF.inicialesDeptoFuncional as name2 '                                    
+                                . 'FROM BackendBundle:TblDepartamentosFuncionales deptoF '
+                                . 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = deptoF.idDireccionSreci '
+                                . 'ORDER BY deptoF.idDeptoFuncional ' );                    
+        }
+       
+        // Ejecucion del Query
+        $subDireccionesSreci = $dql->getResult();
+             
+        // Condicion de la Busqueda
+        if (count( $subDireccionesSreci ) >= 1 ) {
+            $data = array(
+                "status" => "success",
+                "code"   => 200,
+                "optEje" => $opt,
+                "data"   => $subDireccionesSreci
+            );
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Sub Direcciones de la SRECI, con los Parametros enviados, verifica la "
+                . " Información. !!"
+            );
+        }
+        
+        return $helpers->parserJson($data);
+    }// FIN | FND00001.1
     
     /**
      * @Route("/estados-user-list", name="estados-user-list")

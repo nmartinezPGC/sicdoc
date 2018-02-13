@@ -108,6 +108,13 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             length: 1000
             options:
                 fixed: false
+        direccionesAcompanantes:
+            type: string
+            nullable: true
+            length: 1000
+            options:
+                fixed: false
+            column: direcciones_acompanantes
     manyToOne:
         idTipoDocumento:
             targetEntity: TblTipoDocumento

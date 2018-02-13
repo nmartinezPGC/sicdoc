@@ -48,7 +48,10 @@ export class Comunicaciones{
       public observaciones:string,
 
       //Copia de Correspondencia
-      public setTomail:string
+      public setTomail:string,
+
+      // Sub Direcciones SRECI
+      public subDireccionesSreciAcom
 
 
     ){}

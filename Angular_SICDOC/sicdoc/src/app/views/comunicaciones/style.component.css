@@ -65,3 +65,24 @@ legend.scheduler-border {
     padding:0 10px; /* To give a bit of padding on the left and right */
     border-bottom:none;
 }
+
+.text-on-pannel {
+  background: #fff none repeat scroll 0 0;
+  height: auto;
+  margin-left: 2px;
+  padding: 5px 0 0 10px;
+  position: absolute;
+  margin-top: -40px;
+  border: 1px solid #337ab7;
+  border-radius: 6px;
+  width: auto;
+}
+
+.panel {
+  /* for text on pannel */
+  margin-top: 10px !important;
+}
+
+.panel-body {
+  padding-top: 30px !important;
+}

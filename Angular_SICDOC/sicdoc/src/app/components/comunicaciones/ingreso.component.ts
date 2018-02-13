@@ -32,6 +32,7 @@ import { Contactos } from '../../models/contactos/contacto.model'; // Servico de
 
 // Libreria de AutoComplete
 import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
+import { stringify } from '@angular/core/src/util';
 
 // Declaramos las variables para jQuery
 declare var jQuery:any;
@@ -185,6 +186,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // Json de AutoCompleter Funcionarios
   public JsonOutgetlistaFuncionarios:any[];
+  public JsonOutgetlistaSubDireccionesSrec:any[];
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
@@ -207,10 +209,17 @@ export class IngresoComunicacionComponent implements OnInit{
   // public  status:string;
   public  codigoSec:string;
 
-  itemList = [];
-   // selectedItems = [];
-   selectedItems = [];
-   settings = {};
+  // Variables para ng-selecter2
+  itemList = [];   
+  selectedItems = [];
+  settings = {};
+
+  public JsonOutgetListaSubDireccionesAcomp = [];
+
+   // 218-02-12
+  // Variable de Comunicacion Sin Seguimiento
+  public comunicacionSinSeguimiento:number = 0;
+  public comunicacionSinSeguimientoNew:number = 0;
 
    userForm: FormGroup;
 
@@ -227,43 +236,14 @@ export class IngresoComunicacionComponent implements OnInit{
                private completerService: CompleterService){
      // Llamado al Servicio de lista de Los Funcionarios SRECI
      this.getlistaFuncionariosSreci();
-
+    
+     this.getlistaSubDireccionesSreciAll();
   } // Fin | Definicion del Constructor
 
 
   // INI | Metodo OnInit
   ngOnInit(){
-    //ini prueba
-    this.itemList = [
-      { "id": 1, "itemName": "India", "name":"Nahum" },
-      { "id": 2, "itemName": "Singapore", "name":"Aaron" },
-      { "id": 3, "itemName": "Australia", "name":"Eva" },
-      { "id": 4, "itemName": "Canada", "name":"Maria" },
-      { "id": 5, "itemName": "South Korea", "name":"Meredith" },
-      { "id": 6, "itemName": "Brazil", "name":"Diego" },
-      { "id": 7, "itemName": "Argentina", "name":"Evangeline" },
-      { "id": 8, "itemName": "Perú", "name":"Vannessa" }
-    ];
-
-    this.selectedItems = [
-      { "id": 1, "itemName": "India" },
-      // { "id": 2, "itemName": "Singapore" },
-      // { "id": 3, "itemName": "Australia" },
-      // { "id": 4, "itemName": "Canada" }
-    ];
-
-    this.settings = {
-      singleSelection: false,
-      text: "Selecciona los Paises",
-      selectAllText: 'Selecciona Todos',
-      unSelectAllText: 'Deselecciona Todos',
-      enableSearchFilter: true,
-      badgeShowLimit: 3
-    };
-
-
-    ///FIN prueba
-
+    
     //Llamamos el evento de Borrar ña Fila Seleccionada
     // $(document).on('click', '.delDoc', function (event) {
     //   event.preventDefault();
@@ -356,6 +336,39 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaTipoInstituciones();
     this.getlistaDireccionesSRECI();
 
+
+    //ini prueba
+    /*this.itemList = [
+      { "id": 1, "itemName": "India", "name":"Nahum" },
+      { "id": 2, "itemName": "Singapore", "name":"Aaron" },
+      { "id": 3, "itemName": "Australia", "name":"Eva" },
+      { "id": 4, "itemName": "Canada", "name":"Maria" },
+      { "id": 5, "itemName": "South Korea", "name":"Meredith" },
+      { "id": 6, "itemName": "Brazil", "name":"Diego" },
+      { "id": 7, "itemName": "Argentina", "name":"Evangeline" },
+      { "id": 8, "itemName": "Perú", "name":"Vannessa" }
+    ];*/
+
+    /*this.selectedItems = [
+      { "id": 1, "itemName": "India" },
+      // { "id": 2, "itemName": "Singapore" },
+      // { "id": 3, "itemName": "Australia" },
+      // { "id": 4, "itemName": "Canada" }
+    ];*/
+
+    //this.itemList = this.JsonOutgetlistaEstados;
+
+    this.settings = {
+      singleSelection: false,
+      text: "Selecciona las Direcciones acompañantes ... ",
+      selectAllText: 'Selecciona Todos',
+      unSelectAllText: 'Deselecciona Todos',
+      enableSearchFilter: true,
+      badgeShowLimit: 6
+    };
+    ///FIN prueba
+
+
     // Direcciones Acompañantes
     this.getlistaDireccionesSRECIAcom();
 
@@ -371,6 +384,11 @@ export class IngresoComunicacionComponent implements OnInit{
 
     this.searchStrFunc = "";
 
+    // Deselecciona la Opcion de Sin Seguimiento
+    $("#estadoFin").val(2);
+    
+    $(".chkSinSeguimiento").attr("checked", false);
+
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
@@ -378,7 +396,7 @@ export class IngresoComunicacionComponent implements OnInit{
                                            this.fechafin  , null,
                                            0, 0,  0, 0,
                                            "", "", "", "", "", "", "", "",
-                                           "", null);
+                                           "", null, null );
 
 
 
@@ -413,6 +431,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // this.removeFileInput();
     // this.getlistaSubDireccionesSRECIAcom();
+    
     // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
 
@@ -426,11 +445,15 @@ export class IngresoComunicacionComponent implements OnInit{
   *******************************************************/
   onItemSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
   OnItemDeSelect(item: any) {
     console.log(item);
     console.log(this.selectedItems);
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
   onSelectAll(items: any) {
     console.log(items);
@@ -471,36 +494,60 @@ export class IngresoComunicacionComponent implements OnInit{
       // Parametro para documento Seleccionado
       // Caso 1 ) Evaluamos si el Tipo de User no es Administrador ( 2, 3, 5 )
       if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 1 && this.identity.idTipoFunc != 6 ){
-          this.comunicacion.idEstado = "3";
-          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
-          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
-          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          console.log('Paso 1 Funcionario');
-          console.log(this.comunicacion);
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso            
+            this.comunicacion.idEstado = "5";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }else {            
+            this.comunicacion.idEstado = "3";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }                  
       // Caso 2 ) Evaluamos si el Tipo de User es Administrador ( 1, 4 ) sin Asignacion a Director
       }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado == 0 ){
-          this.comunicacion.idEstado = "3";
-          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
-          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
-          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          console.log('Paso 2 Admin Corr / Sist');
-          console.log(this.comunicacion);
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso            
+            this.comunicacion.idEstado = "5";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }else {            
+            this.comunicacion.idEstado = "3";
+            this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+            this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+            this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+          }          
       // Caso 3 ) Evaluamos si el Tipo de User Administrador ( 1 ) con Asignacion a Director
       }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado != 0 ){
-          this.comunicacion.idEstado = "7";
-          console.log('Paso 3 Admin Correspondencia');
-          console.log(this.comunicacion);
+          // Evalua si se Activo la Comunicacion sin Seguimiento
+          if( $("#estadoFin").val() == 1 ){            
+            this.comunicacion.idEstado = "5";
+          }else{            
+            this.comunicacion.idEstado = "7";
+          }          
       // Caso 4 ) Evaluamos si el Tipo de User Director ( 6 )
       }else if( this.identity.idTipoFunc == 6 ){
-        this.comunicacion.idEstado = "7";
-        this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
-        this.comunicacion.idDireccionSreci = this.identity.idDireccion;
-        this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-        console.log('Paso 4 Director');
-        console.log(this.comunicacion);
+        // Evalua si se Activo la Comunicacion sin Seguimiento
+        if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Director           
+          this.comunicacion.idEstado = "5";
+          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+        }else {          
+          this.comunicacion.idEstado = "7";
+          this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
+          this.comunicacion.idDireccionSreci = this.identity.idDireccion;
+          this.comunicacion.idUsuarioAsaignado = this.identity.sub;
+        }                
+        console.log('Paso 4 Director');        
       }
+
+      console.log( this.comunicacion.subDireccionesSreciAcom );
 
       //Asignacion de Token de Sesion
       let token1 = this._ingresoComunicacion.getToken();
@@ -620,7 +667,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0,
                                           "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
-                                          "", "", "", null);
+                                          "", "", "", null, null);
 
    // Limpiamos el Array de los Documentos
    this.comunicacion.pdfDocumento = "";
@@ -649,8 +696,8 @@ export class IngresoComunicacionComponent implements OnInit{
       //alert("Mes Falta el 0");
       month = "0" + month;
     }
-    // this.fechafin = year + "-" + month + "-" + day ;
-    this.fechafin = day + "-" + month + "-" + year;
+    this.fechafin = year + "-" + month + "-" + day ;
+    //this.fechafin = day + "-" + month + "-" + year;
     // console.log("Dia " + day + " Mes " + month + " Año " + year);
   } // FIN : FND-00001.2
 
@@ -1876,6 +1923,52 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-00001.2
+
+
+  /*****************************************************
+  * Funcion: FND-00001.2.1
+  * Fecha: 12-02-2018
+  * Descripcion: Carga la Lista de Todas Sub Direcciones
+  * Objetivo: Obtener la lista de Todas Sub Direcciones
+  * de la BD, Llamando a la API, por su metodo
+  * ( sub-direcciones-sreci-list ).
+  ******************************************************/
+  getlistaSubDireccionesSreciAll() {
+    // Llamamos al Servicio que provee todas las Instituciones
+    this._listasComunes.listasComunes("","sub-direcciones-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            
+            this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
+            //console.log( this.itemList  );
+          }
+        });
+  } // FIN : FND-00001.2.1
+
+
+  /*****************************************************
+  * Funcion: FND-000017
+  * Fecha: 12-02-2018
+  * Descripcion: Chekear Comunicacion sin Seguimiento
+  ******************************************************/
+  checkSinSinSeguimiento(){          
+    $('.chkSinSeguimiento').each(function () {        
+        if (this.checked) {            
+          //alert('Activado ' + this.comunicacionSinSeguimientoNew );
+          $("#estadoFin").val(1);
+        } else{                                      
+          // alert('Activado ' + this.comunicacionSinSeguimientoNew );
+          $("#estadoFin").val(2);
+        } 
+    });
+} // FIN | FND-000017
 
 
 } // // FIN : export class IngresoComunicacionComponent

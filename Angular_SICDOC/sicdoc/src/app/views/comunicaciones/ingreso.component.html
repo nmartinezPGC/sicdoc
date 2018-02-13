@@ -38,17 +38,17 @@
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
 
-
-      <!-- <div class="form-group"> -->
-            <!-- <angular2-multiselect [data]="itemList" name="selectPaises"
+<!-- 
+      <div class="form-group">
+            <angular2-multiselect [data]="itemList" name="selectPaises"
                           [settings]="settings"
                           [(ngModel)]="selectedItems"
                           (onSelect)="onItemSelect($event)"
                           (onDeSelect)="OnItemDeSelect($event)"
                           (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)">
-            </angular2-multiselect> -->
-      <!-- </div> -->
+                          (onDeSelectAll)="onDeSelectAll($event)">                          
+            </angular2-multiselect>
+      </div> -->
       <!-- <br> -->
 
 
@@ -75,19 +75,22 @@
          </div>
 
          <!-- Comunicacion sin Seguimiento | Estado = 5 -->
-         <div class="col-xs-12 col-sm-6 col-md-4">
-           <div class="panel panel-primary">
-            <div class="panel-body">
-              <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary"><strong class="text-uppercase">
-                <label class="custom-control custom-checkbox">
-                  <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento">
-                  <span class="custom-control-indicator"></span>
-                  <span class="custom-control-description">Comunicación sin Seguimiento</span>
-                </label>
-              </strong>
-            </h6>
+         <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="panel panel-primary">
+             <div class="panel-body">
+               <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary">
+                 <strong class="text-uppercase">
+                   <label class="custom-control custom-checkbox">
+                     <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento" 
+                         (click)="checkSinSinSeguimiento()" >
+                     <span class="custom-control-indicator"></span>
+                     <span class="custom-control-description">Comunicación sin Seguimiento</span>
+                     <input style="width:0px;height:0px;color:white" type="text" value="0" name="estadoFin" id="estadoFin" >                  
+                   </label>
+                 </strong>
+               </h6>
             </div>
-          </div>
+           </div>          
          </div>
 
         </div>
@@ -289,6 +292,23 @@
          </div>
 
         </div>
+        
+        <!-- Otras Sub Direccion Acompañante del tema de la Comunicacion -->
+        <div class="row">
+         <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <angular2-multiselect [data]="itemList" name="selectPaises"
+                  [settings]="settings"
+                  [(ngModel)]="selectedItems"
+                  (onSelect)="onItemSelect($event)"
+                  (onDeSelect)="OnItemDeSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  (onDeSelectAll)="onDeSelectAll($event)">                          
+              </angular2-multiselect>
+            </div>
+          </div>
+        </div>
+
       </div>
 
 
@@ -305,7 +325,7 @@
 
             <!-- Fila para los contactos en Copia -->
             <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <strong>Contactos a copiar:</strong>
                <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
                    [(ngModel)]="searchStrFunc" inputId="2" clearSelected="true"
@@ -316,7 +336,7 @@
 
                <textarea #setTomail="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
                    tabindex="3" disabled="true"
-                   ngControl="setTomail" [(ngModel)]="comunicacion.setTomail">{{selectedFuncionarioAll}}</textarea>
+                   ngControl="setTomail" [(ngModel)]="comunicacion.setTomail"> <strong> {{selectedFuncionarioAll}} </strong></textarea>
                 <!-- <p><strong>Copia a:</strong> {{selectedFuncionarioAll}}</p> -->
                 <!-- Boton para limpiar la Data de Contactos -->
                 <button type="button" (click)="cleanContact()" class="btn btn-primary btn-sm">Borrar Contactos</button>

@@ -289,8 +289,7 @@ class ComunesController extends Controller {
                         "despacho"       => $despacho
                     ));
             }
-            
-            //var_dump($sec);
+                        
             // Query para Obtener todos la Secuencia de los Listados segun 
             // Parametros de la Tabla: TblSecuenciales
                 /*$querySec = $em->createQuery('SELECT scom.valor1, scom.valor2, '

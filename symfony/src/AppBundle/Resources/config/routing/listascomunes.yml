@@ -152,3 +152,10 @@ listascomunes_funcionariosListAll:
     path: /funcionarios-list-all
     defaults: { _controller: "AppBundle:ListasComunes:funcionariosListAll" }
     methods: POST
+
+## Listado de todos las Sub Direcciones de la SRECI, para ChekListBox | Modulo Listas
+listascomunes_subDireccionesSreciList:
+    path: /sub-direcciones-sreci-list
+    defaults: { _controller: "AppBundle:ListasComunes:subDireccionesSreciList" }
+    methods: POST
+    
