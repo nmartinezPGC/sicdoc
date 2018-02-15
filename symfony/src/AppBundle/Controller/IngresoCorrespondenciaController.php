@@ -931,6 +931,9 @@ class IngresoCorrespondenciaController extends Controller{
                 // setTomail, copias de contactos a enviar
                 $setTomail = ($params->setTomail != null) ? $params->setTomail : null ;
                 
+                // 2018-02-13
+                $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
+                
                 // Se convierte el Array en String
                 $setTo_array_convert = explode(",", $setTomail);
                 $setTo_array_convertIn = implode(",", $setTo_array_convert);                                             
@@ -1064,6 +1067,39 @@ class IngresoCorrespondenciaController extends Controller{
                            "idTipoComunicacion" => 2
                         ));                    
                     $correspondenciaNew->setIdTipoComunicacion($tipo_comunicacion); //Set de Tipo de Comunicacion
+                    
+                    
+                    
+                    /* 2018-02-13
+                    * Campo de las Sub Direcciones Acompanantes
+                    * MEJ-000001
+                    */
+                        // *****************************************************
+                        if( $subDir_send != null ){
+                            // Se convierte el Array en String
+                            $subDir_array_convert   = json_encode($subDir_send);
+                            $subDir_array_convert2  = json_decode($subDir_array_convert);
+
+                            // Recorreros los Items del Array
+                            $descDeptoFuncionalAcum = "";
+                            
+                            foreach ( $subDir_array_convert2 as $arr ){                                
+                                $idDeptoFuncional  = $arr->id;
+                                $descDeptoFuncional = $arr->itemName;
+                                //$inicialesDeptoFuncional = $arr->name2;
+                                if( $descDeptoFuncionalAcum != "" ){
+                                    $descDeptoFuncionalAcum = $descDeptoFuncionalAcum . ', ' . $descDeptoFuncional;
+                                }else {
+                                    $descDeptoFuncionalAcum = $descDeptoFuncional;
+                                }
+                                // Asignamos las Sub Direcciones al Listado
+                                $correspondenciaNew->setdireccionesAcompanantes( $descDeptoFuncionalAcum );
+                            }
+                        }
+                        // FIN | MEJ-000001
+                    
+                    
+                    
                                                                              
                     //Finaliza Busqueda de Integridad entre Tablas *************
                     

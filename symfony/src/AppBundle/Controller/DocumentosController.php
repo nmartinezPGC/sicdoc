@@ -337,6 +337,14 @@ class DocumentosController extends Controller{
                             if( $ext == "PDF" ){
                                 $ext = "pdf";
                             }
+                            
+                            if( $ext == "JPG" ){
+                                $ext = "jpg";
+                            }
+                            
+                            if( $ext == "JPEG" ){
+                                $ext = "jpeg";
+                            }
                             //FIN | INC00001
                             
                             $file_name = $documentoEM->getCodDocumento() . "-" . date('Y-m-d'). "." .$ext;                            
@@ -475,5 +483,100 @@ class DocumentosController extends Controller{
                
         return $helpers->parserJson($data);
     }//FIN
+ 
+    
+    /* Funcion de Borrar Documento *********************************************
+     * Parametros:                                                             *
+     * @Route("/borrar-documento-server", name="borrar-documento-server")      * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
+     *     Informacion.                                                        * 
+     * 2 ) Lista los docuemntos segun parametro ( codDocumento )               *
+     * 3 ) Ruta = /documentos/borrar-documento-server                           * 
+     ***************************************************************************/
+    public function borrarDocumentoServerAction(Request $request, $id = null)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            $identity = $helpers->authCheck($hash, true);
+            
+            //Recogemos el ID de Comunicacion Enc ******************************
+            $cod_correspondencia = (isset($params->codDocument)) ? $params->codDocument : null;
+            $ext_documento = (isset($params->extDocument)) ? $params->extDocument : null;
+            
+            $ruta = "uploads/correspondencia/";
+            //$documento_id = $id;
+            // Validamos que el Codigo no venga Null
+            if( $cod_correspondencia != null || $cod_correspondencia != 0 ){  
+                $path = pathinfo( $cod_correspondencia.".".$ext_documento );
+                $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia.".".$ext_documento );
+                
+                $path_of_file = $ruta.$cod_correspondencia.".".$ext_documento;
+                
+                $opt = 0;
+                // Verifiacion si el Documento Existe **************************               
+                //if (file_exists($path_of_file)){
+                if($path['filename'] == $nombre_de_archivo_anterior['filename']){
+                    if ( @unlink($path_of_file) ) { 
+                        $opt = 1;
+                        $data = array(
+                            "status" => "succes",                
+                            "code" => "200",
+                            "opt"  => $opt,
+                            "msg" => "Documento Borrado Existosamente !!",
+                            "data" => $path_of_file
+                        );
+                    } else {
+                        $opt = 2;
+                        $data = array(
+                            "status" => "succes",                
+                            "code" => "500",
+                            "opt"  => $opt,
+                            "path" => $path,
+                            "nameFile" => $nombre_de_archivo_anterior,
+                            "msg"  => "Documento no se Borrado, Intenta Otra ves !!",
+                            "data" => $path_of_file
+                        );   
+                    }   
+                } else {
+                    $opt = 3;
+                    $data = array(
+                        "status" => "error",                
+                        "code" => "500",   
+                        "opt"  => $opt,
+                        "msg" => "Documento No Exsite, vefica la extención o contacta al Administrador !!",
+                        "data" => $path_of_file
+                    );
+                }            
+            }else{
+                $data = array(
+                    "status" => "error",                
+                    "code" => "300",                
+                    "msg" => "Debes de Seleccionar el Documento para luego Borrar !!"                 
+                );
+            }              
+        } else {
+            $data = array(
+                "status" => "error",                
+                "code"   => "400",
+                "token"  => $checkToken,
+                "msg" => "Autorizacion de Token no valida, la sessión ha finalizado !!"                
+            );
+        }   
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);        
+    }//FIN
+    
     
 }

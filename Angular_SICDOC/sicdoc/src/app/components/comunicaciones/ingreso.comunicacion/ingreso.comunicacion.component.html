@@ -50,7 +50,7 @@
                     ngControl="idTipoDocumento" [(ngModel)]="comunicacion.idTipoDocumento"
                     (change)="getCodigoCorrespondencia()" >
                   <option value="0">Tipo de comunicación </option>
-                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > 
+                  <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" >
                     {{ list.descTipoDocumento }}
                   </option>
               </select>
@@ -58,7 +58,7 @@
               <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicación</small>
             </div>
          </div>
-         
+
          <!-- Comunicacion sin Seguimiento | Estado = 5 -->
          <div class="col-xs-12 col-sm-6 col-md-6">
            <div class="panel panel-primary">
@@ -66,16 +66,16 @@
               <h6 title="La Comunicación no requiere dar seguimiento o ingresar acciones, por ello se Finaliza" class="text-on-pannel text-primary">
                 <strong class="text-uppercase">
                   <label class="custom-control custom-checkbox">
-                    <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento" 
+                    <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento"
                         (click)="checkSinSinSeguimiento()" >
                     <span class="custom-control-indicator"></span>
                     <span class="custom-control-description">Comunicación sin Seguimiento</span>
-                    <input style="width:0px;height:0px;color:white" type="text" value="2" name="estadoFin" id="estadoFin" >                  
+                    <input style="width:0px;height:0px;color:white" type="text" value="2" name="estadoFin" id="estadoFin" >
                   </label>
                 </strong>
               </h6>
            </div>
-          </div>          
+          </div>
         </div>
 
         </div>
@@ -200,7 +200,7 @@
           <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="form-group">
               <select #idDireccionSreciAcom="ngModel" class="form-control" name="idDireccionSreciAcom" id="idDireccionSreciAcom"
-                    ngControl="idDireccionSreciAcom" [(ngModel)]="comunicacion.idDireccionSreciAcom"  (change)="getlistaSubDireccionesSRECIAcom()" >
+                    ngControl="idDireccionSreciAcom" [(ngModel)]="comunicacion.idDireccionSreciAcom"  (change)="getlistaSubDireccionesSreciAll()" >
                   <option value="0">Sub Secretaría Acompañante </option>
                   <option *ngFor="let list of JsonOutgetlistaDireccionSRECIAcom" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
               </select>
@@ -209,7 +209,7 @@
          </div>
 
          <!-- Sub Direccion Acompañante del tema de la Comunicacion -->
-         <div class="col-xs-12 col-sm-6 col-md-6">
+         <!-- <div class="col-xs-12 col-sm-6 col-md-6">
            <div class="form-group">
              <select #idDeptoFuncionalAcom="ngModel" class="form-control" name="idDeptoFuncionalAcom" id="idDeptoFuncionalAcom"
                    ngControl="idDeptoFuncionalAcom" [(ngModel)]="comunicacion.idDeptoFuncionalAcom"  >
@@ -218,7 +218,7 @@
              </select>
              <small class="form-text text-muted" *ngIf="idDeptoFuncionalAcom.value == 0 || idDeptoFuncionalAcom.value == null " >Debes Seleccionar una Dirección acompañante</small>
            </div>
-         </div>
+         </div> -->
 
         </div>
 
@@ -232,12 +232,13 @@
                    (onSelect)="onItemSelect($event)"
                    (onDeSelect)="OnItemDeSelect($event)"
                    (onSelectAll)="onSelectAll($event)"
-                   (onDeSelectAll)="onDeSelectAll($event)">                          
+                   (onDeSelectAll)="onDeSelectAll($event)">
                </angular2-multiselect>
+               <small class="form-text text-muted" >Debes Seleccionar una Dirección acompañante</small>
              </div>
            </div>
          </div>
-      
+
       </div>
 
       <hr>
@@ -312,10 +313,21 @@
                        <th>Nombre de Documento</th>
                        <th>Extencion</th>
                        <th>Peso en Kb</th>
+                       <th>Borrar</th>
                      </tr>
                    </thead>
-                   <tbody id="newTable">
-                       <!-- Cuerpor de la Tabla  -->
+                   <tbody>
+                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
+                               <td>{{ homeFormIndex + 1 }}</td>
+                               <td>{{ suchnewrow.nameDoc }}</td>
+                               <td>{{ suchnewrow.extDoc }}</td>
+                               <td>{{ suchnewrow.pesoDoc }}</td>
+                               <td>
+                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                       class="btn btn-danger" style="padding: 2px">
+                                     Borrar</button>
+                               </td>
+                       </tr>
                    </tbody>
                  </table>
 

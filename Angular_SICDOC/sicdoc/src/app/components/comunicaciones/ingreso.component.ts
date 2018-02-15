@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
@@ -190,6 +190,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
+  // public JsonOutgetListaDocumentosDelete:any[];
+  private JsonOutgetListaDocumentosDelete;
 
 
   // Variabls para validaciones de Seleccionado
@@ -210,7 +212,7 @@ export class IngresoComunicacionComponent implements OnInit{
   public  codigoSec:string;
 
   // Variables para ng-selecter2
-  itemList = [];   
+  itemList = [];
   selectedItems = [];
   settings = {};
 
@@ -233,25 +235,41 @@ export class IngresoComunicacionComponent implements OnInit{
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http,
-               private completerService: CompleterService){
+               private completerService: CompleterService,
+               private changeDetectorRef: ChangeDetectorRef){
      // Llamado al Servicio de lista de Los Funcionarios SRECI
      this.getlistaFuncionariosSreci();
-    
-     this.getlistaSubDireccionesSreciAll();
+
+     this.settings = {
+       singleSelection: false,
+       text: "Selecciona las Direcciones acompañantes ... ",
+       selectAllText: 'Selecciona Todos',
+       unSelectAllText: 'Deselecciona Todos',
+       enableSearchFilter: true,
+       badgeShowLimit: 6
+     };
+
+     // this.getlistaSubDireccionesSreciAll();
   } // Fin | Definicion del Constructor
 
 
   // INI | Metodo OnInit
   ngOnInit(){
-    
+
     //Llamamos el evento de Borrar ña Fila Seleccionada
-    // $(document).on('click', '.delDoc', function (event) {
-    //   event.preventDefault();
-    //     var valores = $(this).parents("tr").find("td")[0].innerHTML;
-    //     $(this).closest('tr').remove();
-    //
-    //     alert('Hola ' + valores);
-    // });
+    /*$(document).on('click', '.delDoc', function (event) {
+      event.preventDefault();
+        var valores = $(this).parents("tr").find("td")[0].innerHTML;
+        var valores2 = $(this).parents("tr").find("td")[1].innerHTML;
+
+        $("#idDocumentoDel").val(valores);
+        $(this).closest('tr').remove();
+
+        $("#btnDeleteDoc").click();
+        $("#idDocumentoDel").val('');
+        // alert('Hola ' + valores + ' Ext ' + valores +'.'+ valores2);
+        // console.log(this.JsonOutgetListaDocumentos);
+    });*/
 
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
@@ -322,6 +340,13 @@ export class IngresoComunicacionComponent implements OnInit{
     // Array de los Documentos enviados
     this.JsonOutgetListaDocumentos = [];
 
+    // Json de Documento a Borrar
+    this.JsonOutgetListaDocumentosDelete = {
+      "codDocument": "",
+      "extDocument": ""
+    }
+
+
     $("#newTable").children().remove();
 
     // Limpiamos el Textarea de los COntactos
@@ -337,35 +362,6 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaDireccionesSRECI();
 
 
-    //ini prueba
-    /*this.itemList = [
-      { "id": 1, "itemName": "India", "name":"Nahum" },
-      { "id": 2, "itemName": "Singapore", "name":"Aaron" },
-      { "id": 3, "itemName": "Australia", "name":"Eva" },
-      { "id": 4, "itemName": "Canada", "name":"Maria" },
-      { "id": 5, "itemName": "South Korea", "name":"Meredith" },
-      { "id": 6, "itemName": "Brazil", "name":"Diego" },
-      { "id": 7, "itemName": "Argentina", "name":"Evangeline" },
-      { "id": 8, "itemName": "Perú", "name":"Vannessa" }
-    ];*/
-
-    /*this.selectedItems = [
-      { "id": 1, "itemName": "India" },
-      // { "id": 2, "itemName": "Singapore" },
-      // { "id": 3, "itemName": "Australia" },
-      // { "id": 4, "itemName": "Canada" }
-    ];*/
-
-    //this.itemList = this.JsonOutgetlistaEstados;
-
-    this.settings = {
-      singleSelection: false,
-      text: "Selecciona las Direcciones acompañantes ... ",
-      selectAllText: 'Selecciona Todos',
-      unSelectAllText: 'Deselecciona Todos',
-      enableSearchFilter: true,
-      badgeShowLimit: 6
-    };
     ///FIN prueba
 
 
@@ -386,7 +382,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Deselecciona la Opcion de Sin Seguimiento
     $("#estadoFin").val(2);
-    
+
     $(".chkSinSeguimiento").attr("checked", false);
 
 
@@ -398,6 +394,12 @@ export class IngresoComunicacionComponent implements OnInit{
                                            "", "", "", "", "", "", "", "",
                                            "", null, null );
 
+
+    // Llamado a la Opcion de llenado de las Sub Direcciones
+    this.getlistaSubDireccionesSreciAll();
+
+    this.selectedItems = [];
+    this.itemList = [];
 
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
@@ -431,7 +433,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // this.removeFileInput();
     // this.getlistaSubDireccionesSRECIAcom();
-    
+
     // this.loadScript('../assets/js/ingreso.comunicacion.component.js');
   } // Fin | Metodo ngOnInit
 
@@ -449,19 +451,33 @@ export class IngresoComunicacionComponent implements OnInit{
     this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
     console.log( this.comunicacion.subDireccionesSreciAcom );
   }
+
   OnItemDeSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
     this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
     console.log( this.comunicacion.subDireccionesSreciAcom );
   }
+
   onSelectAll(items: any) {
     console.log(items);
-  }
-  onDeSelectAll(items: any) {
-    console.log(items);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
 
+  onDeSelectAll(items: any) {
+    console.log(items);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
+  }
+
+
+  /*Funcion de Recarga de la Pagina*/
+  refresh(): void {
+    window.location.reload();
+  }
 
 
   // Ini | Metodo onSubmit
@@ -495,56 +511,56 @@ export class IngresoComunicacionComponent implements OnInit{
       // Caso 1 ) Evaluamos si el Tipo de User no es Administrador ( 2, 3, 5 )
       if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 1 && this.identity.idTipoFunc != 6 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso            
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
             this.comunicacion.idEstado = "5";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }else {            
+          }else {
             this.comunicacion.idEstado = "3";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }                  
+          }
       // Caso 2 ) Evaluamos si el Tipo de User es Administrador ( 1, 4 ) sin Asignacion a Director
       }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado == 0 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso            
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
             this.comunicacion.idEstado = "5";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }else {            
+          }else {
             this.comunicacion.idEstado = "3";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }          
+          }
       // Caso 3 ) Evaluamos si el Tipo de User Administrador ( 1 ) con Asignacion a Director
       }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado != 0 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $("#estadoFin").val() == 1 ){            
+          if( $("#estadoFin").val() == 1 ){
             this.comunicacion.idEstado = "5";
-          }else{            
+          }else{
             this.comunicacion.idEstado = "7";
-          }          
+          }
       // Caso 4 ) Evaluamos si el Tipo de User Director ( 6 )
       }else if( this.identity.idTipoFunc == 6 ){
         // Evalua si se Activo la Comunicacion sin Seguimiento
-        if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Director           
+        if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Director
           this.comunicacion.idEstado = "5";
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
           this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-        }else {          
+        }else {
           this.comunicacion.idEstado = "7";
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
           this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-        }                
-        console.log('Paso 4 Director');        
+        }
+        console.log('Paso 4 Director');
       }
 
       console.log( this.comunicacion.subDireccionesSreciAcom );
@@ -567,12 +583,13 @@ export class IngresoComunicacionComponent implements OnInit{
                 if(this.loading = 'show'){
                   this.loading = 'hidden';
                 }
-
                 //alert(this.mensajes);
             }else{
               //this.resetForm();
               this.loading = 'hidden';
+
               this.ngOnInit();
+              //this.refresh();
               // this.alertShow();
               //Oculta el Div de Alerta despues de 3 Segundos
               setTimeout(function() {
@@ -673,6 +690,11 @@ export class IngresoComunicacionComponent implements OnInit{
    this.comunicacion.pdfDocumento = "";
 
    this.JsonOutgetListaDocumentos = [];
+
+   this.JsonOutgetListaDocumentosDelete = {
+     "codDocument": "",
+     "extDocument": ""
+   }
 
   } // FIN : FND-00001.1
 
@@ -1097,10 +1119,8 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comunes/upload-documento";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
 
 
     // Parametros de las Secuencias
@@ -1132,13 +1152,7 @@ export class IngresoComunicacionComponent implements OnInit{
         this.extencionDocumento = "pdf"
       }
 
-    // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
-                                    // + this.consultaContactos.apellido1Contacto;
-
-    //  this.paramsDocs.optDocumento = optDoc;
-
      let sendParms = "json=" + "";
-     let codigoSec2 = "sdsd";
 
      // Parametro para documento Seleccionado
      this.comunicacion.pdfDocumento = this.codigoSec;
@@ -1340,7 +1354,6 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaTipoFuncionariosSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-
     this._listasComunes.listasComunes( "","tipo-funcionario-list").subscribe(
         response => {
           // login successful so redirect to return url
@@ -1353,7 +1366,7 @@ export class IngresoComunicacionComponent implements OnInit{
             this.JsonOutgetlistaTipoFuncionariosSRECI = response.data;
           }
         });
-  } // FIN : FND-00007.1.1.2
+   } // FIN : FND-00007.1.1.2
 
 
   /*****************************************************
@@ -1788,6 +1801,7 @@ export class IngresoComunicacionComponent implements OnInit{
    let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
 
 
+   // Agrega Items al Json
    this.JsonOutgetListaDocumentos.push({
      "nameDoc": newSecAct,
      "extDoc": this.extencionDocumento,
@@ -1795,31 +1809,51 @@ export class IngresoComunicacionComponent implements OnInit{
    });
 
 
+   // seteo del Parametro Json de los Documentos
    this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
 
-   $("#newTable").append('<tr> ' +
+   // 2018-02-15
+   // Se comentta debido a que ahora se hace con Angular
+   /*$("#newTable").append('<tr> ' +
                       '   <th scope="row">'+ secActual +'</th> ' +
                       '   <td>' + newSecAct + '</td> ' +
                       '   <td>'+ this.extencionDocumento +'</td> ' +
                       '   <td>'+ this.seziDocumento +'</td> ' +
-                      // '   <td><a style="cursor: pointer" class="delDoc"> Borrar </a></td> ' +
-                      ' </tr>');
+                      '   <td><a style="cursor: pointer" class="delDoc"> Borrar </a></td> ' +
+                      ' </tr>');*/
 
    console.log(this.JsonOutgetListaDocumentos);
 
   } // FIN | FND-00017
 
+
+
   /*****************************************************
   * Funcion: FND-00017
   * Fecha: 18-10-2017
   * Descripcion: Creacion de nuevo File input
-  * ( createNewFileInput ).
+  * ( deleteItemTable ).
   ******************************************************/
   deleteItemTable(){
-    $(document).on('click', '.delDoc', function (event) {
-      event.preventDefault();
-      $(this).closest('tr').remove();
-    });
+    //$('#newTable tr:last-child').remove();
+    // delete this.JsonOutgetListaDocumentos[0];
+
+    let idDocumentoDelete = $("#idDocumentoDel").val();
+
+    // var elementDelete = $(this).parent().parent();
+    // $('#tablelist').remove(idDocumentoDelete);
+    $('#tablelist tbody tr').slice(0).remove();
+
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentos.splice(idDocumentoDelete,1);
+
+    if( this.JsonOutgetListaDocumentos == null || this.JsonOutgetListaDocumentos.length == 0 ){
+      console.log(this.JsonOutgetListaDocumentos);
+      alert('Json de Documentos vacio');
+    }else {
+      alert('Esta lleno');
+      console.log(this.JsonOutgetListaDocumentos);
+    }
   }
 
   /*****************************************************
@@ -1829,13 +1863,14 @@ export class IngresoComunicacionComponent implements OnInit{
   * ( removeFileInput ).
   ******************************************************/
   removeFileInput() {
-    // var s = '#fileIn';
-    // var $s = $(s).find('#contFile').remove().end();
-      $("#delDoc").click( function(){
-        // this.JsonOutgetListaDocumentos.splice(0, 1);
-        alert('Ejecuto Fun');
-          console.log( this.JsonOutgetListaDocumentos );
-      });
+    //Llamamos el evento de Borrar ña Fila Seleccionada
+    $(document).on('click', '.delDoc', function (event) {
+      event.preventDefault();
+        var valores = $(this).parents("tr").find("td")[0].innerHTML;
+        $(this).closest('tr').remove();
+        alert('Hola ' + valores);
+        console.log(this.JsonOutgetListaDocumentos);
+    });
   } // FIN | FND-00018
 
 
@@ -1935,17 +1970,27 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaSubDireccionesSreciAll() {
     // Llamamos al Servicio que provee todas las Instituciones
-    this._listasComunes.listasComunes("","sub-direcciones-sreci-list").subscribe(
+    // Llamamos al Servicio que provee todas las Instituciones
+    let direcconSreci = 0;
+
+    if( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
+        direcconSreci = this.comunicacion.idDireccionSreciAcom;
+    }else {
+      direcconSreci = 0;
+    }
+
+    this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci).subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            this.itemList = [];
             alert(response.msg);
 
           }else{
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
-            
+
             this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
             //console.log( this.itemList  );
           }
@@ -1958,17 +2003,67 @@ export class IngresoComunicacionComponent implements OnInit{
   * Fecha: 12-02-2018
   * Descripcion: Chekear Comunicacion sin Seguimiento
   ******************************************************/
-  checkSinSinSeguimiento(){          
-    $('.chkSinSeguimiento').each(function () {        
-        if (this.checked) {            
+  checkSinSinSeguimiento(){
+    $('.chkSinSeguimiento').each(function () {
+        if (this.checked) {
           //alert('Activado ' + this.comunicacionSinSeguimientoNew );
           $("#estadoFin").val(1);
-        } else{                                      
+        } else{
           // alert('Activado ' + this.comunicacionSinSeguimientoNew );
           $("#estadoFin").val(2);
-        } 
+        }
     });
-} // FIN | FND-000017
+  } // FIN | FND-000017
+
+
+
+  /*****************************************************
+  * Funcion: FND-00018
+  * Fecha: 15-02-2018
+  * Descripcion: Delete de nuevo File input, en Tabla
+  * ( deleteRowHomeForm ).
+  ******************************************************/
+  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentos.splice(homeFormIndex,1);
+    this.changeDetectorRef.detectChanges();
+    this.comunicacion.pdfDocumento = "";
+
+    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+    console.log(this.JsonOutgetListaDocumentos);
+  }
+
+
+  /*****************************************************
+  * Funcion: FND-00019
+  * Fecha: 15-02-2018
+  * Descripcion: Metodo para Borrar Documento desde el
+  * Servidor
+  * metodo ( borrar-documento-server ).
+  ******************************************************/
+  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    // Agrega Items al Json
+    this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+
+    // Cambiamos la Extencion si es jpg
+    if( extDocumentoIn == "jpg" ){
+      extDocumentoIn = "jpeg";
+    }
+    this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+
+    this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            //this.JsonOutgetlistaEstados = response.data;
+            alert(response.msg);
+          }
+        });
+  } // FIN : FND-00019
+
 
 
 } // // FIN : export class IngresoComunicacionComponent

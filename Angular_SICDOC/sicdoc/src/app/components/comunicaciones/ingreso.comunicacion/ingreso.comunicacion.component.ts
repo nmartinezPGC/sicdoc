@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { FormGroup, FormArray,FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -85,6 +85,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public JsonOutgetlistaInstitucion:any[];
 
   public JsonOutgetListaDocumentos = [];
+
+  // public JsonOutgetListaDocumentosDelete:any[];
+  private JsonOutgetListaDocumentosDelete;
 
   // Secuencias
   // public JsonOutgetCodigoSecuenciaNew:any[];
@@ -188,11 +191,13 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public comunicacionSinSeguimientoNew:number = 0;
 
 
-  
+
   itemList = [];
   // selectedItems = [];
   selectedItems = [];
   settings = {};
+
+  public JsonOutgetListaSubDireccionesAcomp = [];
 
   // Objeto que Controlara la Forma
   forma:FormGroup;
@@ -208,11 +213,21 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                private _appComponent: AppComponent,
                private _http: Http,
               private _createDomService: CreateDomService,
-              private completerService: CompleterService){
+              private completerService: CompleterService,
+              private changeDetectorRef: ChangeDetectorRef){
       // Llamado al Servicio de lista de Los Funcionarios SRECI
       this.getlistaFuncionariosSreci();
 
-      this.getlistaSubDireccionesSreciAll();
+      this.settings = {
+        singleSelection: false,
+        text: "Selecciona las Direcciones acompañantes ... ",
+        selectAllText: 'Selecciona Todos',
+        unSelectAllText: 'Deselecciona Todos',
+        enableSearchFilter: true,
+        badgeShowLimit: 6
+      };
+
+      // this.getlistaSubDireccionesSreciAll();
   } // Fin | Definicion del Constructor
 
 
@@ -276,16 +291,14 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   ngOnInit() {
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
-
-
-    this.settings = {
-      singleSelection: false,
-      text: "Selecciona las Direcciones acompañantes ... ",
-      selectAllText: 'Selecciona Todos',
-      unSelectAllText: 'Deselecciona Todos',
-      enableSearchFilter: true,
-      badgeShowLimit: 6
-    };
+    // this.settings = {
+    //   singleSelection: false,
+    //   text: "Selecciona las Direcciones acompañantes ... ",
+    //   selectAllText: 'Selecciona Todos',
+    //   unSelectAllText: 'Deselecciona Todos',
+    //   enableSearchFilter: true,
+    //   badgeShowLimit: 6
+    // };
 
     // Inicio de Encabezados
     this.JsonOutgetCodigoSecuenciaNew = {
@@ -357,6 +370,12 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       "idTipoDocumento"  : ""
     };
 
+    // Json de Documento a Borrar
+    this.JsonOutgetListaDocumentosDelete = {
+      "codDocument": "",
+      "extDocument": ""
+    }
+
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
@@ -371,6 +390,12 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0,
                             "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,
                             "", "", "", "", "", "", "",  "",  "", null, null);
+
+    // Llamamos al Metodo de Sub Direcciones Acompañantes
+    this.getlistaSubDireccionesSreciAll();
+
+    this.selectedItems = [];
+    this.itemList = [];
 
     // Eventos de Señaloizacion
     this.loading = "hide";
@@ -425,17 +450,30 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   *******************************************************/
   onItemSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
+
   OnItemDeSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
+
   onSelectAll(items: any) {
     console.log(items);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
+
   onDeSelectAll(items: any) {
     console.log(items);
+    this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
+    this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
+    console.log( this.comunicacion.subDireccionesSreciAcom );
   }
 
   /****************************************************
@@ -495,25 +533,25 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       // Evaluamos si el Tipo de User no es Administrador
       if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 6){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso                     
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
             this.comunicacion.idEstado = "5";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }else {            
+          }else {
             this.comunicacion.idEstado = "3";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }            
+          }
       }else if( this.identity.idTipoFunc == 6 ){ // Perfil Tipo Director
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $("#estadoFin").val() == 1 ){            
+          if( $("#estadoFin").val() == 1 ){
             this.comunicacion.idEstado = "5";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
-          }else{                     
+          }else{
             this.comunicacion.idEstado = "7";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
@@ -521,9 +559,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }
       }else{
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $("#estadoFin").val() == 1 ){            
+          if( $("#estadoFin").val() == 1 ){
             this.comunicacion.idEstado = "5";
-          }else{            
+          }else{
             this.comunicacion.idEstado = "7";
           }
       } // Fin de Condicion de Estados y Comunicacion Sin Seguimiento
@@ -1079,10 +1117,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    // let url = "http://192.168.0.23/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
 
     // Parametros de las Secuencias
     // this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew[0].codSecuencial;
@@ -1183,13 +1219,14 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
      this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;
 
-     $("#newTable").append('<tr> ' +
+     /*$("#newTable").append('<tr> ' +
                         '   <th scope="row">'+ secActual +'</th> ' +
                         '   <td>' + newSecAct + '</td> ' +
                         '   <td>'+ this.extencionDocumento +'</td> ' +
                         '   <td>'+ this.seziDocumento +'</td> ' +
-                        // '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
-                        ' </tr>');
+                        '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
+                        ' </tr>');*/
+     console.log(this.JsonOutgetListaDocumentos);
 
   } // FIN | FND-00011
 
@@ -1587,18 +1624,27 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   ******************************************************/
   getlistaSubDireccionesSreciAll() {
     // Llamamos al Servicio que provee todas las Instituciones
-    let direcconSreci = 1;
+    let direcconSreci = 0;
+
+    if( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
+        direcconSreci = this.comunicacion.idDireccionSreciAcom;
+    }else {
+      direcconSreci = 0;
+    }
+
     this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci  ).subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
+
+            this.itemList = [];
             alert(response.msg);
 
           }else{
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
-            
+
             this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
             //console.log( this.itemList  );
           }
@@ -1611,17 +1657,65 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * Fecha: 12-02-2018
   * Descripcion: Chekear Comunicacion sin Seguimiento
   ******************************************************/
-  checkSinSinSeguimiento(){          
-      $('.chkSinSeguimiento').each(function () {        
-          if (this.checked) {            
+  checkSinSinSeguimiento(){
+      $('.chkSinSeguimiento').each(function () {
+          if (this.checked) {
             //alert('Activado ' + this.comunicacionSinSeguimientoNew );
             $("#estadoFin").val(1);
-          } else{                                      
+          } else{
             // alert('Activado ' + this.comunicacionSinSeguimientoNew );
             $("#estadoFin").val(2);
-          } 
+          }
       });
   } // FIN | FND-000017
+
+
+  /*****************************************************
+  * Funcion: FND-00018
+  * Fecha: 15-02-2018
+  * Descripcion: Delete de nuevo File input, en Tabla
+  * ( deleteRowHomeForm ).
+  ******************************************************/
+  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentos.splice(homeFormIndex,1);
+    this.changeDetectorRef.detectChanges();
+    this.comunicacion.pdfDocumento = "";
+
+    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+    console.log(this.JsonOutgetListaDocumentos);
+  }
+
+
+  /*****************************************************
+  * Funcion: FND-00019
+  * Fecha: 15-02-2018
+  * Descripcion: Metodo para Borrar Documento desde el
+  * Servidor
+  * metodo ( borrar-documento-server ).
+  ******************************************************/
+  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    // Agrega Items al Json
+    this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+
+    // Cambiamos la Extencion si es jpg
+    if( extDocumentoIn == "jpg" ){
+      extDocumentoIn = "jpeg";
+    }
+    this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+
+    this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            //this.JsonOutgetlistaEstados = response.data;
+            alert(response.msg);
+          }
+        });
+  } // FIN : FND-00019
 
 
 }

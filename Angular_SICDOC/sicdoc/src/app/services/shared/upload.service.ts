@@ -4,14 +4,24 @@ import { Injectable } from '@angular/core';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UploadService {
   public progressBar;
 
+  // Map de la API
+  public url = "http://localhost/sicdoc/symfony/web/app_dev.php"; // Local
+  // public url = "http://172.17.0.250/sicdoc/symfony/web/app.php"; // Server
+
 
   constructor( private _http: Http){}
+
+
+  //Variables para el localStorage
+  public identity;
+  public token;
 
 
   /****************************************************
@@ -159,5 +169,63 @@ export class UploadService {
 
       });
   } //FIN | FND-00002
+
+
+  /****************************************************
+  * Funcion: FND-00003
+  * Fecha: 14-02-2018
+  * Descripcion: Metodo Ajax, para Borrar el Documento
+  * Objetivo: Borrar Documento del Servidor
+  *****************************************************/
+  borrarDocumento( nombre_documento ){
+      let json = JSON.stringify( nombre_documento );
+
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/documentos/borrar-documento-server", params, { headers:headers }).map( res => res.json());
+  }
+
+
+  /****************************************************
+  * Funcion: FND-00003
+  * Fecha: 28-07-2017
+  * Descripcion: Metodo para obtener los Datos de la
+  * variable identity del localStorage
+  * Objetivo: Seteo de las variables en json
+  *****************************************************/
+  getIdentity(){
+    let identity = JSON.parse(localStorage.getItem('identity'));
+    //Pregunta por el valor de la identity
+      if(identity != "undefined"){
+        this.identity = identity;
+      }else{
+        this.identity = null;
+      }
+
+    return this.identity;
+  } // FIN : FND-00003
+
+
+  /****************************************************
+  * Funcion: FND-00004
+  * Fecha: 28-07-2017
+  * Descripcion: Metodo para obtener los Datos de la
+  * variable identity del localStorage
+  * Objetivo: Seteo de las variables en json
+  *****************************************************/
+  getToken(){
+    //No hace el parse; porque no es Json
+    let token = localStorage.getItem('token');
+    //Pregunta por el valor del Token
+      if(token != "undefined"){
+        this.token = token;
+      }else{
+        this.token = null;
+      }
+
+    return this.token;
+  } // FIN : FND-00004
+
 
 }
