@@ -38,20 +38,6 @@
 			<h2> {{ titulo }} <small> | SICDOC.</small></h2>
 			<hr class="colorgraph">
 
-<!--
-      <div class="form-group">
-            <angular2-multiselect [data]="itemList" name="selectPaises"
-                          [settings]="settings"
-                          [(ngModel)]="selectedItems"
-                          (onSelect)="onItemSelect($event)"
-                          (onDeSelect)="OnItemDeSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)">
-            </angular2-multiselect>
-      </div> -->
-      <!-- <br> -->
-
-
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" href="#datosGen">Datos Generales</a>
@@ -166,7 +152,7 @@
               <h6>Institución de Comunicación</h6>
               <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación "
                     #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion" required
-                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6" (change)="getlistaInstituciones()" >
+                    ngControl="idInstitucion" [(ngModel)]="comunicacion.idInstitucion"  tabindex="6" >
                   <option value="0">Selecciona una Institución</option>
                   <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">{{ list.descInstitucion }} - {{ list.perfilInstitucion }}</option>
               </select>
@@ -310,6 +296,71 @@
           </div>
         </div>
 
+      </div>
+
+
+      <hr>
+      <!-- Dato de Comunicacion viculante -->
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#comVinculante">Comunicación Vinculante</a>
+        </h4>
+      </div>
+      <hr>
+      <div class="panel-collapse collapse in" id="comVinculante">
+        <!-- Fila para los Datos de Seleccion de Tipo de Comunicacion -->
+        <div class="row">
+          
+          <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="panel panel-primary">
+             <div class="panel-body">
+               <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
+                 <!-- Seleccion de COmunicacion de Ingreso -->
+                 <strong class="text-uppercase">
+                   <label class="custom-control custom-checkbox">
+                     <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento"
+                         (click)="checkSinSinSeguimiento()" >
+                     <span class="custom-control-indicator"></span>
+                     <span class="custom-control-description">Comunicación de Ingreso</span>
+                     <input style="width:0px;height:0px;color:white" type="text" value="0" name="estadoFin" id="estadoFin" >
+                   </label>
+                 </strong>
+
+                 <!-- Seleccion de COmunicacion de Salida -->
+                 <strong class="text-uppercase">
+                   <label class="custom-control custom-checkbox">
+                     <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento"
+                         (click)="checkSinSinSeguimiento()" >
+                     <span class="custom-control-indicator"></span>
+                     <span class="custom-control-description">Comunicación de Salida</span>
+                     <input style="width:0px;height:0px;color:white" type="text" value="0" name="estadoFin" id="estadoFin" >
+                   </label>
+                 </strong>
+               </h6>
+            </div>
+           </div>
+          </div>
+        </div>
+
+        <hr class="hr-new">
+
+        <!-- Fila para Seleccionar la(s) Comunicaciones Segun el Tipo -->
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+  					<div class="form-group" >
+                <angular2-multiselect [data]="itemList" name="selectPaises"
+                    [settings]="settings"
+                    [(ngModel)]="selectedItems"
+                    (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)">
+                </angular2-multiselect>
+                <small class="form-text text-muted" >Selecciona la(s) Comunicaciones Vinculantes con la Actual</small>
+  					</div>
+  				</div>
+
+        </div>
       </div>
 
 

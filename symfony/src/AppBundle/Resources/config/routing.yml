@@ -54,3 +54,8 @@ app_reportes:
 app_mantenimientos:
     resource: "@AppBundle/Resources/config/routing/mantenimientos.yml"
     prefix: /mantenimientos
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Vinculacion
+app_vinculacionComunicacion:
+    resource: "@AppBundle/Resources/config/routing/vinculacion.yml"
+    prefix: /vinculacionComunicacion

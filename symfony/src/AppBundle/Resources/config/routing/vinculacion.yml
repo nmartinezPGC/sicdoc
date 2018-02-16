@@ -1,0 +1,7 @@
+## YAML Template.
+---
+# Ruta para las Vinculaciones de Comunicacion de la API
+vinculacionComunicacion_comunicacionesVinculantesList:
+    path: /vinculacion-de-comunicacion
+    defaults: { _controller: "AppBundle:Vinculacion:comunicacionesVinculantesList" }
+    methods: POST

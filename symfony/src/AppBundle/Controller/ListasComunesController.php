@@ -24,6 +24,7 @@ class ListasComunesController extends Controller {
      */
     public function subDireccionesSreciListAction(Request $request, $idDireccionSreci = null )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -87,6 +88,7 @@ class ListasComunesController extends Controller {
      */
     public function estadosUsuarioListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -125,7 +127,8 @@ class ListasComunesController extends Controller {
      * Funcion: FND00002
      */
     public function tipoFuncionarioListAction(Request $request)
-        {
+    {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -171,6 +174,7 @@ class ListasComunesController extends Controller {
      */
     public function deptoFuncionalListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -226,6 +230,7 @@ class ListasComunesController extends Controller {
      */
     public function deptoFuncionalListAllAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -277,6 +282,7 @@ class ListasComunesController extends Controller {
      */
     public function deptoFuncionalUserAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -333,6 +339,7 @@ class ListasComunesController extends Controller {
      */
     public function tipoUsuarioListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -372,6 +379,7 @@ class ListasComunesController extends Controller {
      */
     public function institucionesSreciAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -473,6 +481,7 @@ class ListasComunesController extends Controller {
      */
     public function tipoInstitucionesAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -515,6 +524,7 @@ class ListasComunesController extends Controller {
      */
     public function paisesListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -560,6 +570,7 @@ class ListasComunesController extends Controller {
      */
     public function estadosComunicacionListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -603,6 +614,7 @@ class ListasComunesController extends Controller {
      */
     public function tipoDocumentoListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -643,6 +655,7 @@ class ListasComunesController extends Controller {
      */
     public function deptoFuncionalUserListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -702,6 +715,7 @@ class ListasComunesController extends Controller {
      */
     public function direccionSreciListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -745,6 +759,7 @@ class ListasComunesController extends Controller {
      */
     public function comIngresadasListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -814,6 +829,7 @@ class ListasComunesController extends Controller {
      */
     public function comPendientesListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -883,6 +899,7 @@ class ListasComunesController extends Controller {
      */
     public function comFinalizadasListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -953,6 +970,7 @@ class ListasComunesController extends Controller {
      */
     public function asignarOficiosListAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -1158,6 +1176,7 @@ class ListasComunesController extends Controller {
      */
     public function funcionariosAsignadosListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");                
         
@@ -1228,6 +1247,7 @@ class ListasComunesController extends Controller {
      */
     public function funcionariosListAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -1451,6 +1471,7 @@ class ListasComunesController extends Controller {
      */
     public function finalizarOficiosListDetAction(Request $request )
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         
@@ -1522,6 +1543,7 @@ class ListasComunesController extends Controller {
      */
     public function funcionariosListAllAction(Request $request)
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
         $helpers = $this->get("app.helpers");
         

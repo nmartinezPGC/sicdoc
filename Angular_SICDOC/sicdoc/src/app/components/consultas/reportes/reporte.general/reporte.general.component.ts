@@ -53,7 +53,7 @@ declare var $:any;
 export class ReporteGeneralComponent implements OnInit {
 
   public fechaHoy:Date = new Date();
-  public titulo = "Generacion de Reporte";
+  public titulo = "Generación de Reporte";
 
   // variables del localStorage
   public identity;

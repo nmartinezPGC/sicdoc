@@ -240,13 +240,17 @@ export class IngresoComunicacionComponent implements OnInit{
      // Llamado al Servicio de lista de Los Funcionarios SRECI
      this.getlistaFuncionariosSreci();
 
+     // Configuracion del Select Dinamico
      this.settings = {
        singleSelection: false,
        text: "Selecciona las Direcciones acompañantes ... ",
        selectAllText: 'Selecciona Todos',
        unSelectAllText: 'Deselecciona Todos',
+       searchPlaceholderText: 'Selecciona la Dirección que Acompaña el Tema',
        enableSearchFilter: true,
-       badgeShowLimit: 6
+       badgeShowLimit: 6,
+       maxHeight: 170,
+       //limitSelection:6
      };
 
      // this.getlistaSubDireccionesSreciAll();
@@ -2064,6 +2068,45 @@ export class IngresoComunicacionComponent implements OnInit{
         });
   } // FIN : FND-00019
 
+
+
+  /********************************************************
+  * Funcion: FND-0000020
+  * Fecha: 16-02-2018
+  * Descripcion: Carga la Lista de Todas las Comunicación
+  * que tiene el Departamento Funcional del Usuario
+  * Objetivo: Obtener la lista de Todas las Comunicaciones
+  * de la BD, Llamando a la API, por su metodo
+  * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
+  **********************************************************/
+  getlistaComunicacionVinculanteAll() {
+    // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
+    let idDeptoFuncionalComunicacioVinc = this.identity.idTipoFunc;
+    let direcconSreci = 0;
+
+    if( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
+        direcconSreci = this.comunicacion.idDireccionSreciAcom;
+    }else {
+      direcconSreci = 0;
+    }
+
+    this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            this.itemList = [];
+            alert(response.msg);
+
+          }else{
+            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+
+            this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
+            //console.log( this.itemList  );
+          }
+        });
+  } // FIN : FND-0000020
 
 
 } // // FIN : export class IngresoComunicacionComponent
