@@ -93,17 +93,24 @@ export class ConsultaMasterComponent implements OnInit {
   public apellido1FuncModal; // Primer Nombre Funcionario Asignado
   public apellido2FuncModal; // Primer Nombre Funcionario Asignado
 
+  // Url de los Recursos
+  public url:string;
+  public urlComplete:string;
+
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
                private _consultaMasterService: ConsultaMasterService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http ){
+               private _http: Http, ){
      // Llenado de la Tabla de Encabezado
      // this.fillDataTable();
 
      //this.otraFill();
+     this.url = this._consultaMasterService.urlResourses;           
+     this.urlComplete = this.url + "uploads/correspondencia/";
+     
   } // Fin | Definicion del Constructor
 
 

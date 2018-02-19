@@ -16,6 +16,9 @@ import { NgForm }    from '@angular/forms';
 
 import { FormGroup, FormControl, Validators }    from '@angular/forms';
 
+// Importamos la Clase de las Propiedades del Sistema
+import { SystemPropertiesService } from "./services/shared/systemProperties.service";
+
 // Declaramos las variables para jQuery
 declare var jQuery:any;
 declare var $:any;
@@ -26,7 +29,7 @@ import sha256  from 'sha.js';
   selector: 'app-root',
   templateUrl: 'views/shared/layout.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [LoginService, RouterModule]
+  providers: [LoginService, RouterModule, SystemPropertiesService]
 })
 export class AppComponent implements OnInit{
   title = 'app';
@@ -55,12 +58,18 @@ export class AppComponent implements OnInit{
   public passwordUsuairoAct;
   public passIdentity:string;
 
+  public url:string;
+  public urlComplete:string;
+
   // public sha256 = require('js-sha256').sha256;
 
   constructor( private _loginService: LoginService,
                private _router: Router,
                private _route: ActivatedRoute,
-               private _http: Http){
+               private _http: Http,
+               private _systemPropertiesService: SystemPropertiesService ) { 
+    this.url = this._systemPropertiesService.getmethodUrlResourses();
+    this.urlComplete = this.url + "/uploads/users/";
     //Codigo del Constructor
   }
 

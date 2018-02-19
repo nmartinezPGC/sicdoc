@@ -14,6 +14,7 @@ import 'rxjs/add/operator/map';
 import { LoginService } from '../../services/login/login.service'; //Servico del Login
 import { IngresoComunicacionService } from '../../services/comunicaciones/ingreso.service'; //Servico del Comunicaciones
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
+import { VinculacionComunicacionService } from '../../services/comunicaciones/vinculacion.service'; //Servico Vinculacion de Comunicacion
 import { UploadService } from '../../services/shared/upload.service'; //Servico Carga de Arhcivos
 
 // Contact Service
@@ -43,18 +44,21 @@ declare var $:any;
   templateUrl: '../../views/comunicaciones/ingreso.component.html',
   styleUrls: ['../../views/comunicaciones/style.component.css'],
   providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService,
-              ContactosService]
+              ContactosService, VinculacionComunicacionService]
 })
 
 
 export class IngresoComunicacionComponent implements OnInit{
-
+  // Datos Generales de la Clase
   public titulo:string = "Ingreso de Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
-  //variables del AtuoComplete
+  public urlConfigLocal:string;
+  public urlResourseLocal:string;
+  public urlComplete:string;
 
+  //variables del AtuoComplete
 
   private params;
   private paramsSecuencia;
@@ -187,6 +191,7 @@ export class IngresoComunicacionComponent implements OnInit{
   // Json de AutoCompleter Funcionarios
   public JsonOutgetlistaFuncionarios:any[];
   public JsonOutgetlistaSubDireccionesSrec:any[];
+  public JsonOutgetlistaComunicacionVinculante:any[];  // Json para las Comunciacnon Vinculantes
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
@@ -212,9 +217,17 @@ export class IngresoComunicacionComponent implements OnInit{
   public  codigoSec:string;
 
   // Variables para ng-selecter2
+  // Select de Sub Direcciones
   itemList = [];
   selectedItems = [];
   settings = {};
+
+  // Select de Vinculacion de Comunicacion
+  itemComunicacionVincList = [];
+  selectedComunicacionVincItems = [];
+  settingsComunicacionVinc = {};
+
+  public paramsComVinculante; // Parametros para las Comunicacion Vinculantes
 
   public JsonOutgetListaSubDireccionesAcomp = [];
 
@@ -236,7 +249,8 @@ export class IngresoComunicacionComponent implements OnInit{
                private _appComponent: AppComponent,
                private _http: Http,
                private completerService: CompleterService,
-               private changeDetectorRef: ChangeDetectorRef){
+               private changeDetectorRef: ChangeDetectorRef,
+               private _vinculacionComunicacionService: VinculacionComunicacionService){
      // Llamado al Servicio de lista de Los Funcionarios SRECI
      this.getlistaFuncionariosSreci();
 
@@ -248,32 +262,36 @@ export class IngresoComunicacionComponent implements OnInit{
        unSelectAllText: 'Deselecciona Todos',
        searchPlaceholderText: 'Selecciona la Dirección que Acompaña el Tema',
        enableSearchFilter: true,
-       badgeShowLimit: 6,
+       badgeShowLimit: 7,
        maxHeight: 170,
        //limitSelection:6
      };
 
-     // this.getlistaSubDireccionesSreciAll();
+     // Configuracion del Select Dinamico
+     this.settingsComunicacionVinc = {
+      singleSelection: false,
+      text: "Selecciona las Comunicaciones Vinculantes ... ",
+      selectAllText: 'Selecciona Todas',
+      enableCheckAll: false,
+      unSelectAllText: 'Deselecciona Todas',
+      searchPlaceholderText: 'Selecciona la Comunicación que relaciona el tema ...',
+      enableSearchFilter: true,
+      limitSelection:7,
+      badgeShowLimit: 7,
+      maxHeight: 170,
+      //limitSelection:6
+    };
+
+     // Seteo de la Ruta de la Url Config
+     this.urlConfigLocal = this._ingresoComunicacion.url;
+     this.urlResourseLocal = this._ingresoComunicacion.urlResourses;
+     this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
+     
   } // Fin | Definicion del Constructor
 
 
   // INI | Metodo OnInit
   ngOnInit(){
-
-    //Llamamos el evento de Borrar ña Fila Seleccionada
-    /*$(document).on('click', '.delDoc', function (event) {
-      event.preventDefault();
-        var valores = $(this).parents("tr").find("td")[0].innerHTML;
-        var valores2 = $(this).parents("tr").find("td")[1].innerHTML;
-
-        $("#idDocumentoDel").val(valores);
-        $(this).closest('tr').remove();
-
-        $("#btnDeleteDoc").click();
-        $("#idDocumentoDel").val('');
-        // alert('Hola ' + valores + ' Ext ' + valores +'.'+ valores2);
-        // console.log(this.JsonOutgetListaDocumentos);
-    });*/
 
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
@@ -341,6 +359,12 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoDocumento"  : ""
     };
 
+    this.paramsComVinculante = {
+      "idDeptoFuncional"  : "",
+      "idTipoDocumento"  : "",
+      "idTipoComunicacion"  : ""
+    };
+
     // Array de los Documentos enviados
     this.JsonOutgetListaDocumentos = [];
 
@@ -403,7 +427,9 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaSubDireccionesSreciAll();
 
     this.selectedItems = [];
+    this.selectedComunicacionVincItems = [];
     this.itemList = [];
+    this.itemComunicacionVincList = [];
 
 
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
@@ -435,6 +461,7 @@ export class IngresoComunicacionComponent implements OnInit{
     // Eventos de Señaloizacion
     this.loading = "hide";
 
+    this.getlistaComunicacionVinculanteAll();
     // this.removeFileInput();
     // this.getlistaSubDireccionesSRECIAcom();
 
@@ -1115,15 +1142,15 @@ export class IngresoComunicacionComponent implements OnInit{
   public resultUpload;
 
   fileChangeEvent(fileInput: any){
-    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    //console.log('Evento Change Lanzado'); , codDocumentoIn:string
     // Validamos que se ha llenado los datos Generales, para continuar
-    // this.validDatosGen();
 
     // Setea el array de las Imagenes a Subir
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
 
 
@@ -1141,7 +1168,7 @@ export class IngresoComunicacionComponent implements OnInit{
     let sizeByte:number = this.filesToUpload[0].size;
     let siezekiloByte:number =  Math.round( sizeByte / 1024 );
 
-    this.seziDocumento = siezekiloByte;
+    this.seziDocumento = ( siezekiloByte / 1024 );
 
     let type = this.filesToUpload[0].type;
 
@@ -1151,10 +1178,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this.extencionDocumento = filename.replace(/^.*\./, '');
 
     //Modificacion; Cuando la extencion es PDF => pdf
-      if( this.extencionDocumento == "PDF" ){
-        //alert(this.extencionDocumento);
-        this.extencionDocumento = "pdf"
+      if( this.extencionDocumento == "PDF" ){        
+        this.extencionDocumento = "pdf";
+      }else if( this.extencionDocumento == "jpg" ) {
+        this.extencionDocumento = "jpeg";
       }
+      
 
      let sendParms = "json=" + "";
 
@@ -1996,7 +2025,7 @@ export class IngresoComunicacionComponent implements OnInit{
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
 
             this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
-            //console.log( this.itemList  );
+            console.log( this.itemList  );
           }
         });
   } // FIN : FND-00001.2.1
@@ -2077,33 +2106,30 @@ export class IngresoComunicacionComponent implements OnInit{
   * que tiene el Departamento Funcional del Usuario
   * Objetivo: Obtener la lista de Todas las Comunicaciones
   * de la BD, Llamando a la API, por su metodo
+  * Params: idDeptoFuncional, idTipoDocumento, idTipoComunicacion
   * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
   **********************************************************/
   getlistaComunicacionVinculanteAll() {
     // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
-    let idDeptoFuncionalComunicacioVinc = this.identity.idTipoFunc;
-    let direcconSreci = 0;
-
-    if( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
-        direcconSreci = this.comunicacion.idDireccionSreciAcom;
-    }else {
-      direcconSreci = 0;
-    }
-
-    this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci).subscribe(
+    this.paramsComVinculante.idDeptoFuncional = this.identity.idDeptoFuncional;
+    this.paramsComVinculante.idTipoDocumento  = 1;
+    this.paramsComVinculante.idTipoComunicacion = [1,2];
+    
+    console.log(this.paramsComVinculante);
+    this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            this.JsonOutgetlistaSubDireccionesSrec = response.data;
-            this.itemList = [];
+            this.JsonOutgetlistaComunicacionVinculante = response.data;
+            this.itemComunicacionVincList = [];
             alert(response.msg);
 
           }else{
-            this.JsonOutgetlistaSubDireccionesSrec = response.data;
+            this.JsonOutgetlistaComunicacionVinculante = response.data;
 
-            this.itemList = this.JsonOutgetlistaSubDireccionesSrec;
-            //console.log( this.itemList  );
+            this.itemComunicacionVincList = this.JsonOutgetlistaComunicacionVinculante;
+            console.log( this.JsonOutgetlistaComunicacionVinculante );
           }
         });
   } // FIN : FND-0000020

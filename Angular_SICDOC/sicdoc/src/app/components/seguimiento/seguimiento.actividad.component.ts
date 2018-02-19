@@ -43,6 +43,9 @@ export class SeguimientoActividadComponent implements OnInit {
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
+  public url:string;
+  public urlComplete:string;
+
   // Variables para la Busqueda
   public opcionSearch:string = "Opcion de Busqueda ";
   public optUserFindId:number;
@@ -105,7 +108,10 @@ export class SeguimientoActividadComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http ) { }
+               private _http: Http ) { 
+    this.url = this._seguimientoActividad.urlResourses;           
+    this.urlComplete = this.url + "uploads/correspondencia/";
+  }
 
 
  /*****************************************************

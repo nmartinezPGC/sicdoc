@@ -519,7 +519,8 @@ class IngresoCorrespondenciaController extends Controller{
                                //->setPassword('1897Juve');
                                //->setPassword('gec2017*');
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1417,7 +1418,8 @@ class IngresoCorrespondenciaController extends Controller{
                                //->setPassword('1897Juve');
                                //->setPassword('gec2017*');
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');     
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);     
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
                            

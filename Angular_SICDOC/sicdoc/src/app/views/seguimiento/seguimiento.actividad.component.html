@@ -56,12 +56,14 @@
           </li>
           <li class="nav-item">
               <h4><a class="nav-link" data-toggle="tab" href="#panel6" role="tab">
-                <i class="fa fa-heart"></i> Información de Seguimiento
+                <!-- <i class="fa fa-heart"></i> Información de Seguimiento -->
+                <img src="assets/icons/comunicacion/man-reading_blue_24x24.png" alt=""> Información de Seguimiento
               </a></h4>
           </li>
           <li class="nav-item">
               <h4><a class="nav-link" data-toggle="tab" href="#panel7" role="tab">
-                <i class="fa fa-envelope"></i> Documentos
+                <!-- <i class="fa fa-envelope"></i> Documentos -->
+                <img src="assets/icons/comunicacion/computer-and-books-studying-tools_24x24.png" alt=""> Información de Documentos
               </a></h4>
           </li>
       </ul>
@@ -370,10 +372,9 @@
                       <td>{{ item.urlDocumento }}</td>
                       <td>
                         <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
-                          href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
-                          <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                          <!-- href="http://192.168.0.23/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                          <!-- href="http://172.17.3.141/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                          href="{{ urlComplete + item.urlDocumento }}" target="_blank">
+                          <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                          <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->                          
                             <i class="material-icons">photo</i>
                         </a>
                       </td>

@@ -78,6 +78,10 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
 import { ImageUploadModule } from "angular2-image-upload";
 import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
 
+// Imports de la Clase de Properties del System
+import { SystemPropertiesService } from './services/shared/systemProperties.service';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -131,7 +135,8 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
     SeguimientoActividadService,
     ContactosService,
     InstitucionesService,
-    SolicitudCambioFechaService
+    SolicitudCambioFechaService,
+    SystemPropertiesService
   ],
   bootstrap: [AppComponent]
 })

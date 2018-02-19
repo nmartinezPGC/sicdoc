@@ -213,7 +213,8 @@ class MantCambioFechasController extends Controller {
                                                     )
                                                  )                                
                                        ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                                       ->setPassword('Despachomcns');
+                                       ->setPassword('Despachomcns')
+                                       ->setTimeout(180);
                                    //echo "Paso 1";
                                    //Creamos la instancia del envío
                                    $mailer = \Swift_Mailer::newInstance($transport);
@@ -458,7 +459,8 @@ class MantCambioFechasController extends Controller {
                                                     )
                                                  )                                
                                        ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                                       ->setPassword('Despachomcns');
+                                       ->setPassword('Despachomcns')
+                                       ->setTimeout(180);
                                    //echo "Paso 1";
                                    //Creamos la instancia del envío
                                    $mailer = \Swift_Mailer::newInstance($transport);

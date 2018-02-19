@@ -205,7 +205,8 @@ class UsuarioController extends Controller{
                                         )
                                      )                                                                                                
                            ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                           ->setPassword('Despachomcns');
+                           ->setPassword('Despachomcns')
+                           ->setTimeout(180);
                        //echo "Paso 1";
                        //Creamos la instancia del envío
                        $mailer = \Swift_Mailer::newInstance($transport);
@@ -591,7 +592,8 @@ class UsuarioController extends Controller{
                                        //->setUsername("nahum.sreci@gmail.com")                                   
                                        //->setPassword('1897Juve');                                   
                                        ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                                       ->setPassword('Despachomcns');
+                                       ->setPassword('Despachomcns')
+                                       ->setTimeout(180);
                                    //echo "Paso 1";
                                    //Creamos la instancia del envío
                                    $mailer = \Swift_Mailer::newInstance($transport);

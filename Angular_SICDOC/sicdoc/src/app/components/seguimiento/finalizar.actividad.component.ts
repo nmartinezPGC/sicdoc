@@ -42,6 +42,8 @@ export class FinalizarActividadComponent implements OnInit {
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
+  public urlConfigLocal:string;
+
   // Variables de Confirmacion
   public confirmaExit:number = 1;
   public optionModal:number = 1;
@@ -139,7 +141,8 @@ export class FinalizarActividadComponent implements OnInit {
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private _http: Http ) {
-
+    // Seteo de la Ruta de la Url Config
+    this.urlConfigLocal = this._finalizarOficio.url;            
                 //  // Inicializamos laTabla
                 //  this.fillDataTable();
 }
@@ -556,11 +559,10 @@ export class FinalizarActividadComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
+    let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
-    let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
-    // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comunes/upload-documento";
-
+    // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
+    
     // Variables del Metodo
     let  error:string;
     let  status:string;

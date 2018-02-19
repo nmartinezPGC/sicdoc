@@ -32,31 +32,32 @@ export const APP_ROUTES: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'login/:id', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
+
   // Mapeo del Menu de Comunicaciones
-  { path: 'ingreso-comunicacion', component: IngresoComunicacionComponent },
-  { path: 'ingreso-comunicacion-tipo', component: IngresoComunicacionPorTipoComponent },
+  { path: 'comunicacion/ingreso-de-comunicacion', component: IngresoComunicacionComponent },
+  { path: 'comunicacion/salida-de-comunicacion', component: IngresoComunicacionPorTipoComponent },
 
   // Mapeo de Menu de Seguimiento
-  { path: 'asignar-actividad', component: IngresoActividadComponent },
-  { path: 'asignar-actividad/:page', component: IngresoActividadComponent },
+  { path: 'seguimiento/asignar-comunicacion', component: IngresoActividadComponent },
+  { path: 'seguimiento/asignar-comunicacion/:page', component: IngresoActividadComponent },
   { path: 'agregar-actividad', component: IngresoActividadComponent },
   { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
-  { path: 'finalizar-actividad', component: FinalizarActividadComponent },
-  { path: 'finalizar-actividad/:page', component: IngresoActividadComponent },
-  { path: 'seguimiento-actividad', component: SeguimientoActividadComponent },
+  { path: 'seguimiento/finalizar-comunicacion', component: FinalizarActividadComponent },
+  { path: 'seguimiento/finalizar-comunicacion/:page', component: IngresoActividadComponent },
+  { path: 'seguimiento/seguimiento-comunicacion', component: SeguimientoActividadComponent },
   { path: 'pdf', component: PdfComponent },
 
   // Mapeo de Menu de Consultas
-  { path: 'consulta-maestra-comunicacion', component: ConsultaMasterComponent },
-  { path: 'consulta-generacion-reporte', component: ReporteGeneralComponent },
+  { path: 'consultas/consulta-maestra-comunicacion', component: ConsultaMasterComponent },
+  { path: 'consultas/consulta-generacion-reporte', component: ReporteGeneralComponent },
 
   // Mapeo de Menu de Mantenimientos
-  { path: 'mantenimiento-instituciones', component: MantenimientoInstitucionesComponent },
-  { path: 'solicitud-cambio-fecha', component: MantenimientoSolicitudCambioFechasComponent },
-  { path: 'cambio-fecha', component: MantenimientoInstitucionesComponent },
+  { path: 'mantenimientos/mantenimiento-instituciones', component: MantenimientoInstitucionesComponent },
+  { path: 'mantenimientos/solicitud-cambio-fecha', component: MantenimientoSolicitudCambioFechasComponent },
+  { path: 'mantenimientos/cambio-fecha', component: MantenimientoInstitucionesComponent },
   
   // Mapeo de Opcion de Contactos
-  { path: 'contactos-sreci', component: ContactosComponent },
+  { path: 'contactos/contactos-sreci', component: ContactosComponent },
 
   // Ruta Default
   { path: '**', pathMatch: 'full', redirectTo: 'index' }

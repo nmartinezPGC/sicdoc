@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
 //Clases nesesarias para el envio via Ajax
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
@@ -7,20 +7,26 @@ import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
+// Importamos la Clase de las Propiedades del Sistema
+import { SystemPropertiesService } from "./systemProperties.service";
+
 @Injectable()
 export class ListasComunesService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
-  public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
+  public url:string;
+  //public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
   // public url = "http://172.17.0.250/sicdoc/symfony/web/app.php";
-  
 
   //Variables para el localStorage
   public identity;
   public token;
 
   //Constructor de la Clase
-  constructor( private _http: Http ) { }
+  constructor( private _http: Http,
+              private _systemPropertiesService: SystemPropertiesService ) { 
+    this.url = this._systemPropertiesService.getmethodUrlService();
+  }
 
   /*****************************************************
   * Funcion: FND-00001
@@ -32,7 +38,7 @@ export class ListasComunesService {
   ******************************************************/
   listasComunes( lista_comun, lista ){
       let json = JSON.stringify( lista_comun );
-
+      this.url = this._systemPropertiesService.getmethodUrlService();
       let params = "json=" + json;
       let listaIn = lista;
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
@@ -50,7 +56,7 @@ export class ListasComunesService {
   ******************************************************/
   listasComunesGet( lista_comun, lista ){
       let json = JSON.stringify( lista_comun );
-
+      this.url = this._systemPropertiesService.getmethodUrlService();
       let params = "json=" + json;
       let listaIn = lista;
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});

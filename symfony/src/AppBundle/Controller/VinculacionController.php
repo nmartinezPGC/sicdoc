@@ -255,8 +255,7 @@ class VinculacionController extends Controller{
             
             // Condicion de Direccion SRECI
             if( $tipocom_array_convert != 0 || $tipocom_array_convert != null ){
-                $opt = 1;
-                var_dump($opt);
+                $opt = 1;                
                 $dql = $em->createQuery('SELECT corrEnc.idCorrespondenciaEnc as id, corrEnc.codCorrespondenciaEnc as name, '                    
                         . "corrEnc.codReferenciaSreci as itemName, corrEnc.temaComunicacion as tema "                                                 
                         . 'FROM BackendBundle:TblCorrespondenciaEnc corrEnc '
@@ -270,8 +269,7 @@ class VinculacionController extends Controller{
                         ->setParameter('idDeptoFuncional', $id_depto_funcional )
                         ->setParameter('idTipoDocumento', $id_tipo_documento ); 
             }else {
-                $opt = 2;
-                var_dump($opt);
+                $opt = 2;                
                 $dql = $em->createQuery('SELECT corrEnc.idCorrespondenciaEnc as id, corrEnc.codCorrespondenciaEnc as name, '                    
                         . "corrEnc.codReferenciaSreci as itemName, corrEnc.temaComunicacion as tema "                                                 
                         . 'FROM BackendBundle:TblCorrespondenciaEnc corrEnc '

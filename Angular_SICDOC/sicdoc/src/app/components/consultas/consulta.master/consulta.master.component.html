@@ -262,10 +262,9 @@
                                           <td>{{ item.urlDocumento }}</td>
                                           <td>
                                             <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
-                                              href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank">
-                                              <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                                              <!-- href="http://192.168.0.23/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                                              <!-- href="http://172.17.3.141/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                                              href="{{ urlComplete + item.urlDocumento }}" target="_blank">
+                                              <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                                              <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->                                              
                                                 <i class="material-icons">photo</i>
                                             </a>
                                           </td>

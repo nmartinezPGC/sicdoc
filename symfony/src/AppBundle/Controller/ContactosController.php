@@ -315,6 +315,18 @@ class ContactosController extends Controller{
                     $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
                     //$file_name = time().".".$ext;
+                    if( $ext == "PDF" ){
+                        $ext = "pdf";
+                    }
+                    
+                    if( $ext == "PNG" ){
+                        $ext = "png";
+                    }
+                    
+                    if( $ext == "jpg" || $ext == "JPG" ){
+                        $ext = "jpeg";
+                    }
+                    
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
                     $path_of_file = "uploads/contactos/perfiles/";

@@ -252,14 +252,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                                     'verify_peer_name' => false
                                         )
                                       )
-                                   )
-                               //->setUsername( $identity->email )
-                               //->setUsername( "nahum.sreci@gmail.com" )
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               //->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                                   )                               
+                               //->setUsername( "nahum.sreci@gmail.com" )                               
+                               //->setPassword('1897Juve');                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -709,7 +707,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                                //->setUsername( "nahum.sreci@gmail.com" )                                                                  
                                //->setPassword('1897Juve');
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )                               
-                               ->setPassword('Despachomcns');                               
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);                               
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1067,7 +1066,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                                //->setUsername( "nahum.sreci@gmail.com" )                               
                                //->setPassword('1897Juve');                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1378,12 +1378,12 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                     'verify_peer_name' => false
                                                     )
                                                 )
-                                             )
-                               //->setUsername( $identity->email )
+                                             )                               
                                //->setUsername( "nahum.sreci@gmail.com" )                               
                                //->setPassword('1897Juve');                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);
@@ -1993,7 +1993,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 )
                                              )                                                              
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
-                               ->setPassword('Despachomcns');
+                               ->setPassword('Despachomcns')
+                               ->setTimeout(180);
                            //echo "Paso 1";
                            //Creamos la instancia del envío
                            $mailer = \Swift_Mailer::newInstance($transport);

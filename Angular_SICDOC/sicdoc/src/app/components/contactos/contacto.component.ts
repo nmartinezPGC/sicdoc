@@ -38,8 +38,13 @@ declare var $:any;
   providers: [ ContactosComponent , ContactosService , ListasComunesService, UploadService]
 })
 export class ContactosComponent implements OnInit {
+  // Datos Generales de la Clase
   public titulo = "Contactos";
   public newTittle = "Ingreso de Contacto";
+
+  public urlConfigLocal:string;
+  public urlResoursesLocal:string;
+  public urlComplete:string;
 
   protected searchStr: string;
   protected searchStrFunc: string;
@@ -95,6 +100,11 @@ export class ContactosComponent implements OnInit {
     this.getlistaContactosTableFind();
     // Llenado de la Tabla de Encabezado
     // this.fillDataTable();
+
+    // Seteo de la Ruta de la Url Config
+    this.urlResoursesLocal = this._consultaContactoService.urlResourses;
+    this.urlConfigLocal = this._consultaContactoService.url;
+    this.urlComplete = this.urlResoursesLocal + "uploads/contactos/perfiles/";
   } // Fin | Definicion del Constructor
 
 
@@ -364,11 +374,10 @@ export class ContactosComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
+    let url = this.urlConfigLocal + "/contactos/contacto-upload-perfil";
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
-    let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
-    // let url = "http://172.17.3.141/sicdoc/symfony/web/app.php/comunes/upload-documento";
-    // let url = "http://192.168.0.23/sicdoc/symfony/web/app.php/comunes/upload-documento";
-
+    // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
+    
     // Variables del Metodo
     let  error:string;
     let  status:string;
@@ -421,10 +430,10 @@ export class ContactosComponent implements OnInit {
   * ( downloadDocumento ).
   ******************************************************/
   downloadDocumento(downloadUrl){
-    // var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    // var url= window.URL.createObjectURL("http://172.17.4.162/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    var url= window.URL.createObjectURL("http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    // var url= window.URL.createObjectURL("http://192.168.0.23/sicdoc/symfony/web/uploads/contactos/perfiles/");
+    var url= window.URL.createObjectURL( this.urlComplete + "uploads/contactos/perfiles/" );    
+    // var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");    
+    //var url= window.URL.createObjectURL("http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/");
+    
      let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005

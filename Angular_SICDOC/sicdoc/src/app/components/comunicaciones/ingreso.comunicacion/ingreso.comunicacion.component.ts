@@ -45,11 +45,14 @@ declare var $:any;
           CreateDomService, ContactosService]
 })
 export class IngresoComunicacionPorTipoComponent implements OnInit {
+  // Datos Generales de la Clase
   public titulo:string = "Salida de Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
   public identity;
   public token;
+
+  public urlConfigLocal:string;
 
   // Parametros para listas
   private paramsSubDir;
@@ -218,6 +221,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       // Llamado al Servicio de lista de Los Funcionarios SRECI
       this.getlistaFuncionariosSreci();
 
+      // Cinfuguracion de los Selects
       this.settings = {
         singleSelection: false,
         text: "Selecciona las Direcciones acompañantes ... ",
@@ -225,7 +229,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
         unSelectAllText: 'Deselecciona Todos',
         enableSearchFilter: true,
         badgeShowLimit: 6
-      };
+      };    
+
+      // Seteo de la Ruta de la Url Config
+     this.urlConfigLocal = this._ingresoComunicacion.url;
 
       // this.getlistaSubDireccionesSreciAll();
   } // Fin | Definicion del Constructor
@@ -1117,7 +1124,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
+    let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
+    // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
 
     // Parametros de las Secuencias

@@ -23,11 +23,11 @@
                   Comunicación
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['comunicacion/ingreso-de-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/businessmen-disussing_green_24x24.png" class="d-inline-block align-top" alt="">
                     Ingreso de Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['ingreso-comunicacion-tipo']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['comunicacion/salida-de-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/businessmen-disussing_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Salida de Comunicación</a>
 
@@ -41,15 +41,16 @@
                   Seguimiento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 5 || identity.idTipoUser == 4 || identity.idTipoUser == 1"  [routerLink]="['asignar-actividad']" routerLinkActive="active">
+                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 5 || identity.idTipoUser == 4 || identity.idTipoUser == 1" 
+                             [routerLink]="['seguimiento/asignar-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/management_green_24x24.png" class="d-inline-block align-top" alt="">
                     Asignar Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
-                  <a class="dropdown-item" [routerLink]="['finalizar-actividad']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['seguimiento/finalizar-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/shopping-support-online_brow_24x24.png" class="d-inline-block align-top" alt="">
                     Agregar / Finalizar Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['seguimiento-actividad']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['seguimiento/seguimiento-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/man-reading_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Seguimiento de Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a> -->
@@ -63,11 +64,11 @@
                 Consultas
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" [routerLink]="['consulta-maestra-comunicacion']" routerLinkActive="active">
+                <a class="dropdown-item" [routerLink]="['consultas/consulta-maestra-comunicacion']" routerLinkActive="active">
                   <img src="/assets/icons/comunicacion/opened-book-with-a-magnifier_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Consulta General de Comunicaciones</a>
                 <hr>
-                <a class="dropdown-item" [routerLink]="['consulta-generacion-reporte']" routerLinkActive="active">
+                <a class="dropdown-item" [routerLink]="['consultas/consulta-generacion-reporte']" routerLinkActive="active">
                   <img src="/assets/icons/comunicacion/professional-profile-with-image_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Generación de Reportes</a>
               </div>
@@ -79,10 +80,10 @@
                 Mantenimientos
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" [routerLink]="['solicitud-cambio-fecha']" routerLinkActive="active">
+                    <a class="dropdown-item" [routerLink]="['mantenimientos/solicitud-cambio-fecha']" routerLinkActive="active">
                       <img src="/assets/icons/comunicacion/spring-desktop-calendar-variant_blue_24x24.png" class="d-inline-block align-top" alt="">
                       Solicitud de Cambio de Fecha / Entrega</a>
-                    <a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">
+                    <a class="dropdown-item" [routerLink]="['mantenimientos/mantenimiento-instituciones']" routerLinkActive="active">
                         <img src="/assets/icons/comunicacion/businessmen.png" class="d-inline-block align-top" alt="">
                       Agregar / Editar Instituciones</a>
                     <!-- <li class="nav-item dropdown"><a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Solicitud de Cambio d Fecha</a></li> -->
@@ -98,10 +99,9 @@
             <ul *ngIf="identity" class="nav navbar-nav navbar-right" id="credentials-top">
               <li>
                 <a class="user-image" >
-                  <!-- <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt=""> -->
-                  <img src="http://172.17.0.250/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">
-                  <!-- <img src="http://http://172.17.3.90/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt=""> -->
-                  <!-- <img src="http://http://192.168.0.23/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt=""> -->
+                  <img src="{{ urlComplete + identity.imagenUsuario }}" style="width:50px" alt="">
+                  <!-- <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">                   -->
+                  <!-- <img src="http://172.17.0.250/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">                   -->
                 </a>
               </li>
               <li class="nav-item dropdown">
@@ -131,7 +131,7 @@
                <a class="nav-link" [routerLink]="['/login']">Acceder</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" [routerLink]="['/contactos-sreci']">Contactos</a>
+               <a class="nav-link" [routerLink]="['/contactos/contactos-sreci']">Contactos</a>
             </li>
           </ul>
 

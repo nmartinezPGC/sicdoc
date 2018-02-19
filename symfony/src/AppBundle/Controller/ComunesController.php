@@ -516,8 +516,7 @@ class ComunesController extends Controller {
      * Funcion: FND00003
      */
     public function uploadDocumentoOpctionAction(Request $request) {
-        //Instanciamos el Servicio Helpers
-        //date_default_timezone_set('Australia/Sydney');
+        //Instanciamos el Servicio Helpers        
         date_default_timezone_set('America/Tegucigalpa');
         $helpers = $this->get("app.helpers");
 
@@ -548,6 +547,19 @@ class ComunesController extends Controller {
                     $ext == "xlsx" || $ext == "xls" || $ext == "ppt" || $ext == "pptx" ||
                     $ext == "png" || $ext == "jpg" || $ext == "jpeg" ) {                   
                     // Concatenmos al Nombre del Fichero la Fecha y la Extencion
+                    if( $ext == "PDF" ){
+                        $ext = "pdf";
+                    }
+                    
+                    if( $ext == "PNG" ){
+                        $ext = "png";
+                    }
+                    
+                    if( $ext == "jpg" || $ext == "JPG" ){
+                        $ext = "jpeg";
+                    }
+                    
+                    
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero

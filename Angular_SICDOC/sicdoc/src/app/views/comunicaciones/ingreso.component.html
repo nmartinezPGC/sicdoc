@@ -309,9 +309,8 @@
       <hr>
       <div class="panel-collapse collapse in" id="comVinculante">
         <!-- Fila para los Datos de Seleccion de Tipo de Comunicacion -->
-        <div class="row">
-          
-          <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">          
+          <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <div class="panel panel-primary">
              <div class="panel-body">
                <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
@@ -348,9 +347,9 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
   					<div class="form-group" >
-                <angular2-multiselect [data]="itemList" name="selectPaises"
-                    [settings]="settings"
-                    [(ngModel)]="selectedItems"
+                <angular2-multiselect [data]="itemComunicacionVincList" name="selectComVinc"
+                    [settings]="settingsComunicacionVinc"
+                    [(ngModel)]="selectedComunicacionVincItems"
                     (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)"
                     (onSelectAll)="onSelectAll($event)"
@@ -418,7 +417,7 @@
                          ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento"  placeholder="Subir Pdf ..."
                          aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
 
-                     <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf, imagen etc desde su equipo local y asiganarlo a la comunicacion.</small>
+                     <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf, imagen etc desde su equipo local y asignarlo a la comunicacion.</small>
                   </div>
 
                 </div>
@@ -439,19 +438,27 @@
                <table class="table table-striped" >
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Nombre de Documento</th>
-                      <th>Extencion</th>
-                      <th>Peso en Kb</th>
-                      <th>Seleccionar</th>
+                      <th class="text-center">#</th>
+                      <th class="text-center">Nombre de Documento</th>
+                      <th class="text-center">Extencion</th>
+                      <th class="text-center">Peso/Mb</th>
+                      <th class="text-center">Documento</th>
+                      <th class="text-center">Borrar</th>
                     </tr>
                   </thead>
                   <tbody >
                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
                               <td>{{ homeFormIndex + 1 }}</td>
-                              <td>{{ suchnewrow.nameDoc }}</td>
-                              <td>{{ suchnewrow.extDoc }}</td>
-                              <td>{{ suchnewrow.pesoDoc }}</td>
+                              <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                              <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                              <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                              <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                      href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                  src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" 
+                                  onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                  alt="Cargando Imagen ..." ></a> 
+                              </td>
                               <td>
                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
                                       class="btn btn-danger" style="padding: 2px">

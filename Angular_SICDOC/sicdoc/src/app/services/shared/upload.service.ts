@@ -7,22 +7,27 @@ import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
+// Importamos la Clase de las Propiedades del Sistema
+import { SystemPropertiesService } from "./systemProperties.service";
+
 @Injectable()
 export class UploadService {
   public progressBar;
 
   // Map de la API
-  public url = "http://localhost/sicdoc/symfony/web/app_dev.php"; // Local
+  public url:string;
+  // public url = "http://localhost/sicdoc/symfony/web/app_dev.php"; // Local
   // public url = "http://172.17.0.250/sicdoc/symfony/web/app.php"; // Server
 
 
-  constructor( private _http: Http){}
-
+  constructor( private _http: Http,
+               private _systemPropertiesService: SystemPropertiesService ) { 
+      this.url = this._systemPropertiesService.getmethodUrlService();
+    }
 
   //Variables para el localStorage
   public identity;
   public token;
-
 
   /****************************************************
   * Funcion: FND-00001
