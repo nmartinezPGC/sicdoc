@@ -228,8 +228,11 @@ export class IngresoComunicacionComponent implements OnInit{
   settingsComunicacionVinc = {};
 
   public paramsComVinculante; // Parametros para las Comunicacion Vinculantes
+  public paramsTipoComunicacion = []; // Parametros para el Tipo de Comunicacion
 
   public JsonOutgetListaSubDireccionesAcomp = [];
+
+  public idTipoComunicacionArray;
 
    // 218-02-12
   // Variable de Comunicacion Sin Seguimiento
@@ -286,7 +289,7 @@ export class IngresoComunicacionComponent implements OnInit{
      this.urlConfigLocal = this._ingresoComunicacion.url;
      this.urlResourseLocal = this._ingresoComunicacion.urlResourses;
      this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
-     
+
   } // Fin | Definicion del Constructor
 
 
@@ -365,6 +368,8 @@ export class IngresoComunicacionComponent implements OnInit{
       "idTipoComunicacion"  : ""
     };
 
+    this.paramsTipoComunicacion = [];
+
     // Array de los Documentos enviados
     this.JsonOutgetListaDocumentos = [];
 
@@ -420,7 +425,7 @@ export class IngresoComunicacionComponent implements OnInit{
                                            this.fechafin  , null,
                                            0, 0,  0, 0,
                                            "", "", "", "", "", "", "", "",
-                                           "", null, null );
+                                           "", null, null, null );
 
 
     // Llamado a la Opcion de llenado de las Sub Direcciones
@@ -502,6 +507,41 @@ export class IngresoComunicacionComponent implements OnInit{
     this.JsonOutgetListaSubDireccionesAcomp = this.selectedItems ;
     this.comunicacion.subDireccionesSreciAcom = this.JsonOutgetListaSubDireccionesAcomp;
     console.log( this.comunicacion.subDireccionesSreciAcom );
+  }
+
+
+  /******************************************************
+   * Funiones de Seleccion en Nuevo Control del Listas
+   * Metodologia: ng-selectec2
+   * Fecha: 2018-01-19
+   * Casos de uso: Lista de las Comunicacones viculantes
+  *******************************************************/
+  onItemComVinculanteSelect(item: any) {
+    console.log(item);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this.comunicacion.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this.comunicacion.comunicacionesVinculantes );
+  }
+
+  OnItemComVinculanteDeSelect(item: any) {
+    console.log(item);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this.comunicacion.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this.comunicacion.comunicacionesVinculantes );
+  }
+
+  onSelectComVinculanteAll(items: any) {
+    console.log(items);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this.comunicacion.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this.comunicacion.comunicacionesVinculantes );
+  }
+
+  onComVinculanteDeSelectAll(items: any) {
+    console.log(items);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this.comunicacion.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this.comunicacion.comunicacionesVinculantes );
   }
 
 
@@ -715,7 +755,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0,
                                           "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
-                                          "", "", "", null, null);
+                                          "", "", "", null, null, null);
 
    // Limpiamos el Array de los Documentos
    this.comunicacion.pdfDocumento = "";
@@ -1178,12 +1218,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this.extencionDocumento = filename.replace(/^.*\./, '');
 
     //Modificacion; Cuando la extencion es PDF => pdf
-      if( this.extencionDocumento == "PDF" ){        
+      if( this.extencionDocumento == "PDF" ){
         this.extencionDocumento = "pdf";
       }else if( this.extencionDocumento == "jpg" ) {
         this.extencionDocumento = "jpeg";
       }
-      
+
 
      let sendParms = "json=" + "";
 
@@ -2113,8 +2153,8 @@ export class IngresoComunicacionComponent implements OnInit{
     // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
     this.paramsComVinculante.idDeptoFuncional = this.identity.idDeptoFuncional;
     this.paramsComVinculante.idTipoDocumento  = 1;
-    this.paramsComVinculante.idTipoComunicacion = [1,2];
-    
+    this.paramsComVinculante.idTipoComunicacion = [2];
+
     console.log(this.paramsComVinculante);
     this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
         response => {
@@ -2133,6 +2173,57 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-0000020
+
+
+
+  /*****************************************************
+  * Funcion: FND-000021
+  * Fecha: 19-02-2018
+  * Descripcion: Enviar Tipos de la Comunicacion
+  ******************************************************/
+  public valueChk:any;
+  sendTiposComunicacion(opt:number) {
+    var selectedTipoComunicacion = [];
+     //alert('Hola Chk');
+     $(":checkbox[name=chkTipoCom]").each(function() {
+       if (this.checked) {
+         if(opt == 1){
+           // agregas cada elemento.
+           alert('Entro opt 1');
+           selectedTipoComunicacion.push( parseInt( $(this).val() ));
+         }else {
+           // agregas cada elemento.
+           alert('Entro opt 2');
+           selectedTipoComunicacion.push( parseInt( $(this).val() ));
+         }
+       }
+     });
+     this.paramsTipoComunicacion = selectedTipoComunicacion;
+     console.log(this.paramsTipoComunicacion);
+
+  } // FIN FND-000021
+
+
+  public saveUsername:boolean;
+
+  public onSaveUsernameChanged(value:boolean, idChk:number){
+      this.saveUsername = value;
+      // Casos de Tipos de Comunicacion
+        if( this.saveUsername == true && idChk == 1 ){
+          alert('Paso 1');
+          this.paramsTipoComunicacion = [1];
+        }else if ( this.saveUsername == false && idChk == 1 ){
+          alert('Paso 2');
+           this.paramsTipoComunicacion = [];
+        }else if ( this.saveUsername == true && idChk == 2 ){
+          this.paramsTipoComunicacion.push( { "id":2 });
+          // this.comunicacion.comunicacionesVinculantes = this.paramsTipoComunicacion;
+        }else if ( this.saveUsername == false && idChk == 1 ){
+          this.paramsTipoComunicacion.slice( idChk, 2 );
+        }
+
+      console.log('Valore de Chk  ' + this.paramsTipoComunicacion);
+  }
 
 
 } // // FIN : export class IngresoComunicacionComponent

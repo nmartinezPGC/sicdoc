@@ -130,6 +130,9 @@ class IngresoCorrespondenciaController extends Controller{
                 // 2018-02-13
                 $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
                 
+                // 2018-02-19 | Comunicaciones Vinculantes al Tema
+                $comVinculante_send = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
+                
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
                 
@@ -235,9 +238,9 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     
                      /* 2018-02-13
-                         * Campo de las Sub Direcciones Acompanantes
-                         * MEJ-000001
-                         */
+                      * Campo de las Sub Direcciones Acompanantes
+                      * MEJ-000001
+                     */
                         // *****************************************************
                         if( $subDir_send != null ){
                             // Se convierte el Array en String
@@ -261,6 +264,35 @@ class IngresoCorrespondenciaController extends Controller{
                             }
                         }
                         // FIN | MEJ-000001
+                        
+                        
+                        /* 2018-02-19
+                        * Campo de las Sub Comunicaciones Vinculantes
+                        * MEJ-000002
+                        */
+                        // *****************************************************
+                        if( $comVinculante_send != null ){
+                            // Se convierte el Array en String
+                            $ComVinc_array_convert   = json_encode($comVinculante_send);
+                            $ComVinc_array_convert2  = json_decode($ComVinc_array_convert);
+
+                            // Recorreros los Items del Array
+                            $codigoComunicacionAcum = "";
+                            
+                            foreach ( $ComVinc_array_convert2 as $arr ){                                
+                                $idComunicacionVinculante     = $arr->id;
+                                $codigoComunicacionVinculante = $arr->itemName;
+                                
+                                if( $codigoComunicacionAcum != "" ){
+                                    $codigoComunicacionAcum = $codigoComunicacionAcum . ', ' . $codigoComunicacionVinculante;
+                                }else {
+                                    $codigoComunicacionAcum = $codigoComunicacionVinculante;
+                                }
+                                // Asignamos las Sub Direcciones al Listado
+                                $correspondenciaNew->setcomunicacionVinculante( $codigoComunicacionAcum );
+                            }
+                        }
+                        // FIN | MEJ-000002
                                         
                     //Finaliza Busqueda de Integridad entre Tablas *************
                     

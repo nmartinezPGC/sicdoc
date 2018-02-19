@@ -51,7 +51,8 @@ export class Comunicaciones{
       public setTomail:string,
 
       // Sub Direcciones SRECI
-      public subDireccionesSreciAcom
+      public subDireccionesSreciAcom,
+      public comunicacionesVinculantes,
 
 
     ){}

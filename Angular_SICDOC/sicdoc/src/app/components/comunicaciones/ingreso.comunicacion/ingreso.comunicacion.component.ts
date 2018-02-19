@@ -229,7 +229,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
         unSelectAllText: 'Deselecciona Todos',
         enableSearchFilter: true,
         badgeShowLimit: 6
-      };    
+      };
 
       // Seteo de la Ruta de la Url Config
      this.urlConfigLocal = this._ingresoComunicacion.url;
@@ -396,7 +396,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "","",  "", "", "",  0, "0", 0, 0,
                             "7", 1, 0,"0", this.fechafin , null,  0, 0,  0, 0,
-                            "", "", "", "", "", "", "",  "",  "", null, null);
+                            "", "", "", "", "", "", "",  "",  "", null, null, null);
 
     // Llamamos al Metodo de Sub Direcciones Acompañantes
     this.getlistaSubDireccionesSreciAll();

@@ -732,4 +732,33 @@ class TblCorrespondenciaEnc
     {
         return $this->idTipoComunicacion;
     }
+    /**
+     * @var string
+     */
+    private $direccionesAcompanantes;
+
+
+    /**
+     * Set direccionesAcompanantes
+     *
+     * @param string $direccionesAcompanantes
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setDireccionesAcompanantes($direccionesAcompanantes)
+    {
+        $this->direccionesAcompanantes = $direccionesAcompanantes;
+
+        return $this;
+    }
+
+    /**
+     * Get direccionesAcompanantes
+     *
+     * @return string
+     */
+    public function getDireccionesAcompanantes()
+    {
+        return $this->direccionesAcompanantes;
+    }
 }

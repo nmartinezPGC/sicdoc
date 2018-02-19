@@ -2,15 +2,15 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
     type: entity
     table: tbl_secuencias_comprometidas
     indexes:
-        fki_depto_sec:
-            columns:
-                - id_depto_funcional
         fki_estado_secuencias:
             columns:
                 - id_estado_secuencia
         fki_tipo_doc_secu:
             columns:
                 - id_tipo_documento
+        fki_depto_sec:
+            columns:
+                - id_depto_funcional
         fki_user_sec:
             columns:
                 - id_usuario

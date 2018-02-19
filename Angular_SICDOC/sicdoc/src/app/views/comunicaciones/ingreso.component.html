@@ -218,36 +218,6 @@
          </div>
        </div>
 
-      <!-- Fila de los Funcionarios -->
-      <!-- Tipo Funcionario Encargado de la Comunicacion -->
-      <!-- <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1" >
-        <div class="col-xs-12 col-sm-6 col-md-6">
-          <div class="form-group">
-            <select #idTipoFuncionario="ngModel" class="form-control" name="idTipoFuncionario" id="idTipoFuncionario" required
-                  ngControl="idTipoFuncionario" [(ngModel)]="comunicacion.idTipoFuncionario" tabindex="10" (change)="getlistaUsuariosAsinadosSRECI()" >
-                <option value="0">Tipo de Funcionario </option>
-                <option *ngFor="let list of JsonOutgetlistaTipoFuncionariosSRECI" value="{{ list.idTipoFuncionario }}">{{ list.descTipoFuncionario }}</option>
-            </select>
-            <small class="form-text text-muted" *ngIf="idTipoFuncionario.value == 0 || idTipoFuncionario.value == null " >Debes Seleccionar un Tipo de Funcionario</small>
-            <small class="form-text text-muted" *ngIf="idTipoFuncionario.errors?.required" >Debes Seleccionar un Tipo de Funcionario</small>
-          </div>
-       </div> -->
-
-
-       <!-- Funcionario Encargado de la Comunicacion -->
-       <!-- <div class="col-xs-12 col-sm-6 col-md-6">
-         <div class="form-group">
-           <select #idUsuarioAsaignado="ngModel" class="form-control" name="idUsuarioAsaignado" id="idUsuarioAsaignado" required
-                 ngControl="idUsuarioAsaignado" [(ngModel)]="comunicacion.idUsuarioAsaignado" tabindex="11"  >
-               <option value="0">Funcionario SRECI</option>
-               <option *ngFor="let list of JsonOutgetlistaFuncionariosSRECI" value="{{ list.idFuncionario }}">{{ list.nombre1Funcionario }} {{ list.nombre2Funcionario }}
-                 , {{ list.apellido1Funcionario }} {{ list.apellido2Funcionario }}</option>
-           </select>
-           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.value == 0 || idUsuarioAsaignado.value == null " >Debes Seleccionar Funcionario</small>
-           <small class="form-text text-muted" *ngIf="idUsuarioAsaignado.errors?.required" >Debes Seleccionar un Funcionario</small>
-         </div>
-      </div>
-      </div>-->
 
         <!-- Boton de Agregar Nueva Direcion Acompañante -->
         <!-- <input type="button" id="btAdd" value="Añadir Elemento" class="bt" (click)="fnd()" /> -->
@@ -309,36 +279,35 @@
       <hr>
       <div class="panel-collapse collapse in" id="comVinculante">
         <!-- Fila para los Datos de Seleccion de Tipo de Comunicacion -->
-        <div class="row">          
-          <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <div class="panel panel-primary">
-             <div class="panel-body">
-               <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
-                 <!-- Seleccion de COmunicacion de Ingreso -->
-                 <strong class="text-uppercase">
-                   <label class="custom-control custom-checkbox">
-                     <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento"
-                         (click)="checkSinSinSeguimiento()" >
-                     <span class="custom-control-indicator"></span>
-                     <span class="custom-control-description">Comunicación de Ingreso</span>
-                     <input style="width:0px;height:0px;color:white" type="text" value="0" name="estadoFin" id="estadoFin" >
-                   </label>
-                 </strong>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="panel panel-primary">
+               <div class="panel-body text-center">
+                 <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
+                   <!-- Seleccion de COmunicacion de Ingreso -->
+                   <strong class="text-uppercase">
+                     <label class="custom-control custom-checkbox">
+                       <input #saveUserNameCheckBox type="checkbox" name="chkTipoCom" class="custom-control-input chkTipoCom" id="saveUserNameCheckBox"
+                          [checked]="saveUsername" (change)="onSaveUsernameChanged(saveUserNameCheckBox.checked, 1)"  >
+                       <span class="custom-control-indicator"></span>
+                       <span class="custom-control-description">Comunicación de Ingreso</span>
+                       <input style="width:0px;height:0px;color:white" type="text" value="1" name="comIngreso" id="comIngreso" >
+                     </label>
+                   </strong>
 
-                 <!-- Seleccion de COmunicacion de Salida -->
-                 <strong class="text-uppercase">
-                   <label class="custom-control custom-checkbox">
-                     <input type="checkbox" name="chkSinSeguimiento" class="custom-control-input chkSinSeguimiento"
-                         (click)="checkSinSinSeguimiento()" >
-                     <span class="custom-control-indicator"></span>
-                     <span class="custom-control-description">Comunicación de Salida</span>
-                     <input style="width:0px;height:0px;color:white" type="text" value="0" name="estadoFin" id="estadoFin" >
-                   </label>
-                 </strong>
-               </h6>
+                   <!-- Seleccion de COmunicacion de Salida -->
+                   <strong class="text-uppercase">
+                     <label class="custom-control custom-checkbox">
+                       <input type="checkbox" name="chkTipoCom" class="custom-control-input chkTipoCom">
+                       <span class="custom-control-indicator"></span>
+                       <span class="custom-control-description">Comunicación de Salida</span>
+                       <input style="width:0px;height:0px;color:white" type="text" value="2" name="comSalida" id="comSalida" >
+                     </label>
+                   </strong>
+                 </h6>
+              </div>
+             </div>
             </div>
-           </div>
-          </div>
         </div>
 
         <hr class="hr-new">
@@ -350,10 +319,10 @@
                 <angular2-multiselect [data]="itemComunicacionVincList" name="selectComVinc"
                     [settings]="settingsComunicacionVinc"
                     [(ngModel)]="selectedComunicacionVincItems"
-                    (onSelect)="onItemSelect($event)"
-                    (onDeSelect)="OnItemDeSelect($event)"
-                    (onSelectAll)="onSelectAll($event)"
-                    (onDeSelectAll)="onDeSelectAll($event)">
+                    (onSelect)="onItemComVinculanteSelect($event)"
+                    (onDeSelect)="OnItemComVinculanteDeSelect($event)"
+                    (onSelectAll)="onSelectComVinculanteAll($event)"
+                    (onDeSelectAll)="onComVinculanteDeSelectAll($event)">
                 </angular2-multiselect>
                 <small class="form-text text-muted" >Selecciona la(s) Comunicaciones Vinculantes con la Actual</small>
   					</div>
@@ -455,9 +424,9 @@
                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
-                                  src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" 
+                                  src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
-                                  alt="Cargando Imagen ..." ></a> 
+                                  alt="Cargando Imagen ..." ></a>
                               </td>
                               <td>
                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
