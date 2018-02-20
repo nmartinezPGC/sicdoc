@@ -26,3 +26,13 @@
 }
 
 .panel-body .btn:not(.btn-block) { width:120px;margin-bottom:10px; }
+
+
+/* Personalizacion del File Inut */
+.custom-file-control:lang(en)::after {
+  content: "Selecciona el archivo ...";
+}
+
+.custom-file-control:lang(en)::before {
+  content: "Buscar";
+}

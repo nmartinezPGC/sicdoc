@@ -17,8 +17,10 @@ export class Comunicaciones{
       public idUsuarioAsaignado:number, // Usuario que se le asigna el Oficio
       public idEstado:string, // Tipo de Dato String, porque no se selecciona
       public idDireccionSreci:number,
+      public idDireccionSreciComVinc:number, // Sub Secreatria para la seleccion de Com Vinculante | 2018-02-20
       public idDireccionSreciAcom:number,
       public idTipoDocumento:string, // Tipo de Dato String, porque no se selecciona
+      public idTipoDocumentoComVinc:string, // Tipo de Dato String, porque no se selecciona
 
       // Datos de fechas
       public fechaMaxEntrega:string,
@@ -30,6 +32,7 @@ export class Comunicaciones{
 
       //Datos para Ingresar la Primera Accion
       public idDeptoFuncional:number,
+      public idDeptoFuncionalComVinc:number, // Direccion para la seleccion de Com Vinculante | 2018-02-20
       public idDeptoFuncionalAcom:number,
 
       // Secuenciales de Tablas

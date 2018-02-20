@@ -242,6 +242,124 @@
       </div>
 
       <hr>
+      <!-- Dato de Comunicacion viculante -->
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#comVinculante">Comunicación Vinculante</a>
+        </h4>
+      </div>
+      <hr>
+      <div class="panel-collapse collapse in" id="comVinculante">
+        <!-- Fila para los Datos de Seleccion de Tipo de Comunicacion -->
+        <div class="row">
+             <!-- Direccion Encargada del tema de la Comunicacion -->
+             <div class="col-xs-12 col-sm-6 col-md-6">
+               <div class="form-group">
+                 <select #idDireccionSreciComVinc="ngModel" class="form-control" name="idDireccionSreciComVinc" id="idDireccionSreciComVinc"
+                       ngControl="idDireccionSreciComVinc" [(ngModel)]="comunicacion.idDireccionSreciComVinc" tabindex="8"
+                          (change)="getlistaSubDireccionesSRECIComVinculante()" >
+                     <option value="0">Sub Secretaría Responsable </option>
+                     <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
+                 </select>
+                 <small class="form-text text-muted" *ngIf="idDireccionSreciComVinc.value == 0 || idDireccionSreciComVinc.value == null " >
+                   Debes Seleccionar una Sub Secretaría vinculante</small>
+                 <!-- <small class="form-text text-muted" *ngIf="idDireccionSreciComVinc.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small> -->
+               </div>
+            </div>
+
+            <!-- SubDireccion Encargada del tema de la Comunicacion -->
+            <div class="col-xs-12 col-sm-6 col-md-6">
+              <div class="form-group">
+                <select #idDeptoFuncionalComVinc="ngModel" class="form-control" name="idDeptoFuncionalComVinc" id="idDeptoFuncionalComVinc"
+                      ngControl="idDeptoFuncionalComVinc" [(ngModel)]="comunicacion.idDeptoFuncionalComVinc" tabindex="9" >
+                    <option value="0">Dirección Responsable</option>
+                    <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECIComVinculantes" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="idDeptoFuncionalComVinc.value == 0 || idDeptoFuncionalComVinc.value == null " >
+                  Debes Seleccionar una Dirección vinculante</small>
+                <!-- <small class="form-text text-muted" *ngIf="idDeptoFuncional.errors?.required" >Debes Seleccionar una Dirección responsable</small> -->
+              </div>
+            </div>
+        </div>
+
+
+        <!-- Fila de Tipo de Comunicaciones -->
+        <div class="row">
+            <!-- Tipo de Comunicacion -->
+            <div class="col-xs-12 col-sm-6 col-md-6">
+              <div class="form-group">
+                <select #idTipoDocumentoComVinc="ngModel" class="form-control" name="idTipoDocumentoComVinc"
+                      ngControl="idTipoDocumentoComVinc" [(ngModel)]="comunicacion.idTipoDocumentoComVinc"  >
+                    <option value="0">Tipo de Comunicación</option>
+                    <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > {{ list.descTipoDocumento }}</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="idTipoDocumentoComVinc.value == 0 || idTipoDocumentoComVinc.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
+                <!-- <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicacion</small> -->
+              </div>
+           </div>
+
+
+           <div class="col-xs-12 col-sm-6 col-md-6">
+               <div class="panel panel-primary">
+                  <div class="panel-body text-center">
+                    <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
+                      <!-- Seleccion de COmunicacion de Ingreso -->
+                      <!-- Comunicacion de Ingreso -->
+                      <label class="custom-control custom-radio">
+                         <input id="radio1" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(1)">
+                         <span class="custom-control-indicator"></span>
+                         <span class="custom-control-description">Ingreso Com.</span>
+                      </label>
+
+                      <!-- Comunicacion de Salida -->
+                      <label class="custom-control custom-radio">
+                         <input id="radio2" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(2)">
+                         <span class="custom-control-indicator"></span>
+                         <span class="custom-control-description">Salida Com.</span>
+                      </label>
+
+                      <!-- Ambas opciones -->
+                      <label class="custom-control custom-radio">
+                         <input id="radio3" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(3)">
+                         <span class="custom-control-indicator"></span>
+                         <span class="custom-control-description">Ambas Com.</span>
+                      </label>
+                    </h6>
+                  </div>
+              </div>
+              <!-- <button type="button" (click)="cleanComunicacionVinculante()" class="btn btn-primary btn-sm">Limpiar Filtro</button> -->
+            </div>
+        </div>
+
+        <hr class="hr-new">
+
+        <!-- Fila para Seleccionar la(s) Comunicaciones Segun el Tipo -->
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+  					<div class="form-group" >
+                <angular2-multiselect [data]="itemComunicacionVincList" name="selectComVinc"
+                    [settings]="settingsComunicacionVinc"
+                    [(ngModel)]="selectedComunicacionVincItems"
+                    (onSelect)="onItemComVinculanteSelect($event)"
+                    (onDeSelect)="OnItemComVinculanteDeSelect($event)"
+                    (onSelectAll)="onSelectComVinculanteAll($event)"
+                    (onDeSelectAll)="onComVinculanteDeSelectAll($event)">
+                </angular2-multiselect>
+                <small class="form-text text-muted" >Selecciona la(s) Comunicaciones Vinculantes con la Actual</small>
+  					</div>
+  				</div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-2 col-sm-2 col-md-2">
+             <button title="Limpiar el los Filtros aplicados para Busqueda de la(s) Comunicacones Vinculantes" type="button" (click)="cleanComunicacionVinculante()" class="btn btn-primary btn-sm">Limpiar Filtro</button>
+          </div>
+        </div>
+
+      </div>
+
+
+      <hr>
       <!-- Datos de las Relaciones de las Tablas -->
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -286,12 +404,13 @@
             <!-- Subir PDF del Oficio entrante -->
             <div class="col-xs-12 col-sm-6 col-md-12">
               <div class="form-group">
-                <label for="exampleInputFile">Agregar Pdf</label>
-                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
-                     ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
-                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
-
-                 <small id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf desde su equipo local y asiganarlo a la Comunicacion.</small>
+                  <label class="custom-file">
+                      <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento[]"
+                         ngControl="pdfDocumento" [(ngModel)]="comunicacion.pdfDocumento" placeholder="Subir Pdf ..."
+                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)">
+                      <span class="custom-file-control"></span>
+                  </label>
+                 <small  id="fileHelp" class="form-text text-muted">Esta seccion sirve, para ingresar un pdf, imagen etc desde su equipo local y asignarlo a la comunicacion.</small>
                 </div>
                 <!-- Barra de Progreso de Carga de la Imagen -->
                 <div class="progress">
@@ -309,19 +428,27 @@
                 <table class="table table-striped" >
                    <thead>
                      <tr>
-                       <th>#</th>
-                       <th>Nombre de Documento</th>
-                       <th>Extencion</th>
-                       <th>Peso en Kb</th>
-                       <th>Borrar</th>
+                       <th class="text-center">#</th>
+                       <th class="text-center">Nombre de Documento</th>
+                       <th class="text-center">Extencion</th>
+                       <th class="text-center">Peso/Mb</th>
+                       <th class="text-center">Documento</th>
+                       <th class="text-center">Borrar</th>
                      </tr>
                    </thead>
-                   <tbody>
+                   <tbody >
                      <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
                                <td>{{ homeFormIndex + 1 }}</td>
-                               <td>{{ suchnewrow.nameDoc }}</td>
-                               <td>{{ suchnewrow.extDoc }}</td>
-                               <td>{{ suchnewrow.pesoDoc }}</td>
+                               <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                               <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                               <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                   alt="Cargando Imagen ..." ></a>
+                               </td>
                                <td>
                                    <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
                                        class="btn btn-danger" style="padding: 2px">
@@ -330,7 +457,6 @@
                        </tr>
                    </tbody>
                  </table>
-
             </div>
               <div [innerHTML]="myHtml"></div>
           </div>

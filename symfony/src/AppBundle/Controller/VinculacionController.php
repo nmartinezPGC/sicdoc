@@ -265,7 +265,7 @@ class VinculacionController extends Controller{
                         . 'WHERE corrEnc.idDeptoFuncional = :idDeptoFuncional AND '
                         . ' corrEnc.idTipoDocumento = :idTipoDocumento AND '
                         . ' corrEnc.idTipoComunicacion IN (' . $tipocom_array_convert . ' ) '
-                        . 'ORDER BY corrEnc.idCorrespondenciaEnc ' )
+                        . 'ORDER BY corrEnc.idCorrespondenciaEnc, corrEnc.codCorrespondenciaEnc ' )
                         ->setParameter('idDeptoFuncional', $id_depto_funcional )
                         ->setParameter('idTipoDocumento', $id_tipo_documento ); 
             }else {
@@ -279,7 +279,7 @@ class VinculacionController extends Controller{
                         . 'WHERE corrEnc.idDeptoFuncional = :idDeptoFuncional AND '
                         . ' corrEnc.idTipoDocumento = :idTipoDocumento AND '
                         . ' corrEnc.idTipoComunicacion IN (1,2) '
-                        . 'ORDER BY corrEnc.idCorrespondenciaEnc ' )
+                        . 'ORDER BY corrEnc.idCorrespondenciaEnc, corrEnc.codCorrespondenciaEnc ' )
                         ->setParameter('idDeptoFuncional', $id_depto_funcional )
                         ->setParameter('idTipoDocumento', $id_tipo_documento );
             }

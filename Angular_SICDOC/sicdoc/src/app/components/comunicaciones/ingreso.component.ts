@@ -65,6 +65,7 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSecuenciaDet;
   private paramsSubDir;
   private paramsSubDirAcom;
+  private paramsSubDirComVinculante;
   private paramsTipoFuncionario; // Parametros para el Filtro de Funcionario
 
   private paramsDocumentosSend; // Parametros para los Documentos enviados
@@ -153,6 +154,7 @@ export class IngresoComunicacionComponent implements OnInit{
   public JsonOutgetlistaDireccionSRECI:any[];
   public JsonOutgetlistaDireccionSRECIAcom:any[];
   public JsonOutgetlistaSubDireccionSRECI:any[];
+  public JsonOutgetlistaSubDireccionSRECIComVinculantes:any[]; // Uso para las Comunicaciones viculantes | 2018-02-20
   public JsonOutgetlistaSubDireccionSRECIAcom:any[];
 
   public JsonOutgetlistaTipoFuncionariosSRECI:any[];
@@ -348,6 +350,11 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
+    // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
+    this.paramsSubDirComVinculante = {
+      "idDireccionSreciComVinc"  : ""
+    };
+
     // Iniciamos los Parametros de Usuarios a Asignar el Oficio
     this.paramsTipoFuncionario = {
       "idTipoFuncionario"  : "",
@@ -421,9 +428,9 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
-                                           0, "0", 0, 0, "7", 1, 0, "0",
+                                           0, "0", 0, 0, "7", 1, 0, 0, "0", "0",
                                            this.fechafin  , null,
-                                           0, 0,  0, 0,
+                                           0, 0,  0, 0, 0,
                                            "", "", "", "", "", "", "", "",
                                            "", null, null, null );
 
@@ -466,7 +473,9 @@ export class IngresoComunicacionComponent implements OnInit{
     // Eventos de Señaloizacion
     this.loading = "hide";
 
-    this.getlistaComunicacionVinculanteAll();
+    $(".fakeRadio").attr('checked', false);
+
+    // this.getlistaComunicacionVinculanteAll();
     // this.removeFileInput();
     // this.getlistaSubDireccionesSRECIAcom();
 
@@ -744,6 +753,11 @@ export class IngresoComunicacionComponent implements OnInit{
       "idDireccionSreci"  : ""
     };
 
+    // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
+    this.paramsSubDirComVinculante = {
+      "idDireccionSreciComVinc"  : ""
+    };
+
     // Iniciamos los Parametros de Usuarios a Asignar Oficios
     this.paramsTipoFuncionario = {
       "idTipoFuncionario"  : "",
@@ -753,9 +767,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.status = "hide";
     this.loading = "hide";
 
-    this.comunicacion = new Comunicaciones(1, "", "",  "", "", "",  0, "0", 0, 0 ,"7", 1, 0,
-                                          "0",  "", "",  0, 0,  0, 0,  "","","","",  "", "",
-                                          "", "", "", null, null, null);
+    // Definicion de la Insercion de los Datos de Nueva Comunicacion
+    this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
+                                           0, "0", 0, 0, "7", 1, 0, 0, "0", "0",
+                                           this.fechafin  , null,
+                                           0, 0,  0, 0, 0,
+                                           "", "", "", "", "", "", "", "",
+                                           "", null, null, null );
 
    // Limpiamos el Array de los Documentos
    this.comunicacion.pdfDocumento = "";
@@ -1415,6 +1433,37 @@ export class IngresoComunicacionComponent implements OnInit{
   } // FIN : FND-00007.1
 
 
+
+  /*****************************************************
+  * Funcion: FND-00007.1.1
+  * Fecha: 20-02-2018
+  * Descripcion: Carga la Lista de las Sub Direcciones de
+  * SRECI
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * ( subdir-sreci-list ).
+  ******************************************************/
+  getlistaSubDireccionesSRECIComVinculante() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsSubDirComVinculante.idDireccionSreciComVinc = this.comunicacion.idDireccionSreciComVinc;
+
+    console.log(this.paramsSubDirComVinculante);
+
+    this._listasComunes.listasComunes( this.paramsSubDirComVinculante,"com-vinculantes-subdir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+          }
+        });
+  } // FIN : FND-00007.1.1
+
+
   /*****************************************************
   * Funcion: FND-00007.1.1.2
   * Fecha: 15-09-2017
@@ -1902,80 +1951,6 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
-  * Funcion: FND-00017
-  * Fecha: 18-10-2017
-  * Descripcion: Creacion de nuevo File input
-  * ( deleteItemTable ).
-  ******************************************************/
-  deleteItemTable(){
-    //$('#newTable tr:last-child').remove();
-    // delete this.JsonOutgetListaDocumentos[0];
-
-    let idDocumentoDelete = $("#idDocumentoDel").val();
-
-    // var elementDelete = $(this).parent().parent();
-    // $('#tablelist').remove(idDocumentoDelete);
-    $('#tablelist tbody tr').slice(0).remove();
-
-    // Borra el Elemento al Json
-    this.JsonOutgetListaDocumentos.splice(idDocumentoDelete,1);
-
-    if( this.JsonOutgetListaDocumentos == null || this.JsonOutgetListaDocumentos.length == 0 ){
-      console.log(this.JsonOutgetListaDocumentos);
-      alert('Json de Documentos vacio');
-    }else {
-      alert('Esta lleno');
-      console.log(this.JsonOutgetListaDocumentos);
-    }
-  }
-
-  /*****************************************************
-  * Funcion: FND-00018
-  * Fecha: 19-10-2017
-  * Descripcion: Remove File input
-  * ( removeFileInput ).
-  ******************************************************/
-  removeFileInput() {
-    //Llamamos el evento de Borrar ña Fila Seleccionada
-    $(document).on('click', '.delDoc', function (event) {
-      event.preventDefault();
-        var valores = $(this).parents("tr").find("td")[0].innerHTML;
-        $(this).closest('tr').remove();
-        alert('Hola ' + valores);
-        console.log(this.JsonOutgetListaDocumentos);
-    });
-  } // FIN | FND-00018
-
-
-  /*****************************************************
-  * Funcion: FND-00001
-  * Fecha: 14-10-2017
-  * Descripcion: Chekear todas las Opciones
-  ******************************************************/
-  checkTodos(){
-    $('.form-control-file').each(function () {
-        // if (this.checked) $(this).attr("checked", false);
-        //else $(this).prop("checked", true);s
-        let name = $('#pdfDocumento')[0].name;
-        console.log('Pasa por : ' + name);
-    });
-  } // FIN | FND-00001
-
-
-  /*****************************************************
-  * Funcion: FND-00001
-  * Fecha: 14-10-2017
-  * Descripcion: Chekear todas las Opciones
-  ******************************************************/
-  validDatosGen(){
-    if( this.comunicacion.codReferenciaSreci == null ){
-         alert('Debes llenar los datos generales, para poder seleccionar los documentos.');
-         return;
-    }
-  }
-
-
-  /*****************************************************
   * Funcion: FND-00003.1
   * Fecha: 12-10-2017
   * Descripcion: Funcion para AutoCompletar y sacar el
@@ -2149,13 +2124,27 @@ export class IngresoComunicacionComponent implements OnInit{
   * Params: idDeptoFuncional, idTipoDocumento, idTipoComunicacion
   * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
   **********************************************************/
-  getlistaComunicacionVinculanteAll() {
+  getlistaComunicacionVinculanteAll(idOpcion:number) {
     // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
-    this.paramsComVinculante.idDeptoFuncional = this.identity.idDeptoFuncional;
-    this.paramsComVinculante.idTipoDocumento  = 1;
-    this.paramsComVinculante.idTipoComunicacion = [2];
+    // Condicionamos la Busqueda
+    if( idOpcion == 1 ){
+      this.paramsComVinculante.idDeptoFuncional = this.comunicacion.idDeptoFuncionalComVinc;
+      this.paramsComVinculante.idTipoDocumento  = this.comunicacion.idTipoDocumentoComVinc;
+      this.paramsComVinculante.idTipoComunicacion = [1];
+      //console.log('Caso #1 Ingreso');
+    }else if ( idOpcion == 2 ){
+      this.paramsComVinculante.idDeptoFuncional = this.comunicacion.idDeptoFuncionalComVinc;
+      this.paramsComVinculante.idTipoDocumento  = this.comunicacion.idTipoDocumentoComVinc;
+      this.paramsComVinculante.idTipoComunicacion = [2];
+      //console.log('Caso #2 Salidas');
+    }else if ( idOpcion == 3 ){
+      this.paramsComVinculante.idDeptoFuncional = this.comunicacion.idDeptoFuncionalComVinc;
+      this.paramsComVinculante.idTipoDocumento  = this.comunicacion.idTipoDocumentoComVinc;
+      this.paramsComVinculante.idTipoComunicacion = [1,2];
+      //console.log('Caso #3 Ambas');
+    }
 
-    console.log(this.paramsComVinculante);
+    //console.log(this.paramsComVinculante);
     this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
         response => {
           // login successful so redirect to return url
@@ -2169,61 +2158,10 @@ export class IngresoComunicacionComponent implements OnInit{
             this.JsonOutgetlistaComunicacionVinculante = response.data;
 
             this.itemComunicacionVincList = this.JsonOutgetlistaComunicacionVinculante;
-            console.log( this.JsonOutgetlistaComunicacionVinculante );
+            //console.log( this.JsonOutgetlistaComunicacionVinculante );
           }
         });
   } // FIN : FND-0000020
-
-
-
-  /*****************************************************
-  * Funcion: FND-000021
-  * Fecha: 19-02-2018
-  * Descripcion: Enviar Tipos de la Comunicacion
-  ******************************************************/
-  public valueChk:any;
-  sendTiposComunicacion(opt:number) {
-    var selectedTipoComunicacion = [];
-     //alert('Hola Chk');
-     $(":checkbox[name=chkTipoCom]").each(function() {
-       if (this.checked) {
-         if(opt == 1){
-           // agregas cada elemento.
-           alert('Entro opt 1');
-           selectedTipoComunicacion.push( parseInt( $(this).val() ));
-         }else {
-           // agregas cada elemento.
-           alert('Entro opt 2');
-           selectedTipoComunicacion.push( parseInt( $(this).val() ));
-         }
-       }
-     });
-     this.paramsTipoComunicacion = selectedTipoComunicacion;
-     console.log(this.paramsTipoComunicacion);
-
-  } // FIN FND-000021
-
-
-  public saveUsername:boolean;
-
-  public onSaveUsernameChanged(value:boolean, idChk:number){
-      this.saveUsername = value;
-      // Casos de Tipos de Comunicacion
-        if( this.saveUsername == true && idChk == 1 ){
-          alert('Paso 1');
-          this.paramsTipoComunicacion = [1];
-        }else if ( this.saveUsername == false && idChk == 1 ){
-          alert('Paso 2');
-           this.paramsTipoComunicacion = [];
-        }else if ( this.saveUsername == true && idChk == 2 ){
-          this.paramsTipoComunicacion.push( { "id":2 });
-          // this.comunicacion.comunicacionesVinculantes = this.paramsTipoComunicacion;
-        }else if ( this.saveUsername == false && idChk == 1 ){
-          this.paramsTipoComunicacion.slice( idChk, 2 );
-        }
-
-      console.log('Valore de Chk  ' + this.paramsTipoComunicacion);
-  }
 
 
 } // // FIN : export class IngresoComunicacionComponent

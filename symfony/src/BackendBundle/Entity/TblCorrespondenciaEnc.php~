@@ -761,4 +761,33 @@ class TblCorrespondenciaEnc
     {
         return $this->direccionesAcompanantes;
     }
+    /**
+     * @var string
+     */
+    private $comunicacionVinculante;
+
+
+    /**
+     * Set comunicacionVinculante
+     *
+     * @param string $comunicacionVinculante
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setComunicacionVinculante($comunicacionVinculante)
+    {
+        $this->comunicacionVinculante = $comunicacionVinculante;
+
+        return $this;
+    }
+
+    /**
+     * Get comunicacionVinculante
+     *
+     * @return string
+     */
+    public function getComunicacionVinculante()
+    {
+        return $this->comunicacionVinculante;
+    }
 }

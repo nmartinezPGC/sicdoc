@@ -122,6 +122,14 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
             options:
                 fixed: false
             column: comunicacion_vinculante
+        horaIngreso:
+            type: time
+            nullable: true
+            column: hora_ingreso
+        horaFinalizacion:
+            type: time
+            nullable: true
+            column: hora_finalizacion
     manyToOne:
         idTipoDocumento:
             targetEntity: TblTipoDocumento

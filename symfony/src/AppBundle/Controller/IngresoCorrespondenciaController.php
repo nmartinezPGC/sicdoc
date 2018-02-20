@@ -90,6 +90,10 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
                 
                 $fecha_ingreso        = new \DateTime('now');
+                
+                $hora_ingreso = new \DateTime('now');            
+                $hora_ingreso->format('H:i');                
+                
                 $fecha_maxima_entrega = ($params->fechaMaxEntrega != null) ? $params->fechaMaxEntrega : null ;
                 // Seteo de la Fecha, viene en Json (String) se tiene que convertir a su dato Nativo (Date)
                 $fecha_maxima_entrega_date = new \DateTime($fecha_maxima_entrega);
@@ -165,6 +169,7 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setFechaModificacion($fecha_null);
                     $correspondenciaNew->setFechaFinalizacion($fecha_null);
                     
+                    $correspondenciaNew->setHoraIngreso( $hora_ingreso ); // Hora de Creacion                    
                     
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);                    
                     
@@ -197,7 +202,13 @@ class IngresoCorrespondenciaController extends Controller{
                         array(
                            "idEstado" => $cod_estado
                         ));                    
-                    $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados   
+                    $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados 
+                    
+                    // 2018-02-20
+                    // Si la Comuniacion es Sin Seguimiento la Hora de Finalizacion es la Misma que la de la Ingreso
+                    if( $estado->getIdEstado() == 5 ){
+                        $correspondenciaNew->setHoraFinalizacion( $hora_ingreso ); // Hora de Finalizacion
+                    }
                     
                     //Instanciamos de la Clase TblDireccionesSreci                        
                     $direccion = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
@@ -544,12 +555,9 @@ class IngresoCorrespondenciaController extends Controller{
                                                 'verify_peer_name' => false
                                                 )
                                             )
-                                         )
-                               //->setUsername( $identity->email )
-                               //->setUsername("nahum.sreci@gmail.com")
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               //->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                                         )                              
+                               //->setUsername("nahum.sreci@gmail.com")                               
+                               //->setPassword('1897Juve');                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
                                ->setPassword('Despachomcns')
                                ->setTimeout(180);
@@ -560,8 +568,7 @@ class IngresoCorrespondenciaController extends Controller{
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
                                ->setSubject('Notificación de Ingreso de Comunicacion | SICDOC')
-                               //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))
-                               //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))    
+                               //->setFrom(array($mailSend => $identity->nombre . " " .  $identity->apellido ))                                 
                                ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))                                       
                                ->setTo($mailSend)                                
                                //->addCc([ $setTo_array_convertIn ])                              
@@ -918,6 +925,10 @@ class IngresoCorrespondenciaController extends Controller{
                 $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
                 
                 $fecha_ingreso        = new \DateTime('now');
+                
+                $hora_ingreso = new \DateTime('now');            
+                $hora_ingreso->format('H:i');
+                
                 $hora_actualizacion = new \DateTime('now');            
                 $hora_actualizacion->format('H:i');
                 
@@ -967,6 +978,9 @@ class IngresoCorrespondenciaController extends Controller{
                 // 2018-02-13
                 $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
                 
+                // 2018-02-19 | Comunicaciones Vinculantes al Tema
+                $comVinculante_send = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
+                
                 // Se convierte el Array en String
                 $setTo_array_convert = explode(",", $setTomail);
                 $setTo_array_convertIn = implode(",", $setTo_array_convert);                                             
@@ -994,6 +1008,8 @@ class IngresoCorrespondenciaController extends Controller{
                     $correspondenciaNew->setFechaModificacion($fecha_null);
                     $correspondenciaNew->setFechaFinalizacion($fecha_null);
                     
+                    $correspondenciaNew->setHoraIngreso( $hora_ingreso ); // Hora de Creacion
+                    
                     $correspondenciaNew->setFechaMaxEntrega($fecha_maxima_entrega_date);
                     
                     // Nuevo Campo de Codigo de Refrencia SRECI ----------------
@@ -1005,6 +1021,7 @@ class IngresoCorrespondenciaController extends Controller{
                         $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
                                "codSecuencial"  => "SCPI",
+                               //"codSecuencial"  => $cod_correspondencia,
                                "idTipoDocumento" => $cod_tipo_documento,
                                "idDeptoFuncional" => $identity->idDeptoFuncional                                
                             ));
@@ -1062,7 +1079,13 @@ class IngresoCorrespondenciaController extends Controller{
                         array(
                            "idEstado" => $cod_estado
                         ));                    
-                    $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados   
+                    $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados 
+                    
+                    // 2018-02-20
+                    // Si la Comuniacion es Sin Seguimiento la Hora de Finalizacion es la Misma que la de la Ingreso
+                    if( $estado->getIdEstado() == 5 ){
+                        $correspondenciaNew->setHoraFinalizacion( $hora_ingreso ); // Hora de Finalizacion
+                    }
                     
                     //Instanciamos de la Clase TblDireccionesSreci                        
                     $direccion = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
@@ -1130,6 +1153,35 @@ class IngresoCorrespondenciaController extends Controller{
                             }
                         }
                         // FIN | MEJ-000001
+                        
+                        
+                        /* 2018-02-19
+                        * Campo de las Sub Comunicaciones Vinculantes
+                        * MEJ-000002
+                        */
+                        // *****************************************************
+                        if( $comVinculante_send != null ){
+                            // Se convierte el Array en String
+                            $ComVinc_array_convert   = json_encode($comVinculante_send);
+                            $ComVinc_array_convert2  = json_decode($ComVinc_array_convert);
+
+                            // Recorreros los Items del Array
+                            $codigoComunicacionAcum = "";
+                            
+                            foreach ( $ComVinc_array_convert2 as $arr ){                                
+                                $idComunicacionVinculante     = $arr->id;
+                                $codigoComunicacionVinculante = $arr->itemName;
+                                
+                                if( $codigoComunicacionAcum != "" ){
+                                    $codigoComunicacionAcum = $codigoComunicacionAcum . ', ' . $codigoComunicacionVinculante;
+                                }else {
+                                    $codigoComunicacionAcum = $codigoComunicacionVinculante;
+                                }
+                                // Asignamos las Sub Direcciones al Listado
+                                $correspondenciaNew->setcomunicacionVinculante( $codigoComunicacionAcum );
+                            }
+                        }
+                        // FIN | MEJ-000002
                     
                     
                     
@@ -1180,6 +1232,7 @@ class IngresoCorrespondenciaController extends Controller{
                         $comprometidasSecuencias = $em->getRepository("BackendBundle:TblSecuenciasComprometidas")->findOneBy(
                             array(
                                 "codSecuencial"    => "SCPI", // Codigo de la Secuencia,
+                                //"codSecuencial"    => $cod_correspondencia, // Codigo de la Secuencia,
                                 "idTipoDocumento"  => $cod_tipo_documento, // Tipo de Documentos de la Secuencia,
                                 "idDeptoFuncional" => $cod_depto_funcional, // Depto Funcional de la Secuencia,
                                 "idUsuario"        => $cod_usuario, // Usuario de la Secuencia,
@@ -1442,13 +1495,9 @@ class IngresoCorrespondenciaController extends Controller{
                                                         'verify_peer_name' => false
                                                         )
                                                     )
-                                                 )
-                               //->setEncryption('ssl')                               
-                               //->setUsername( $identity->email )
-                               //->setUsername( 'nahum.sreci@gmail.com')
-                               //->setUsername( 'gcallejas.sreci@gmail.com')
-                               //->setPassword('1897Juve');
-                               //->setPassword('gec2017*');
+                                                 )                               
+                               //->setUsername( 'nahum.sreci@gmail.com')                               
+                               //->setPassword('1897Juve');                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )
                                ->setPassword('Despachomcns')
                                ->setTimeout(180);     

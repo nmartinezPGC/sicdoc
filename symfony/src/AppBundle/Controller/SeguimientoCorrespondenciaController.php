@@ -373,7 +373,7 @@ class SeguimientoCorrespondenciaController extends Controller {
     
     /**
      * @Route("/finalizar-oficio-asignado", name="finalizar-oficio-asignado")
-     * Creacion del Controlador: Asignar Oficio
+     * Creacion del Controlador: Finzalizacion Oficio
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
      * Funcion: FND00003
@@ -422,12 +422,15 @@ class SeguimientoCorrespondenciaController extends Controller {
                 // Secuencia de la Tabla Secuencias, para Obtener el Valor2
                 //$secuenca_generate = ($params->secuenciaComunicacionFind != null) ? $params->secuenciaComunicacionFind : null ;
                 
-                $secuenca_generate        = ($params->codCorrespondenciaRespAct != null) ? $params->codCorrespondenciaRespAct : null ;
+                $secuenca_generate    = ($params->codCorrespondenciaRespAct != null) ? $params->codCorrespondenciaRespAct : null ;
                 
-                $estado_asignado                = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
+                $estado_asignado      = ($params->idEstadoAsigna != null) ? $params->idEstadoAsigna : null ;
                                 
-                $fecha_finalizacion             = new \DateTime('now');
-                                
+                $fecha_finalizacion   = new \DateTime('now');
+                
+                // Hora de Finalizacion de la Comuniacion
+                $hora_finalizacion    = new \DateTime('now');            
+                $hora_finalizacion->format('H:i');
                 
                 // Ruta del Pdf a Subir
                 $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
@@ -455,7 +458,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                           "codCorrespondenciaEnc" => $codgio_oficio_interno
                         ));
                     
-                    $correspondenciaAsigna->setFechaFinalizacion( $fecha_finalizacion );                    
+                    $correspondenciaAsigna->setFechaFinalizacion( $fecha_finalizacion ); 
+                    
+                    $correspondenciaAsigna->setHoraFinalizacion( $hora_finalizacion ); // Hora de Finalizacion
                     
                     // 2 ) Verificacion del Estado de la Correspondenia ********
                     $estadoAsigna = $em->getRepository("BackendBundle:TblEstados")->findOneBy(

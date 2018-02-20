@@ -221,6 +221,64 @@ class ListasComunesController extends Controller {
     }//FIN | FND00003
     
     
+    
+    /**
+     * @Route("/com-vinculantes-subdir-sreci-list", name="com-vinculantes-subdir-sreci-list")
+     * Creacion del Controlador: Departamentos Funcionales | Comuniacion Vinculante
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00003.1
+     */
+    public function deptoFuncionalComVinculanteListAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            ////Recogemos el la Direccion **************************************
+            $direccion_sreci    = (isset($params->idDireccionSreciComVinc)) ? $params->idDireccionSreciComVinc : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblEstados
+            $tipoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findBy(
+                    array(
+                        "idDireccionSreci" => $direccion_sreci
+                    ) ,array("idDeptoFuncional" => "ASC") );
+
+            // Condicion de la Busqueda
+            if (count($tipoFunc) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $tipoFunc
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Sub Direcciones !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Sub Direcciones, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00003.1
+    
+    
+    
     /**
      * @Route("/subdir-sreci-list-all", name="subdir-sreci-list-all")
      * Creacion del Controlador: Departamentos Funcionales All

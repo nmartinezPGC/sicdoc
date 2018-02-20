@@ -39,6 +39,13 @@ listascomunes_deptoFuncionalList:
     defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalList"}
     methods: POST
     
+    
+# Lista de Sub Direcciones
+listascomunes_deptoFuncionalComVinculanteList:
+    path: /com-vinculantes-subdir-sreci-list
+    defaults: { _controller: "AppBundle:ListasComunes:deptoFuncionalComVinculanteList"}
+    methods: POST
+    
 # Lista de Sub Direcciones All
 listascomunes_deptoFuncionalListAll:
     path: /subdir-sreci-list-all
