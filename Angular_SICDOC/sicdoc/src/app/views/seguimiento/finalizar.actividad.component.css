@@ -40,3 +40,13 @@
   margin-left: 40%;
   margin-top: 20%
 }
+
+
+/* Personalizacion del File Inut */
+.custom-file-control:lang(en)::after {
+  content: "Selecciona el archivo a Subir ...";
+}
+
+.custom-file-control:lang(en)::before {
+  content: "Buscar";
+}

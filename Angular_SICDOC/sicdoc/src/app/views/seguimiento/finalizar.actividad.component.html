@@ -71,7 +71,7 @@
                                                          item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
                                                          item.idTipoDocumento, item.idTipoComunicacion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
-                     data-toggle="modal" data-target="#t_and_c_m2" >                     
+                     data-toggle="modal" data-target="#t_and_c_m2" >
                      <img src="/assets/icons/comunicacion/test_green_24x24.png" class="d-inline-block align-top" alt="" title="Comunicación de Respuesta" >
                   </a> -->
 
@@ -103,7 +103,7 @@
                       <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i> -->
                       <img src="/assets/icons/comunicacion/verified-text-paper_blue_24x24.png" class="d-inline-block align-top" alt="" title="Finalizar Comunicación" >
                   </a>
-                   
+
                   <!-- Boton de Anular Comunicacion -->
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,
@@ -114,7 +114,7 @@
                                                          item.temaComunicacion, item.descInstitucion, item.perfilInstitucion );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m4" >
-                      <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i> -->
+                      <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Anular Comunicacion" >assignment_turned_in</i> -->
                       <img src="/assets/icons/comunicacion/education-access-concept_24x24.png" class="d-inline-block align-top" alt="" title="Anular Comunicación" >
                   </a>
               </td>
@@ -187,13 +187,13 @@
             <!-- Seccion de Anexos -->
             <!-- <h4>Anexos</h4> -->
             <div class="row">
-              <div class="col-xs-12 col-md-4 col-lg-6">
-                <label for="exampleInputEmail1">Documento de soporte</label>
-                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
-                     ngControl="pdfDocumento" [(ngModel)]="finalizarOficios.pdfDocumento" placeholder="Subir Pdf ..."
-                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)" value="foo">
-
-                <!-- <image-upload url="http://172.17.3.90/sicdoc/symfony/web/uploads/contactos/imagen" [max]="2" [extensions]="['jpeg','png']"></image-upload> -->
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="custom-file">
+                    <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                         ngControl="pdfDocumento" [(ngModel)]="finalizarOficios.pdfDocumento" placeholder="Subir Pdf ..."
+                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
+                    <span class="custom-file-control"></span>
+                </label>
               </div>
             </div>
 
@@ -211,6 +211,41 @@
                     </div>
                 </div>
                 <p id="status"></p>
+
+                <!-- tabla que muestra los Documentos subidos -->
+                <table class="table table-striped" >
+                   <thead>
+                     <tr>
+                       <th class="text-center">#</th>
+                       <th class="text-center">Nombre de Documento</th>
+                       <th class="text-center">Extencion</th>
+                       <th class="text-center">Peso/Mb</th>
+                       <th class="text-center">Documento</th>
+                       <th class="text-center">Borrar</th>
+                     </tr>
+                   </thead>
+                   <tbody >
+                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
+                               <td>{{ homeFormIndex + 1 }}</td>
+                               <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                               <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                               <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                   alt="Cargando Imagen ..." ></a>
+                               </td>
+                               <td>
+                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                       class="btn btn-danger" style="padding: 2px">
+                                     Borrar</button>
+                               </td>
+                       </tr>
+                   </tbody>
+                 </table>
+
               </div>
             </div>
 
@@ -219,7 +254,8 @@
             <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
             <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
             <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" style="cursor: pointer">Guardar</button>
-            <button type="button" id="closeModalFinCom" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
+            <button  type="button" id="closeModalFinCom"
+                    class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">Cerrar</button>
         </form>
     </div>
       <div class="modal-footer">
@@ -256,13 +292,13 @@
                     <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
                            value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
                   </div>
-    
+
                   <div class="col-md-6 mb-3">
                     <label for="validationDefault01">Temática</label>
                     <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
                            value="{{ temaComunicacionModal }}" disabled>
                   </div>
-    
+
                   <div class="col-md-2 mb-3">
                     <label for="validationDefault01">Institución</label>
                     <input type="text" class="form-control" id="validationDefault01" placeholder="First name"

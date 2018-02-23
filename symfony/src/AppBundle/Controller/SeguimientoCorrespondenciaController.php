@@ -561,7 +561,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $correspondenciaDetAsigna->setIdFuncionarioAsignado( $correspondenciaAsigna->getIdFuncionarioAsignado() ); //Set de Id de Funcionario Asignado
                         
                         $correspondenciaDetAsigna->setIdEstado( $estadoAsigna ); //Set de Estado de Correspondencia | Id = 5 ( Finalizado )
-                        $correspondenciaDetAsigna->setCodOficioRespuesta( $codgio_oficio_respuesta ); //Set de Oficio Respuesta
+                        //$correspondenciaDetAsigna->setCodOficioRespuesta( $codgio_oficio_respuesta ); //Set de Oficio Respuesta
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         // Detalle de la Comunicacion Principal
@@ -1548,7 +1548,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                     . 'dsreci.idDireccionSreci, dsreci.descDireccionSreci, dsreci.inicialesDireccionSreci, '
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
-                                    . 'inst.descInstitucion, inst.perfilInstitucion, '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, c.observaciones, '
                                     . 'p.idUsuario, p.nombre1Usuario, p.nombre2Usuario, p.apellido1Usuario, p.apellido2Usuario  '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
@@ -1684,34 +1684,71 @@ class SeguimientoCorrespondenciaController extends Controller {
                     // Localizamos el Oficio que se va a Buscar
                     // Verificacion del Codigo de la Correspondenia ************
                     // Realizamos Condicion con swith ( $opcion_busqueda )
+                    $opt = 0;
                     switch ( $opcion_busqueda )
                     {
                         case "1": // Case por codCorrespondenciaEnc
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            $opt = 1;   
+                            
+                            $queryEnc = $em->createQuery( "SELECT A.idCorrespondenciaEnc "
+                                    . " FROM BackendBundle:TblCorrespondenciaEnc A "
+                                    . " WHERE A.codCorrespondenciaEnc = '". $codigo_oficio_interno ."' " );
+                            
+                            $correspondenciaFind = $queryEnc->getResult();
+                            
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findOneBy(
                                     array(
                                         "codCorrespondenciaEnc" => $codigo_oficio_interno,
                                         "idFuncionarioAsignado"     => $id_funcionario_asignado
-                                    ));
+                                    ));*/
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case "2":
-                            $correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
+                            $opt = 2;
+                            
+                            $queryEnc = $em->createQuery( "SELECT A.idCorrespondenciaEnc "
+                                    . " FROM BackendBundle:TblCorrespondenciaEnc A "
+                                    . " WHERE A.codReferenciaSreci = '". $codigo_oficio_externo ."' " );
+                            
+                            $correspondenciaFind = $queryEnc->getResult();
+                            
+                            /*$correspondenciaFind = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")
                                 ->findOneBy(
                                     array(
                                         "codReferenciaSreci" => $codigo_oficio_externo,
                                         "idFuncionarioAsignado"  => $id_funcionario_asignado
-                                    ));
+                                    ));*/
                             $opcion_salida = $codigo_oficio_externo;
                             break;
-                    } // FIN | Case
+                    } // FIN | Case                    
+                    // *********************************************************                   
+                    $var2 = implode($correspondenciaFind[0]) ;
                     
                     // Obtenemos los Datos de Detalle de la Actividad **********
-                    $correspondenciaDetFind = $em->getRepository("BackendBundle:TblCorrespondenciaDet")
+                    $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaDet, c.codCorrespondenciaDet, c.codReferenciaSreci, '
+                                    ."DATE_SUB(c.fechaSalida, 0, 'DAY') AS fechaSalida,  "                                                                        
+                                    . 'c.descCorrespondenciaDet, c.actividadRealizar, '
+                                    . 'est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
+                                    . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '                                    
+                                    . 'p.idUsuario, p.nombre1Usuario, p.nombre2Usuario, p.apellido1Usuario, p.apellido2Usuario  '
+                                    . 'FROM BackendBundle:TblCorrespondenciaDet c '                                    
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '                                    
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaEnc d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
+                                    . "WHERE c.idCorrespondenciaEnc =  " . $var2 . "   AND "
+                                    . 'c.idFuncionarioAsignado = '. $id_funcionario_asignado .' '
+                                    . 'ORDER BY c.idCorrespondenciaDet, c.codCorrespondenciaDet DESC' ) ;
+                                   
+                    $correspondenciaDetFind = $query->getResult();                  
+                    
+                    
+                    /*$correspondenciaDetFind = $em->getRepository("BackendBundle:TblCorrespondenciaDet")
                         ->findBy(
                             array(
                                 "idCorrespondenciaEnc"  => $correspondenciaFind
-                            ), array("idCorrespondenciaDet" => "ASC", "idEstado" => "ASC")  );
+                            ), array("idCorrespondenciaDet" => "ASC", "idEstado" => "ASC")  );*/
                                         
                     
                     //Verificamos que el retorno de la Funcion sea = 0 ********* 
@@ -1720,6 +1757,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         $data = array(
                             "status" => "success", 
                             "code"   => 200, 
+                            "opt"    => $opt,
                             "msg"    => "Se ha encontrado la Informacion solicitada",
                             "data"   => $correspondenciaDetFind
                         );                        
@@ -1814,6 +1852,10 @@ class SeguimientoCorrespondenciaController extends Controller {
                                 
                 $fecha_finalizacion             = new \DateTime('now');
                 
+                // Hora de Finalizacion de la Comuniacion
+                $hora_finalizacion    = new \DateTime('now');            
+                $hora_finalizacion->format('H:i');
+                
                 //Evaluamos que los Campos del Json  no sean Null ni 0. ********
                 if($codgio_oficio_interno != null && $codgio_oficio_externo != null && $id_usuario_modifica != 0 && 
                    $descripcion_oficio != null)
@@ -1866,6 +1908,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                         
                         // Actualiza los Datos del Encabezado  *****************
                         $correspondenciaAsigna->setFechaFinalizacion( $fecha_finalizacion );
+                        
+                        $correspondenciaAsigna->setHoraFinalizacion( $hora_finalizacion ); // Hora de Finalizacion
 
                         // Set de Observaciones de Tabla Encabezado
                         $observacion_comunicacion = "Comunicación Anulada por Usuario: " . 
@@ -1914,6 +1958,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                         // Empieza la Actualizacion
                         $correspondenciaDetAsigna->setCodCorrespondenciaDet( $cod_correspondencia_det . "-" . $new_secuencia ); //Set de Descripcion de Correspondencia
                         $correspondenciaDetAsigna->setDescCorrespondenciaDet( $descripcion_oficio ); //Set de Descripcion de Correspondencia
+                        $correspondenciaDetAsigna->setInstrucciones( $observacion_comunicacion ); //Set de Instruccion de Correspondencia
                         $correspondenciaDetAsigna->setActividadRealizar( $actividad_comunicacion ); //Set de Actividad de Correspondencia                        
                         $correspondenciaDetAsigna->setFechaIngreso( $correspondenciaAsigna->getFechaIngreso() ); //Set de Actividad de Correspondencia
                         $correspondenciaDetAsigna->setFechaSalida( $fecha_finalizacion ); //Set de Actividad de Correspondencia

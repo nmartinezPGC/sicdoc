@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -43,6 +43,8 @@ export class FinalizarActividadComponent implements OnInit {
   public fechafin:string;
 
   public urlConfigLocal:string;
+  public urlResourseLocal:string;
+  public urlComplete:string;
 
   // Variables de Confirmacion
   public confirmaExit:number = 1;
@@ -60,6 +62,9 @@ export class FinalizarActividadComponent implements OnInit {
   // Variables de Mensajeria y Informaicon
    public data;
    public errorMessage;
+
+   public  codigoSec:string;
+
    public status;
    public mensajes;
 
@@ -81,6 +86,8 @@ export class FinalizarActividadComponent implements OnInit {
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
+  // Array de Documentos de Comunicacion a Borrar
+  private JsonOutgetListaDocumentosDelete;
 
   // Parametros del Modelo
   private tableFinalizarActividadList;
@@ -126,12 +133,13 @@ export class FinalizarActividadComponent implements OnInit {
   public valorSecuenciaOficioRespuesta; // Secuencial del Oficio
   public valorSecuenciaRespActividad; // Secuencial del Oficio
 
-  public codigoSec; // Secuencial del Oficio
-
   // Variables para la Persistencia de los Datos en los Documentos
   public nextDocumento:number = 1;
   public extencionDocumento:string;
   public seziDocumento:number;
+
+
+  public dataDismiss:string = "modal";
 
 
   constructor( private _listasComunes: ListasComunesService,
@@ -140,11 +148,12 @@ export class FinalizarActividadComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
+               private changeDetectorRef: ChangeDetectorRef,
                private _http: Http ) {
     // Seteo de la Ruta de la Url Config
-    this.urlConfigLocal = this._finalizarOficio.url;            
-                //  // Inicializamos laTabla
-                //  this.fillDataTable();
+    this.urlConfigLocal = this._finalizarOficio.url;
+    this.urlResourseLocal = this._finalizarOficio.urlResourses;
+    this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
 }
 
  /*****************************************************
@@ -232,6 +241,12 @@ export class FinalizarActividadComponent implements OnInit {
     // Array de los Documentos enviados
     this.JsonOutgetListaDocumentos = [];
 
+    // Json de Documento a Borrar
+    this.JsonOutgetListaDocumentosDelete = {
+      "codDocument": "",
+      "extDocument": ""
+    }
+
     // Generar la Lista de Secuenciales
     // this.listarCodigoCorrespondenciaDet(  );
     //this.listarCodigoCorrespondenciaOfiResp();
@@ -284,30 +299,23 @@ export class FinalizarActividadComponent implements OnInit {
     * Funciones: listarCodigoCorrespondenciaAgregarActividad(),
     *            listarCodigoCorrespondenciaDet()
     ***************************************************************************/
-    // this.listarCodigoCorrespondenciaAgregarActividad(this.idTipoDocumentoModal, this.idTipoComunicacionModal);
+    //this.listarCodigoCorrespondenciaAgregarActividad(this.idTipoDocumentoModal, this.idTipoComunicacionModal);
 
-    this.listarCodigoCorrespondenciaDet( this.idTipoDocumentoModal, this.idTipoComunicacionModal );
+    // this.listarCodigoCorrespondenciaDet( this.idTipoDocumentoModal, this.idTipoComunicacionModal ); // Comentdo - 2018-02-22
+    // ********************* Se Comenta ya que Genera Dos Secuencias en el Momento ********************************************
 
+    this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
 
-    // Parametros de l Secuenciales
-    // this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet[0].codSecuencial;
-    this.codigoSecuenciaDet             = this.JsonOutgetCodigoSecuenciaDet.codSecuencial;
-    // this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp[0].codSecuencial;
-    // this.codigoSecuenciaOficioRespuesta = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
     this.codigoSecuenciaOficioRespuesta = this.SendCodigoSecuenciaOfiResp;
-    // console.log('Gen SCPI');
-    // console.log(this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial);
 
-    // this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial;
     this.codigoSecuenciaRespActividad   = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
-    // this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet[0].valor2 + 1;
-    this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaDet.valor2 + 1;
-    // this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp[0].valor2 + 1;
-    // this.valorSecuenciaOficioRespuesta  = this.JsonOutgetCodigoSecuenciaOfiResp.valor2 + 1;
+
+
+    this.valorSecuenciaDet              = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
+
     this.valorSecuenciaOficioRespuesta  = this.SendValorSecuenciaOfiResp + 1;
-    // this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
+
     this.valorSecuenciaRespActividad    = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
-    //console.log( this.JsonOutgetCodigoSecuenciaDet );
 
     // Secuenciales de la Tabla correspondencia detalle
     // ----------- Codigos de las Secuencias --------------------
@@ -562,7 +570,7 @@ export class FinalizarActividadComponent implements OnInit {
     let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
-    
+
     // Variables del Metodo
     let  error:string;
     let  status:string;
@@ -572,7 +580,7 @@ export class FinalizarActividadComponent implements OnInit {
     let sizeByte:number = this.filesToUpload[0].size;
     let siezekiloByte:number =  Math.round( sizeByte / 1024 );
 
-    this.seziDocumento = siezekiloByte;
+    this.seziDocumento = ( siezekiloByte / 1024 );
 
     let type = this.filesToUpload[0].type;
 
@@ -585,10 +593,10 @@ export class FinalizarActividadComponent implements OnInit {
 
     //Modificacion; Cuando la extencion es PDF => pdf
       if( this.extencionDocumento == "PDF" ){
-        //alert(this.extencionDocumento);
-        this.extencionDocumento = "pdf"
+        this.extencionDocumento = "pdf";
+      }else if( this.extencionDocumento == "jpg" ) {
+        this.extencionDocumento = "jpeg";
       }
-
 
     // Seteamos el valore del Nombre del Documento
     // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
@@ -596,7 +604,13 @@ export class FinalizarActividadComponent implements OnInit {
     // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
     codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
 
-    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', codigoSec], this.filesToUpload ).then(
+    this.codigoSec = codigoSec + '-' + this.nextDocumento;
+    this.nextDocumento = this.nextDocumento + 1;
+
+    // Parametro para documento Seleccionado
+    this.finalizarOficios.pdfDocumento = this.codigoSec;
+
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;
@@ -774,8 +788,10 @@ export class FinalizarActividadComponent implements OnInit {
   // Preguntamos por la respuesta del usuario
   if( confirmaExitIn == 1 && this.confirmaExit == 1){
     alert('Adios');
+    this.dataDismiss = "closeModalFinCom";
   }else{
     alert('Seguimos');
+    this.dataDismiss = "";
     return;
   }
 
@@ -793,6 +809,7 @@ export class FinalizarActividadComponent implements OnInit {
   listarCodigoCorrespondenciaDet( idTipoDocumento:number, idTipoComunicacion:number ){
     //Llamar al metodo, de Login para Obtener la Identidad
     console.log('Paso 1 FND-00004');
+    //console.log('params Paso 1 ' + " Tipo Doc "+idTipoDocumento + " Tipo Com "+idTipoComunicacion);
     if( idTipoDocumento == 1 ){
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
@@ -900,13 +917,15 @@ export class FinalizarActividadComponent implements OnInit {
          if(response.status == "error"){
            //Mensaje de alerta del error en cuestion
            this.JsonOutgetCodigoSecuenciaDet = response.data;
-           alert(response.msg);
+           alert("Error en Generar listarCodigoCorrespondenciaDet()" + response.msg);
 
          }else{
            this.JsonOutgetCodigoSecuenciaDet = response.data;
+
            // Ejecutamos el llamado al la Segunda Secuencia
-           this.listarCodigoCorrespondenciaOfiResp( idTipoDocumento );
+           console.log('Send data Params Paso 1 ' + " Tipo Doc "+idTipoDocumento + " Tipo Com "+idTipoComunicacion);
            console.log( this.JsonOutgetCodigoSecuenciaDet );
+           this.listarCodigoCorrespondenciaOfiResp( idTipoDocumento );
            //this.listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoFuc );
          }
        });
@@ -934,7 +953,7 @@ export class FinalizarActividadComponent implements OnInit {
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
-      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
+      //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
     } else if ( idTipoDocumentoIN == 2 ) {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
@@ -947,21 +966,21 @@ export class FinalizarActividadComponent implements OnInit {
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
-      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
+      //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     } else if ( idTipoDocumentoIN == 4 ) {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
-      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
+      //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     }else {
       this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
-      this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
+      //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     }
 
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -983,7 +1002,7 @@ export class FinalizarActividadComponent implements OnInit {
           //  console.log('Gen SCPI');
           this.SendCodigoSecuenciaOfiResp = this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial;
           this.SendValorSecuenciaOfiResp = this.JsonOutgetCodigoSecuenciaOfiResp.valor2;
-          //  console.log( this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial );
+          console.log( this.JsonOutgetCodigoSecuenciaOfiResp.codSecuencial );
          }
        },
          ( error ) => {
@@ -1004,9 +1023,9 @@ export class FinalizarActividadComponent implements OnInit {
   listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoIn:number, idTipoComunicacion:number ){
     // Condicion del Secuencial Segun el Tipo de Documento
     //Evaluamos el valor del Tipo de Documento
-    console.log('Paso 2 FND-00005.1');
-    console.log('Paso 2.1 idTipoDocumentoIn FND-00005.1 ' + idTipoDocumentoIn);
-    console.log('Paso 2.2 idTipoComunicacion FND-00005.1 ' + idTipoComunicacion);
+    //console.log('Paso 2 FND-00005.1');
+    // console.log('Paso 2.1 idTipoDocumentoIn FND-00005.1 ' + idTipoDocumentoIn);
+    // console.log('Paso 2.2 idTipoComunicacion FND-00005.1 ' + idTipoComunicacion);
     // Iniciamos los Parametros de Secuenciales | Agregar Actividad
     this.paramsSecuenciaActividadAgregar = {
       "codSecuencial"  : "",
@@ -1116,7 +1135,7 @@ export class FinalizarActividadComponent implements OnInit {
 
      //Llamar al metodo, de Login para Obtener la Identidad
      //console.log(this.params);
-     //  console.log('Entro en 3 listarCodigoCorrespondenciaAgregarActividad');
+      console.log('Entro en 3 listarCodigoCorrespondenciaAgregarActividad()');
      this._listasComunes.listasComunesToken( this.paramsSecuenciaActividadAgregar, "gen-secuencia-comunicacion-in" ).subscribe(
          response => {
            // login successful so redirect to return url
@@ -1194,7 +1213,8 @@ export class FinalizarActividadComponent implements OnInit {
     final_day = "0" + final_day;
   }
 
-  let newSecAct = nameDoc + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+  // let newSecAct = nameDoc + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+  let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
 
 
   this.JsonOutgetListaDocumentos.push({
@@ -1206,15 +1226,55 @@ export class FinalizarActividadComponent implements OnInit {
 
   this.finalizarOficios.pdfDocumento = this.JsonOutgetListaDocumentos;
 
-  // $("#newTable").append('<tr> ' +
-  //                    '   <th scope="row">'+ secActual +'</th> ' +
-  //                    '   <td>' + newSecAct + '</td> ' +
-  //                    '   <td>'+ this.extencionDocumento +'</td> ' +
-  //                    '   <td>'+ this.seziDocumento +'</td> ' +
-  //                    '   <td><a style="cursor: pointer" id="delDoc"> Borrar </a></td> ' +
-  //                    ' </tr>');
-
  } // FIN | FND-00011
+
+
+ /*****************************************************
+ * Funcion: FND-00012
+ * Fecha: 22-02-2018
+ * Descripcion: Metodo para Borrar Documento desde el
+ * Servidor
+ * metodo ( borrar-documento-server ).
+ ******************************************************/
+ borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+   //Llamar al metodo, de Login para Obtener la Identidad
+   // Agrega Items al Json
+   this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+
+   // Cambiamos la Extencion si es jpg
+   if( extDocumentoIn == "jpg" ){
+     extDocumentoIn = "jpeg";
+   }
+   this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+
+   this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           //this.JsonOutgetlistaEstados = response.data;
+           alert(response.msg);
+         }
+       });
+ } // FIN : FND-00012
+
+
+ /*****************************************************
+ * Funcion: FND-00013
+ * Fecha: 15-02-2018
+ * Descripcion: Delete de nuevo File input, en Tabla
+ * ( deleteRowHomeForm ).
+ ******************************************************/
+ deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+   // Borra el Elemento al Json
+   this.JsonOutgetListaDocumentos.splice(homeFormIndex,1);
+   this.changeDetectorRef.detectChanges();
+   this.finalizarOficios.pdfDocumento = "";
+
+   // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+   this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+   console.log(this.JsonOutgetListaDocumentos);
+ } // FIN | FND-00013
 
 
 }

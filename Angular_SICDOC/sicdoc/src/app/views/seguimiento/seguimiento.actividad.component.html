@@ -51,7 +51,8 @@
       <ul class="nav nav-tabs nav-justified indigo" role="tablist">
           <li class="nav-item">
               <h4><a class="nav-link active" data-toggle="tab" href="#panel5" role="tab">
-                <i class="fa fa-user"></i> Información de Ingreso
+                <!-- <i class="fa fa-user"></i> Información de Ingreso -->
+                <img src="assets/icons/comunicacion/book-and-pen_24x24.png" alt=""> Información de Ingreso
               </a></h4>
           </li>
           <li class="nav-item">
@@ -328,13 +329,13 @@
                   <tbody>
                   <tr *ngFor="let item of JsonOutgetlistaSeguimiento; let i = index">
                     <td> {{ i + 1 }} </td>
-                    <td [ngClass]="{ 'text-warning': item.idEstado.idEstado == 3, 'text-info' : item.idEstado.idEstado == 8,
-                                     'text-primary' : item.idEstado.idEstado == 5, 'text-success' : item.idEstado.idEstado == 7 }">
-                      {{ item.idEstado.descripcionEstado }}</td>
+                    <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-info' : item.idEstado == 8,
+                                     'text-primary' : item.idEstado == 5, 'text-success' : item.idEstado == 7 }">
+                      {{ item.descripcionEstado }}</td>
                     <td style="width:220px">{{ item.codCorrespondenciaDet }}</td>
                     <td>{{ item.codReferenciaSreci }}</td>
-                    <td style="width:100px">{{ item.fechaSalida.timestamp | generateDate }}</td>
-                    <td>{{ item.idFuncionarioAsignado.nombre1Funcionario }} {{ item.idFuncionarioAsignado.apellido1Funcionario }}</td>
+                    <td style="width:100px">{{ item.fechaSalida | date :'dd-MMM-yyyy' }}</td>
+                    <td>{{ item.nombre1Funcionario }} {{ item.apellido1Funcionario }}</td>
                     <td>{{ item.actividadRealizar }}</td>
                     <td>{{ item.descCorrespondenciaDet }}</td>
                   </tr>
@@ -374,7 +375,7 @@
                         <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
                           href="{{ urlComplete + item.urlDocumento }}" target="_blank">
                           <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                          <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->                          
+                          <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                             <i class="material-icons">photo</i>
                         </a>
                       </td>

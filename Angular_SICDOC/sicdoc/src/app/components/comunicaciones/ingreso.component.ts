@@ -1732,6 +1732,33 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   /*****************************************************
+  * Funcion: FND-00011.2
+  * Fecha: 20-01-2018
+  * Descripcion: Limpia el Arreglo de Contactos
+  * ( cleanComunicacionVinculante ).
+  ******************************************************/
+  cleanComunicacionVinculante(){
+    //Borra el Contenido del Arreglo de Comunicacones Vinculante
+    this.paramsComVinculante = {
+      "idDeptoFuncional"  : "",
+      "idTipoDocumento"  : "",
+      "idTipoComunicacion"  : ""
+    };
+
+    // Limpia los radio Buttons que este Chequedo
+    $(".fakeRadio").attr('checked', false);
+
+    // Inicializa el itemList de las Comunicaciones Viculantes
+    this.itemComunicacionVincList = [];
+
+    this.comunicacion.idTipoDocumentoComVinc = "0";
+    this.comunicacion.idDeptoFuncionalComVinc = 0;
+    this.comunicacion.idDireccionSreciComVinc = 0;
+  } // FIN : FND-00011.2
+
+
+
+  /*****************************************************
   * Funcion: FND-00012
   * Fecha: 08-11-2017
   * Descripcion: Carga de los Memos que se estan Pend.
@@ -2162,6 +2189,20 @@ export class IngresoComunicacionComponent implements OnInit{
           }
         });
   } // FIN : FND-0000020
+
+
+  /********************************************************
+  * Funcion: FND-0000021
+  * Fecha: 22-02-2018
+  * Descripcion: Evalua Si la Comunicacion es de Tipo: Interna
+  * Memo, Circular
+  * Objetivo: Evalua Comunicaciones Internas
+  * de la BD, Llamando a la API, por su metodo
+  * Params: idTipoDocumento
+  * ( vinculacionComunicacion/vinculacion-de-comunicacion ).*/
+  comunicacionInterna(){
+
+  }
 
 
 } // // FIN : export class IngresoComunicacionComponent
