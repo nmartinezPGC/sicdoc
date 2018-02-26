@@ -1,0 +1,84 @@
+/* Credit to bootsnipp.com for the css for the color graph */
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+
+.container {
+  font-family: -system-ui
+}
+
+/* Validaciones de los Campos */
+.ng-valid[required] {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid.ng-touched:not(form) {
+  border-left: 5px solid #a94442 !important; /* red */
+  border-color:  #a94442 !important; /* red */
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(169,68,66,.6) !important;
+}
+
+
+/* Estilo para la Carga de Pantalla Completa */
+.loader-new {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background:  rgb(230, 232, 233);
+  opacity: .8;
+}
+
+#imgload{
+  margin-left: 40%;
+  margin-top: 20%
+}
+
+.hr-new {
+  border: 1px solid #30A7EE;
+  border-radius: 200px /8px;
+  height: 0px;
+  width: 90%;
+  text-align: center;
+ }
+
+
+ .text-on-pannel {
+  background: #fff none repeat scroll 0 0;
+  height: auto;
+  margin-left: 2px;
+  padding: 5px 0 0 10px;
+  position: absolute;
+  margin-top: -40px;
+  border: 1px solid #337ab7;
+  border-radius: 6px;
+  width: auto;
+}
+
+.panel {
+  /* for text on pannel */
+  margin-top: 10px !important;
+}
+
+.panel-body {
+  padding-top: 30px !important;
+}
+
+
+/* Personalizacion del File Inut */
+.custom-file-control:lang(en)::after {
+  content: "Selecciona el archivo ...";
+}
+
+.custom-file-control:lang(en)::before {
+  content: "Buscar";
+}

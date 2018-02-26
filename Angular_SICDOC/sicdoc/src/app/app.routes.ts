@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/login/register.component';
 // Menu de comunicaciones
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
 import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component';
+import { AgregarDocumentosComponent } from './components/comunicaciones/agregar.documentos/agregar.documentos.component';
 // Menu de Seguimiento
 import { IngresoActividadComponent } from './components/seguimiento/agregar.actividad.component';
 import { FinalizarActividadComponent } from './components/seguimiento/finalizar.actividad.component';
@@ -36,6 +37,7 @@ export const APP_ROUTES: Routes = [
   // Mapeo del Menu de Comunicaciones
   { path: 'comunicacion/ingreso-de-comunicacion', component: IngresoComunicacionComponent },
   { path: 'comunicacion/salida-de-comunicacion', component: IngresoComunicacionPorTipoComponent },
+  { path: 'comunicacion/documentos-de-comunicacion', component: AgregarDocumentosComponent },
 
   // Mapeo de Menu de Seguimiento
   { path: 'seguimiento/asignar-comunicacion', component: IngresoActividadComponent },
@@ -55,7 +57,7 @@ export const APP_ROUTES: Routes = [
   { path: 'mantenimientos/mantenimiento-instituciones', component: MantenimientoInstitucionesComponent },
   { path: 'mantenimientos/solicitud-cambio-fecha', component: MantenimientoSolicitudCambioFechasComponent },
   { path: 'mantenimientos/cambio-fecha', component: MantenimientoInstitucionesComponent },
-  
+
   // Mapeo de Opcion de Contactos
   { path: 'contactos/contactos-sreci', component: ContactosComponent },
 

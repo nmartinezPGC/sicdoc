@@ -80,6 +80,7 @@ import { ReporteGeneralComponent } from './components/consultas/reportes/reporte
 
 // Imports de la Clase de Properties del System
 import { SystemPropertiesService } from './services/shared/systemProperties.service';
+import { AgregarDocumentosComponent } from './components/comunicaciones/agregar.documentos/agregar.documentos.component';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { SystemPropertiesService } from './services/shared/systemProperties.serv
     ReporteGeneralComponent,
     //Seccion de Mantenimientos
     MantenimientoInstitucionesComponent,
-    MantenimientoSolicitudCambioFechasComponent
+    MantenimientoSolicitudCambioFechasComponent,
+    AgregarDocumentosComponent
   ],
   imports: [
     BrowserModule,

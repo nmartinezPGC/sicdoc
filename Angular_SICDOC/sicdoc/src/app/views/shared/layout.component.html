@@ -30,8 +30,9 @@
                   <a class="dropdown-item" [routerLink]="['comunicacion/salida-de-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/businessmen-disussing_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Salida de Comunicación</a>
-
-                  <!-- <a class="dropdown-item" href="#/" routerLinkActive="active">Respuesta de Comunicacion</a> -->
+                    <a class="dropdown-item" [routerLink]="['comunicacion/documentos-de-comunicacion']" routerLinkActive="active">
+                      <img src="/assets/icons/comunicacion/computer-and-books-studying-tools_24x24.png" class="d-inline-block align-top" alt="">
+                      Documentos de Comunicación</a>
                 </div>
               </li>
 
@@ -41,7 +42,7 @@
                   Seguimiento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 5 || identity.idTipoUser == 4 || identity.idTipoUser == 1" 
+                  <a class="dropdown-item" *ngIf="identity.idTipoUser == 5 || identity.idTipoUser == 4 || identity.idTipoUser == 1"
                              [routerLink]="['seguimiento/asignar-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/management_green_24x24.png" class="d-inline-block align-top" alt="">
                     Asignar Comunicación</a>
