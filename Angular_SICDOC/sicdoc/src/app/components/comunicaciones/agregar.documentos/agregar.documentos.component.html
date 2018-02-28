@@ -1,9 +1,8 @@
 <div class="container">
   <!-- Datos Generales de los Usuarios -->
   <div class="row">
-      <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
+      <div class="col-xs-12 col-sm-8 col-md-8">
         <!-- Div que representan las Acciones al Ingresar un Usuario -->
-        <br>
         <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -19,9 +18,9 @@
         </div>
 
         <!-- Loader de Carga de los Datos -->
-        <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
+        <!-- <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-bottom:2%;">
           <img src="assets/images/832.gif" alt="Cargando Tareas">
-        </div>
+        </div> -->
 
         <!-- Loader de Carga de la Pagina -->
         <div class="loader-new" *ngIf="loading == 'show' " >
@@ -31,49 +30,43 @@
         <form #documentosComForm="ngForm" (ngSubmit)="onSubmit(documentosComForm)" name="documentosComForm" role="form">
             <h2> {{ titulo }} <small> | SICDOC.</small></h2>
 
-            <!-- Loader de Carga de los Datos -->
-            <div id="loader-2" *ngIf="loading == 'show'" style="margin-left:38%;">
-              <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
-              <img src="assets/images/832.gif" alt="Cargando Tareas">
-            </div>
-
-
             <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
             <hr class="colorgraph">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                   <!-- <label >No. Comunicacion</label> -->
                   <small class="form-text text-muted">
-                      Ingresa el No. de Comunicacion a solicitar el cambio de Fecha de Entrega
+                      Ingresa el No. Interno de Comunicación
                   </small>
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-4"
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
                          placeholder="No. de Comunicacion" (keyup.enter)="buscaComunicacion()" autofocus="true"
                          ngControl="codCorrespondencia" [(ngModel)]="_documentModel.codCorrespondencia" required >
 
+                  <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" >
                   <!-- <small class="form-text text-muted" *ngIf="codigoComunicacion.errors?.required" >Debes ingresar el código de la Comunicacion</small> -->
               </div>
             </div>
 
-            <br>
+            <hr>
             <!-- Tema y Descripcion de la Comunicacion -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                 <small class="form-text text-muted">
                     Tema de la Comunicación
                 </small>
-                  <input type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
-                        placeholder="Tema de la Comunicacion"
-                        readonly value=""  >
+                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
+                        placeholder="Tema de la Comunicacion" ngControl="temaCorrespondencia"
+                        readonly value="" [(ngModel)]="_documentModel.temaCorrespondencia" >
                 </div>
             </div>
 
             <div class="row">
-              <div class="col-8">
+              <div class="col-12">
                   <!-- <label >Descripcion Comunicacion</label> -->
                   <small class="form-text text-muted">
                       Descripción de la Comunicación
                   </small>
-                  <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" id="descCorrespondencia" rows="3"
+                  <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" id="descCorrespondencia" rows="4"
                               placeholder="Descripción de la Comunicación" tabindex="2" type="text"
                               [(ngModel)]="_documentModel.descCorrespondencia" ngControl="descCorrespondencia"
                               minlength="10" readonly id="exampleFormControlTextarea1" >
@@ -90,26 +83,65 @@
                 <small class="form-text text-muted">
                     Fecha de Creación
                 </small>
-                <input type="text" name="fechaCreacion" id="fechaCreacion" class="form-control"
-                       placeholder="Fecha de Creacion" disabled  value="" >
+                <input #fechaIngreso type="text" name="fechaIngreso" id="fechaIngreso" class="form-control"
+                       placeholder="Fecha de Creacion" disabled value="{ _documentModel.fechaIngreso }"
+                      [(ngModel)]="_documentModel.fechaIngreso" ngControl="fechaIngreso" value="" >
               </div>
               <div class="col-3">
                 <small class="form-text text-muted">
                     Fecha de Entrega Actual
                 </small>
-                <input  type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
-                       placeholder="Fecha de Entrega" disabled
-                       value="" >
+                <input #fechaMaxEntrega type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
+                       placeholder="Fecha de Entrega" ngControl="fechaMaxEntrega" [(ngModel)]="_documentModel.fechaMaxEntrega"
+                       disabled value="{ _documentModel.fechaMaxEntrega  }" >
               </div>
             </div>
 
             <hr class="colorgraph">
-            <input type="submit" value="Enviar" class="btn btn-primary" tabindex="17" [disabled]="!documentosComForm.valid"  >
+            <input type="submit" value="Limpiar" class="btn btn-success" tabindex="17"  >
+            <input type="submit" value="Agregar Documentos" class="btn btn-primary" tabindex="18" [disabled]="!documentosComForm.valid"  >
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
     </div>
+
+
+
+    <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+    <div class="col-4">
+      <!-- tabla que muestra los Documentos subidos -->
+      <table class="table table-striped" cellspacing="0" width="100%" >
+        <!-- Loader de Carga de la Pagina -->
+        <div class="loader-table" *ngIf="loadTabla2 == false " >
+          <img src="assets/images/loading_1.gif" alt="Cargando Tareas">
+        </div>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Documento</th>
+            <th>Ver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of JsonOutgetlistaDocumentos; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ item.fechaIngreso | date :'dd/MM/yyyy' }}</td>
+            <td>{{ item.urlDocumento }}</td>
+            <td>
+              <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
+                href="{{ urlComplete + item.urlDocumento }}" target="_blank">
+                <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
+                  <i class="material-icons">photo</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <!-- Fin de Contenido de la Fila Mayor -->
+
 </div>
 <!-- Fin de Contenedor -->

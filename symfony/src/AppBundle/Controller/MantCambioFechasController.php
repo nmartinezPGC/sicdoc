@@ -586,10 +586,25 @@ class MantCambioFechasController extends Controller {
                 //Evalua si la Informacion de los Parametros es Null
                 if( $cod_comunicacion != null ){
                     //Verificacion del Codigo de la Correspondencia *******************
-                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                    /*$isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                         array(
                              "codCorrespondenciaEnc" => $cod_comunicacion
-                    ));
+                    ));*/
+                    
+                    
+                    $query = $em->createQuery('SELECT enc.idCorrespondenciaEnc, enc.codCorrespondenciaEnc, enc.codReferenciaSreci, '
+                                    . 'enc.descCorrespondenciaEnc, enc.temaComunicacion, '
+                                    ."DATE_SUB(enc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(enc.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    . 'p.idUsuario, p.emailUsuario '
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc enc '
+                                    . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = enc.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = enc.idCorrespondenciaEnc '
+                                    //. 'INNER JOIN BackendBundle:TblCorrespondenciaEnc c WITH c.idCorrespondenciaEnc = doc.idCorrespondenciaEnc '
+                                    . 'WHERE enc.codCorrespondenciaEnc = :codCorrespondenciaEnc '                                    
+                                    . 'ORDER BY enc.codCorrespondenciaEnc, enc.idCorrespondenciaEnc ASC') 
+                    ->setParameter('codCorrespondenciaEnc', $cod_comunicacion ) ;
+                    
+                    $isset_corresp_cod = $query->getResult();
                     
                     //Verificamos que el retorno de la Funcion sea > 0 *****
                     // Encontro los Datos de la Comunicacion Solicitada ****

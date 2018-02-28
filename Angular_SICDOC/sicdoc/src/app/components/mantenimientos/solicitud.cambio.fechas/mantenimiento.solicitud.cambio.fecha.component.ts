@@ -224,20 +224,20 @@ export class MantenimientoSolicitudCambioFechasComponent implements OnInit{
   valoresdataEncJson( dataIn ){
     // Instanciamos los Valores al Json de retorno, que Utilizara el Html
     if( dataIn != null ){
-      this.datosConsulta.temaComunicacion = dataIn.temaComunicacion;
-      this.datosConsulta.descComunicacion = dataIn.descCorrespondenciaEnc;
-      this.datosConsulta.fechaFechaIngreso = dataIn.fechaIngreso.timestamp;
-      this.datosConsulta.fechaFechaEntrega = dataIn.fechaMaxEntrega.timestamp;
-      this.datosConsulta.emailUserCreador = dataIn.idUsuario.emailUsuario;
+      this.datosConsulta.temaComunicacion = dataIn[0].temaComunicacion;
+      this.datosConsulta.descComunicacion = dataIn[0].descCorrespondenciaEnc;
+      this.datosConsulta.fechaFechaIngreso = dataIn[0].fechaIngreso;
+      this.datosConsulta.fechaFechaEntrega = dataIn[0].fechaMaxEntrega;
+      this.datosConsulta.emailUserCreador = dataIn[0].emailUsuario;
 
       //Datos de envio por el Model
       // Codigos
-      this._modSolicitudCambioFechas.codCorrespondenciaExt = dataIn.codReferenciaSreci;
+      this._modSolicitudCambioFechas.codCorrespondenciaExt = dataIn[0].codReferenciaSreci;
       // Contenido
-      this._modSolicitudCambioFechas.descComunicacion = dataIn.descCorrespondenciaEnc;
-      this._modSolicitudCambioFechas.temaComunicacion = dataIn.temaComunicacion;
+      this._modSolicitudCambioFechas.descComunicacion = dataIn[0].descCorrespondenciaEnc;
+      this._modSolicitudCambioFechas.temaComunicacion = dataIn[0].temaComunicacion;
       // Usuario Creador
-      this._modSolicitudCambioFechas.idUserCreador = dataIn.idUsuario.idUsuario;
+      this._modSolicitudCambioFechas.idUserCreador = dataIn[0].idUsuario;
       //Fechas
       this._modSolicitudCambioFechas.fechaMaxEntrega = this.datosConsulta.fechaFechaEntrega;
       console.log( this._modSolicitudCambioFechas.fechaMaxEntrega );

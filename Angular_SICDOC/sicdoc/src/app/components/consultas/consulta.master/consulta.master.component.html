@@ -21,36 +21,6 @@
         <strong>Que mal!</strong> {{ mensajes }}
       </div>
 
-      <!-- <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-              <th>Código Interno</th>
-              <th>Código Referencia</th>
-              <th>Tipo Comunicación</th>
-              <th>Fecha Creación</th>
-              <th>Fecha Entrega.</th>
-              <th>Institución Remitente</th> -->
-              <!-- <th>Descripción / Comunicación</th> -->
-              <!-- <th>Tema / Comunicación</th>
-              <th>Estado / Comunicación</th>
-              <th>Ver</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-              <th>Código Interno</th>
-              <th>Código Referencia</th>
-              <th>Tipo Comunicación</th>
-              <th>Fecha Creación</th>
-              <th>Fecha Entrega.</th>
-              <th>Institución Remitente</th> -->
-              <!-- <th>Descripción / Comunicación</th> -->
-              <!-- <th>Tema / Comunicación</th>
-              <th>Estado / Comunicación</th>
-              <th>Ver</th>
-            </tr>
-        </tfoot>
-    </table> -->
 
       <!-- Loader de Carga de los Datos -->
       <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:45%; margin-top:5%; margin-bottom:5%;">
@@ -264,7 +234,7 @@
                                             <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
                                               href="{{ urlComplete + item.urlDocumento }}" target="_blank">
                                               <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                                              <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->                                              
+                                              <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
                                                 <i class="material-icons">photo</i>
                                             </a>
                                           </td>

@@ -24,6 +24,7 @@ export class AgregarDocumentoModel{
       // Datos de fechas
       public fechaMaxEntrega:string,
       public fechaModificacion:string,
+      public fechaIngreso:string,
 
       // Datos Externos a la Tablas
       public idPais:number,

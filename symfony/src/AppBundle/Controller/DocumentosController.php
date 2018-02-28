@@ -109,7 +109,7 @@ class DocumentosController extends Controller{
                     $em->flush();
                     
                     //Consulta de ese Documento recien Ingresado
-                    $documentoConsulta = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
+                    /*$documentoConsulta = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
                             array(
                                 //"codUsuario"        => $cod_usuario, 
                                 "descDocumento"     => $desc_documento,
@@ -117,13 +117,13 @@ class DocumentosController extends Controller{
                                 "fechaIngreso"      => $fecha_ingreso,
                                 "fechaModificacion" => $fecha_modificacion,
                                 "codDocumento"      => $cod_documento 
-                            ));
+                            ));*/
                     
                         //Array de Mensajes
                         $data = array(
                             "status" => "success", 
                             "code"   => 200, 
-                            "data"   => $documentoConsulta
+                            "data"   => $isset_doc_cod
                         );
                     }else{
                         $data = array(
@@ -411,7 +411,7 @@ class DocumentosController extends Controller{
      * 3 ) Ruta = documentos/listar-documentos                                 * 
      ***************************************************************************/
     public function listaDocumentosAction(Request $request)
-    {
+    {   
         //Seteo de variables Globales
         ini_set('memory_limit', '512M');
         date_default_timezone_set('America/Tegucigalpa');

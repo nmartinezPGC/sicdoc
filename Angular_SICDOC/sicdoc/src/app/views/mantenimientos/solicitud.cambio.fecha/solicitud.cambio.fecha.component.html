@@ -67,7 +67,7 @@
             Fecha de Creación
         </small>
         <input type="text" name="fechaCreacion" id="fechaCreacion" class="form-control"
-               placeholder="Fecha de Creacion" disabled  value="{{ datosConsulta.fechaFechaIngreso | generateDate }}" >
+               placeholder="Fecha de Creacion" disabled  value="{{ datosConsulta.fechaFechaIngreso }}" >
       </div>
       <div class="col-2">
         <small class="form-text text-muted">
@@ -75,7 +75,7 @@
         </small>
         <input  type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
                placeholder="Fecha de Entrega Actual" disabled
-               value="{{ datosConsulta.fechaFechaEntrega | generateDate }}" >
+               value="{{ datosConsulta.fechaFechaEntrega}}" >
 
       </div>
     </div>

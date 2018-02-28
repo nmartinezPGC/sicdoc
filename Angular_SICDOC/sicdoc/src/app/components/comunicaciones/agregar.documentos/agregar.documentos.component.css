@@ -38,6 +38,13 @@
   opacity: .8;
 }
 
+/* Estilo para la Carga de Pantalla Completa */
+.loader-table {
+  margin-left: 100px;
+  width: 10px;
+  height: 10px;
+}
+
 #imgload{
   margin-left: 40%;
   margin-top: 20%

@@ -15,6 +15,7 @@ export class AgregarDocumentosService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
   public url:string;
+  public urlResourses:string;
 
   //Variables para el localStorage
   public identity;
@@ -23,30 +24,47 @@ export class AgregarDocumentosService {
   //Constructor de la Clase
   constructor( private _http: Http,
                private _systemPropertiesService: SystemPropertiesService ) {
+      // Instancia de los valores de las Propiesdades Globales
       this.url = this._systemPropertiesService.getmethodUrlService();
+      this.urlResourses = this._systemPropertiesService.getmethodUrlResourses();
   }
 
 
   /****************************************************
   * Funcion: FND-00001
-  * Fecha: 17-02-2018
+  * Fecha: 22-11-2017
   * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( vinculacionComunicacion/vinculacion-de-comunicacion ).
-  * Objetivo: Listado de las Comunicacion por Depto,
-  * para poder ser Vinculadas, al realizar un Ingreso /
-  * Salida de Comunicacion.
-  * Params: idTipoComunicacion | idTipoDocumento |
-  * idDeptoFuncional
+  * a la API ( mantenimientos/cambio-fecha ).
+  * Objetivo: Ralizar el Cambio de la Fecha, de
+  * Comunicacion
   *****************************************************/
-  listaComunicacionVinculantes( params_comunicacion ){
-      let json = JSON.stringify( params_comunicacion ); //Convertimos el Objeto a Json
-      let params = "json=" + json + "&authorization=" + this.getToken(); // Instanciamos los Valorrs del Json con sus parametros
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'}); // Declaramos las Cabezeras
+  buscaComunicacion( busca_comunicacion ){
+    let json = JSON.stringify( busca_comunicacion );
+    let params = "json=" + json + "&authorization=" + this.getToken();
+    //console.log(json);
+    let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-    return this._http.post(this.url + "/vinculacionComunicacion/vinculacion-de-comunicacion", params,
-          { headers:headers })
-           .map( res => res.json());
-  } // FIN : FND-00001
+  return this._http.post(this.url + "/mantenimientos/busca-comunicacion", params, { headers:headers }).map( res => res.json());
+} // FIN | FND-00001
+
+
+
+  /****************************************************
+  * Funcion: FND-00002
+  * Fecha: 22-11-2017
+  * Descripcion: Metodo Ajax, para Invocar el servicio
+  * a la API ( mantenimientos/cambio-fecha ).
+  * Objetivo: Ralizar el Cambio de la Fecha, de
+  * Comunicacion
+  *****************************************************/
+  buscaComunicacionDocumentos( busca_comunicacion ){
+      let json = JSON.stringify( busca_comunicacion );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/documentos/listar-documentos", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00002
 
 
 

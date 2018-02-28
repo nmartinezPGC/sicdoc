@@ -1229,6 +1229,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     this.seziDocumento = siezekiloByte;
 
     let type = this.filesToUpload[0].type;
+    let nameDoc = this.filesToUpload[0].name;
+
+    // incluir - 2018-02-27
+    alert(nameDoc);
 
     var filename = $("#pdfDocumento").val();
 
