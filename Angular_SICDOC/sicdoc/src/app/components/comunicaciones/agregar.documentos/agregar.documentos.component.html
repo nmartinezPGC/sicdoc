@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Datos Generales de los Usuarios -->
   <div class="row">
-      <div class="col-xs-12 col-sm-8 col-md-8">
+      <div class="col-xs-12 col-sm-7 col-md-7">
         <!-- Div que representan las Acciones al Ingresar un Usuario -->
         <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -98,8 +98,8 @@
             </div>
 
             <hr class="colorgraph">
-            <input type="submit" value="Limpiar" class="btn btn-success" tabindex="17"  >
-            <input type="submit" value="Agregar Documentos" class="btn btn-primary" tabindex="18" [disabled]="!documentosComForm.valid"  >
+            <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" >
+            <input type="submit" value="Agregar Documentos" class="btn btn-primary" tabindex="18" [disabled]="!documentosComForm.valid"  style="cursor: pointer;" >
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
@@ -108,33 +108,39 @@
 
 
     <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
-    <div class="col-4">
+    <div class="col-5">
       <!-- tabla que muestra los Documentos subidos -->
-      <table class="table table-striped" cellspacing="0" width="100%" >
+      <table class="table table-striped" cellspacing="0" width="100%">
         <!-- Loader de Carga de la Pagina -->
         <div class="loader-table" *ngIf="loadTabla2 == false " >
-          <img src="assets/images/loading_1.gif" alt="Cargando Tareas">
+          <img src="assets/images/88.gif" alt="Cargando Tareas">
         </div>
+
         <thead>
           <tr>
-            <th>#</th>
-            <th>Fecha</th>
-            <th>Documento</th>
-            <th>Ver</th>
+            <th class="text-center">#</th>
+            <th class="text-center">Fecha</th>
+            <th class="text-center">Documento</th>
+            <th class="text-center">Accción</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="newTable">
+
           <tr *ngFor="let item of JsonOutgetlistaDocumentos; let i = index">
             <th scope="row">{{ i + 1 }}</th>
-            <td>{{ item.fechaIngreso | date :'dd/MM/yyyy' }}</td>
-            <td>{{ item.urlDocumento }}</td>
-            <td>
+            <td class="text-center">{{ item.fechaIngreso | date :'dd/MM/yyyy' }}</td>
+            <td title="Codigo en SICDOC: {{ item.codDocumento }}" >{{ item.descDocumento }}</td>
+            <td class="text-center">
               <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
                 href="{{ urlComplete + item.urlDocumento }}" target="_blank">
-                <!-- href="http://localhost/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/correspondencia/{{ item.urlDocumento }}" target="_blank"> -->
-                  <i class="material-icons">photo</i>
+                  <!-- <i class="material-icons">photo</i> -->
+                  <img src="assets/icons/comunicacion/cloud-download.png"  title="Ver Documento"  alt="Cargando Tareas">
               </a>
+
+              <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+                <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
+              </a>
+
             </td>
           </tr>
         </tbody>

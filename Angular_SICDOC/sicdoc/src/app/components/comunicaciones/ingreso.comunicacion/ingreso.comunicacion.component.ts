@@ -178,6 +178,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public nextDocumento:number = 1;
   public extencionDocumento:string;
   public seziDocumento:number;
+  public nombreDoc:string;
 
 
   // Variables del Metodo
@@ -1226,13 +1227,13 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     let sizeByte:number = this.filesToUpload[0].size;
     let siezekiloByte:number =  Math.round( sizeByte / 1024 );
 
+    // Propiedades de l Codumento
     this.seziDocumento = siezekiloByte;
-
     let type = this.filesToUpload[0].type;
     let nameDoc = this.filesToUpload[0].name;
 
     // incluir - 2018-02-27
-    alert(nameDoc);
+    this.nombreDoc = nameDoc;
 
     var filename = $("#pdfDocumento").val();
 
@@ -1310,7 +1311,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
      this.JsonOutgetListaDocumentos.push({
        "nameDoc": newSecAct,
        "extDoc": this.extencionDocumento,
-       "pesoDoc": this.seziDocumento
+       "pesoDoc": this.seziDocumento,
+       "nombreDoc" : this.nombreDoc
      });
 
      this.comunicacion.pdfDocumento = this.JsonOutgetListaDocumentos;

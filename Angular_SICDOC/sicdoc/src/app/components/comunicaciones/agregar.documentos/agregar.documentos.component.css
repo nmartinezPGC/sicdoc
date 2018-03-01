@@ -40,7 +40,8 @@
 
 /* Estilo para la Carga de Pantalla Completa */
 .loader-table {
-  margin-left: 100px;
+  margin-left: 10px;
+  margin-top: 10px;
   width: 10px;
   height: 10px;
 }

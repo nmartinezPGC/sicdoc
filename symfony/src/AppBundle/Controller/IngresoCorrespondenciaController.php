@@ -462,6 +462,7 @@ class IngresoCorrespondenciaController extends Controller{
                                 $nameDoc = $arr->nameDoc;
                                 $extDoc = $arr->extDoc;
                                 $pesoDoc = $arr->pesoDoc;
+                                $nombreDoc = $arr->nombreDoc;
                                 
                                 // Cambiamos el Tipo de extencion jpg => jpeg
                                 if( $extDoc == "jpg" || $extDoc == "JPG" ){
@@ -489,7 +490,8 @@ class IngresoCorrespondenciaController extends Controller{
                                 $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
                                 $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
-                                $documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                                //$documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                                $documentosIn->setDescDocumento($nombreDoc); //Set Documento Desc / 2018-02-28
                                 $documentosIn->setStatus("LOAD"); //Set Documento Desc
 
                                 //Instanciamos de la Clase TblUsuario
@@ -1183,11 +1185,8 @@ class IngresoCorrespondenciaController extends Controller{
                         }
                         // FIN | MEJ-000002
                     
-                    
-                    
                                                                              
-                    //Finaliza Busqueda de Integridad entre Tablas *************
-                    
+                    //Finaliza Busqueda de Integridad entre Tablas *************                    
                     
                     //Verificacion del Codigo de la Correspondenia *************
                     $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
@@ -1395,6 +1394,7 @@ class IngresoCorrespondenciaController extends Controller{
                                 $nameDoc = $arr->nameDoc;
                                 $extDoc = $arr->extDoc;
                                 $pesoDoc = $arr->pesoDoc;
+                                $nombreDoc = $arr->nombreDoc;
                                 
                                 // Cambiamos el Tipo de extencion jpg => jpeg
                                 if( $extDoc == "jpg" || $extDoc == "JPG"  ){
@@ -1427,7 +1427,8 @@ class IngresoCorrespondenciaController extends Controller{
                                 $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
                                 $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
 
-                                $documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                                //$documentosIn->setDescDocumento("Documento de Respaldo / Salida de Comunicaión"); //Set Documento Desc
+                                $documentosIn->setDescDocumento($nombreDoc); //Set Documento Desc / 2018-02-28
                                 $documentosIn->setStatus("LOAD"); //Set Documento Desc
 
                                 //Instanciamos de la Clase TblUsuario

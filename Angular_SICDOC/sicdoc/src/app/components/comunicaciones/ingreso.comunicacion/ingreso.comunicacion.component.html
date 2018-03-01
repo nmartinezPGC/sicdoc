@@ -439,7 +439,7 @@
                    <tbody >
                      <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
                                <td>{{ homeFormIndex + 1 }}</td>
-                               <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                               <td class="text-center" title="Codigo en SICDOC: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
                                <td class="text-center" >{{ suchnewrow.extDoc }}</td>
                                <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
                                <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."

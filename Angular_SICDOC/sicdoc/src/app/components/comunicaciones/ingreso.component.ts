@@ -212,6 +212,7 @@ export class IngresoComunicacionComponent implements OnInit{
   public nextDocumento:number = 1;
   public extencionDocumento:string;
   public seziDocumento:number;
+  public nombreDoc:string;
 
   // Variables del Metodo
   public  error:string;
@@ -386,6 +387,7 @@ export class IngresoComunicacionComponent implements OnInit{
       "extDocument": ""
     }
 
+    this.nextDocumento = 0;
 
     $("#newTable").children().remove();
 
@@ -1228,7 +1230,11 @@ export class IngresoComunicacionComponent implements OnInit{
 
     this.seziDocumento = ( siezekiloByte / 1024 );
 
+    // Datos del Nuevo Documento
     let type = this.filesToUpload[0].type;
+    let nameDoc = this.filesToUpload[0].name;
+
+    this.nombreDoc = nameDoc;
 
     var filename = $("#pdfDocumento").val();
 
@@ -1954,7 +1960,8 @@ export class IngresoComunicacionComponent implements OnInit{
    this.JsonOutgetListaDocumentos.push({
      "nameDoc": newSecAct,
      "extDoc": this.extencionDocumento,
-     "pesoDoc": this.seziDocumento
+     "pesoDoc": this.seziDocumento,
+     "nombreDoc" : this.nombreDoc
    });
 
 

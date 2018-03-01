@@ -133,6 +133,8 @@ export class AgregarDocumentosComponent implements OnInit {
         "emailUserCreador"  : ""
       };
 
+      $("#newTable").children().remove();
+
   } // FIN | ngOnInit()
 
 
@@ -147,6 +149,8 @@ export class AgregarDocumentosComponent implements OnInit {
     // console.log(this._modSolicitudCambioFechas);
     // Mostramos el Loader
     this.loading = "show";
+
+    $("#newTable").children().remove();
 
     this.paramSearchValueSend = this._documentModel.codCorrespondencia;
 
@@ -170,6 +174,8 @@ export class AgregarDocumentosComponent implements OnInit {
 
             // Oculatamos el Loader
             this.loading = "hide";
+
+            this.ngOnInit();
           }else{
             //this.data = JSON.stringify(response.data);
 
@@ -217,7 +223,7 @@ export class AgregarDocumentosComponent implements OnInit {
       this.paramsDocumentos.searchValueSend =  this._documentModel.codCorrespondencia;
       this.getlistaDocumentosTable();
     } else {
-    alert('Datos out');
+    //alert('Datos out');
       this.datosConsulta.temaComunicacion = "";
       this.datosConsulta.descComunicacion = "";
       this.datosConsulta.fechaFechaIngreso = "";
@@ -263,5 +269,15 @@ export class AgregarDocumentosComponent implements OnInit {
   } // FIN | FND-00001.3
 
 
+
+  /*****************************************************
+  * Funcion: FND-00001.4
+  * Fecha: 28-02-2018
+  * Descripcion: Limpiar el Formulario
+  * Objetivo: Limpiar el Formulario
+  ******************************************************/
+  cleanForm(){
+    this.ngOnInit();
+  }
 
 }
