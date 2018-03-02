@@ -104,6 +104,7 @@ export class AgregarDocumentosComponent implements OnInit {
    * la Comunicación
   *************************************************/
   ngOnInit() {
+
     // Inicializacion del Model
     //Iniciamos los Parametros de Json de Documentos
     this.paramsDocumentos = {
