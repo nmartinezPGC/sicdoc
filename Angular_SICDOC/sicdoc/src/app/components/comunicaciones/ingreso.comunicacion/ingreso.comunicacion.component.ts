@@ -625,7 +625,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
       // Evaluamos si el Tipo de User no es Administrador
       if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 6){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
+          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso Fucionario
             this.comunicacion.idEstado = "5";
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
@@ -636,7 +636,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
           }
-      }else if( this.identity.idTipoFunc == 6 ){ // Perfil Tipo Director
+      }else if( this.identity.idTipoFunc == 6 || this.identity.idTipoFunc == 4 ){ // Perfil Tipo Director y administrador Correspondencia
           // Evalua si se Activo la Comunicacion sin Seguimiento
           if( $("#estadoFin").val() == 1 ){
             this.comunicacion.idEstado = "5";
