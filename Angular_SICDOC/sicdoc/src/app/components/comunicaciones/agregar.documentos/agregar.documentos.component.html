@@ -100,11 +100,11 @@
             <hr class="colorgraph">
             <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" >
             <input type="button" value="Agregar Documentos" data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" tabindex="18"
-                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;"  >
+                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
-
+        </div>
 
             <!-- Modal de Finalizar Actividad -->
             <div *ngIf="idEstadoModal == 5 " class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -122,22 +122,22 @@
 
                   <div class="modal-body">
                     <!-- Formulario del Oficio Asignado -->
-                      <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(finalizarOficioAsignado, 1)" name="finalizarOficioForm" role="form">
+                      <form #sendDocumentosCom="ngForm" (ngSubmit)="onSubmit(sendDocumentosCom, 1)" name="sendDocumentosCom" role="form">
                         <!-- fila 1 del Formulario -->
-                        <h4>Agregar Documentos a Comunicación | {{ idCorrepEncModal }}</h4>
+                        <h4>Agregar Documentos a Comunicación | SICDOC</h4>
                         <hr class="colorgraph">
 
                         <!-- fila 2 del Formulario -->
                         <div class="row">
                           <div class="col-md-12 mb-4">
-                            <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                            <textarea #descCorrespondencia="ngModel" type="text" name="descCorrespondencia" id="descCorrespondencia"
-                                    ngControl="descCorrespondencia" [(ngModel)]="_MnewDocumentos.descCorrespondencia" required maxlength="1400" minlength="15"
-                                    class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                            <small class="form-text text-muted">Ingresa la Justificación de los Nuevos Documentos</small>
+                            <textarea #justificacionNewDocs="ngModel" type="text" name="justificacionNewDocs" id="justificacionNewDocs"
+                                    ngControl="descCorrespondencia" [(ngModel)]="_documentModel.justificacionNewDocs" required maxlength="500" minlength="15"
+                                    class="form-control" placeholder="Justificación de los nuevos Documentos" rows="3">
                             </textarea>
-                            <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >La Descripción es obligatoria</small>
-                            <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >
-                                Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres</small>
+                            <small class="form-text text-muted" *ngIf="justificacionNewDocs.errors?.required" >La Justificación es obligatoria</small>
+                            <small class="form-text text-muted" *ngIf="justificacionNewDocs.errors?.minlength" >
+                                Se nesesita por lo menos {{ justificacionNewDocs.errors.minlength.requiredLength }} caracteres</small>
                           </div>
                         </div>
 
@@ -148,7 +148,7 @@
                           <div class="col-xs-12 col-md-12 col-lg-12">
                             <label class="custom-file">
                                 <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
-                                     ngControl="pdfDocumento" [(ngModel)]="_MnewDocumentos.pdfDocumento" placeholder="Subir Pdf ..."
+                                     ngControl="pdfDocumento" [(ngModel)]="_documentModel.pdfDocumento" placeholder="Subir Pdf ..."
                                      aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
                                 <span class="custom-file-control"></span>
                             </label>
@@ -183,9 +183,9 @@
                                  </tr>
                                </thead>
                                <tbody >
-                                 <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
+                                 <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
                                            <td>{{ homeFormIndex + 1 }}</td>
-                                           <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                                           <td class="text-center">{{ suchnewrow.nombreDoc }}</td>
                                            <td class="text-center" >{{ suchnewrow.extDoc }}</td>
                                            <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
                                            <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
@@ -195,10 +195,13 @@
                                                onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
                                                alt="Cargando Imagen ..." ></a>
                                            </td>
-                                           <td>
-                                               <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                           <td class="text-center">
+                                             <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+                                               <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
+                                             </a>
+                                               <!-- <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
                                                    class="btn btn-danger" style="padding: 2px">
-                                                 Borrar</button>
+                                                 Borrar</button> -->
                                            </td>
                                    </tr>
                                </tbody>
@@ -211,21 +214,13 @@
 
                         <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
                         <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
-                        <button class="btn btn-success" type="submit" [disabled]="!finalizarOficioForm.valid" style="cursor: pointer">Guardar</button>
+                        <button class="btn btn-success" type="submit" [disabled]="!sendDocumentosCom.valid" style="cursor: pointer">Guardar</button>
                         <button  type="button" id="closeModalFinCom"
                                 class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">Cerrar</button>
                     </form>
                 </div>
-                  <div class="modal-footer">
-
-                  </div>
             </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-
-
-
-
 
     </div>
 

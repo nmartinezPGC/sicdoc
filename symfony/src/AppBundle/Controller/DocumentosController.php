@@ -491,7 +491,7 @@ class DocumentosController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      * 2 ) Lista los docuemntos segun parametro ( codDocumento )               *
-     * 3 ) Ruta = /documentos/borrar-documento-server                           * 
+     * 3 ) Ruta = /documentos/borrar-documento-server                          * 
      ***************************************************************************/
     public function borrarDocumentoServerAction(Request $request, $id = null)
     {
@@ -577,6 +577,261 @@ class DocumentosController extends Controller{
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);        
     }//FIN
+    
+    
+    
+    /* Funcion de Subir Documentos desde Ventana *******************************
+     * Parametros:                                                             *
+     * @Route("/subir-documentos-comunicacion", name="subir-documentos-comunicacion") * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
+     *     Informacion.                                                        * 
+     * 2 ) Lista los docuemntos segun parametro ( arrayDocumentos )            *
+     * 3 ) Ruta = /documentos/subir-documentos-comunicacion                    * 
+     ***************************************************************************/
+    public function subirDocumentosComunicacionAction(){
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            $identity = $helpers->authCheck($hash, true);
+            
+            //Convertimos los Parametros POSt a Json
+            $json = $request->get("json", null);
+            
+            
+            
+            //Comprobamos que Json no es Null
+            if ($json != null) {
+                $params = json_decode($json);
+                
+                //Parametros a Convertir                           
+                //Datos generales de la Tabla
+                $cod_correspondencia =  ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;  
+                
+                
+                $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
+                $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;
+                                
+                $cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
+                
+                $fecha_ingreso        = new \DateTime('now');                
+                                
+                // Fechas Nulas
+                $fecha_null = new \DateTime('2999-12-31');
+                
+                //Relaciones de la Tabla con Otras.
+                // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
+                $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
+                
+                // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
+                $cod_usuario          = $identity->sub;                                               
+                
+                // Envio por Json el Codigo de Depto Acompañante | Buscar en la Tabla: TblDepartamentosSreci
+                $cod_depto_acomp   = ($params->idDeptoFuncionalAcom != null) ? $params->idDeptoFuncionalAcom : null ;
+                
+                // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosFuncionales
+                $cod_tipo_documento  = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;
+                
+                // Relacion con la Tabla Correspondencia Detalle | Proceso de Respuesta
+                $new_secuencia_det        = ($params->secuenciaComunicacionDet != null) ? $params->secuenciaComunicacionDet : null ;
+                $cod_correspondencia_det  = ($params->codCorrespondenciaDet != null) ? $params->codCorrespondenciaDet : null ;
+               
+                
+                // Ruta del Pdf a Subir
+                $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
+                            
+                // 2018-02-13
+                $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
+                
+                // 2018-02-19 | Comunicaciones Vinculantes al Tema
+                $comVinculante_send = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
+                
+                // idUsario que tendra asignado el Oficio
+                $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
+                
+                
+                // **********************************************************************************************************************
+                // Ingresamos los Datos a la Tabla TblEncabezadosDet **********
+                //Seteo del nuevo secuencial de la tabla: TblCorrespondenciaDet
+                // ************************************************************
+                $correspondenciaDet = new TblCorrespondenciaDet();
+
+                //Ingresamos un valor en la Tabla **********************
+                //Correspondencia Enc **********************************                        
+                $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Codigo Correspondencia
+                $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
+                $correspondenciaDet->setFechaSalida($fecha_null); //Set de Fecha Salida
+
+                $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
+
+                $correspondenciaDet->setDescCorrespondenciaDet("Anexos de Documentos a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion
+
+                //Instanciamos de la Clase TblEstados                        
+                $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                    array(
+                        "idEstado" => 5 // Finalizado
+                    ));                    
+                $correspondenciaDet->setIdEstado($estadoDet); //Set de Codigo de Estados 
+                
+                $correspondenciaDet->setActividadRealizar("Anexos de Documentos a comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Actividad
+                
+                $correspondenciaDet->setInstrucciones("Documentos anexados despues de su Ingreso");
+
+                //Verificacion del Codigo de la Correspondenia *********
+                $id_correspondencia_enc = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                    array(
+                        "codCorrespondenciaEnc" => $cod_correspondencia
+                    ));
+                $correspondenciaDet->setIdCorrespondenciaEnc($id_correspondencia_enc); //Set de Fecha Id Correspondencia Enc
+
+                //Instanciamos de la Clase TblUsuario
+                $usuarioDetalle = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                    array(
+                       "idUsuario" => $cod_usuario                           
+                    ));                    
+                $correspondenciaDet->setIdUsuario($usuarioDetalle); //Set de Codigo de Usuario
+
+                //Instanciamos de la Clase TblFuncionarios
+                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                array(
+                   "idFuncionario" => $id_usuario_asignado                
+                ));                    
+                $correspondenciaDet->setIdFuncionarioAsignado($usuario_asignado); 
+
+
+                // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Det
+                $secuenciaNew = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
+                    array(
+                        "codSecuencial"  => $cod_correspondencia_det                        
+                    ));
+
+                // Evalua que el valor2 de la Consulta no sea Mayor al Enviado
+                $secuenciaActDet = $secuenciaNew->getValor2();
+                if( $secuenciaActDet > $new_secuencia_det ){
+                    $secuenciaNew->setValor2($secuenciaActDet); //Set de valor2 de Secuencia de Comunicacion                            
+                    $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion                        
+                } else if ( $secuenciaActDet < $new_secuencia_det ){
+                    $secuenciaNew->setValor2( $new_secuencia_det ); //Set de valor2 de Secuencia de Comunicacion
+                    $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
+                }
+
+                
+                // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                $em->persist($correspondenciaDet);
+
+                // Realizamos la persistencia de la Secuencia
+                $em->persist($secuenciaNew);
+
+                //Realizar la actualizacion en el storage de la BD
+                $em->flush();
+                                                               
+                
+                    // Ingresamos los Datos a la Tabla TblDocumentos *******
+                    //Seteo del nuevo documentos de la tabla: TblDocumentos
+                    // *****************************************************
+                    if( $pdf_send != null ){
+                        // Se convierte el Array en String
+                        $documentos_array_convert      = json_encode($pdf_send);
+                        $documentos_array_convert2      = json_decode($documentos_array_convert);
+
+                        // Recorreros los Items del Array
+                        foreach ( $documentos_array_convert2 as $arr ){                                
+                            $nameDoc   = $arr->nameDoc;
+                            $extDoc    = $arr->extDoc;
+                            $pesoDoc   = $arr->pesoDoc;
+                            $nombreDoc = $arr->nombreDoc;
+
+                            // Cambiamos el Tipo de extencion jpg => jpeg
+                            if( $extDoc == "jpg" || $extDoc == "JPG" ){
+                                $extDoc = "jpeg";
+                            }
+
+                            /* INC00001 | 2018-01-04
+                            * Corregir la Extencion del PDF a pdf
+                            */
+                            if( $extDoc == "PDF" ){
+                                $extDoc = "pdf";
+                            }
+
+                            /* INC00002 | 2018-01-09
+                            * Corregir la Extencion del PNG a png
+                            */
+                            if( $extDoc == "PNG" ){
+                                $extDoc = "png";
+                            }
+
+                            // Instancia del Doctrine de la Tabla Documentos
+                            $documentosIn = new TblDocumentos();
+
+                            //$documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
+                            $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
+                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
+
+                            //$documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                            $documentosIn->setDescDocumento($nombreDoc); //Set Documento Desc / 2018-02-28
+                            $documentosIn->setStatus("LOAD"); //Set Documento Desc
+
+                            //Instanciamos de la Clase TblUsuario
+                            $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                array(
+                                   "idUsuario" => $cod_usuario                           
+                                ));                    
+                            $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
+
+                            // Verificacion del Codigo de la Correspondenia  *******
+                            // Detalle  ********************************************
+                            $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                                array(
+                                    "codCorrespondenciaDet" => $cod_correspondencia_det . "-" . $new_secuencia_det
+                                ));
+                            $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Id Correspondencia Det
+
+                            // Verificacion del Codigo de la Correspondenia*
+                            // Encabezado  *********************************
+                            $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                                array(
+                                    "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
+                                ));
+                            $documentosIn->setIdCorrespondenciaEnc($id_correspondencia_enc_docu); //Set de Id Correspondencia Enc
+
+                            // Pdf que se Agrega
+                            // validamos que se adjunta pdf
+                            $documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento
+
+                            // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                            $em->persist($documentosIn); 
+
+                            //Realizar la actualizacion en el storage de la BD
+                            $em->flush();
+                        } // Fin de foreach                            
+                    }
+                    // Fin de Grabacion de Documentos **********************            
+                
+                
+            }else {
+                //Array de Mensajes
+                $data = array(
+                   "status" => "error", 
+                   "code"   => 400, 
+                   "msg"   => "Documento no Creado, parametros invalidos !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",                
+                "code" => "400",                
+                "msg" => "Autorizacion de Token no valida, tu sessión ha caducado !!"                
+            );
+        }
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } // FIN
     
     
 }

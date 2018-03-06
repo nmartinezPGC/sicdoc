@@ -96,8 +96,9 @@
                 </small>
                   <input #telefonoInstitucion="ngModel" type="text" name="telefonoInstitucion" id="telefonoInstitucion"
                       ngControl="telefonoInstitucion" [(ngModel)]="_modIntituciones.telefonoInstitucion" [disabled]="habControls == false"
-                      class="form-control input-lg" placeholder="Teléfono" tabindex="5" >
+                      class="form-control input-lg" placeholder="Teléfono" tabindex="5" maxlength="8" pattern="^([0-9])*$" >
                     <!-- <small class="form-text text-muted" *ngIf="telefonoInstitucion.errors?.required" >Telefono</small> -->
+                    <small class="form-text text-muted" *ngIf="telefonoInstitucion.errors?.pattern" >El campo no tiene formato correcto, solo acepta Números sin guiones (88888888)</small>
                     <!-- <small class="form-text text-muted" *ngIf="telefonoInstitucion.errors?.minlength" >Se nesesita por lo menos {{ telefonoInstitucion.errors.minlength.requiredLength }} caracteres</small> -->
               </div>
             </div>
@@ -108,8 +109,9 @@
                   </small>
                     <input #celularInstitucion="ngModel" type="text" name="celularInstitucion" id="celularInstitucion"
                         ngControl="celularInstitucion" [(ngModel)]="_modIntituciones.celularInstitucion" [disabled]="habControls == false"
-                        class="form-control input-lg" placeholder="Celular" tabindex="6" >
+                        class="form-control input-lg" placeholder="Celular" tabindex="6" maxlength="8" pattern="^([0-9])*$" >
                       <!-- <small class="form-text text-muted" *ngIf="celularInstitucion.errors?.required" >Celular</small> -->
+                      <small class="form-text text-muted" *ngIf="celularInstitucion.errors?.pattern" >El campo no tiene formato correcto, solo acepta Números sin guiones (88888888)</small>
                       <!-- <small class="form-text text-muted" *ngIf="celularInstitucion.errors?.minlength" >Se nesesita por lo menos {{ celularInstitucion.errors.minlength.requiredLength }} caracteres</small> -->
                 </div>
               </div>
@@ -224,7 +226,7 @@
                             item.celularInstitucion, item.emailInstitucion,
                             item.idPais, item.idTipoInstitucion )"
                           data-toggle="collapse" data-target="#datosGen" >
-                          <img src="/assets/icons/comunicacion/clipboard-edit-black-interface-symbol.png" class="d-inline-block align-top" alt="" title="Asignar Comunicación">
+                          <img src="/assets/icons/comunicacion/clipboard-edit-black-interface-symbol_24x24.png" class="d-inline-block align-top" alt="" title="Asignar Comunicación">
                         </a>
                     </td>
                   </tr>

@@ -593,12 +593,14 @@ class MantCambioFechasController extends Controller {
                     
                     
                     $query = $em->createQuery('SELECT enc.idCorrespondenciaEnc, enc.codCorrespondenciaEnc, enc.codReferenciaSreci, '
-                                    . 'enc.descCorrespondenciaEnc, enc.temaComunicacion, '
+                                    . 'enc.descCorrespondenciaEnc, enc.temaComunicacion, tcom.idTipoComunicacion, tdoc.idTipoDocumento,  '
                                     ."DATE_SUB(enc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(enc.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'p.idUsuario, p.emailUsuario '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc enc '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = enc.idUsuario '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = enc.idCorrespondenciaEnc '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = enc.idTipoComunicacion '
+                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH tdoc.idTipoDocumento = enc.idTipoDocumento '
                                     //. 'INNER JOIN BackendBundle:TblCorrespondenciaEnc c WITH c.idCorrespondenciaEnc = doc.idCorrespondenciaEnc '
                                     . 'WHERE enc.codCorrespondenciaEnc = :codCorrespondenciaEnc '                                    
                                     . 'ORDER BY enc.codCorrespondenciaEnc, enc.idCorrespondenciaEnc ASC') 

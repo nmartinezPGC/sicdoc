@@ -2,7 +2,7 @@ export class AgregarDocumentoModel{
 
   //Constructor de la Clase
     constructor(
-      public id:number,
+      public idComunicacion:number,
 
       // Datos Generales
       public codCorrespondencia:string, // Se da por La AutoSecuencia
@@ -53,7 +53,9 @@ export class AgregarDocumentoModel{
       public setTomail:string,
 
       // Sub Direcciones SRECI
-      public subDireccionesSreciAcom
+      public subDireccionesSreciAcom,
+
+      public justificacionNewDocs:string
 
 
     ){}

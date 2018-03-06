@@ -1242,15 +1242,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     //Modificacion; Cuando la extencion es PDF => pdf
       if( this.extencionDocumento == "PDF" ){
-        //alert(this.extencionDocumento);
-        this.extencionDocumento = "pdf"
-      }
-
-
-    // this.paramsDocs.nombreDocumento = this.consultaContactos.nombre1Contacto + ' '
-                                    // + this.consultaContactos.apellido1Contacto;
-
-    //  this.paramsDocs.optDocumento = optDoc;
+        this.extencionDocumento = "pdf";
+      }else if( this.extencionDocumento == "jpg" ) {
+        this.extencionDocumento = "jpeg";
+      }    
 
      let sendParms = "json=" + "";
 

@@ -14,6 +14,7 @@ import { AgregarDocumentosService } from '../../../services/comunicaciones/agreg
 import { SolicitudCambioFechaService } from '../../../services/mantenimientos/solicitud.cambio.fecha.service'; //Servico del Matenimiento
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Carga de Arhcivos
+import { CaseSecuencesService } from '../../../services/shared/caseSecuences.service'; //Servico caseSecuence
 
 import { AppComponent } from '../../../app.component'; //Servico del Login
 
@@ -34,7 +35,7 @@ const URL = 'http://localhost/sicdoc/symfony/web/app_dev.php/web/uploads/corresp
   selector: 'app-agregar.documentos',
   templateUrl: './agregar.documentos.component.html',
   styleUrls: ['./agregar.documentos.component.css'],
-  providers: [ ListasComunesService, UploadService, AgregarDocumentosService, UploadService ]
+  providers: [ ListasComunesService, UploadService, AgregarDocumentosService, UploadService, CaseSecuencesService ]
 })
 export class AgregarDocumentosComponent implements OnInit {
   // Propiedades de la Clase
@@ -52,6 +53,7 @@ export class AgregarDocumentosComponent implements OnInit {
   public idEstadoModal:number = 5;
 
   public  codigoSec:string;
+  public nombreDoc:string;
 
   // Llenamos las Lista del HTML
   public JsonOutgetComunicacionChange:any[];
@@ -59,6 +61,7 @@ export class AgregarDocumentosComponent implements OnInit {
 
   // Json de Documentos
   public JsonOutgetlistaDocumentos:any[];
+  public JsonOutgetlistaDocumentosNew:any[];
   public paramsDocumentos;
 
   // Datos de la Consulta
@@ -87,6 +90,8 @@ export class AgregarDocumentosComponent implements OnInit {
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
+  public JsonOutgetListaDocumentosNew = [];
+  public JsonOutgetListaDocumentosHist = [];
   // Array de Documentos de Comunicacion a Borrar
   private JsonOutgetListaDocumentosDelete;
 
@@ -126,9 +131,11 @@ export class AgregarDocumentosComponent implements OnInit {
                private _solicitudCambioFechaService: SolicitudCambioFechaService,
                private _agregarDocumentosService: AgregarDocumentosService,
                private _uploadService: UploadService,
+               private _caseSecuencesService: CaseSecuencesService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
+               private changeDetectorRef: ChangeDetectorRef,
                private _http: Http) {
      // Codigo del Constructor
      // Seteo de la Ruta de la Url Config
@@ -161,15 +168,18 @@ export class AgregarDocumentosComponent implements OnInit {
           "",
           "",
           "",
-          "");
+          "", "");
 
       // Iniciamos los Parametros de Sub Direcciones
       this.datosConsulta = {
-        "temaComunicacion"  : "",
-        "descComunicacion"  : "",
-        "fechaFechaIngreso"  : "",
-        "fechaFechaEntrega"  : "",
-        "emailUserCreador"  : ""
+        "temaComunicacion"    : "",
+        "descComunicacion"    : "",
+        "fechaFechaIngreso"   : "",
+        "fechaFechaEntrega"   : "",
+        "emailUserCreador"    : "",
+        "idComunicacion"      : "",
+        "idTipoComunicacion"  : "",
+        "idTipoDocumento"     : ""
       };
 
       // Inicio de Detalle correspondencia
@@ -182,6 +192,10 @@ export class AgregarDocumentosComponent implements OnInit {
 
       // Array de los Documentos enviados
       this.JsonOutgetListaDocumentos = [];
+      this.JsonOutgetListaDocumentosNew = [];
+      this.JsonOutgetListaDocumentosHist = [];
+
+      this._documentModel.pdfDocumento = "";
 
       // Json de Documento a Borrar
       this.JsonOutgetListaDocumentosDelete = {
@@ -190,6 +204,16 @@ export class AgregarDocumentosComponent implements OnInit {
       }
 
   } // FIN | ngOnInit()
+
+
+  /*********************************************************
+   * Funcion de Grabacion de los Documentos Nuevos en la BD
+   * Fecha: 2018-03-06
+  **********************************************************/
+  onSubmit(forma:NgForm){
+
+
+  }
 
 
   /****************************************************
@@ -225,6 +249,9 @@ export class AgregarDocumentosComponent implements OnInit {
             this.datosConsulta.fechaFechaIngreso = "";
             this.datosConsulta.fechaFechaEntrega = "";
             this.datosConsulta.emailUserCreador = "";
+            this.datosConsulta.idComunicacion = "";
+            this.datosConsulta.idTipoComunicacion = "";
+            this.datosConsulta.idTipoDocumento = "";
 
             // Oculatamos el Loader
             this.loading = "hide";
@@ -257,7 +284,12 @@ export class AgregarDocumentosComponent implements OnInit {
     // Instanciamos los Valores al Json de retorno, que Utilizara el Html
     if( dataIn != null ){
       //dataIn = JSON.stringify( dataIn );
-      console.log( dataIn[0].temaComunicacion );
+      // Relaciones de las Tablas
+      this.datosConsulta.idComunicacion       = dataIn[0].idCorrespondenciaEnc;
+      this.datosConsulta.idTipoComunicacion   = dataIn[0].idTipoComunicacion;
+      this.datosConsulta.idTipoDocumento      = dataIn[0].idTipoDocumento;
+
+      // Datos Generales
       this.datosConsulta.temaComunicacion = dataIn[0].temaComunicacion;
       this.datosConsulta.descComunicacion = dataIn[0].descCorrespondenciaEnc;
       this.datosConsulta.fechaFechaIngreso = dataIn[0].fechaIngreso;
@@ -275,7 +307,15 @@ export class AgregarDocumentosComponent implements OnInit {
       // Ejecutamos el Llamado a la Lista de Documentos
       //Llamado de la Funcion de los Documentos
       this.paramsDocumentos.searchValueSend =  this._documentModel.codCorrespondencia;
+      this._documentModel.codReferenciaSreci =  dataIn[0].codReferenciaSreci;
+
+      // Llamado a la Lista de Documentos previamente Ingresados
       this.getlistaDocumentosTable();
+
+      // Asignacion a Datos de Modales
+      this.codOficioIntModal = this._documentModel.codCorrespondencia;
+      this.codOficioRefModal = this._documentModel.codReferenciaSreci;
+
     } else {
     //alert('Datos out');
       this.datosConsulta.temaComunicacion = "";
@@ -283,6 +323,9 @@ export class AgregarDocumentosComponent implements OnInit {
       this.datosConsulta.fechaFechaIngreso = "";
       this.datosConsulta.fechaFechaEntrega = "";
       this.datosConsulta.emailUserCreador = "";
+      this.datosConsulta.idComunicacion = "";
+      this.datosConsulta.idTipoComunicacion = "";
+      this.datosConsulta.idTipoDocumento = "";
     }
   } // FIN | FND-00001.2
 
@@ -352,7 +395,6 @@ export class AgregarDocumentosComponent implements OnInit {
      final_month = "0" + final_month;
    }
 
-
    // Dia del Mes
    let day = this.fechaHoy.getDate(); // Dia
    let final_day = day.toString();
@@ -362,15 +404,17 @@ export class AgregarDocumentosComponent implements OnInit {
 
    let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
 
-   this.JsonOutgetListaDocumentos.push({
+   this.JsonOutgetListaDocumentosNew.push({
      "nameDoc": newSecAct,
      "extDoc": this.extencionDocumento,
-     "pesoDoc": this.seziDocumento
+     "pesoDoc": this.seziDocumento,
+     "nombreDoc" : this.nombreDoc
    });
 
 
-   this._documentModel.pdfDocumento = this.JsonOutgetListaDocumentos;
- } // FIN | FND-00002
+   this._documentModel.pdfDocumento = this.JsonOutgetListaDocumentosNew;
+   console.log(this.JsonOutgetListaDocumentosNew);
+  } // FIN | FND-00002
 
 
  /*****************************************************
@@ -403,6 +447,10 @@ export class AgregarDocumentosComponent implements OnInit {
    this.seziDocumento = ( siezekiloByte / 1024 );
 
    let type = this.filesToUpload[0].type;
+   let nameDoc = this.filesToUpload[0].name;
+
+   // incluir - 2018-02-27
+   this.nombreDoc = nameDoc;
 
    var filename = $("#pdfDocumento").val();
 
@@ -450,18 +498,17 @@ export class AgregarDocumentosComponent implements OnInit {
  } // FIN : FND-00003
 
 
-
  /*****************************************************
- * Funcion: FND-00005.1
+ * Funcion: FND-000004
  * Fecha: 23-09-2017
  * Descripcion: Obtiene la siguiente secuencia
  * Objetivo: Obtener el secuencial de la tabla
  * indicada con su cosigo
  * (gen-secuencia-comunicacion-in).
  ******************************************************/
-  listarCodigoCorrespondenciaAgregarActividad( idTipoDocumentoIn:number, idTipoComunicacion:number ){
+  listarCodigoCorrespondenciaAgregarActividad(){
     // Condicion del Secuencial Segun el Tipo de Documento
-    //Evaluamos el valor del Tipo de Documento    
+    //Evaluamos el valor del Tipo de Documento
     // Iniciamos los Parametros de Secuenciales | Agregar Actividad
     this.paramsSecuenciaActividadAgregar = {
       "codSecuencial"  : "",
@@ -469,109 +516,18 @@ export class AgregarDocumentosComponent implements OnInit {
       "idTipoDocumento" : ""
     };
 
-     if( idTipoDocumentoIn == 1 ){
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-OFI";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn ;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-OFI";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn ;
-      }
+    //Objetivo: Seleccionar la Secuencia
+    let paramsSendIn =
+              this._caseSecuencesService.caseSecuence( this.datosConsulta.idTipoComunicacion, this.datosConsulta.idTipoDocumento );
 
-     } else if ( idTipoDocumentoIn == 2 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-MEMO";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-MEMO";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-     } else if ( idTipoDocumentoIn == 3 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-NOTA-VERBAL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-NOTA-VERBAL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-    } else if ( idTipoDocumentoIn == 4 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-CIRCULAR";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-CIRCULAR";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-     } else if ( idTipoDocumentoIn == 5 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-MAIL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_mail";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-MAIL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_mail";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-    } else if ( idTipoDocumentoIn == 7 ){
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-CALL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_call";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else if ( idTipoComunicacion == 2 ) {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-CALL";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_call";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-     } else if ( idTipoDocumentoIn == 8 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-VERB";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_verb";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-VERB";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det_verb";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-    }else if ( idTipoDocumentoIn == 9 ) {
-      // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
-      if( idTipoComunicacion == 1 ){
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-IN-DET-REUNION";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      } else {
-        this.paramsSecuenciaActividadAgregar.codSecuencial = "COM-OUT-DET-REUNION";
-        this.paramsSecuenciaActividadAgregar.tablaSecuencia = "tbl_comunicacion_det";
-        this.paramsSecuenciaActividadAgregar.idTipoDocumento = idTipoDocumentoIn;
-      }
-
-    }// Fin de Condicion
-
-     // console.log(this.paramsSecuenciaActividadAgregar);
+    // Asignamos los valores a los parametros de Secuencia a Enviar
+    this.paramsSecuenciaActividadAgregar.codSecuencial = paramsSendIn.codSecuencial;
+    this.paramsSecuenciaActividadAgregar.tablaSecuencia = paramsSendIn.tablaSecuencia;
+    this.paramsSecuenciaActividadAgregar.idTipoDocumento = paramsSendIn.idTipoDocumento;
 
      //Llamar al metodo, de Login para Obtener la Identidad
-     //console.log(this.params);
-      console.log('Entro en 3 listarCodigoCorrespondenciaAgregarActividad()');
+     // console.log(this.paramsSecuenciaActividadAgregar);
+     // console.log('Entro en 3 listarCodigoCorrespondenciaAgregarActividad()');
      this._listasComunes.listasComunesToken( this.paramsSecuenciaActividadAgregar, "gen-secuencia-comunicacion-in" ).subscribe(
          response => {
            // login successful so redirect to return url
@@ -582,9 +538,81 @@ export class AgregarDocumentosComponent implements OnInit {
              alert('ha ocurrido un error, pulsa F5 para recargar la pagina, si persiste comunicate con el Administrador');
            }else{
              this.JsonOutgetCodigoSecuenciaActividadAgregar = response.data;
+             // Lo enviamos al Model de la Clase
+             this._documentModel.secuenciaComunicacionDet = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
+             this._documentModel.codCorrespondenciaDet =
+                  this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
              console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
            }
          });
- } // FIN : FND-00005.1
+  } // FIN : FND-000004
+
+
+  /*****************************************************
+  * Funcion: FND-00018
+  * Fecha: 15-02-2018
+  * Descripcion: Delete de nuevo File input, en Tabla
+  * ( deleteRowHomeForm ).
+  ******************************************************/
+  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentosNew.splice(homeFormIndex,1);
+    this.changeDetectorRef.detectChanges();
+    this._documentModel.pdfDocumento = "";
+
+    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+    console.log(this.JsonOutgetListaDocumentosNew);
+  } // FIN | FND-00018
+
+
+  /*****************************************************
+  * Funcion: FND-00018.1
+  * Fecha: 15-02-2018
+  * Descripcion: Delete de nuevo File input, en Tabla
+  * ( deleteRowHomeFormSelect ).
+  ******************************************************/
+  deleteRowHomeFormSelect(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentosHist.splice(homeFormIndex,1);
+    this.changeDetectorRef.detectChanges();
+    //this._documentModel.pdfDocumento = "";
+
+    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+    console.log(this.JsonOutgetListaDocumentosHist);
+  } // FIN | FND-00018.1
+
+
+  /*****************************************************
+  * Funcion: FND-00019
+  * Fecha: 15-02-2018
+  * Descripcion: Metodo para Borrar Documento desde el
+  * Servidor
+  * metodo ( borrar-documento-server ).
+  ******************************************************/
+  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    // Agrega Items al Json
+    this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+
+    // Cambiamos la Extencion si es jpg
+    if( extDocumentoIn == "jpg" ){
+      extDocumentoIn = "jpeg";
+    }
+
+    this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+
+    this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            alert(response.msg);
+          }
+        });
+  } // FIN : FND-00019
+
+
 
 }
