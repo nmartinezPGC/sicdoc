@@ -90,3 +90,10 @@
 .custom-file-control:lang(en)::before {
   content: "Buscar";
 }
+
+/*Etilo de Botones*/
+#boton{
+  background:url('../../../../assets/icons/comunicacion/books-stack-of-three.png') no-repeat;
+  border:none;
+  width:100px;
+}

@@ -1543,6 +1543,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                             
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
+                                    ."DATE_SUB(c.fechaModificacion, 0, 'DAY') AS fechaModificacion, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
                                     . 'tdoc.codTipoDocumento, tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, '
                                     . 'dsreci.idDireccionSreci, dsreci.descDireccionSreci, dsreci.inicialesDireccionSreci, '

@@ -108,8 +108,8 @@ export class SeguimientoActividadComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
-               private _http: Http ) { 
-    this.url = this._seguimientoActividad.urlResourses;           
+               private _http: Http ) {
+    this.url = this._seguimientoActividad.urlResourses;
     this.urlComplete = this.url + "uploads/correspondencia/";
   }
 
@@ -358,7 +358,7 @@ export class SeguimientoActividadComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaDocumentos = response.data;
-            // Oculta los Loaders            
+            // Oculta los Loaders
             this.loading_table = 'hide';
             this.loadTabla2 = true;
             alert(response.msg);
@@ -389,7 +389,7 @@ export class SeguimientoActividadComponent implements OnInit {
     // Area de Fechas
     this.tableSeguimientoActividadList.fechaIngreso      = dataIn[0].fechaIngreso;
     this.tableSeguimientoActividadList.fechaEntrega      = dataIn[0].fechaMaxEntrega;
-    // this.tableSeguimientoActividadList.fechaModificacion = dataIn.fechaModificacion.timestamp;
+    this.tableSeguimientoActividadList.fechaModificacion = dataIn[0].fechaModificacion;
     this.tableSeguimientoActividadList.fechaFinalizacion = dataIn[0].fechaFinalizacion;
     // Area de Informacion General
     this.tableSeguimientoActividadList.institucionReceptora = dataIn[0].descInstitucion + ' | ' + dataIn[0].perfilInstitucion;

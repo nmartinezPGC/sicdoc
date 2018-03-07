@@ -208,6 +208,7 @@ class IngresoCorrespondenciaController extends Controller{
                     // Si la Comuniacion es Sin Seguimiento la Hora de Finalizacion es la Misma que la de la Ingreso
                     if( $estado->getIdEstado() == 5 ){
                         $correspondenciaNew->setHoraFinalizacion( $hora_ingreso ); // Hora de Finalizacion
+                        $correspondenciaNew->setFechaFinalizacion( $fecha_ingreso ); // Fecha de Finalizacion
                     }
                     
                     //Instanciamos de la Clase TblDireccionesSreci                        
@@ -1005,8 +1006,7 @@ class IngresoCorrespondenciaController extends Controller{
                     
                     $correspondenciaNew->setDescCorrespondenciaEnc($desc_correspondencia);                    
                     $correspondenciaNew->setObservaciones($observacion_correspondencia); 
-                    $correspondenciaNew->setFechaIngreso($fecha_ingreso);
-                    $correspondenciaNew->setFechaIngreso($fecha_ingreso);
+                    $correspondenciaNew->setFechaIngreso($fecha_ingreso);                    
                     $correspondenciaNew->setFechaModificacion($fecha_null);
                     $correspondenciaNew->setFechaFinalizacion($fecha_null);
                     
@@ -1087,6 +1087,7 @@ class IngresoCorrespondenciaController extends Controller{
                     // Si la Comuniacion es Sin Seguimiento la Hora de Finalizacion es la Misma que la de la Ingreso
                     if( $estado->getIdEstado() == 5 ){
                         $correspondenciaNew->setHoraFinalizacion( $hora_ingreso ); // Hora de Finalizacion
+                        $correspondenciaNew->setFechaFinalizacion( $fecha_ingreso ); // Fecha de Finalizacion
                     }
                     
                     //Instanciamos de la Clase TblDireccionesSreci                        

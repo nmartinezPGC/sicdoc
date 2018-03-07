@@ -39,13 +39,13 @@ export class AgregarDocumentosService {
   * Comunicacion
   *****************************************************/
   buscaComunicacion( busca_comunicacion ){
-    let json = JSON.stringify( busca_comunicacion );
-    let params = "json=" + json + "&authorization=" + this.getToken();
-    //console.log(json);
-    let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+     let json = JSON.stringify( busca_comunicacion );
+     let params = "json=" + json + "&authorization=" + this.getToken();
+     //console.log(json);
+     let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
-  return this._http.post(this.url + "/mantenimientos/busca-comunicacion", params, { headers:headers }).map( res => res.json());
-} // FIN | FND-00001
+    return this._http.post(this.url + "/mantenimientos/busca-comunicacion", params, { headers:headers }).map( res => res.json());
+  } // FIN | FND-00001
 
 
 
@@ -65,6 +65,23 @@ export class AgregarDocumentosService {
 
     return this._http.post(this.url + "/documentos/listar-documentos", params, { headers:headers }).map( res => res.json());
   } // FIN | FND-00002
+
+
+  /*********************************************************
+  * Funcion: FND-00003                                     *
+  * Fecha: 07-03-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API ( /documentos/subir-documentos-comunicacion ).*
+  * Objetivo: Ingresar nuevos Documentos                   *
+  *********************************************************/
+  registerDocumentos( documentos_to_register ){
+      let json = JSON.stringify( documentos_to_register );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+    return this._http.post(this.url + "/documentos/subir-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00003
 
 
 

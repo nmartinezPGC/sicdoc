@@ -39,11 +39,13 @@
                       Ingresa el No. Interno de Comunicación
                   </small>
                   <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
-                         placeholder="No. de Comunicacion" (keyup.enter)="buscaComunicacion()" autofocus="true"
+                         placeholder="No. de Comunicacion" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
                          ngControl="codCorrespondencia" [(ngModel)]="_documentModel.codCorrespondencia" required >
 
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número Interno de la Comunicación</small>
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
+                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
                   <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" >
-                  <!-- <small class="form-text text-muted" *ngIf="codigoComunicacion.errors?.required" >Debes ingresar el código de la Comunicacion</small> -->
               </div>
             </div>
 
@@ -98,9 +100,18 @@
             </div>
 
             <hr class="colorgraph">
-            <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" >
-            <input type="button" value="Agregar Documentos" data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" tabindex="18"
-                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
+            <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->
+            <button type="button" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
+              <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
+              Limpiar
+            </button>
+            <!-- <input type="button" value="Agregar Documentos ..." data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" id="boton" tabindex="18"
+                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" > -->
+            <button class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
+                [disabled]="!documentosComForm.valid" style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
+              <img src="assets/icons/comunicacion/open-folder-with-document.png" alt="Cargando imagen">
+              Agregar Documentos ...
+            </button>
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
@@ -185,7 +196,7 @@
                                <tbody >
                                  <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
                                            <td>{{ homeFormIndex + 1 }}</td>
-                                           <td class="text-center">{{ suchnewrow.nombreDoc }}</td>
+                                           <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
                                            <td class="text-center" >{{ suchnewrow.extDoc }}</td>
                                            <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
                                            <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
@@ -196,12 +207,12 @@
                                                alt="Cargando Imagen ..." ></a>
                                            </td>
                                            <td class="text-center">
-                                             <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+                                             <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
                                                <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
-                                             </a>
-                                               <!-- <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
-                                                   class="btn btn-danger" style="padding: 2px">
-                                                 Borrar</button> -->
+                                             </a> -->
+                                               <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                                   class="btn btn-danger" style="padding: 2px; cursor:pointer;">
+                                                 Borrar</button>
                                            </td>
                                    </tr>
                                </tbody>

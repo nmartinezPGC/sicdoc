@@ -30,3 +30,9 @@ documento_borrarDocumentoServer:
     path: /borrar-documento-server
     defaults: { _controller: "AppBundle:Documentos:borrarDocumentoServer" }
     methods: POST
+
+documento_subirDocumentosComunicacion:
+    path: /subir-documentos-comunicacion
+    defaults: { _controller: "AppBundle:Documentos:subirDocumentosComunicacion" }
+    methods: POST
+    

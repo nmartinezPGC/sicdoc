@@ -122,7 +122,7 @@
                         <h4 class="card-header">F. Ingreso</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
-                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaIngreso | date :'dd-MMM-yyyy' }}</p>
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaIngreso | date :'dd-MM-yyyy' }}</p>
                           <!-- <br> -->
                         </div>
                       </div>
@@ -130,7 +130,7 @@
                         <h4 class="card-header">F. Entrega</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
-                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaEntrega | date :'dd-MMM-yyyy' }}</p>
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaEntrega | date :'dd-MM-yyyy' }}</p>
                           <!-- <br> -->
                         </div>
                       </div>
@@ -138,7 +138,7 @@
                         <h4 class="card-header">F. Modificación</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
-                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaModificacion | date :'dd-MMM-yyyy' }}</p>
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaModificacion | date :'dd-MM-yyyy' }}</p>
                           <!-- <br> -->
                         </div>
                       </div>
@@ -146,7 +146,7 @@
                         <h4 class="card-header">F. Finalización</h4>
                         <div class="card-block">
                           <!-- <h4 class="card-title">Special title treatment</h4> -->
-                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaFinalizacion | date :'dd-MMM-yyyy' }}</p>
+                          <p style="margin-left:10px">{{ tableSeguimientoActividadList.fechaFinalizacion | date :'dd-MM-yyyy' }}</p>
                           <!-- <br> -->
                         </div>
                       </div>
@@ -334,7 +334,7 @@
                       {{ item.descripcionEstado }}</td>
                     <td style="width:220px">{{ item.codCorrespondenciaDet }}</td>
                     <td>{{ item.codReferenciaSreci }}</td>
-                    <td style="width:100px">{{ item.fechaSalida | date :'dd-MMM-yyyy' }}</td>
+                    <td style="width:100px">{{ item.fechaSalida | date :'dd-MM-yyyy' }}</td>
                     <td>{{ item.nombre1Funcionario }} {{ item.apellido1Funcionario }}</td>
                     <td>{{ item.actividadRealizar }}</td>
                     <td>{{ item.descCorrespondenciaDet }}</td>
@@ -369,8 +369,8 @@
                     <tr *ngFor="let item of JsonOutgetlistaDocumentos; let i = index">
                       <th scope="row">{{ i + 1 }}</th>
                       <td>{{ item.codDocumento }}</td>
-                      <td>{{ item.fechaIngreso | date :'dd-MMM-yyyy' }}</td>
-                      <td>{{ item.urlDocumento }}</td>
+                      <td>{{ item.fechaIngreso | date :'dd-MM-yyyy' }}</td>
+                      <td>{{ item.descDocumento }}</td>
                       <td>
                         <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
                           href="{{ urlComplete + item.urlDocumento }}" target="_blank">

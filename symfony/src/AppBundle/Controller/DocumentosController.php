@@ -580,18 +580,21 @@ class DocumentosController extends Controller{
     
     
     
-    /* Funcion de Subir Documentos desde Ventana *******************************
-     * Parametros:                                                             *
+    /* Funcion de Subir Documentos desde Ventana **************************************
+     * Parametros:                                                                    *
      * @Route("/subir-documentos-comunicacion", name="subir-documentos-comunicacion") * 
-     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
-     *     Informacion.                                                        * 
-     * 2 ) Lista los docuemntos segun parametro ( arrayDocumentos )            *
-     * 3 ) Ruta = /documentos/subir-documentos-comunicacion                    * 
-     ***************************************************************************/
-    public function subirDocumentosComunicacionAction(){
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la                 *  
+     *     Informacion.                                                               * 
+     * 2 ) Lista los docuemntos segun parametro ( arrayDocumentos )                   *
+     * 3 ) Ruta = /documentos/subir-documentos-comunicacion                           *  
+     **********************************************************************************/
+    public function subirDocumentosComunicacionAction(Request $request){
         date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
         //Recoger el Hash
         //Recogemos el Hash y la Autrizacion del Mismo
         $hash = $request->get("authorization", null);
@@ -604,16 +607,13 @@ class DocumentosController extends Controller{
             //Convertimos los Parametros POSt a Json
             $json = $request->get("json", null);
             
-            
-            
             //Comprobamos que Json no es Null
             if ($json != null) {
                 $params = json_decode($json);
                 
                 //Parametros a Convertir                           
                 //Datos generales de la Tabla
-                $cod_correspondencia =  ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;  
-                
+                $cod_correspondencia =  ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;                  
                 
                 $desc_correspondencia = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
                 $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;
@@ -644,19 +644,17 @@ class DocumentosController extends Controller{
                
                 
                 // Ruta del Pdf a Subir
-                $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
-                            
-                // 2018-02-13
-                $subDir_send = ($params->subDireccionesSreciAcom != null) ? $params->subDireccionesSreciAcom : null ;
-                
-                // 2018-02-19 | Comunicaciones Vinculantes al Tema
-                $comVinculante_send = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
+                $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;                                           
                 
                 // idUsario que tendra asignado el Oficio
                 $id_usuario_asignado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
+                //$id_usuario_asignado = $identity->sub;
+                
+                // Justificacion de los Documentos
+                $justifacion_documentos = ($params->justificacionNewDocs != null) ? $params->justificacionNewDocs : null ;
                 
                 
-                // **********************************************************************************************************************
+                // *******************************************************************************************************************************
                 // Ingresamos los Datos a la Tabla TblEncabezadosDet **********
                 //Seteo del nuevo secuencial de la tabla: TblCorrespondenciaDet
                 // ************************************************************
@@ -666,11 +664,12 @@ class DocumentosController extends Controller{
                 //Correspondencia Enc **********************************                        
                 $correspondenciaDet->setCodCorrespondenciaDet($cod_correspondencia_det . "-" . $new_secuencia_det); //Set de Codigo Correspondencia
                 $correspondenciaDet->setFechaIngreso($fecha_ingreso); //Set de Fecha Ingreso
-                $correspondenciaDet->setFechaSalida($fecha_null); //Set de Fecha Salida
+                $correspondenciaDet->setFechaSalida($fecha_ingreso); //Set de Fecha Salida
 
                 $correspondenciaDet->setCodReferenciaSreci($cod_referenciaSreci); //Set de Codigo Ref SRECI
 
-                $correspondenciaDet->setDescCorrespondenciaDet("Anexos de Documentos a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion
+                //$correspondenciaDet->setDescCorrespondenciaDet("Anexos de Documentos a Comunicación: " . $cod_correspondencia_det . "-" . $new_secuencia_det ); //Set de Descripcion
+                $correspondenciaDet->setDescCorrespondenciaDet( $justifacion_documentos ); //Set de Descripcion
 
                 //Instanciamos de la Clase TblEstados                        
                 $estadoDet = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
@@ -729,8 +728,7 @@ class DocumentosController extends Controller{
                 $em->persist($secuenciaNew);
 
                 //Realizar la actualizacion en el storage de la BD
-                $em->flush();
-                                                               
+                $em->flush();                                                               
                 
                     // Ingresamos los Datos a la Tabla TblDocumentos *******
                     //Seteo del nuevo documentos de la tabla: TblDocumentos
@@ -769,11 +767,10 @@ class DocumentosController extends Controller{
                             // Instancia del Doctrine de la Tabla Documentos
                             $documentosIn = new TblDocumentos();
 
-                            //$documentosIn->setCodDocumento($cod_correspondencia . "-" . $new_secuencia); //Set de Codigo Documento
+                            // Datos a Incluir de la Tabla
                             $documentosIn->setCodDocumento($nameDoc); //Set de Codigo Documento
-                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
-
-                            //$documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
+                            $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso                           
+                            
                             $documentosIn->setDescDocumento($nombreDoc); //Set Documento Desc / 2018-02-28
                             $documentosIn->setStatus("LOAD"); //Set Documento Desc
 
@@ -796,7 +793,7 @@ class DocumentosController extends Controller{
                             // Encabezado  *********************************
                             $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
                                 array(
-                                    "codCorrespondenciaEnc" => $cod_correspondencia . "-" . $new_secuencia
+                                    "codCorrespondenciaEnc" => $cod_correspondencia
                                 ));
                             $documentosIn->setIdCorrespondenciaEnc($id_correspondencia_enc_docu); //Set de Id Correspondencia Enc
 
@@ -811,9 +808,15 @@ class DocumentosController extends Controller{
                             $em->flush();
                         } // Fin de foreach                            
                     }
-                    // Fin de Grabacion de Documentos **********************            
-                
-                
+                    // Fin de Grabacion de Documentos **************************
+                    
+                    //Array de Mensajes
+                    $data = array(
+                        "status" => "success", 
+                        "code"   => 200, 
+                        "msg"    => "Se ha ingresado el Documento No. " . $nameDoc,
+                        //"data"   => $correspondenciaConsulta
+                    );
             }else {
                 //Array de Mensajes
                 $data = array(
