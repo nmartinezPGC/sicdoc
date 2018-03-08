@@ -169,7 +169,7 @@ export class AgregarDocumentosComponent implements OnInit {
           "",
           "",
           "",
-          "", "");
+          "", "", "");
 
       // Iniciamos los Parametros de Sub Direcciones
       this.datosConsulta = {
@@ -201,7 +201,9 @@ export class AgregarDocumentosComponent implements OnInit {
       // Json de Documento a Borrar
       this.JsonOutgetListaDocumentosDelete = {
         "codDocument": "",
-        "extDocument": ""
+        "extDocument": "",
+        "indicadorExt": "",
+        "idCorrespondenciaDet": ""
       }
 
   } // FIN | ngOnInit()
@@ -213,7 +215,7 @@ export class AgregarDocumentosComponent implements OnInit {
   **********************************************************/
   onSubmit(forma:NgForm){
     // Envio de los Datos, a la API, con el fin de registrarlo en la BD
-
+    this.loading = "show";
 
     this._agregarDocumentosService.registerDocumentos( this._documentModel ).subscribe(
       response => {
@@ -233,6 +235,7 @@ export class AgregarDocumentosComponent implements OnInit {
             this.loading = 'hidden';
             this.ngOnInit();
 
+            //Cerramos el Loading
             this.closeModal("#closeModalFinCom");
             //Oculta el Div de Alerta despues de 3 Segundos
             setTimeout(function() {
@@ -253,8 +256,7 @@ export class AgregarDocumentosComponent implements OnInit {
                 $("#alertError").fadeOut(1500);
             },3000);
 
-
-
+            //Ocultamos el Loading
             if(this.loading = 'show'){
               this.loading = 'hidden';
             }
@@ -528,13 +530,14 @@ export class AgregarDocumentosComponent implements OnInit {
    //Modificacion; Cuando la extencion es PDF => pdf
      if( this.extencionDocumento == "PDF" ){
        this.extencionDocumento = "pdf";
-     }else if( this.extencionDocumento == "jpg" ) {
+     }else if( this.extencionDocumento == "jpg" || this.extencionDocumento == "JPG" ) {
        this.extencionDocumento = "jpeg";
      }
 
    // Seteamos el valore del Nombre del Documento
    // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
-   let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
+   // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
+   let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
    // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
    codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
 
@@ -577,9 +580,10 @@ export class AgregarDocumentosComponent implements OnInit {
     if( this._documentModel.descCorrespondencia == null || this._documentModel.descCorrespondencia == '' ){
       alert('Debes de buscar la Comunicación antes de Ingresar mas Documentos');
       this.closeModal("#closeModalFinCom");
+      return -1;
     }
 
-    // Condicion del Secuencial Segun el Tipo de Documento
+    //Condicion del Secuencial Segun el Tipo de Documento
     //Evaluamos el valor del Tipo de Documento
     // Iniciamos los Parametros de Secuenciales | Agregar Actividad
     this.paramsSecuenciaActividadAgregar = {
@@ -615,7 +619,7 @@ export class AgregarDocumentosComponent implements OnInit {
              // Lo enviamos al Model de la Clase
              this._documentModel.secuenciaComunicacionDet = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
              this._documentModel.codCorrespondenciaDet = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
-             console.log( this.JsonOutgetCodigoSecuenciaActividadAgregar );
+             console.log( this._documentModel.codCorrespondenciaDet );
 
              // Hide Loading
              this.loading_table = "hide";
@@ -637,7 +641,8 @@ export class AgregarDocumentosComponent implements OnInit {
     this._documentModel.pdfDocumento = "";
 
     // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
-    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
+    // Indicador = 1; ya que lleva la Externcion del Documento
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn, 1);
     console.log(this.JsonOutgetListaDocumentosNew);
   } // FIN | FND-00018
 
@@ -648,15 +653,48 @@ export class AgregarDocumentosComponent implements OnInit {
   * Descripcion: Delete de nuevo File input, en Tabla
   * ( deleteRowHomeFormSelect ).
   ******************************************************/
-  deleteRowHomeFormSelect(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
-    // Borra el Elemento al Json
-    this.JsonOutgetListaDocumentosHist.splice(homeFormIndex,1);
-    this.changeDetectorRef.detectChanges();
-    //this._documentModel.pdfDocumento = "";
+  deleteRowHomeFormSelect(codDocumentoIn:string, urlDocumentoIn:string, idCorrespondenciaDetIn:number){
+    // Confirmacion de la Accion de Borrado de Documento
+    let confirmaPeticion = confirm('Estas Seguro de Borrar el Documento?');
+    if( confirmaPeticion == false ){
+      return -1;
+    }
+    //Loader
+    this.loading = "show";
+    //Llamar al metodo, de Login para Obtener la Identidad
+    // Agrega Items al Json
 
-    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
-    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
-    console.log(this.JsonOutgetListaDocumentosHist);
+    this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.extDocument = urlDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.indicadorExt = 2;
+    this.JsonOutgetListaDocumentosDelete.idCorrespondenciaDet = idCorrespondenciaDetIn;
+
+    // Solicitud del Servicio de la Busqueda
+    this._agregarDocumentosService.deleteDocumentos( this.JsonOutgetListaDocumentosDelete ).subscribe(
+        response => {
+          //alert(response.status);
+          this.statusConsultaCom = response.status;
+
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            alert(response.msg);
+
+            // Oculatamos el Loader
+            this.loading = "hide";
+          }else{
+            // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+            this.borrarDocumentoServer(codDocumentoIn, urlDocumentoIn, 2);
+
+            // Listado de Documentos Actualizdo
+            $("#newTable").children().remove();
+            this.getlistaDocumentosTable();
+
+            // Ocultamos el Loader
+            this.loading = "hide";
+            //Mensaje de alerta del error en cuestion
+            alert(response.msg);
+          }
+        });
   } // FIN | FND-00018.1
 
 
@@ -667,18 +705,22 @@ export class AgregarDocumentosComponent implements OnInit {
   * Servidor
   * metodo ( borrar-documento-server ).
   ******************************************************/
-  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string, indicadorExt:number) {
     //Llamar al metodo, de Login para Obtener la Identidad
     // Agrega Items al Json
     this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
 
     // Cambiamos la Extencion si es jpg
-    if( extDocumentoIn == "jpg" ){
+    if( extDocumentoIn == "jpg" || extDocumentoIn == "JPG" ){
       extDocumentoIn = "jpeg";
+    }else if ( extDocumentoIn == "PNG" ){
+      extDocumentoIn = "png";
     }
 
     this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.indicadorExt = indicadorExt;
 
+    //Ejecucion del Servicio de Borrar Documento del Servidor
     this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
         response => {
           // login successful so redirect to return url

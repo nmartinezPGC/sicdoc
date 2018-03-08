@@ -55,8 +55,10 @@ export class AgregarDocumentoModel{
       // Sub Direcciones SRECI
       public subDireccionesSreciAcom,
 
-      public justificacionNewDocs:string
+      public justificacionNewDocs:string,
 
+      // Documento a Borrar
+      public codDocumentoBorar:string
 
     ){}
 

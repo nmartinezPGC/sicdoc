@@ -36,3 +36,8 @@ documento_subirDocumentosComunicacion:
     defaults: { _controller: "AppBundle:Documentos:subirDocumentosComunicacion" }
     methods: POST
     
+documento_borrarDocumentosComunicacion:
+    path: /borrar-documentos-comunicacion
+    defaults: { _controller: "AppBundle:Documentos:borrarDocumentosComunicacion" }
+    methods: POST
+    

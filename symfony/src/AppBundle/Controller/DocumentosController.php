@@ -412,8 +412,7 @@ class DocumentosController extends Controller{
      ***************************************************************************/
     public function listaDocumentosAction(Request $request)
     {   
-        //Seteo de variables Globales
-        ini_set('memory_limit', '512M');
+        //Seteo de variables Globales        
         date_default_timezone_set('America/Tegucigalpa');
         
         //Instanciamos el Servicio Helpers y Jwt
@@ -442,7 +441,7 @@ class DocumentosController extends Controller{
             
             $query = $em->createQuery('SELECT doc.idDocumento, doc.codDocumento, doc.descDocumento, doc.urlDocumento, '
                                     ."DATE_SUB(doc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(doc.fechaModificacion, 0, 'DAY') AS fechaModificacion, "
-                                    . 'p.idUsuario '
+                                    . 'p.idUsuario, d.idCorrespondenciaDet, c.idCorrespondenciaEnc '
                                     . 'FROM BackendBundle:TblDocumentos doc '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = doc.idUsuario '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaDet = doc.idCorrespondenciaDet '
@@ -514,16 +513,29 @@ class DocumentosController extends Controller{
             //Recogemos el ID de Comunicacion Enc ******************************
             $cod_correspondencia = (isset($params->codDocument)) ? $params->codDocument : null;
             $ext_documento = (isset($params->extDocument)) ? $params->extDocument : null;
+            $indicador_borrado = (isset($params->indicadorExt)) ? $params->indicadorExt : null;
             
             $ruta = "uploads/correspondencia/";
             //$documento_id = $id;
             // Validamos que el Codigo no venga Null
-            if( $cod_correspondencia != null || $cod_correspondencia != 0 ){  
-                $path = pathinfo( $cod_correspondencia.".".$ext_documento );
-                $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia.".".$ext_documento );
+            if( $cod_correspondencia != null || $cod_correspondencia != 0 ){
+                // Evalua si el Indicador de Borrado es = 1; es con Extencion
+                // Si es = 2 viene toda la Url
+                if( $indicador_borrado == 1 ){
+                    // Seteo del Patht y la Informacion del Documento
+                    $path = pathinfo( $cod_correspondencia.".".$ext_documento );
+                    $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia.".".$ext_documento );
+
+                    $path_of_file = $ruta.$cod_correspondencia.".".$ext_documento;                    
+                }else if ( $indicador_borrado == 2 ){
+                    // Seteo del Path del Documento
+                    $path = pathinfo( $ext_documento );
+                    $nombre_de_archivo_anterior = pathinfo( $ext_documento );
+
+                    $path_of_file = $ruta.$ext_documento;                   
+                }
                 
-                $path_of_file = $ruta.$cod_correspondencia.".".$ext_documento;
-                
+                // Inicio de Opcion
                 $opt = 0;
                 // Verifiacion si el Documento Existe **************************               
                 //if (file_exists($path_of_file)){
@@ -710,6 +722,7 @@ class DocumentosController extends Controller{
                         "codSecuencial"  => $cod_correspondencia_det                        
                     ));
 
+                    //var_dump($id_usuario_asignado);
                 // Evalua que el valor2 de la Consulta no sea Mayor al Enviado
                 $secuenciaActDet = $secuenciaNew->getValor2();
                 if( $secuenciaActDet > $new_secuencia_det ){
@@ -719,7 +732,6 @@ class DocumentosController extends Controller{
                     $secuenciaNew->setValor2( $new_secuencia_det ); //Set de valor2 de Secuencia de Comunicacion
                     $secuenciaNew->setReservada("N"); //Set de Reservada de Secuencia de Comunicacion
                 }
-
                 
                 // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                 $em->persist($correspondenciaDet);
@@ -814,7 +826,7 @@ class DocumentosController extends Controller{
                     $data = array(
                         "status" => "success", 
                         "code"   => 200, 
-                        "msg"    => "Se ha ingresado el Documento No. " . $nameDoc,
+                        "msg"    => "Se han ingresado el/los Documentos Exitosamente ",
                         //"data"   => $correspondenciaConsulta
                     );
             }else {
@@ -836,5 +848,112 @@ class DocumentosController extends Controller{
         return $helpers->parserJson($data);
     } // FIN
     
+    
+    
+    /* Funcion de Subir Documentos desde Ventana **************************************
+     * Parametros:                                                                    *
+     * @Route("/borrar-documentos-comunicacion", name="borrar-documentos-comunicacion") * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la                 *  
+     *     Informacion.                                                               * 
+     * 2 ) Lista los docuemntos segun parametro ( codDocument )                       *
+     * 3 ) Ruta = /documentos/borrar-documentos-comunicacion                          *  
+     **********************************************************************************/
+    public function borrarDocumentosComunicacionAction(Request $request){
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            $identity = $helpers->authCheck($hash, true);
+            
+            //Convertimos los Parametros POSt a Json
+            $json = $request->get("json", null);
+            
+            //Comprobamos que Json no es Null
+            if ($json != null) {
+                $params = json_decode($json);
+                
+                //Parametros a Convertir                           
+                //Datos generales de la Tabla
+                $cod_documento_del =  ($params->codDocument != null) ? $params->codDocument : null ;                                                                  
+                $id_correspondencia_det =  ($params->idCorrespondenciaDet != null) ? $params->idCorrespondenciaDet : null ;                                                                  
+                                
+                // INI de Grabacion de Documentos ******************************
+                // Buscamos el Documento con el Parametro enviado
+                //Instanciamos de la Clase TblDocumentos  **********************
+                $documento_borrarBD = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
+                    array(
+                       "codDocumento" => $cod_documento_del           
+                    ));                    
+                $em->remove( $documento_borrarBD ); //Borramos el Documento
+                
+                $flush = $em->flush();
+                
+                if ($flush == null) {
+                    //Buscamos si tiene mas Detalle la Tabla de Documentos
+                    $detalle_comunicacion = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
+                    array(
+                       "idCorrespondenciaDet" => $id_correspondencia_det
+                    ));   
+                    
+                    //Contamos Cuantas Acciones de Documentos tiene ese Detalle
+                    if( count($detalle_comunicacion) == 0 ){
+                        //Buscamos si tiene mas Detalle la Tabla de Documentos
+                        // INI Borrar Detalle Correspondencia
+                        $act_detalle_comunicacion = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
+                        array(
+                           "idCorrespondenciaDet" => $id_correspondencia_det
+                        ));
+                        
+                        $em->remove( $act_detalle_comunicacion );
+                        
+                        $flush = $em->flush();
+                    }
+                    
+                    // Fin de Borrar Detalle Correspondencia
+                    
+                    //Array de Mensajes
+                    $data = array(
+                        "status" => "success", 
+                        "code"   => 200, 
+                        "msg"    => "Se ha Borrado el Documento Exitosamente ",
+                        //"data"   => $correspondenciaConsulta
+                    );
+                } else {
+                    //Array de Mensajes
+                    $data = array(
+                        "status" => "error", 
+                        "code"   => 400, 
+                        "msg"    => "No se ha Borrado el Documento, intentalo de nuevo ... ",
+                        //"data"   => $correspondenciaConsulta
+                    );
+                }                 
+                // FIN de Grabacion de Documentos ******************************
+            }else {
+                //Array de Mensajes
+                $data = array(
+                   "status" => "error", 
+                   "code"   => 400, 
+                   "msg"   => "Documento no Creado, parametros invalidos !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",                
+                "code" => "400",                
+                "msg" => "Autorizacion de Token no valida, tu sessión ha caducado !!"                
+            );
+        }
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);       
+    }// FIN
     
 }

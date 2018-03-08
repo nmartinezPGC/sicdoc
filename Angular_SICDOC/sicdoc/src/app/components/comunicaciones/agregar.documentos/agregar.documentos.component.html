@@ -107,11 +107,11 @@
             </button>
             <!-- <input type="button" value="Agregar Documentos ..." data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" id="boton" tabindex="18"
                     [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" > -->
-            <button class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
-                [disabled]="!documentosComForm.valid" style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
+            <a class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
+                 style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
               <img src="assets/icons/comunicacion/open-folder-with-document.png" alt="Cargando imagen">
               Agregar Documentos ...
-            </button>
+            </a>
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
@@ -133,7 +133,7 @@
 
                   <div class="modal-body">
                     <!-- Formulario del Oficio Asignado -->
-                      <form #sendDocumentosCom="ngForm" (ngSubmit)="onSubmit(sendDocumentosCom, 1)" name="sendDocumentosCom" role="form">
+                      <form #sendDocumentosCom="ngForm" (ngSubmit)="onSubmit(sendDocumentosCom)" name="sendDocumentosCom" role="form">
                         <!-- fila 1 del Formulario -->
                         <h4>Agregar Documentos a Comunicación | SICDOC</h4>
                         <hr class="colorgraph">
@@ -225,9 +225,15 @@
 
                         <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
                         <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
-                        <button class="btn btn-success" type="submit" [disabled]="!sendDocumentosCom.valid" style="cursor: pointer">Guardar</button>
+                        <button class="btn btn-success" type="submit" [disabled]="!sendDocumentosCom.valid" style="cursor: pointer">
+                           <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando Imagen">
+                          Guardar Documentos
+                        </button>
                         <button  type="button" id="closeModalFinCom"
-                                class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">Cerrar</button>
+                                class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">
+                          <img src="assets/icons/comunicacion/close.png" alt="">
+                         Cerrar
+                        </button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->
@@ -263,11 +269,10 @@
             <td class="text-center">
               <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5"
                 href="{{ urlComplete + item.urlDocumento }}" target="_blank">
-                  <!-- <i class="material-icons">photo</i> -->
                   <img src="assets/icons/comunicacion/cloud-download.png"  title="Ver Documento"  alt="Cargando Tareas">
               </a>
 
-              <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+              <a style="cursor: pointer;" (click)="deleteRowHomeFormSelect( item.codDocumento, item.urlDocumento, item.idCorrespondenciaDet )">
                 <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
               </a>
 

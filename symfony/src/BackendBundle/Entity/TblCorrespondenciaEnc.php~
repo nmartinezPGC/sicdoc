@@ -790,4 +790,62 @@ class TblCorrespondenciaEnc
     {
         return $this->comunicacionVinculante;
     }
+    /**
+     * @var \DateTime
+     */
+    private $horaIngreso;
+
+    /**
+     * @var \DateTime
+     */
+    private $horaFinalizacion;
+
+
+    /**
+     * Set horaIngreso
+     *
+     * @param \DateTime $horaIngreso
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setHoraIngreso($horaIngreso)
+    {
+        $this->horaIngreso = $horaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get horaIngreso
+     *
+     * @return \DateTime
+     */
+    public function getHoraIngreso()
+    {
+        return $this->horaIngreso;
+    }
+
+    /**
+     * Set horaFinalizacion
+     *
+     * @param \DateTime $horaFinalizacion
+     *
+     * @return TblCorrespondenciaEnc
+     */
+    public function setHoraFinalizacion($horaFinalizacion)
+    {
+        $this->horaFinalizacion = $horaFinalizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get horaFinalizacion
+     *
+     * @return \DateTime
+     */
+    public function getHoraFinalizacion()
+    {
+        return $this->horaFinalizacion;
+    }
 }

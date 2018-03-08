@@ -1,0 +1,65 @@
+BackendBundle\Entity\TblBitacoraBorradoDocumentos:
+    type: entity
+    table: tbl_bitacora_borrado_documentos
+    indexes:
+        IDX_9E5EA3DFFCF8192D:
+            columns:
+                - id_usuario
+        IDX_9E5EA3DF603C5679:
+            columns:
+                - id_correspondencia_enc
+    id:
+        idDocumentoBorrado:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_documento_borrado
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descDocumento:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: desc_documento
+        justificacionBorrado:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: justificacion_borrado
+        fechaBorrado:
+            type: date
+            nullable: true
+            column: fecha_borrado
+        horaBorrado:
+            type: time
+            nullable: true
+            column: hora_borrado
+    manyToOne:
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idCorrespondenciaEnc:
+            targetEntity: TblCorrespondenciaEnc
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_enc:
+                    referencedColumnName: id_correspondencia_enc
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

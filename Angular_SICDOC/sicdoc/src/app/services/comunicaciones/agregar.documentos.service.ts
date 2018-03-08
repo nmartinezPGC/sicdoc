@@ -84,6 +84,22 @@ export class AgregarDocumentosService {
   } // FIN : FND-00003
 
 
+  /*********************************************************
+  * Funcion: FND-00004                                     *
+  * Fecha: 08-03-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API ( /documentos/borrar-documentos-comunicacion ).*
+  * Objetivo: Ingresar nuevos Documentos                   *
+  *********************************************************/
+  deleteDocumentos( documentos_to_delete ){
+      let json = JSON.stringify( documentos_to_delete );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+    return this._http.post(this.url + "/documentos/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00003
+
 
   /****************************************************
   * Funcion: FND-00003
