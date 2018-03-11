@@ -670,7 +670,7 @@ class ListasComunesController extends Controller {
      * @since 1.0
      * Funcion: FND00008
      */
-    public function tipoDocumentoListAction(Request $request)
+    public function tipoDocumentoListAction(Request $request, $activo = null )
     {
         date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers y Jwt
@@ -678,18 +678,43 @@ class ListasComunesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        // Query para Obtener todos los Estados de la Tabla: TblEstados
-        $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
-                array(
-                    "activo" => TRUE
-                )
-            );
+        $opt = 0;
+        
+        $actDocument = $request->get("activo", null);
+        
+        //Seleccionamos el Caso de Busqueda
+        switch ( $actDocument ){
+            case 1:
+                    // Query para Obtener todos los Estados de la Tabla: TblTipoDocumento
+                    // Con parametro de Tipo de Documento
+                    $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
+                        array(
+                            "activo" => TRUE,
+                            "actSalida" => TRUE
+                        ),array("idTipoDocumento" => "ASC")
+                    );
+                $opt = 1;
+                break;                
+            default :
+                    // Query para Obtener todos los Estados de la Tabla: TblTipoDocumento
+                    // Sin Parametros
+                    $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
+                        array(
+                            "activo" => TRUE
+                        ),array("idTipoDocumento" => "ASC")
+                    );
+                $opt = 2;
+                break;
+        } // Fin de Switch
+        
         
         // Condicion de la Busqueda
         if (count($tipo_documento) >= 1 ) {
             $data = array(
                 "status" => "success",
                 "code"   => 200,
+                "opt"    => $opt,
+                "activo" => $activo,
                 "data"   => $tipo_documento
             );
         }else {

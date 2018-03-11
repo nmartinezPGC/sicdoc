@@ -2,12 +2,12 @@ BackendBundle\Entity\TblBitacoraBorradoDocumentos:
     type: entity
     table: tbl_bitacora_borrado_documentos
     indexes:
-        IDX_9E5EA3DFFCF8192D:
-            columns:
-                - id_usuario
         IDX_9E5EA3DF603C5679:
             columns:
                 - id_correspondencia_enc
+        IDX_9E5EA3DFFCF8192D:
+            columns:
+                - id_usuario
     id:
         idDocumentoBorrado:
             type: integer
@@ -42,16 +42,6 @@ BackendBundle\Entity\TblBitacoraBorradoDocumentos:
             nullable: true
             column: hora_borrado
     manyToOne:
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
         idCorrespondenciaEnc:
             targetEntity: TblCorrespondenciaEnc
             cascade: {  }
@@ -61,5 +51,15 @@ BackendBundle\Entity\TblBitacoraBorradoDocumentos:
             joinColumns:
                 id_correspondencia_enc:
                     referencedColumnName: id_correspondencia_enc
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

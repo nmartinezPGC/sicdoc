@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray,FormBuilder, FormControl, Validators } from '@angular/forms';
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
-import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload'; // Liberia de Documentos
+//import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload'; // Liberia de Documentos
 
 // Lirerias para el AutoComplete
 import {Observable} from 'rxjs/Observable';
@@ -39,7 +39,7 @@ const URL = 'http://localhost/sicdoc/symfony/web/app_dev.php/web/uploads/corresp
 })
 export class AgregarDocumentosComponent implements OnInit {
   // Propiedades de la Clase
-  public uploader:FileUploader = new FileUploader({url: URL});
+  //public uploader:FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver:boolean = false;
   public hasAnotherDropZoneOver:boolean = false;
 
@@ -203,7 +203,9 @@ export class AgregarDocumentosComponent implements OnInit {
         "codDocument": "",
         "extDocument": "",
         "indicadorExt": "",
-        "idCorrespondenciaDet": ""
+        "idCorrespondenciaDet": "",
+        "idCorrespondenciaEnc": "",
+        "descDocumento": ""
       }
 
   } // FIN | ngOnInit()
@@ -653,7 +655,8 @@ export class AgregarDocumentosComponent implements OnInit {
   * Descripcion: Delete de nuevo File input, en Tabla
   * ( deleteRowHomeFormSelect ).
   ******************************************************/
-  deleteRowHomeFormSelect(codDocumentoIn:string, urlDocumentoIn:string, idCorrespondenciaDetIn:number){
+  deleteRowHomeFormSelect(codDocumentoIn:string, urlDocumentoIn:string, descDocumentoIn:string,
+                          idCorrespondenciaDetIn:number, idCorrespondenciaEncIn:number){
     // Confirmacion de la Accion de Borrado de Documento
     let confirmaPeticion = confirm('Estas Seguro de Borrar el Documento?');
     if( confirmaPeticion == false ){
@@ -668,6 +671,8 @@ export class AgregarDocumentosComponent implements OnInit {
     this.JsonOutgetListaDocumentosDelete.extDocument = urlDocumentoIn;
     this.JsonOutgetListaDocumentosDelete.indicadorExt = 2;
     this.JsonOutgetListaDocumentosDelete.idCorrespondenciaDet = idCorrespondenciaDetIn;
+    this.JsonOutgetListaDocumentosDelete.idCorrespondenciaEnc = idCorrespondenciaEncIn;
+    this.JsonOutgetListaDocumentosDelete.descDocumento = descDocumentoIn;
 
     // Solicitud del Servicio de la Busqueda
     this._agregarDocumentosService.deleteDocumentos( this.JsonOutgetListaDocumentosDelete ).subscribe(

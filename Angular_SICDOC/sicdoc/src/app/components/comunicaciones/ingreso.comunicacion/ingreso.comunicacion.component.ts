@@ -721,7 +721,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   * ( tipo-documento-list ).
   ******************************************************/
     getlistaTipoDocumentos() {
-      this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+      this._listasComunes.listasComunes( "" ,"tipo-documento-list?activo=1").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
@@ -1245,7 +1245,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
         this.extencionDocumento = "pdf";
       }else if( this.extencionDocumento == "jpg" ) {
         this.extencionDocumento = "jpeg";
-      }    
+      }
 
      let sendParms = "json=" + "";
 

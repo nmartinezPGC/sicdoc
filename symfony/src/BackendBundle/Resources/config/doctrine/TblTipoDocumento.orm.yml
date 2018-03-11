@@ -40,4 +40,16 @@ BackendBundle\Entity\TblTipoDocumento:
         activo:
             type: boolean
             nullable: true
+        actIngreso:
+            type: boolean
+            nullable: true
+            options:
+                default: false
+            column: act_ingreso
+        actSalida:
+            type: boolean
+            nullable: true
+            options:
+                default: false
+            column: act_salida
     lifecycleCallbacks: {  }

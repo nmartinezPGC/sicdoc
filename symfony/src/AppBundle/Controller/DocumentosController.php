@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use BackendBundle\Entity\TblUsuarios;
 use BackendBundle\Entity\TblDocumentos;
 use BackendBundle\Entity\TblCorrespondenciaDet;
+use BackendBundle\Entity\TblBitacoraBorradoDocumentos;
 
 /*******************************************************************************
  * Description of DocumentosController                                         * 
@@ -884,7 +885,15 @@ class DocumentosController extends Controller{
                 //Parametros a Convertir                           
                 //Datos generales de la Tabla
                 $cod_documento_del =  ($params->codDocument != null) ? $params->codDocument : null ;                                                                  
-                $id_correspondencia_det =  ($params->idCorrespondenciaDet != null) ? $params->idCorrespondenciaDet : null ;                                                                  
+                $id_correspondencia_det =  ($params->idCorrespondenciaDet != null) ? $params->idCorrespondenciaDet : null ;  
+                $id_correspondencia_enc =  ($params->idCorrespondenciaEnc != null) ? $params->idCorrespondenciaEnc : null ;  
+                $desc_documento =  ($params->descDocumento != null) ? $params->descDocumento : null ;  
+                
+                $fecha_ingreso        = new \DateTime('now');
+                
+                $hora_ingreso = new \DateTime('now');            
+                $hora_ingreso->format('H:i');
+                
                                 
                 // INI de Grabacion de Documentos ******************************
                 // Buscamos el Documento con el Parametro enviado
@@ -898,6 +907,36 @@ class DocumentosController extends Controller{
                 $flush = $em->flush();
                 
                 if ($flush == null) {
+                    // Ingresamos la Botacora del Borrado
+                    // ************************************************************
+                    $bitacoraDeleter = new TblBitacoraBorradoDocumentos();
+
+                    //Ingresamos un valor en la Tabla **********************
+                    //Bitacora Borrao Documentos *******************************                        
+                    $bitacoraDeleter->setDescDocumento( $desc_documento ); //Set de Descripcion
+                    $bitacoraDeleter->setJustificacionBorrado( "Borrado desde la ventana ..." ); //Set de Descripcion
+                    $bitacoraDeleter->setFechaBorrado( $fecha_ingreso ); //Set de Fecha Borrado
+                    $bitacoraDeleter->setHoraBorrado( $hora_ingreso ); //Set de Fecha Salida
+                    
+                    //Buscamos El Usuario que lo Borra en la tabla Usuarios
+                    $usuarioDel = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                    array(
+                       "idUsuario" => $identity->sub
+                    ));
+                    $bitacoraDeleter->setIdUsuario( $usuarioDel ); //Set de Id de Usuario
+                    
+                    //Buscamos El Id de la CorrespondenciaEnc
+                    $correspondenciaEncDel = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                    array(
+                       "idCorrespondenciaEnc" => $id_correspondencia_enc
+                    ));
+                    $bitacoraDeleter->setIdCorrespondenciaEnc( $correspondenciaEncDel ); //Set de Id de Comunicacion
+                    
+                    //Persistencia de los Datos
+                    $em->persist( $bitacoraDeleter );
+                    $em->flush();
+                    
+                    //**********************************************************
                     //Buscamos si tiene mas Detalle la Tabla de Documentos
                     $detalle_comunicacion = $em->getRepository("BackendBundle:TblDocumentos")->findOneBy(
                     array(
