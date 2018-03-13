@@ -2,12 +2,12 @@ BackendBundle\Entity\TblDepartamentosFuncionales:
     type: entity
     table: tbl_departamentos_funcionales
     indexes:
-        fki_deptos_direcciones:
-            columns:
-                - id_direccion_sreci
         tbl_departamentos_funcionales_cod_depto_funcional_idx:
             columns:
                 - cod_depto_funcional
+        fki_deptos_direcciones:
+            columns:
+                - id_direccion_sreci
     uniqueConstraints:
         tbl_departamentos_funcionales_cod_depto_funcional_key:
             columns:

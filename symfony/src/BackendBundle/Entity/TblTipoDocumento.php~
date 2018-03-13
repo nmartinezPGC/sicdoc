@@ -138,4 +138,62 @@ class TblTipoDocumento
     {
         return $this->activo;
     }
+    /**
+     * @var boolean
+     */
+    private $actIngreso = false;
+
+    /**
+     * @var boolean
+     */
+    private $actSalida = false;
+
+
+    /**
+     * Set actIngreso
+     *
+     * @param boolean $actIngreso
+     *
+     * @return TblTipoDocumento
+     */
+    public function setActIngreso($actIngreso)
+    {
+        $this->actIngreso = $actIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get actIngreso
+     *
+     * @return boolean
+     */
+    public function getActIngreso()
+    {
+        return $this->actIngreso;
+    }
+
+    /**
+     * Set actSalida
+     *
+     * @param boolean $actSalida
+     *
+     * @return TblTipoDocumento
+     */
+    public function setActSalida($actSalida)
+    {
+        $this->actSalida = $actSalida;
+
+        return $this;
+    }
+
+    /**
+     * Get actSalida
+     *
+     * @return boolean
+     */
+    public function getActSalida()
+    {
+        return $this->actSalida;
+    }
 }
