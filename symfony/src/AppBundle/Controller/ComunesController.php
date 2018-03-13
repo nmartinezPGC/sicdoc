@@ -264,7 +264,7 @@ class ComunesController extends Controller {
                         "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
                         "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
                         //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
-                        "idDeptoFuncional"  => 4, // Depto Funcional (Direccion)
+                        "idDeptoFuncional"  => 7, // Depto Funcional (Direccion)
                         //"idDireccionSreci"  => $direccion_sreci, // Direccion SRECI
                         //"idTipoFuncionario"  => $id_tipo_funcionario, // Direccion SRECI
                         //"reservada"       => "N"
@@ -289,27 +289,6 @@ class ComunesController extends Controller {
                         "despacho"       => $despacho
                     ));
             }
-                        
-            // Query para Obtener todos la Secuencia de los Listados segun 
-            // Parametros de la Tabla: TblSecuenciales
-                /*$querySec = $em->createQuery('SELECT scom.valor1, scom.valor2, '
-                                    . 'scom.codSecuencial, scom.reservada, scom.idTipoDocumento '                                    
-                                    . 'FROM BackendBundle:TblSecuenciales scom '
-                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales depto WITH depto.idDeptoFuncional = scom.idDeptoFuncional '
-                                    . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH tdoc.idTipoDocumento = scom.idTipoDocumento '
-                                    . 'WHERE scom.idEstadoSecuencia = :idEstadoSec AND '
-                                    . 'scom.habilitada = :habilitada AND scom.tablaSecuencia = :tablaSecuencia AND '
-                                    . 'scom.idTipoDocumento = :idTipoDocumento AND ' 
-                                    . 'scom.idDeptoFuncional = :idDeptoFuncional AND ' 
-                                    . 'scom.codSecuencial = :codSecuencial ' )
-                    ->setParameter('idEstadoSec', 11)->setParameter('habilitada', TRUE)
-                    ->setParameter('idTipoDocumento', $tipo_documento )
-                    ->setParameter('tablaSecuencia', $tabla_secuencia)
-                    ->setParameter('idDeptoFuncional', $depto_funcional)
-                    ->setParameter('codSecuencial', $codigo_secuencia );
-                    
-                $secuencias = $querySec->getResult();*/
-            
             
             
             /* INC.00002 | 2018-02-06 ******************************************
@@ -482,6 +461,7 @@ class ComunesController extends Controller {
                     "msg"    => "Secuencia Encontrada",
                     "code"   => 200, 
                     "optSec" => $optSec,
+                    "sec"    => $sec,
                     "findSec" => $countSecuenciaComprometida,
                     //"data"   => $secuencias
                     "data"   => $data
