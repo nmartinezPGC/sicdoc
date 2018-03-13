@@ -468,13 +468,14 @@
 			<div class="row">
 				<div class="col-xs-12 col-md-4">
             <!-- <input type="submit" value="Guardar Comunicación" class="btn btn-primary btn-block btn-lg botoncontacto" tabindex="17" [disabled]="!ingresoComunicacionForm.valid"  > -->
-            <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="17" [disabled]="!ingresoComunicacionForm.valid">
+            <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="17"
+                  [disabled]="!ingresoComunicacionForm.valid" style="cursor:pointer" >
               <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
               Guardar Comunicación
             </button>
         </div>
 				<div class="col-xs-12 col-md-3">
-            <a [routerLink]="['/comunicacion/salida-de-comunicacion']" class="btn btn-success btn-block btn-lg"
+            <a [routerLink]="['/comunicacion/salida-de-comunicacion']" style="cursor:pointer" class="btn btn-success btn-block btn-lg"
                (click)="resetForm()" >
                  <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando Imagen">
                Limpiar

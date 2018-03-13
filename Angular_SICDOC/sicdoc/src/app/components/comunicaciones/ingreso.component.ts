@@ -403,10 +403,6 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaTipoInstituciones();
     this.getlistaDireccionesSRECI();
 
-
-    ///FIN prueba
-
-
     // Direcciones Acompañantes
     this.getlistaDireccionesSRECIAcom();
 
@@ -449,6 +445,13 @@ export class IngresoComunicacionComponent implements OnInit{
     // Llenamos la Lsita de Sub Direcciones despues de los Campos Default
     this.getlistaSubDireccionesSRECI();
 
+    // Limpiamos el Array de los Documentos
+    this.comunicacion.pdfDocumento = "";
+
+    this.JsonOutgetListaDocumentos = [];
+
+    //Borra el Contenido del Arreglo de Contactos
+    this.comunicacion.setTomail = "";
 
     // Llenamos la Lsita Funcionarios despues de los Campos Default
     // this.getlistaUsuariosAsinadosSRECI();
@@ -667,7 +670,7 @@ export class IngresoComunicacionComponent implements OnInit{
                 }
                 //alert(this.mensajes);
             }else{
-              //this.resetForm();
+              // this.resetForm();
               this.loading = 'hidden';
 
               this.ngOnInit();
@@ -781,6 +784,9 @@ export class IngresoComunicacionComponent implements OnInit{
    this.comunicacion.pdfDocumento = "";
 
    this.JsonOutgetListaDocumentos = [];
+
+   //Borra el Contenido del Arreglo de Contactos
+   this.comunicacion.setTomail = "";
 
    this.JsonOutgetListaDocumentosDelete = {
      "codDocument": "",

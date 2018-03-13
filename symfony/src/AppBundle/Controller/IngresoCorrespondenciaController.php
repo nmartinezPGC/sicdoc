@@ -630,8 +630,13 @@ class IngresoCorrespondenciaController extends Controller{
                                 //FIN | INC00002
                                 
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
-                                                        
-                                $mail->attach(\Swift_Attachment::fromPath($target_path1));
+                                  
+                                /*********************************************** 
+                                 * Se Comenta la Opcion de Adjuntar los Documentos
+                                 * Sobrecargan el Correo de los Funcionarios
+                                 * Fecha: 2018-03-12
+                                 ***********************************************/
+                                //$mail->attach(\Swift_Attachment::fromPath($target_path1));
                               }
                             } // FIN Array | Attach
                                  
@@ -1566,8 +1571,13 @@ class IngresoCorrespondenciaController extends Controller{
                                 //FIN | INC00002
                                 
                                 $target_path1 = "uploads/correspondencia" . "/" . $nameDoc . "." . $extDoc;                            
-                                                        
-                                $mail->attach(\Swift_Attachment::fromPath($target_path1));
+                                  
+                                /*********************************************** 
+                                 * Se Comenta la Opcion de Adjuntar los Documentos
+                                 * Sobrecargan el Correo de los Funcionarios
+                                 * Fecha: 2018-03-12
+                                 ***********************************************/
+                                //$mail->attach(\Swift_Attachment::fromPath($target_path1));
                               }                                
                             }
                                  

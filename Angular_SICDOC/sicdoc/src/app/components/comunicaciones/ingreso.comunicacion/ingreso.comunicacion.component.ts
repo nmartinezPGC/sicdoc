@@ -488,6 +488,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
 
     this.comunicacion.pdfDocumento = "";
 
+    //Borra el Contenido del Arreglo de Contactos
+    this.comunicacion.setTomail = "";
 
     // Limpia los radio Buttons que este Chequedo
     $(".fakeRadio").attr('checked', false);
