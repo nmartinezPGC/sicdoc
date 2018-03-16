@@ -49,6 +49,7 @@ export class ConsultaMasterComponent implements OnInit {
   minDate = Date.now();
   maxDate = new Date(2017, 12, 1);
 
+  public fechaHoy:Date = new Date();
 
   // variables del localStorage
   public identity;
@@ -108,9 +109,9 @@ export class ConsultaMasterComponent implements OnInit {
      // this.fillDataTable();
 
      //this.otraFill();
-     this.url = this._consultaMasterService.urlResourses;           
+     this.url = this._consultaMasterService.urlResourses;
      this.urlComplete = this.url + "uploads/correspondencia/";
-     
+
   } // Fin | Definicion del Constructor
 
 
@@ -412,7 +413,7 @@ export class ConsultaMasterComponent implements OnInit {
         alert(dato);
       });
 
-} ); // Fin de Funcion de Tabla
+    } ); // Fin de Funcion de Tabla
   }
 
   /*****************************************************
@@ -424,15 +425,37 @@ export class ConsultaMasterComponent implements OnInit {
   * los Checkbox
   ******************************************************/
   fillDataTable(){
+    // Trabaja con las Fechas
+    // Actualiza el valor de la Secuencia
+    let mesAct = this.fechaHoy.getMonth() + 1;
+
+    // Mes Actual *************************
+    let final_month = mesAct.toString();
+    if( mesAct <= 9 ){
+      final_month = "0" + final_month;
+    }
+
+    // Dia del Mes *************************
+    let day = this.fechaHoy.getDate(); // Dia
+    let final_day = day.toString();
+    if( day <= 9 ){
+      final_day = "0" + final_day;
+    }
+
+    // Seteo de la Fecha Final
+    let newFecha = this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+
     setTimeout(function () {
       $ (function () {
           $('#example').DataTable({
-            "destroy": true,
+            // Refresca la Data y Borra de Memoria los Datos anteriores
+            destroy: true,
+            retrieve: true,
             // Barra Vertical de la Tabla
             scrollY:       "450px",
             scrollX:        true,
             scrollCollapse: true,
-            
+
             /*"fixedHeader": true,
             "autoWidth": false,*/
             // Tamaño de la Pagina
@@ -468,7 +491,74 @@ export class ConsultaMasterComponent implements OnInit {
             ],
             fixedColumns:   {
               leftColumns: 2
-            }
+            },
+
+            // Parametro de Botones
+            dom: 'Bfrtip',
+            // Botones
+            buttons: [
+               // Boton de excelHtml5
+                 {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                      //columns: ':visible',
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                      modifier: {
+                          selected: null
+                      }
+                    },
+                    title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                      text: 'Exportar en Excel',
+                      customize: function( xlsx ) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        $('row:first c', sheet).attr( 's', '42' );
+                      },
+                },
+
+               // Boton de Imprimir
+                {
+                  extend: 'print',
+                  utoPrint: false,
+                  exportOptions: {
+                    //columns: ':visible',
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                    modifier: {
+                          selected: null
+                    }
+                  },
+                    customize: function (win) {
+                      $(win.document.body).find('table').addClass('display').css('font-size', '10px');
+                      $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                          $(this).css('background-color','#D0D0D0');
+                      });
+                      $(win.document.body).find('h1').css('text-align','center');
+                  },
+                  text: 'Imprimir Todos',
+                  message: 'Listado de Comunicaciones',
+                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                },
+
+                // Boton de Importar a PDF
+                {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                    //columns: ':visible',
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                    modifier: {
+                        selected: null
+                    }
+                  },
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                  text: 'Exportar a PDF',
+                  messageTop: 'PDF de las Comunicaciones Realizadas.'
+                },
+            ],
+            //Selecciona las Filas
+            select: true
           });
           this.loading_tableIn = 'show';
       });

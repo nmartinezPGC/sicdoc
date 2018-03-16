@@ -34,6 +34,11 @@
                     <a class="dropdown-item" [routerLink]="['comunicacion/documentos-de-comunicacion']" routerLinkActive="active">
                       <img src="/assets/icons/comunicacion/computer-and-books-studying-tools_24x24.png" class="d-inline-block align-top" alt="">
                       Documentos de Comunicación</a>
+                  <hr>
+                    <a class="dropdown-item" *ngIf="identity.idTipoFunc == 6 || identity.idTipoFunc == 4 || identity.idTipoFunc == 1"
+                         [routerLink]="['comunicacion/traslado-de-comunicacion']" routerLinkActive="active">
+                      <img src="/assets/icons/comunicacion/two-way-arrows_24x24.png" class="d-inline-block align-top" alt="">
+                      Traslado de Comunicación</a>
                 </div>
               </li>
 
@@ -85,8 +90,9 @@
                     <a class="dropdown-item" [routerLink]="['mantenimientos/solicitud-cambio-fecha']" routerLinkActive="active">
                       <img src="/assets/icons/comunicacion/spring-desktop-calendar-variant_blue_24x24.png" class="d-inline-block align-top" alt="">
                       Solicitud de Cambio de Fecha / Entrega</a>
+                    <hr>
                     <a class="dropdown-item" [routerLink]="['mantenimientos/mantenimiento-instituciones']" routerLinkActive="active">
-                        <img src="/assets/icons/comunicacion/businessmen.png" class="d-inline-block align-top" alt="">
+                        <img src="/assets/icons/comunicacion/group_24x24.png" class="d-inline-block align-top" alt="">
                       Agregar / Editar Instituciones</a>
                     <!-- <li class="nav-item dropdown"><a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Solicitud de Cambio d Fecha</a></li> -->
 

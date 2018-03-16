@@ -302,7 +302,8 @@ export class ReporteGeneralComponent implements OnInit {
                       $('row c[r^="C"]', sheet).attr( 's', '2' );
                   }
               }*/
-            ]
+            ],
+            //select: true
         } );
         this.loading_tableIn = 'show';
       });

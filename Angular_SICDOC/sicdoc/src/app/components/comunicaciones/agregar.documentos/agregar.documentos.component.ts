@@ -11,7 +11,6 @@ import 'rxjs/add/operator/map';
 
 //Importamos los Servicios
 import { AgregarDocumentosService } from '../../../services/comunicaciones/agregar.documentos.service'; //Servico de Agregar Documentos
-import { SolicitudCambioFechaService } from '../../../services/mantenimientos/solicitud.cambio.fecha.service'; //Servico del Matenimiento
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Carga de Arhcivos
 import { CaseSecuencesService } from '../../../services/shared/caseSecuences.service'; //Servico caseSecuence
@@ -129,7 +128,6 @@ export class AgregarDocumentosComponent implements OnInit {
   addForm: FormGroup; // form group instance
 
   constructor( private _listasComunes: ListasComunesService,
-               private _solicitudCambioFechaService: SolicitudCambioFechaService,
                private _agregarDocumentosService: AgregarDocumentosService,
                private _uploadService: UploadService,
                private _caseSecuencesService: CaseSecuencesService,
