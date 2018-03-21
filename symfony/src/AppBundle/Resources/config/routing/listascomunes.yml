@@ -159,6 +159,12 @@ listascomunes_funcionariosListAll:
     path: /funcionarios-list-all
     defaults: { _controller: "AppBundle:ListasComunes:funcionariosListAll" }
     methods: POST
+    
+## Listado de todos los Funcionarios de l SRCI | Modulo Listas
+listascomunes_funcionariosListAllComponent:
+    path: /funcionarios-list-all-component
+    defaults: { _controller: "AppBundle:ListasComunes:funcionariosListAllComponent" }
+    methods: POST
 
 ## Listado de todos las Sub Direcciones de la SRECI, para ChekListBox | Modulo Listas
 listascomunes_subDireccionesSreciList:

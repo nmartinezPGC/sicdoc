@@ -592,7 +592,7 @@ class MantCambioFechasController extends Controller {
                     ));*/
                     
                     
-                    $query = $em->createQuery('SELECT enc.idCorrespondenciaEnc, enc.codCorrespondenciaEnc, enc.codReferenciaSreci, '
+                    $query = $em->createQuery('SELECT DISTINCT enc.idCorrespondenciaEnc, enc.codCorrespondenciaEnc, enc.codReferenciaSreci, '
                                     . 'enc.descCorrespondenciaEnc, enc.temaComunicacion, tcom.idTipoComunicacion, tdoc.idTipoDocumento,  '
                                     ."DATE_SUB(enc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(enc.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'p.idUsuario, p.emailUsuario '

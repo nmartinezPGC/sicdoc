@@ -1679,4 +1679,73 @@ class ListasComunesController extends Controller {
     }//FIN | FND00020
     
     
+    
+    /**
+     * @Route("listas/funcionarios-list-all-component", name="listas/funcionarios-list-all-component")
+     * Creacion del Controlador: Funcionarios Listado Completo para el Componente
+     * Selecter de Angular
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00021
+     */
+    public function funcionariosListAllComponentAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Tipo de Funcionario***************************
+            $tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            
+            // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios           
+            // de la Tabla: TblTiposFuncionarios *******************************                       
+            //$funcionario_all = $em->getRepository("BackendBundle:TblFuncionarios")->findAll();            
+            // FIN | NMA | INC.00005
+            
+            $dql = $em->createQuery('SELECT funcAll.idFuncionario as id , '                                
+                                //. "funcAll.apellido1Funcionario as itemName, "
+                                . "CONCAT( funcAll.nombre1Funcionario , ' | ', funcAll.apellido1Funcionario) as itemName, "
+                                . 'funcAll.apellido2Funcionario as name, funcAll.nombre1Funcionario as name2 '                                    
+                                . 'FROM BackendBundle:TblFuncionarios funcAll '
+                                //. 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = deptoF.idDireccionSreci '
+                                . 'ORDER BY funcAll.idFuncionario ' );                    
+       
+            // Ejecucion del Query
+            $funcionario_all = $dql->getResult();
+                      
+
+            // Condicion de la Busqueda
+            if (count( $funcionario_all ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $funcionario_all
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Funcionarios !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00021
+    
+    
 }

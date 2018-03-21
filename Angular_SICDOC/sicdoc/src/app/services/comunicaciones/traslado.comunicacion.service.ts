@@ -48,25 +48,6 @@ export class TrasladoComunicacionService {
   } // FIN | FND-00001
 
 
-
-  /****************************************************
-  * Funcion: FND-00002
-  * Fecha: 22-11-2017
-  * Descripcion: Metodo Ajax, para Invocar el servicio
-  * a la API ( mantenimientos/cambio-fecha ).
-  * Objetivo: Ralizar el Cambio de la Fecha, de
-  * Comunicacion
-  *****************************************************/
-  buscaComunicacionDocumentos( busca_comunicacion ){
-      let json = JSON.stringify( busca_comunicacion );
-      let params = "json=" + json + "&authorization=" + this.getToken();
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
-
-    return this._http.post(this.url + "/documentos/listar-documentos", params, { headers:headers }).map( res => res.json());
-  } // FIN | FND-00002
-
-
   /*********************************************************
   * Funcion: FND-00003                                     *
   * Fecha: 07-03-2018                                      *
@@ -74,30 +55,13 @@ export class TrasladoComunicacionService {
   * a la API ( /documentos/subir-documentos-comunicacion ).*
   * Objetivo: Ingresar nuevos Documentos                   *
   *********************************************************/
-  registerDocumentos( documentos_to_register ){
+  registerTrasladoComunicacion( documentos_to_register ){
       let json = JSON.stringify( documentos_to_register );
       let params = "json=" + json + "&authorization=" + this.getToken();
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
     // Retorno de la Funcion
     return this._http.post(this.url + "/documentos/subir-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
-  } // FIN : FND-00003
-
-
-  /*********************************************************
-  * Funcion: FND-00004                                     *
-  * Fecha: 08-03-2018                                      *
-  * Descripcion: Metodo Ajax, para Invocar el servicio     *
-  * a la API ( /documentos/borrar-documentos-comunicacion ).*
-  * Objetivo: Ingresar nuevos Documentos                   *
-  *********************************************************/
-  deleteDocumentos( documentos_to_delete ){
-      let json = JSON.stringify( documentos_to_delete );
-      let params = "json=" + json + "&authorization=" + this.getToken();
-      //console.log(json);
-      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
-    // Retorno de la Funcion
-    return this._http.post(this.url + "/documentos/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 
