@@ -7,7 +7,7 @@ import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 
 // Lirerias para el AutoComplete
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subscription, Subject} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -35,6 +35,9 @@ import { Contactos } from '../../../models/contactos/contacto.model'; // Servico
 
 // Libreria de AutoComplete
 import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
+
+//Libreria toasty
+import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} from 'ng2-toasty';
 
 declare var $:any;
 
@@ -223,6 +226,16 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   // Objeto que Controlara la Forma
   forma:FormGroup;
 
+  // Propiedades de Toasty
+  getTitle(title:string, num: number): string {
+        return title + ' se cerrara en ' +  num + ' segundos ';
+  }
+
+  getMessage(msg:string, num: number): string {
+      // return msg + ' ' + num;
+      return msg;
+  }
+
   // Ini | Definicion del Constructor
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
@@ -236,7 +249,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                private _createDomService: CreateDomService,
                private completerService: CompleterService,
                private changeDetectorRef: ChangeDetectorRef,
-               private _vinculacionComunicacionService: VinculacionComunicacionService){
+               private _vinculacionComunicacionService: VinculacionComunicacionService,
+               private toastyService:ToastyService){
       // Llamado al Servicio de lista de Los Funcionarios SRECI
       this.getlistaFuncionariosSreci();
 
@@ -677,9 +691,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                   this.loading = 'hidden';
                 }
                 //alert(this.mensajes);
+                this.addToast(4,"Error",this.mensajes);
             }else{
               //this.resetForm();
               this.loading = 'hidden';
+              this.addToast(2,"Confirmado",this.mensajes);
               this.ngOnInit();
               // this.alertShow();
               //Oculta el Div de Alerta despues de 3 Segundos
@@ -695,6 +711,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             if(this.errorMessage != null){
               console.log(this.errorMessage);
               this.mensajes = this.errorMessage;
+              this.addToast(4,"Error: Contacta al Administrador ",this.mensajes);
               // alert("Error en la Petición !!" + this.errorMessage);
               //Oculta el Div de Alerta despues de 3 Segundos
               setTimeout(function() {
@@ -729,8 +746,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTiposDocumentos = response.data;
-            alert(response.msg);
-
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetlistaTiposDocumentos = response.data;
             // console.log( this.JsonOutgetlistaTiposDocumentos );
@@ -755,7 +772,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert(response.msg);
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaDireccionSRECIAcom = response.data;
@@ -783,7 +801,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
@@ -808,7 +827,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaPaises = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaPaises = response.data;
@@ -834,7 +854,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTipoInstitucion = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaTipoInstitucion = response.data;
@@ -863,8 +884,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaInstitucion = response.data;
-            alert(response.msg);
-
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetlistaInstitucion = response.data;
             // console.log(response.data);
@@ -1004,8 +1025,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaNew = response.data;
-            alert(response.msg);
-
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
             console.log( this.JsonOutgetCodigoSecuenciaNew );
@@ -1079,8 +1100,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaDet = response.data;
-            alert(response.msg);
-
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
             console.log(response.data);
@@ -1144,7 +1165,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaSCPI = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaSCPI = response.data;
             console.log( this.JsonOutgetCodigoSecuenciaSCPI );
@@ -1264,11 +1286,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           console.log(this.resultUpload);
           if(status === "error"){
             console.log(this.resultUpload);
-            alert(this.resultUpload.msg);
+            // alert(this.resultUpload.msg);
+            this.addToast(4,"Error",this.resultUpload.msg);
           } else {
             // Añadimos a la Tabla Temporal los Items Subidos
             this.createNewFileInput();
-
           }
           // alert(this.resultUpload.data);
         },
@@ -1407,8 +1429,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaFuncionarios = response.data;
-            alert(response.msg);
-
+            // alert(response.msg);
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetlistaFuncionarios = response.data;
             // console.log(response.data);
@@ -1762,8 +1785,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
 
             this.itemList = [];
-            alert(response.msg);
-
+            // alert(response.msg);
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
 
@@ -1834,7 +1858,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             //this.JsonOutgetlistaEstados = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }
         });
   } // FIN : FND-00019
@@ -1878,8 +1904,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaComunicacionVinculante = response.data;
             this.itemComunicacionVincList = [];
-            alert(response.msg);
-
+            // alert(response.msg);
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }else{
             this.JsonOutgetlistaComunicacionVinculante = response.data;
 
@@ -1906,7 +1933,9 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert(response.msg);
+            // alert(response.msg);
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaDireccionSRECI = response.data;
@@ -1936,13 +1965,69 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
-            alert(response.msg);
+            // alert(response.msg);
+
+            //Alerta de Mensajes
+            this.addToast(4,"Error",response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
           }
         });
   } // FIN : FND-000022
+
+
+  /*****************************************************
+  * Funcion: FND-000023
+  * Fecha: 31-03-2018
+  * Descripcion: Libreria Toasty para los mensajes
+  * Objetivo: Metodo de msg en la APP
+  ******************************************************/
+  addToast(options:number,title:string, msg:string) {
+      let interval = 1000;
+      let timeoutIn = 11000;
+      let seconds = timeoutIn / 1000;
+      let subscription: Subscription;
+
+       let toastOptions: ToastOptions = {
+           title: this.getTitle(title,0),
+           msg: this.getMessage(msg,0),
+           showClose: true,
+           theme: 'bootstrap',
+           onAdd: (toast: ToastData) => {
+               console.log('Toast ' + toast.id + ' has been added!');
+               // Run the timer with 1 second iterval
+               let observable = Observable.interval(interval);
+               // Start listen seconds beat
+               subscription = observable.subscribe((count: number) => {
+                   // Update title of toast
+                   toast.title = this.getTitle(title, ( seconds - count - 1 ));
+                   // Update message of toast
+                   toast.msg = this.getMessage(msg, count);
+                   // Extra condition to hide Toast after 10 sec
+                   if (count > 10) {
+                       // We use toast id to identify and hide it
+                       this.toastyService.clear(toast.id);
+                   }
+               });
+
+           },
+           onRemove: function(toast: ToastData) {
+               console.log('Toast ' + toast.id + ' has been removed!');
+               // Stop listenning
+               subscription.unsubscribe();
+           }
+       };
+
+       switch ( options ) {
+           case 0: this.toastyService.default(toastOptions); break; //default
+           case 1: this.toastyService.info(toastOptions); break; //info
+           case 2: this.toastyService.success(toastOptions); break; //success
+           case 3: this.toastyService.wait(toastOptions); break; //wait
+           case 4: this.toastyService.error(toastOptions); break; //error
+           case 5: this.toastyService.warning(toastOptions); break; //warning
+       }
+   } //FIN | FND-000023
 
 
 }

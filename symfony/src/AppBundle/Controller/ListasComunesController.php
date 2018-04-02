@@ -1703,36 +1703,59 @@ class ListasComunesController extends Controller {
         if ($json != null) {
             //Variables que vienen del Json ************************************
             //Recogemos el ID del Tipo de Funcionario***************************
-            $tipo_funcionario = (isset($params->idTipoFuncionario)) ? $params->idTipoFuncionario : null;
+            $id_depto_funcional = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
             
             // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios           
             // de la Tabla: TblTiposFuncionarios *******************************                       
             //$funcionario_all = $em->getRepository("BackendBundle:TblFuncionarios")->findAll();            
             // FIN | NMA | INC.00005
             
-            $dql = $em->createQuery('SELECT funcAll.idFuncionario as id , '                                
+            $optEjec = 0;
+            // Evalua que se envien Parametros para sus Filtros
+            if( $id_depto_funcional == 0 || $id_depto_funcional == null ){
+                $optEjec = 1;
+                $dql = $em->createQuery('SELECT funcAll.idFuncionario as id , '                                
                                 //. "funcAll.apellido1Funcionario as itemName, "
                                 . "CONCAT( funcAll.nombre1Funcionario , ' | ', funcAll.apellido1Funcionario) as itemName, "
                                 . 'funcAll.apellido2Funcionario as name, funcAll.nombre1Funcionario as name2 '                                    
                                 . 'FROM BackendBundle:TblFuncionarios funcAll '
-                                //. 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = deptoF.idDireccionSreci '
-                                . 'ORDER BY funcAll.idFuncionario ' );                    
+                                . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales depSreci WITH depSreci.idDeptoFuncional = funcAll.idDeptoFuncional '
+                                . 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = depSreci.idDireccionSreci '                                
+                                . 'ORDER BY funcAll.nombre1Funcionario ' );
+            }else {
+                $optEjec = 2;
+                $dql = $em->createQuery('SELECT funcAll.idFuncionario as id , '                                
+                                //. "funcAll.apellido1Funcionario as itemName, "
+                                . "CONCAT( funcAll.nombre1Funcionario , ' | ', funcAll.apellido1Funcionario) as itemName, "
+                                . 'funcAll.apellido2Funcionario as name, funcAll.nombre1Funcionario as name2 '                                    
+                                . 'FROM BackendBundle:TblFuncionarios funcAll '
+                                . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales depSreci WITH depSreci.idDeptoFuncional = funcAll.idDeptoFuncional '
+                                . 'INNER JOIN BackendBundle:TblDireccionesSreci dirSreci WITH dirSreci.idDireccionSreci = depSreci.idDireccionSreci '                                
+                                . "WHERE depSreci.idDeptoFuncional =  ". $id_depto_funcional ." "
+                                . 'ORDER BY funcAll.nombre1Funcionario ' );                    
+            }
        
             // Ejecucion del Query
             $funcionario_all = $dql->getResult();
                       
-
+            //Conteo de Datos
+            $countData = count( $funcionario_all );
+            
             // Condicion de la Busqueda
-            if (count( $funcionario_all ) >= 1 ) {
+            if ( $countData >= 1 ) {
                 $data = array(
                     "status" => "success",
                     "code"   => 200,
+                    "opt"   => $optEjec,
+                    "totalReg" => $countData,
                     "data"   => $funcionario_all
                 );
             }else {
                 $data = array(
                     "status" => "error",
                     "code"   => 400,
+                    "opt"    => $optEjec,
+                    "idDeptoFunc" => $id_depto_funcional,
                     "msg"    => "No existe Datos en la Tabla de Funcionarios !!"
                 );
             }

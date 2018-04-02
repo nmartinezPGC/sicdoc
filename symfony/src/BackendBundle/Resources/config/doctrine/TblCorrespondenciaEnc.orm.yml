@@ -2,33 +2,33 @@ BackendBundle\Entity\TblCorrespondenciaEnc:
     type: entity
     table: tbl_correspondencia_enc
     indexes:
-        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
-            columns:
-                - cod_correspondencia_enc
-        fki_enc_direccion:
-            columns:
-                - id_direccion_sreci
-        fki_tipo_com:
-            columns:
-                - id_tipo_comunicacion
         fki_enc_estado:
             columns:
                 - id_estado
         fki_enc_user:
             columns:
                 - id_usuario
+        fki_tipo_com:
+            columns:
+                - id_tipo_comunicacion
+        fki_corr_depto:
+            columns:
+                - id_depto_funcional
         fki_funcionario_asig:
             columns:
                 - id_funcionario_asignado
         fki_enc_inst:
             columns:
                 - id_institucion
-        fki_corr_depto:
+        tbl_correspondencia_enc_cod_correspondencia_enc_idx:
             columns:
-                - id_depto_funcional
+                - cod_correspondencia_enc
         fki_comu_docu:
             columns:
                 - id_tipo_documento
+        fki_enc_direccion:
+            columns:
+                - id_direccion_sreci
     uniqueConstraints:
         tbl_correspondencia_enc_cod_correspondencia_enc_key:
             columns:

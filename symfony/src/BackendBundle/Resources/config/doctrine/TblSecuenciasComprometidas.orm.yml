@@ -5,15 +5,15 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
         fki_tipo_doc_secu:
             columns:
                 - id_tipo_documento
-        fki_estado_secuencias:
-            columns:
-                - id_estado_secuencia
-        fki_user_sec:
-            columns:
-                - id_usuario
         fki_depto_sec:
             columns:
                 - id_depto_funcional
+        fki_user_sec:
+            columns:
+                - id_usuario
+        fki_estado_secuencias:
+            columns:
+                - id_estado_secuencia
     id:
         idSecuenciaComp:
             type: integer

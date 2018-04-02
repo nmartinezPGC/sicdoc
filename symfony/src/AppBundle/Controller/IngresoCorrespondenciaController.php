@@ -23,6 +23,9 @@ use Swift_MessageAcceptanceTest;
 // Tabla de Secuencias Comprometidas
 use BackendBundle\Entity\TblSecuenciasComprometidas;
 
+//Traslado de Comunicacion
+use BackendBundle\Entity\TblTrasladoComunicacion;
+
 
 
 /********************************************************************
@@ -54,7 +57,8 @@ class IngresoCorrespondenciaController extends Controller{
     /* Funcion de Nuevo Correspondencia ****************************************
      * Parametros:                                                             * 
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
-     *     Informacion.                                                        * 
+     *     Informacion.                                                        *
+     * @Route("/correspondencia/new-correspondencia", name="/correspondencia/new-correspondencia") 
      ***************************************************************************/
     public function newCorrespondenciaAction(Request $request) 
     {
@@ -656,7 +660,8 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
-                                "msg"    => "Se ha ingresado el Oficio No. " . $cod_correspondencia . "-" . $new_secuencia,
+                                "msg"    => "Se ha ingresado la Comunicación No. " . $cod_referenciaSreci .
+                                            " pronto recibira una notificación vía correo. Gracias",
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{
@@ -664,7 +669,7 @@ class IngresoCorrespondenciaController extends Controller{
                             "status" => "error",
                             "desc"   => "Ya existe un codigo",
                             "code"   => 400, 
-                            "msg"   => "Error al registrar, ya existe una correspondencia con este código, ". $cod_referenciaSreci . 
+                            "msg"   => "Error al registrar, ya existe una Comunicación con este código, ". $cod_referenciaSreci . 
                                        " por favor ingrese otro !!"
                         );                       
                     }//Finaliza el Bloque de la validadacion de la Data en la Tabla
@@ -675,7 +680,7 @@ class IngresoCorrespondenciaController extends Controller{
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, faltan parametros",
                        "code"   => 400, 
-                       "msg"   => "No se ha podido crear la correspondencia, falta ingresar información  !!"
+                       "msg"   => "No se ha podido crear la Comunicación, falta ingresar información  !!"
                     );
                 }                
             } else {
@@ -684,7 +689,7 @@ class IngresoCorrespondenciaController extends Controller{
                        "status" => "error",
                        "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
                        "code"   => 400, 
-                       "msg"   => "Correspondencia no creada, falta ingresar los parametros !!"
+                       "msg"   => "Comunicación no creada, falta ingresar los parametros !!"
                     );
                 }
             } else {
@@ -692,7 +697,7 @@ class IngresoCorrespondenciaController extends Controller{
                 "status" => "error",
                 "desc"   => "El Token, es invalido",    
                 "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha expirado, cierra y vuelve a iniciar. !!"                
             );
         }        
         //Retorno de la Funcion ************************************************
@@ -705,6 +710,7 @@ class IngresoCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
+     * @Route("/correspondencia/edit-correspondencia", name="/correspondencia/edit-correspondencia")
      ***************************************************************************/
     public function editCorrespondenciaAction(Request $request, $id = null) 
     {
@@ -851,7 +857,7 @@ class IngresoCorrespondenciaController extends Controller{
             $data = array(
                 "status" => "error",                
                 "code"   => 400,                
-                "msg"    => "Autorizacion de Token no valida !!"                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha expirado, cierra y vuelve a iniciar. !!"
             );
         }        
         //Retorno de la Funcion ************************************************
@@ -1027,8 +1033,8 @@ class IngresoCorrespondenciaController extends Controller{
                         // Busqueda del Codigo de la Secuencia a Actualizar | Correspondencia Enc
                         $secuenciaSCPI = $em->getRepository("BackendBundle:TblSecuenciales")->findOneBy(                            
                             array(
-                               "codSecuencial"  => "SCPI",
-                               //"codSecuencial"  => $cod_correspondencia,
+                               //"codSecuencial"  => "SCPI",
+                               "codSecuencial"  => $identity->inicialesDireccion,
                                "idTipoDocumento" => $cod_tipo_documento,
                                "idDeptoFuncional" => $identity->idDeptoFuncional                                
                             ));
@@ -1236,8 +1242,8 @@ class IngresoCorrespondenciaController extends Controller{
                         // Query para Obtener todos las Sec. de la Tabla: TblSecuenciasComprometidas
                         $comprometidasSecuencias = $em->getRepository("BackendBundle:TblSecuenciasComprometidas")->findOneBy(
                             array(
-                                "codSecuencial"    => "SCPI", // Codigo de la Secuencia,
-                                //"codSecuencial"    => $cod_correspondencia, // Codigo de la Secuencia,
+                                //"codSecuencial"    => "SCPI", // Codigo de la Secuencia,
+                                "codSecuencial"    => $identity->inicialesDireccion, // Codigo de la Secuencia,
                                 "idTipoDocumento"  => $cod_tipo_documento, // Tipo de Documentos de la Secuencia,
                                 "idDeptoFuncional" => $cod_depto_funcional, // Depto Funcional de la Secuencia,
                                 "idUsuario"        => $cod_usuario, // Usuario de la Secuencia,
@@ -1597,7 +1603,8 @@ class IngresoCorrespondenciaController extends Controller{
                             $data = array(
                                 "status" => "success", 
                                 "code"   => 200, 
-                                "msg"    => "Se ha ingresado la comunicacion No. " . $cod_correspondencia . "-" . $new_secuencia,
+                                "msg"    => "Se ha ingresado la Comunicacion No. " . $cod_referenciaSreci .
+                                            " pronto recibira una notificación vía correo. Gracias",
                                 "data"   => $correspondenciaConsulta
                             );
                     }else{
@@ -1669,5 +1676,297 @@ class IngresoCorrespondenciaController extends Controller{
         
         return $fecha_salida;
     } // FIN | FND00001
+    
+    
+    
+    /* Funcion de Traslado Correspondencia****************************************
+     * Parametros:                                                             * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
+     *     Informacion.                                                        * 
+     * 2 ) Recibe el Codigo del Documento por medio de la Url.                 * 
+     * @Route("/correspondencia/traslado-correspondencia", name="/correspondencia/traslado-correspondencia")
+     ***************************************************************************/
+    public function trasladoCorrespondenciaAction(Request $request, $id = null) 
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autrizacion del Mismo
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            $identity = $helpers->authCheck($hash, true);
+            
+            //Convertimos los Parametros POSt a Json
+            $json = $request->get("json", null);
+            
+            //Comprobamos que Json no es Null
+            if ($json != null) {
+                $params = json_decode($json);
+                
+                //Parametro de la Url
+                $correspondenciaId       = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                      
+                //Datos generales de la Tabla, que viene del Json
+                $just_correspondencia     = ($params->justificacionTraslado != null) ? $params->justificacionTraslado : null ;                
+                $fecha_modificacion       = new \DateTime('now');
+                
+                $hora_modificacion = new \DateTime('now');            
+                $hora_modificacion->format('H:i');
+                
+                //Relaciones de la Tabla con Otras.
+                
+                // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
+                $cod_usuario          = $identity->sub;
+                $id_funcionario_traslado = ($params->idUsuarioAsaignado != null) ? $params->idUsuarioAsaignado : null ;
+                
+                // Envio por Json el Codigo de Estados | Buscar en la Tabla: TblEstados
+                $cod_estado           = ($params->idEstado != null) ? $params->idEstado : null ;
+                
+                // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
+                $id_direccion_sreci  = ($params->idDireccionSreci != null) ? $params->idDireccionSreci : null ;                
+                $id_depto_funcional      = ($params->idDeptoFuncional != null) ? $params->idDeptoFuncional : null ;                
+                
+                
+                //Evaluamos que el Codigo de Usuario no sea Null y la Descripcion tambien
+                if($correspondenciaId != null && $just_correspondencia != null){
+                    //La condicion fue Exitosa
+                    //Instancia del Doctrine
+                    $em = $this->getDoctrine()->getManager();
+                    
+                    //Repositorio de la Tabla: TblCorrespondenciaEnc, se Busca si el Codigo
+                    // enviado por Parametro Existe
+                    $correspondenciaEdit = $em->getRepository("BackendBundle:TblCorrespondenciaEnc")->findOneBy(
+                        array(
+                            "codCorrespondenciaEnc" => $correspondenciaId
+                        ));
+                    
+                    // Departamento Funcional Actual 
+                    //Instanciamos de la Clase TblDepartementosFuncionales
+                    $direccion_actual = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(                            
+                        array(
+                           "idDeptoFuncional" => $correspondenciaEdit->getIdDeptoFuncional()
+                        )); 
+                    
+                        
+                        //Evaluo el Resultado del Query, con el Paramtro del Codigo del
+                        //Documento, para verificar si existe en la BD
+                        if(count($correspondenciaEdit) > 0){
+                            //Asignamos el usuario de la Consulta Anterior
+                            $idUsarioCorrespondencia = $correspondenciaEdit->getIdUsuario()->getIdUsuario();
+                            
+                            //Evaluamos que el Usuario de la Consulta del Token, sea el dueño
+                            // de la Correspondencia
+                            if (isset($identity->sub) && $identity->sub === $idUsarioCorrespondencia) {
+                                //Seteamos los valores de los campos modificados                                
+                                $correspondenciaEdit->setFechaModificacion( $fecha_modificacion );                                
+                                
+                                //Instanciamos de la Clase TblUsuarios
+                                $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                    array(
+                                       "idUsuario" => $idUsarioCorrespondencia
+                                    ));                    
+                                                                
+                                //Instanciamos de la Clase TblFuncionarios
+                                $usuario_traslado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                                    array(
+                                       "idFuncionario" => $id_funcionario_traslado
+                                    ));                    
+                                $correspondenciaEdit->setIdFuncionarioAsignado( $usuario_traslado ); //Set de Codigo de Usuario Asigando
+
+                                //Instanciamos de la Clase TblEstados
+                                //Condicionamos que el perfil sea Director
+                                if( $usuario_traslado->getidTipoFuncionario()->getidTipoFuncionario() == 6 ){
+                                    $estado_traslado = 7;
+                                }else{
+                                    $estado_traslado = 3;
+                                }
+                                
+                                $estado_traslado = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                                    array(
+                                       "idEstado" => $estado_traslado
+                                    ));                    
+                                $correspondenciaEdit->setIdEstado( $estado_traslado ); //Set de Codigo de Estados   
+
+                                //Instanciamos de la Clase TblDireccionesSreci                        
+                                $direccion_traslado = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
+                                    array(
+                                       "idDireccionSreci" => $id_direccion_sreci
+                                    ));                    
+                                $correspondenciaEdit->setIdDireccionSreci( $direccion_traslado ); //Set de Codigo de Dreicciones Sreci
+                                //
+                                //Instanciamos de la Clase TblDepartementosFuncionales
+                                $depto_traslado = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(                            
+                                    array(
+                                       "idDeptoFuncional" => $id_depto_funcional
+                                    ));                    
+                                $correspondenciaEdit->setIdDeptoFuncional( $depto_traslado ); //Set de Codigo de DeptosFuncionales Sreci  
+                                //Finaliza Busqueda de Integridad entre Tablas
+                                
+                                
+                                // ************************************************************
+                                //Seteo de Datos Generales de la tabla: TblTrasladoComunicacion
+                                $correspondenciaTrasladoNew = new TblTrasladoComunicacion();
+                                
+                                $correspondenciaTrasladoNew->setIdCorrespondenciaEnc( $correspondenciaEdit ); //Set de Correspondencia Enc
+                                $correspondenciaTrasladoNew->setIdUsuario( $usuario ); //Set de Usuario Creador
+                                $correspondenciaTrasladoNew->setIdUsuarioAsignado( $usuario_traslado ); //Set de Funcionario Asignado
+                                $correspondenciaTrasladoNew->setFechaTraslado( $fecha_modificacion ); //Set de Fecha de Creacion
+                                $correspondenciaTrasladoNew->setHoraTraslado( $hora_modificacion ); //Set Hora de Creacion
+                                $correspondenciaTrasladoNew->setJustificacionTraslado( $just_correspondencia ); //Set Justificacion de Traslado                                
+                                
+                                
+                                // Envio de Correo despues de la Granacion de Datos
+                                // *****************************************************
+                                // los Datos de envio de Mail **************************
+                                //Instanciamos de la Clase TblFuncionarios, para Obtener
+                                $usuario_asignado_send = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                                    array(
+                                        "idFuncionario" => $id_funcionario_traslado
+                                        //"idUsuario" => $id_usuario_asignado                
+                                    ));
+                                
+                                //Instanciamos de la Clase TblInstituciones, para Obtener
+                                $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                                    array(
+                                        "idInstitucion" => $correspondenciaEdit->getIdInstitucion()
+                                    ));
+                                
+                                // Parametros de Salida
+                                $mailSend = $usuario_asignado_send->getEmailFuncionario() ; // Get de mail de Funcionario Asignado
+                                $nombreSend = $usuario_asignado_send->getNombre1Funcionario() ; // Get de Nombre de Funcionario Asignado
+                                $apellidoSend = $usuario_asignado_send->getApellido1Funcionario() ; // Get de Apellido de Funcionario Asignado
+
+                                // Llamamo a la Funcion Interna para que nos convierta *
+                                // La Fecha a Calendario Gregoriano ********************
+
+                                $fecha_maxima_entrega_time_stamp = json_encode($correspondenciaEdit->getFechaIngreso()->getTimestamp(), true ); 
+                                // Ejecucion de la Funcion *****************************
+                                $fecha_maxima_entrega_convert = $this->convertirFechasTimeStampAction( $fecha_maxima_entrega_time_stamp );
+
+                                    //Creamos la instancia con la configuración 
+                                    $transport = \Swift_SmtpTransport::newInstance()
+                                       ->setHost('smtp.gmail.com')
+                                       //->setHost('smtp.mail.yahoo.com')
+                                       ->setPort(587)
+                                       //->setPort(465)
+                                       ->setEncryption('tls')
+                                       ->setStreamOptions(array(
+                                                            'ssl' => array(
+                                                                'allow_self_signed' => true, 
+                                                                'verify_peer' => false, 
+                                                                'verify_peer_name' => false
+                                                                )
+                                                            )
+                                                         )                                                         
+                                       ->setUsername( "correspondenciascpi@sreci.gob.hn" )
+                                       ->setPassword('Despachomcns')
+                                       ->setTimeout(180);     
+                                   //Creamos la instancia del envío
+                                   $mailer = \Swift_Mailer::newInstance($transport);
+
+                                   //Creamos el mensaje
+                                   $mail = \Swift_Message::newInstance()
+                                       ->setSubject('Notificación de Traslado de Comunicación | SICDOC')                                       
+                                       ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC" ))
+                                       ->setTo($mailSend)                               
+                                       ->setBody(
+                                            $this->renderView(                                            
+                                                'Emails/sendMailComunicacionTraslado.html.twig',
+                                                array( 'name' => $nombreSend, 'apellidoOficio' => $apellidoSend,
+                                                       'oficioExtNo' => $correspondenciaEdit->getCodReferenciaSreci(), 
+                                                       'oficioInNo' => $correspondenciaEdit->getCodCorrespondenciaEnc(),
+                                                       'temaOficio' => $correspondenciaEdit->getTemaComunicacion(), 
+                                                       'descOficio' => $correspondenciaEdit->getDescCorrespondenciaEnc(),
+                                                       'fechaIngresoOfi' => strval( $fecha_maxima_entrega_convert ), 
+                                                       'fechaMax' => date_format( $fecha_modificacion, "Y-m-d"),
+                                                       'obsComunicacion' => $correspondenciaEdit->getObservaciones(), 
+                                                       'obsTraslado' => $just_correspondencia, 
+                                                       'institucionCom' => $institucion->getPerfilInstitucion(),
+                                                       'deptoFunAct' => $direccion_actual->getDescDeptoFuncional(),
+                                                       'deptoFunTraslado' => $depto_traslado->getDescDeptoFuncional() )
+                                            ), 'text/html' );  
+                                   
+                                    // Envia el Correo con todos los Parametros
+                                    $resuly = $mailer->send($mail);
+
+                                // ***** Fin de Envio de Correo ************************
+                                
+                                
+                                //Realizar la Persistencia de los Datos y enviar a la BD
+                                $em->persist( $correspondenciaEdit );                                                                
+                                $em->persist( $correspondenciaTrasladoNew );
+                                
+                                
+                                // Opcion de Ejecucion
+                                $optEjec = 0;
+                                
+                                //Variable de Actualizacion
+                                $actDatos = $em->flush();
+                                
+                                // Actualizacion en la Base de Datos ***********
+                                if( $actDatos == null ){
+                                    //Array de Mensajes
+                                    $optEjec = 1;
+                                    $data = array(
+                                        "status" => "success",
+                                        "code"     => 200,
+                                        "dataSend" => $correspondenciaEdit,
+                                        "optEjec"  => $optEjec,
+                                        "msg" => "La Comunicación ha sido trasladada, exitosamente !!"
+                                    );
+                                }else{
+                                    //Array de Mensajes
+                                    $data = array(
+                                        "status" => "error",
+                                        "code"     => 400,
+                                        "optEjec"  => $optEjec,
+                                        "msg" => "La Comunicación no ha sido actualizada, existe error en la informacion !!"
+                                    );
+                                }// Fin de Validacion de Actualizacion
+                            } else {
+                                //Array de Mensajes
+                                $data = array(
+                                    "status" => "error",
+                                    "code" => 400,
+                                    "msg" => "La Correspondencia no ha sido actualizada, no eres el creador del Documento !!"
+                                );
+                            }
+                        }else{                            
+                            //Array de Mensajes
+                            $data = array(
+                                "status" => "error", 
+                                "code"   => 400,
+                                "msg"   => "No existe una Comunicación con ese Codigo !!"
+                            );                           
+                        }
+                    }else{
+                        $data = array(
+                            "status" => "error", 
+                            "code"   => 400, 
+                            "data"   => "Error al editar, ya existe una Comunicación con ese Codigo !!"
+                        );                       
+                    } //Finaliza el Bloque de la validadacion de la Data en la Tabla
+            } else {
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "error", 
+                       "code"   => 400, 
+                       "msg"   => "Comunicación no actualizada, parametros invalidos !!"
+                    );
+                }
+            } else {
+            $data = array(
+                "status" => "error",                
+                "code"   => 400,                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha expirado, cierra y vuelve a iniciar. !!"
+            );
+        }        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } //Fin de la Funcion Traslado de Correspondencia ****************
     
 }

@@ -2,12 +2,12 @@ BackendBundle\Entity\TblBitacoraSecuencias:
     type: entity
     table: tbl_bitacora_secuencias
     indexes:
-        fki_id_depto_func:
-            columns:
-                - id_depto_funcional
         fki_id_user_bitacora:
             columns:
                 - id_usuario
+        fki_id_depto_func:
+            columns:
+                - id_depto_funcional
     id:
         idBitacoraSecuencia:
             type: integer

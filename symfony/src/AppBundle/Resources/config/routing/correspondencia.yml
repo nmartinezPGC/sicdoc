@@ -21,6 +21,12 @@ correspondencia_editCorrespondencia:
     defaults: { _controller: "AppBundle:IngresoCorrespondencia:editCorrespondencia", id:null }
     methods: POST
     
+# Traslado de Correspondencia
+correspondencia_trasladoCorrespondencia:
+    path: /traslado-correspondencia
+    defaults: { _controller: "AppBundle:IngresoCorrespondencia:trasladoCorrespondencia"}
+    methods: POST
+    
 correspondencia_upload_image:
     path: /upload-image/{id}
     defaults: { _controller: "AppBundle:IngresoCorrespondencia:upload", id:null }

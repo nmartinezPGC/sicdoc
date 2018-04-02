@@ -55,7 +55,7 @@ export class TrasladoComunicacionModel{
       // Sub Direcciones SRECI
       public subDireccionesSreciAcom,
 
-      public justificacionNewDocs:string,
+      public justificacionTraslado:string,
 
       // Documento a Borrar
       public codDocumentoBorar:string

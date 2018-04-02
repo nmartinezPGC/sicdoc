@@ -52,16 +52,16 @@ export class TrasladoComunicacionService {
   * Funcion: FND-00003                                     *
   * Fecha: 07-03-2018                                      *
   * Descripcion: Metodo Ajax, para Invocar el servicio     *
-  * a la API ( /documentos/subir-documentos-comunicacion ).*
-  * Objetivo: Ingresar nuevos Documentos                   *
+  * a la API ( /correspondencia/traslado-correspondencia ).*
+  * Objetivo: Traslado de Correspondencia                  *
   *********************************************************/
-  registerTrasladoComunicacion( documentos_to_register ){
-      let json = JSON.stringify( documentos_to_register );
+  registerTrasladoComunicacion( traslado_to_register ){
+      let json = JSON.stringify( traslado_to_register );
       let params = "json=" + json + "&authorization=" + this.getToken();
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
     // Retorno de la Funcion
-    return this._http.post(this.url + "/documentos/subir-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/correspondencia/traslado-correspondencia", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 

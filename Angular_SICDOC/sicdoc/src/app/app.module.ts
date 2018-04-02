@@ -83,6 +83,8 @@ import { SystemPropertiesService } from './services/shared/systemProperties.serv
 import { AgregarDocumentosComponent } from './components/comunicaciones/agregar.documentos/agregar.documentos.component';
 import { TrasladoComunicacionComponent } from './components/comunicaciones/traslado.comunicacion/traslado.comunicacion.component';
 
+//import tosty
+import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   declarations: [
@@ -127,7 +129,11 @@ import { TrasladoComunicacionComponent } from './components/comunicaciones/trasl
     Ng2CompleterModule,
     ImageUploadModule.forRoot(),
     //Seccion de AngularMultiSelectModule
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    ToastyModule.forRoot()
+  ],
+  exports: [
+    BrowserModule, ToastyModule
   ],
   providers: [
     UsuariosService,
