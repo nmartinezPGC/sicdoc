@@ -392,31 +392,11 @@
       <hr>
       <div class="panel-collapse collapse in" id="demo">
 
-            <!-- Fila para los contactos en Copia -->
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <strong>Contactos a copiar:</strong>
-               <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
-                   [(ngModel)]="searchStrFunc" inputId="2" clearSelected="true"
-                   [datasource]="dataServiceFunc" [minSearchLength]="2" textSearching="Buscando Contacto ..."
-                   textNoResults="No se han encontrado nada ..."
-                   placeholder="Selecciona un Funcionario de contacto" (selected)="onSelectedFunc($event)" >
-               </ng2-completer>
-
-               <textarea #setTomail="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
-                   tabindex="3" disabled="true"
-                   ngControl="setTomail" [(ngModel)]="comunicacion.setTomail"> <strong> {{selectedFuncionarioAll}} </strong></textarea>
-                <!-- <p><strong>Copia a:</strong> {{selectedFuncionarioAll}}</p> -->
-                <!-- Boton para limpiar la Data de Contactos -->
-                <button type="button" style="padding-left:5px" (click)="cleanContact()" class="btn btn-primary btn-sm">Borrar Contactos</button>
-              </div>
-            </div>
-
-            <hr>
-            <div class="row">
-
             <!-- Observaciones de la Ingreso de Comunicacion -->
             <div class="col-xs-12 col-sm-12 col-md-12">
+              <h6>Instrucciones:</h6>
+              <!-- <strong>Instrucciones:</strong> -->
               <div class="form-group">
                   <textarea #observaciones="ngModel" class="form-control" id="observaciones" name="observaciones" rows="3"
                       placeholder="Ingresa la Observación / Instrucción" tabindex="3" minlength="10"
@@ -428,6 +408,8 @@
 
             <!-- Subir PDF del Oficio entrante -->
             <div class="col-xs-12 col-sm-12 col-md-12">
+              <!-- <small class="form-text text-muted" >Documentos de Soporte:</small> -->
+              <h6>Documentos de Soporte:</h6>
               <div class="form-group" id="fileIn">
                   <div id="contFile">
                     <label class="custom-file">
@@ -490,6 +472,29 @@
             <div [innerHTML]="myHtml"></div>
 
           </div>
+
+          <hr class="hr-new">
+          <!-- Fila para los contactos en Copia -->
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h6>Contactos a copiar:</h6>
+            <!-- <strong>Contactos a copiar:</strong> -->
+             <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idContactoSreci"
+                 [(ngModel)]="searchStrFunc" inputId="2" clearSelected="true"
+                 [datasource]="dataServiceFunc" [minSearchLength]="2" textSearching="Buscando Contacto ..."
+                 textNoResults="No se han encontrado nada ..."
+                 placeholder="Selecciona un Funcionario de contacto" (selected)="onSelectedFunc($event)" >
+             </ng2-completer>
+
+             <textarea #setTomail="ngModel" class="form-control" id="setTomail" name="setTomail" rows="3"
+                 tabindex="3" disabled="true"
+                 ngControl="setTomail" [(ngModel)]="comunicacion.setTomail"> <strong> {{selectedFuncionarioAll}} </strong></textarea>
+              <!-- <p><strong>Copia a:</strong> {{selectedFuncionarioAll}}</p> -->
+              <!-- Boton para limpiar la Data de Contactos -->
+              <button type="button" style="padding-left:5px" (click)="cleanContact()" class="btn btn-primary btn-sm">Borrar Contactos</button>
+            </div>
+          </div>
+
       </div>
       <!-- <hr> -->
 			<!-- <div class="row">

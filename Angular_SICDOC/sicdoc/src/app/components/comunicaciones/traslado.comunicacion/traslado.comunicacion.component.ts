@@ -174,7 +174,7 @@ export class TrasladoComunicacionComponent implements OnInit {
       this._trasladoComunicacionModel = new TrasladoComunicacionModel(1,
             "", "", "", "", "",
             0, "0", 0, 0, "3", 0, 0, "0",
-            "0", "0","0",
+            "0", "0","0", "0", "0",
             0, 0,
             0, 0,
             "0", "0", "0", "0",
@@ -182,7 +182,10 @@ export class TrasladoComunicacionComponent implements OnInit {
             "",
             "",
             "",
-            "", "", "");
+            "", "", "",
+            "", "", "", "" ,"", "", "", "",
+            "", "",
+            "", "");
 
       // Iniciamos los Parametros de Sub Direcciones
       this.datosConsulta = {
@@ -284,7 +287,7 @@ export class TrasladoComunicacionComponent implements OnInit {
     console.log(item);
     this.JsonOutgetlistaFuncionarios = this.selectedItems ;
     this._trasladoComunicacionModel.idUsuarioAsaignado = this.JsonOutgetlistaFuncionarios[0].id;
-    console.log( this._trasladoComunicacionModel.idUsuarioAsaignado );
+    // console.log( this._trasladoComunicacionModel.idUsuarioAsaignado );
     console.log( this.JsonOutgetlistaFuncionarios );
   }
 
@@ -300,7 +303,7 @@ export class TrasladoComunicacionComponent implements OnInit {
     console.log(items);
     this.JsonOutgetlistaFuncionarios = this.selectedItems ;
     this._trasladoComunicacionModel.idUsuarioAsaignado = this.JsonOutgetlistaFuncionarios[0].id;
-    console.log( this._trasladoComunicacionModel.idUsuarioAsaignado );
+    // console.log( this._trasladoComunicacionModel.idUsuarioAsaignado );
     console.log( this.JsonOutgetlistaFuncionarios );
   }
 
@@ -403,12 +406,34 @@ export class TrasladoComunicacionComponent implements OnInit {
       this._trasladoComunicacionModel.descCorrespondencia = dataIn[0].descCorrespondenciaEnc;
       this._trasladoComunicacionModel.temaCorrespondencia = dataIn[0].temaComunicacion;
       // Usuario Creador
-      this._trasladoComunicacionModel.idUsuarioAsaignado = dataIn[0].idUsuario;
+      this._trasladoComunicacionModel.idUsuarioAsaignado    = dataIn[0].idUsuario;
       //Fechas
-      this._trasladoComunicacionModel.fechaMaxEntrega = dataIn[0].fechaMaxEntrega;
-      this._trasladoComunicacionModel.fechaIngreso = dataIn[0].fechaIngreso;
+      this._trasladoComunicacionModel.fechaMaxEntrega      = dataIn[0].fechaMaxEntrega;
+      this._trasladoComunicacionModel.fechaIngreso         = dataIn[0].fechaIngreso;
+      this._trasladoComunicacionModel.horaIngreso          = dataIn[0].horaIngreso;
+      this._trasladoComunicacionModel.horaFinalizacion     = dataIn[0].horaFinalizacion;
 
-      this._trasladoComunicacionModel.codReferenciaSreci =  dataIn[0].codReferenciaSreci;
+      this._trasladoComunicacionModel.codReferenciaSreci    =  dataIn[0].codReferenciaSreci;
+
+      // datos de los funcionarios
+      this._trasladoComunicacionModel.nombre1Usuario        =  dataIn[0].nombre1Usuario;
+      this._trasladoComunicacionModel.nombre2Usuario        =  dataIn[0].nombre2Usuario;
+      this._trasladoComunicacionModel.apellido1Usuario      =  dataIn[0].apellido1Usuario;
+      this._trasladoComunicacionModel.apellido2Usuario      =  dataIn[0].apellido2Usuario;
+      this._trasladoComunicacionModel.nombre1Funcionario    =  dataIn[0].nombre1Funcionario;
+      this._trasladoComunicacionModel.nombre2Funcionario    =  dataIn[0].nombre2Funcionario;
+      this._trasladoComunicacionModel.apellido1Funcionario  =  dataIn[0].apellido1Funcionario;
+      this._trasladoComunicacionModel.apellido2Funcionario  =  dataIn[0].apellido2Funcionario;
+
+      //Deptos Funcionales
+      this._trasladoComunicacionModel.idDeptoFuncional        =  dataIn[0].idDeptoFuncional;
+      this._trasladoComunicacionModel.descDeptoFuncional      =  dataIn[0].descDeptoFuncional;
+      this._trasladoComunicacionModel.inicialesDeptoFuncional =  dataIn[0].inicialesDeptoFuncional;
+
+      //Direcciones Sreci
+      this._trasladoComunicacionModel.descDireccionSreci      =  dataIn[0].descDireccionSreci;      
+      this._trasladoComunicacionModel.inicialesDireccionSreci =  dataIn[0].inicialesDireccionSreci;
+
 
       // Asignacion a Datos de Modales
       this.codOficioIntModal = this._trasladoComunicacionModel.codCorrespondencia;

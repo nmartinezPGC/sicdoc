@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Datos Generales de los Usuarios -->
   <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10">
+      <div class="col-xs-12 col-sm-7 col-md-9 col-sm-offset-2 col-md-offset-3">
         <!-- Div que representan las Acciones al Ingresar un Usuario -->
         <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -92,6 +92,22 @@
                 <input #fechaMaxEntrega type="text" name="fechaMaxEntrega" id="fechaMaxEntrega" class="form-control"
                        placeholder="Fecha de Entrega" ngControl="fechaMaxEntrega" [(ngModel)]="_trasladoComunicacionModel.fechaMaxEntrega"
                        disabled value="{ _trasladoComunicacionModel.fechaMaxEntrega  }" >
+              </div>
+              <div class="col-3">
+                <small class="form-text text-muted">
+                    Hora de Ingreso
+                </small>
+                <input #horaIngreso type="text" name="horaIngreso" id="horaIngreso" class="form-control"
+                       placeholder="Hora de Ingreso" ngControl="horaIngreso" [(ngModel)]="_trasladoComunicacionModel.horaIngreso"
+                       disabled value="{ _trasladoComunicacionModel.horaIngreso  }" >
+              </div>
+              <div class="col-3">
+                <small class="form-text text-muted">
+                    Hora de Finalización
+                </small>
+                <input #horaFinalizacion type="text" name="horaFinalizacion" id="horaFinalizacion" class="form-control"
+                       placeholder="Hora de Finalizaición" ngControl="horaFinalizacion" [(ngModel)]="_trasladoComunicacionModel.horaFinalizacion"
+                       disabled value="{ _trasladoComunicacionModel.horaFinalizacion }" >
               </div>
             </div>
 
@@ -217,6 +233,50 @@
             </div>
         </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
+        </div>
+
+        <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+        <div class="col-3">
+          <div class="card" style="width: 16rem; margin-top:5px">
+            <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
+            <div class="card-block" style="margin-left:8px" >
+              <h4 class="card-title">Resumen</h4>
+              <p class="card-text">Resumen de la información registrada de la Comunicación.</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <!-- Comunicación -->
+              <li class="list-group-item"> <i class="material-icons">assignment_late</i> No. Comunicación de Referencia
+                <span class="badge badge-pill badge-primary"> {{ _trasladoComunicacionModel.codReferenciaSreci }}
+                </span>
+              </li>
+
+              <!-- Datos de Usuario Creador -->
+              <li class="list-group-item"> <i class="material-icons">help</i> Quién lo creo?
+                  <span class="badge badge-pill badge-warning"> {{ _trasladoComunicacionModel.nombre1Usuario + '  ' +  _trasladoComunicacionModel.nombre2Usuario + '  ' +
+                                                                   _trasladoComunicacionModel.apellido1Usuario + '  ' +  _trasladoComunicacionModel.apellido2Usuario }}
+                  </span>
+              </li>
+
+              <!-- Datos de Usuario Asignado -->
+              <li class="list-group-item"> <i class="material-icons">question_answer</i> Quién tiene asignado?
+                  <span class="badge badge-pill badge-success"> {{ _trasladoComunicacionModel.nombre1Funcionario + '  ' +  _trasladoComunicacionModel.nombre2Funcionario + '  ' +
+                                                                   _trasladoComunicacionModel.apellido1Funcionario + '  ' +  _trasladoComunicacionModel.apellido2Funcionario }}
+                  </span>
+              </li>
+
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Area Asignada
+                <span class="badge badge-pill badge-success" title="{{ _trasladoComunicacionModel.descDireccionSreci }}" >
+                  Sub Secretaría: {{ _trasladoComunicacionModel.inicialesDireccionSreci }}
+                </span>
+                  <span class="badge badge-pill badge-success" title="{{ _trasladoComunicacionModel.descDeptoFuncional }}" >
+                      Dirección: {{ _trasladoComunicacionModel.inicialesDeptoFuncional }}
+                  </span>
+              </li>
+
+            </ul>
+
+          </div>
+
         </div>
 
 </div>

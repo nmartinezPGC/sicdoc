@@ -595,12 +595,19 @@ class MantCambioFechasController extends Controller {
                     $query = $em->createQuery('SELECT DISTINCT enc.idCorrespondenciaEnc, enc.codCorrespondenciaEnc, enc.codReferenciaSreci, '
                                     . 'enc.descCorrespondenciaEnc, enc.temaComunicacion, tcom.idTipoComunicacion, tdoc.idTipoDocumento,  '
                                     ."DATE_SUB(enc.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(enc.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
-                                    . 'p.idUsuario, p.emailUsuario '
+                                    ."DATE_SUB(enc.horaIngreso, 0, 'DAY') AS horaIngreso, DATE_SUB(enc.horaFinalizacion, 0, 'DAY') AS horaFinalizacion, "
+                                    . 'p.idUsuario, p.emailUsuario, p.nombre1Usuario, p.nombre2Usuario, p.apellido1Usuario, p.apellido2Usuario, '
+                                    . 'f.idFuncionario, f.nombre1Funcionario, f.nombre2Funcionario, f.apellido1Funcionario, f.apellido2Funcionario, '
+                                    . 'dpa.idDeptoFuncional, dpa.descDeptoFuncional, dpa.inicialesDeptoFuncional, '
+                                    . 'dir.idDireccionSreci, dir.descDireccionSreci, dir.inicialesDireccionSreci '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc enc '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = enc.idUsuario '
+                                    . 'INNER JOIN BackendBundle:TblFuncionarios f WITH  f.idFuncionario = enc.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = enc.idCorrespondenciaEnc '
                                     . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = enc.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH tdoc.idTipoDocumento = enc.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dpa WITH dpa.idDeptoFuncional = enc.idDeptoFuncional '
+                                    . 'INNER JOIN BackendBundle:TblDireccionesSreci dir WITH dir.idDireccionSreci = enc.idDireccionSreci '
                                     //. 'INNER JOIN BackendBundle:TblCorrespondenciaEnc c WITH c.idCorrespondenciaEnc = doc.idCorrespondenciaEnc '
                                     . 'WHERE enc.codCorrespondenciaEnc = :codCorrespondenciaEnc '                                    
                                     . 'ORDER BY enc.codCorrespondenciaEnc, enc.idCorrespondenciaEnc ASC') 

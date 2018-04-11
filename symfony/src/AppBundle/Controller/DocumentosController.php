@@ -514,7 +514,7 @@ class DocumentosController extends Controller{
             //Recogemos el ID de Comunicacion Enc ******************************
             $cod_correspondencia = (isset($params->codDocument)) ? $params->codDocument : null;
             $ext_documento = (isset($params->extDocument)) ? $params->extDocument : null;
-            $indicador_borrado = (isset($params->indicadorExt)) ? $params->indicadorExt : null;
+            $indicador_borrado = (isset($params->indicadorExt)) ? $params->indicadorExt : 1;
             
             $ruta = "uploads/correspondencia/";
             //$documento_id = $id;

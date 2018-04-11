@@ -25,6 +25,8 @@ export class TrasladoComunicacionModel{
       public fechaMaxEntrega:string,
       public fechaModificacion:string,
       public fechaIngreso:string,
+      public horaIngreso:string,
+      public horaFinalizacion:string,
 
       // Datos Externos a la Tablas
       public idPais:number,
@@ -58,7 +60,26 @@ export class TrasladoComunicacionModel{
       public justificacionTraslado:string,
 
       // Documento a Borrar
-      public codDocumentoBorar:string
+      public codDocumentoBorar:string,
+
+      // Datos Generales de los Funcionarios
+      public nombre1Usuario:string,
+      public nombre2Usuario:string,
+      public apellido1Usuario:string,
+      public apellido2Usuario:string,
+      public nombre1Funcionario:string,
+      public nombre2Funcionario:string,
+      public apellido1Funcionario:string,
+      public apellido2Funcionario:string,
+
+      // Deptos Fucncionales
+      public descDeptoFuncional:string,
+      public inicialesDeptoFuncional:string,
+
+      // Direcciones Sreci
+      public descDireccionSreci:string,
+      public inicialesDireccionSreci:string,
+
 
     ){}
 

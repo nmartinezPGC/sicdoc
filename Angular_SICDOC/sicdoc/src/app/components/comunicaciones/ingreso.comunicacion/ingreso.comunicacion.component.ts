@@ -433,7 +433,8 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Json de Documento a Borrar
     this.JsonOutgetListaDocumentosDelete = {
       "codDocument": "",
-      "extDocument": ""
+      "extDocument": "",
+      "indicadorExt":""
     }
 
     // Convertimos las Fechas a una Default
@@ -1845,6 +1846,7 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     //Llamar al metodo, de Login para Obtener la Identidad
     // Agrega Items al Json
     this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.indicadorExt = 1;
 
     // Cambiamos la Extencion si es jpg
     if( extDocumentoIn == "jpg" ){

@@ -398,7 +398,8 @@ export class IngresoComunicacionComponent implements OnInit{
     // Json de Documento a Borrar
     this.JsonOutgetListaDocumentosDelete = {
       "codDocument": "",
-      "extDocument": ""
+      "extDocument": "",
+      "indicadorExt":""
     }
 
     this.nextDocumento = 0;
@@ -908,7 +909,8 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     this._listasComunes.listasComunes("","paises-list").subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
+          this.mensajes = response.msg;
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaPaises = response.data;
@@ -935,7 +937,8 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     this._listasComunes.listasComunes("","tipo-instituciones-sreci-list").subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
+          this.mensajes = response.msg;
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTipoInstitucion = response.data;
@@ -964,7 +967,8 @@ export class IngresoComunicacionComponent implements OnInit{
       //console.log(this.params);
       this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
+          this.mensajes = response.msg;
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaInstitucion = response.data;
@@ -990,7 +994,8 @@ export class IngresoComunicacionComponent implements OnInit{
 
       this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
+          this.mensajes = response.msg;
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTiposDocumentos = response.data;
@@ -1132,7 +1137,8 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
+          this.mensajes = response.msg;
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaNew = response.data;
@@ -1202,7 +1208,7 @@ export class IngresoComunicacionComponent implements OnInit{
     //console.log(this.params);
     this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
         response => {
-          // login successful so redirect to return url
+          // successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaDet = response.data;
@@ -2165,6 +2171,7 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     // Agrega Items al Json
     this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.indicadorExt = 1;
 
     // Cambiamos la Extencion si es jpg
     if( extDocumentoIn == "jpg" ){
