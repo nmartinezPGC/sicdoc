@@ -216,7 +216,7 @@ export class ReporteGeneralComponent implements OnInit {
             fixedHeader: true,
             "autoWidth": false,
             // Tamaño de la Pagina
-            "pageLength": 5,
+            "pageLength": 10,
             // Refresca la Data y Borra de Memoria los Datos anteriores
             destroy: true,
             retrieve: true,
@@ -249,8 +249,8 @@ export class ReporteGeneralComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },
-                  { // Columna de Funcionario
-                      "targets": [ 9 ],
+                  { // Columna de Descripcion
+                      "targets": [ 10 ],
                       "visible": false,
                       "searchable": true
                   },
