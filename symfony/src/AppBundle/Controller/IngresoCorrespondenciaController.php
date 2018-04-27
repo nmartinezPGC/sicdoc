@@ -1760,7 +1760,9 @@ class IngresoCorrespondenciaController extends Controller{
                             
                             //Evaluamos que el Usuario de la Consulta del Token, sea el dueño
                             // de la Correspondencia
-                            if (isset($identity->sub) && $identity->sub === $idUsarioCorrespondencia) {
+                            //Se comenta por falta de funcionalidad | 2018-04-23
+                            //if (isset($identity->sub) && $identity->sub === $idUsarioCorrespondencia) {
+                            if ( isset($identity->sub) ) {
                                 //Seteamos los valores de los campos modificados                                
                                 $correspondenciaEdit->setFechaModificacion( $fecha_modificacion );                                
                                 

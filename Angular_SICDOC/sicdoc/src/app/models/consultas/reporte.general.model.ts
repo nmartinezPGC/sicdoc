@@ -16,6 +16,9 @@ export class ReporteGeneral{
       public idEstadoComunicacion:any[],
       public idTipoComunicacion:any[],
 
+      //Distinguir tipo de Metodologia
+      public idComunicacion:any[],
+
       // Condiciones de los envio de Parametros
       public optArrayEstados:number,
       public optArrayTipos:number

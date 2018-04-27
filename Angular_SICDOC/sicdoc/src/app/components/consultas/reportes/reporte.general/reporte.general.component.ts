@@ -93,6 +93,7 @@ export class ReporteGeneralComponent implements OnInit {
   // Variables de envio al Json del Modelo
   public idEstadoComunicacionArray;
   public idTipoComunicacionArray;
+  public idComunicacionArray;
 
   // Area de Fechas
   public tableConsultaFechas;
@@ -120,6 +121,10 @@ export class ReporteGeneralComponent implements OnInit {
   public idTipoComLlamadas:number = 7;
   public idTipoComVerbal:number = 8;
   public idTipoComReunion:number = 9;
+
+  // Valores de Ingreso / Salida de Comunicación
+  public idIngreso:number = 1;
+  public idSalida:number = 2;
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
@@ -325,7 +330,7 @@ export class ReporteGeneralComponent implements OnInit {
     let array = [];
     // Definicion de la Insercion de los Datos de Nuevo Contacto
     this._ModelReporteGeneral = new ReporteGeneral( null, null, 0, 0,
-                                this.idEstadoComunicacionArray, this.idTipoComunicacionArray,
+                                this.idEstadoComunicacionArray, this.idTipoComunicacionArray, this.idComunicacionArray,
                                 null, null);
 
     // Llenado de la Lista de Sub Direcciones
@@ -357,9 +362,13 @@ export class ReporteGeneralComponent implements OnInit {
       this.sendEstComunicacion();
       // Ejecucion de los Array de Tipos
       this.sendTiposComunicacion();
+      // Ejecucion de los Array de Method de Comunicación
+      this.sendComunicacion();
 
+      //Modelos de Envio: Tipos, Estados y Metodologia de Ingreso
       this._ModelReporteGeneral.idEstadoComunicacion = this.idEstadoComunicacionArray;
       this._ModelReporteGeneral.idTipoComunicacion = this.idTipoComunicacionArray;
+      this._ModelReporteGeneral.idComunicacion = this.idComunicacionArray;
 
       console.log( this._ModelReporteGeneral );
       this._reporteGeneralService.comunicacionFind( this._ModelReporteGeneral).subscribe(
@@ -463,6 +472,21 @@ export class ReporteGeneralComponent implements OnInit {
 
 
   /*****************************************************
+  * Funcion: FND-00001.2
+  * Fecha: 27-04-2018
+  * Descripcion: Chekear todas las Opciones, de Tipo de
+  * Comunicación (Ingreso / Salida)
+  ******************************************************/
+  checkTodosCom(){
+    $('.chkAllCom').each(function () {
+    //$('#chkAll').each(function () {
+        if (this.checked) $(this).attr("checked", false);
+        else $(this).prop("checked", true);
+    });
+  } // FIN | FND-00001.2
+
+
+  /*****************************************************
   * Funcion: FND-00002
   * Fecha: 14-10-2017
   * Descripcion: Enviar Estados de la Comunicacion
@@ -497,6 +521,23 @@ export class ReporteGeneralComponent implements OnInit {
      });
      this.idTipoComunicacionArray = selectedTipoComunicacion;
   } // FIN FND-00003
+
+
+  /*****************************************************
+  * Funcion: FND-00003.1
+  * Fecha: 27-04-2018
+  * Descripcion: Enviar Entrada de Comunicación
+  ******************************************************/
+  sendComunicacion() {
+     var selectedComunicacion = [];
+     $(":checkbox[name=chkAllCom]").each(function() {
+       if (this.checked) {
+         // agregas cada elemento.
+         selectedComunicacion.push( parseInt( $(this).val() ) );
+       }
+     });
+     this.idComunicacionArray = selectedComunicacion;
+  } // FIN FND-00003.1
 
 
   /*****************************************************

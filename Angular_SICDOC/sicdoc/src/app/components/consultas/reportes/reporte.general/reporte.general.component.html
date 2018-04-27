@@ -206,6 +206,39 @@
         </div>
 
         <br>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-block">
+                <h3 class="card-title">Ingreso / Salida Comunicación</h3>
+                <!-- Todas las Opciones -->
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" name="chkAllCom" (click)="checkTodosCom()" class="custom-control-input chkAllCom">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Ambas</span>
+                </label>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <!-- Ingreso de Comunicación -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkAllCom" value="{{ idIngreso }}" id="chkAllCom" class="custom-control-input chkAllCom">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Ingreso</span>
+                    </label>
+                    <!-- Salida de Comunicación -->
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" name="chkAllCom" value="{{ idSalida }}" id="chkAllCom" class="custom-control-input chkAllCom">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Salida</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
         <!-- <input type="button" name="" value="Recarga" (click)="recargaTable()"> -->
         <input type="submit" value="Generar Reporte" class="btn btn-primary btn-lg"
           [disabled]="!reporteForm.valid" >

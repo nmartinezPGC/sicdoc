@@ -79,6 +79,9 @@ class ReportesController extends Controller{
                 //echo $array_tipo_comunicacion;
                 // Array de Estados de Comunicacion
                 $array_estado_comunicacion = ($params->idEstadoComunicacion != null) ? $params->idEstadoComunicacion : 0 ;
+                               
+                // Array de Metogologia Comunicacion (Ingreso / Salida)
+                $array_method_comunicacion = ($params->idComunicacion != null) ? $params->idComunicacion : 0 ;
                 
                 // Fechas de Reporte
                 $fecha_modifcacion         = new \DateTime('now');
@@ -86,8 +89,9 @@ class ReportesController extends Controller{
                 $fecha_inicial               = ($params->fechaInicial != null) ? $params->fechaInicial : null;
                 
                 // Se convierte el Array en String
-                $estados_array_convert      = implode(",", $array_estado_comunicacion);
-                $funcionarios_array_convert = implode(",", $array_tipo_comunicacion);
+                $estados_array_convert      = implode(",", $array_estado_comunicacion );
+                $funcionarios_array_convert = implode(",", $array_tipo_comunicacion );
+                $method_array_convert       = implode(",", $array_method_comunicacion );
                 
                 //Evaluamos que los Campos del Json  no sean Null ni 0. ********
                 if( $fecha_inicial != null && $fecha_final != null )
@@ -136,6 +140,7 @@ class ReportesController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN ('.$estados_array_convert.') AND '
                                     . 'c.idTipoDocumento IN ('.$funcionarios_array_convert.') AND '
+                                    . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_inicial."' AND "                           
                                     . 'c.idDeptoFuncional = '.$id_sub_direccion.' AND ' 
@@ -184,6 +189,7 @@ class ReportesController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN ('.$estados_array_convert.') AND '
                                     . 'c.idTipoDocumento IN ('.$funcionarios_array_convert.') AND '
+                                    . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' AND "                                    
                                     . 'c.idDeptoFuncional = '.$id_sub_direccion.' '
@@ -227,6 +233,7 @@ class ReportesController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN ('.$estados_array_convert.') AND '
                                     . 'c.idTipoDocumento IN ('.$funcionarios_array_convert.') AND '
+                                    . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' AND "
                                     . "c.idFuncionarioAsignado = '".$id_funcionario_asignado."' "
@@ -271,6 +278,7 @@ class ReportesController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'WHERE c.idEstado IN ('.$estados_array_convert.') AND '
                                     . 'c.idTipoDocumento IN ('.$funcionarios_array_convert.') AND '
+                                    . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' "                                    
                                     . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                                                            
