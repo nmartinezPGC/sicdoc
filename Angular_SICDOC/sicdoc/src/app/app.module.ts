@@ -85,6 +85,11 @@ import { TrasladoComunicacionComponent } from './components/comunicaciones/trasl
 
 //import tosty
 import {ToastyModule} from 'ng2-toasty';
+import { EditarComunicacionComponent } from './components/comunicaciones/editar.comunicacion/editar.comunicacion.component';
+
+//import Chart Modules
+import { ChartsModule } from 'ng2-charts';
+import { ChartHomeComponent } from './components/charts/chart.home/chart.home.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +118,9 @@ import {ToastyModule} from 'ng2-toasty';
     MantenimientoInstitucionesComponent,
     MantenimientoSolicitudCambioFechasComponent,
     AgregarDocumentosComponent,
-    TrasladoComunicacionComponent
+    TrasladoComunicacionComponent,
+    EditarComunicacionComponent,
+    ChartHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +137,8 @@ import {ToastyModule} from 'ng2-toasty';
     ImageUploadModule.forRoot(),
     //Seccion de AngularMultiSelectModule
     AngularMultiSelectModule,
-    ToastyModule.forRoot()
+    ToastyModule.forRoot(),
+    ChartsModule
   ],
   exports: [
     BrowserModule, ToastyModule

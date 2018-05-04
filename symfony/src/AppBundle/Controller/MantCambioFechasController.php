@@ -599,7 +599,8 @@ class MantCambioFechasController extends Controller {
                                     . 'p.idUsuario, p.emailUsuario, p.nombre1Usuario, p.nombre2Usuario, p.apellido1Usuario, p.apellido2Usuario, '
                                     . 'f.idFuncionario, f.nombre1Funcionario, f.nombre2Funcionario, f.apellido1Funcionario, f.apellido2Funcionario, '
                                     . 'dpa.idDeptoFuncional, dpa.descDeptoFuncional, dpa.inicialesDeptoFuncional, '
-                                    . 'dir.idDireccionSreci, dir.descDireccionSreci, dir.inicialesDireccionSreci '
+                                    . 'dir.idDireccionSreci, dir.descDireccionSreci, dir.inicialesDireccionSreci, '
+                                    . 'est.descripcionEstado '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc enc '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = enc.idUsuario '
                                     . 'INNER JOIN BackendBundle:TblFuncionarios f WITH  f.idFuncionario = enc.idFuncionarioAsignado '
@@ -608,6 +609,7 @@ class MantCambioFechasController extends Controller {
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH tdoc.idTipoDocumento = enc.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dpa WITH dpa.idDeptoFuncional = enc.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblDireccionesSreci dir WITH dir.idDireccionSreci = enc.idDireccionSreci '
+                                    . 'INNER JOIN BackendBundle:TblEstados est WITH est.idEstado = enc.idEstado '
                                     //. 'INNER JOIN BackendBundle:TblCorrespondenciaEnc c WITH c.idCorrespondenciaEnc = doc.idCorrespondenciaEnc '
                                     . 'WHERE enc.codCorrespondenciaEnc = :codCorrespondenciaEnc '                                    
                                     . 'ORDER BY enc.codCorrespondenciaEnc, enc.idCorrespondenciaEnc ASC') 

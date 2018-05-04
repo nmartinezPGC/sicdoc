@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/login/register.component';
 // Menu de comunicaciones
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
 import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component';
+import { EditarComunicacionComponent } from './components/comunicaciones/editar.comunicacion/editar.comunicacion.component';
 import { AgregarDocumentosComponent } from './components/comunicaciones/agregar.documentos/agregar.documentos.component';
 import { TrasladoComunicacionComponent } from './components/comunicaciones/traslado.comunicacion/traslado.comunicacion.component';
 
@@ -39,6 +40,7 @@ export const APP_ROUTES: Routes = [
   // Mapeo del Menu de Comunicaciones
   { path: 'comunicacion/ingreso-de-comunicacion', component: IngresoComunicacionComponent },
   { path: 'comunicacion/salida-de-comunicacion', component: IngresoComunicacionPorTipoComponent },
+  { path: 'comunicacion/editar-comunicacion', component: EditarComunicacionComponent },
   { path: 'comunicacion/documentos-de-comunicacion', component: AgregarDocumentosComponent },
   { path: 'comunicacion/traslado-de-comunicacion', component: TrasladoComunicacionComponent },
 
