@@ -90,6 +90,7 @@ import { EditarComunicacionComponent } from './components/comunicaciones/editar.
 //import Chart Modules
 import { ChartsModule } from 'ng2-charts';
 import { ChartHomeComponent } from './components/charts/chart.home/chart.home.component';
+import { ReporteResumidoComponent } from './components/consultas/reportes/reporte.resumido/reporte.resumido.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import { ChartHomeComponent } from './components/charts/chart.home/chart.home.co
     AgregarDocumentosComponent,
     TrasladoComunicacionComponent,
     EditarComunicacionComponent,
-    ChartHomeComponent
+    ChartHomeComponent,
+    ReporteResumidoComponent
   ],
   imports: [
     BrowserModule,

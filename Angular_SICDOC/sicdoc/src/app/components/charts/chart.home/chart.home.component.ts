@@ -11,7 +11,7 @@ export class ChartHomeComponent {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels:string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels:string[] = ['Oficios', 'Memos', 'Notas', 'Circulares', 'Correos', 'Llamadas', 'Reuniones'];
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
 
@@ -36,10 +36,10 @@ export class ChartHomeComponent {
   ];
 
   public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Ingresado'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Pendiente'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Resuelto'},
-    {data: [28, 48, 40, 19, 86, 27, 23], label: 'Anulado'}
+    {data: [65, 59, 8, 8, 6, 5, 4], label: 'Ingresado'},
+    {data: [28, 48, 4, 1, 6, 7, 9], label: 'Pendiente'},
+    {data: [8, 8, 4, 9, 8, 2, 9], label: 'Resuelto'},
+    {data: [2, 4, 4, 9, 6, 2, 3], label: 'Anulado'}
   ];
 
   // events

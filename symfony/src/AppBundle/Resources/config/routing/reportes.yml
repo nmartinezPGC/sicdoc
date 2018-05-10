@@ -1,7 +1,13 @@
 ## YAML Template.
 ---
-## Redireccionamiento de las Ruta por Defecto | Modulo Reportes
+## Redireccionamiento de las Ruta por Defecto | Modulo Reportes | Reporte General
 consultas_reporteGeneralDetList:
     path: /reporte-general
     defaults: { _controller: "AppBundle:Reportes:reporteGeneralDetList" }
+    methods: POST
+ 
+## Redireccionamiento de las Ruta por Defecto | Modulo Reportes | Reporte Resumido
+consultas_reporteResumidoListAction:
+    path: /reporte-resumido
+    defaults: { _controller: "AppBundle:Reportes:reporteResumidoList" }
     methods: POST

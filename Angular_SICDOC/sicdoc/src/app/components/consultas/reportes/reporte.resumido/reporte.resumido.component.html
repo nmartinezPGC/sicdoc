@@ -1,0 +1,111 @@
+
+<div class="container">
+  <!-- Titulo y Barra separadora -->
+  <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+  <hr class="colorgraph">
+  <div class="row-fluid">
+    <div class="col-xs-12 col-md-12 col-lg-12" id="primero">
+
+      <!-- Area de Selecion de Criterios -->
+      <div class="jumbotron" >
+        <h4 class="display-4" style="margin-top:-40px" >Seleccione los Criterios para el Reporte</h4>
+        <!-- <p class="lead">Seleccione los Criterio para el Reporte</p> -->
+        <hr class="my-4">
+        <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
+        <p class="lead">
+        </p>
+        <!-- Formulario de Seleccion de Criterios de Busqueda -->
+      <form #reporteForm="ngForm" (ngSubmit)="onSubmit(reporteForm)" name="reporteForm" role="form">
+          <!-- Tarjeta de Primer Criterio -->
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-block" >
+                  <h3 class="card-title">Selección de Fechas</h3>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      Fecha de Inicio
+                      <input #dtFechaIni="ngModel" type="date" class="form-control" name="dtFechaIni"
+                        [(ngModel)]="_ModelReporteResumido.fechaInicial" required value="">
+                    </li>
+                    <li class="list-group-item">
+                      Fecha de Final
+                      <input #dtFechaFin="ngModel" type="date" class="form-control" name="dtFechaFin"
+                        [(ngModel)]="_ModelReporteResumido.fechaFinal" required value="">
+                    </li>
+                  </ul>
+
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <!-- <input type="button" name="" value="Recarga" (click)="recargaTable()"> -->
+          <input type="submit" value="Generar Reporte" class="btn btn-primary btn-lg"
+            [disabled]="!reporteForm.valid" >
+
+            <!-- Loader de Carga de los Datos -->
+            <div id="loader-2" *ngIf="loading_tableIn == 'show' " style="margin-left:35%; margin-top:2%; margin-bottom:-4%;" >
+              <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%"> -->
+              <img src="assets/images/745.gif" alt="Cargando Tareas">
+            </div>
+
+            <!-- Loader de Carga de la Pagina -->
+            <div class="loader-new" *ngIf="loading_tableIn == 'show' " >
+              <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+            </div>
+
+      </form> <!-- Fin de Formulario de Seleccion de Criterios de Busqueda -->
+      </div>
+
+      <hr class="colorgraph">
+
+      <!-- Tabla del Reporte -->
+      <h4 id="editor" >Resumen de la Información Solicitada</h4>
+      <hr>
+      <!-- Loader de Carga de los Datos -->
+      <div id="loader-2" *ngIf="loading_tableIn == 'show' " style="margin-left:45%; margin-top:2%; margin-bottom:4%;" >
+        <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%"> -->
+        <img src="assets/images/832.gif" alt="Cargando Tareas">
+      </div>
+      <table class="table table-striped table-hover table-responsive" cellspacing="0" id="example" *ngIf="loading_tableIn == 'hide'">
+        <thead>
+          <tr>
+            <th>Código / Comunicación</th>
+            <th>Direccion Responsable</th>
+            <th>Funcionario Responsable</th>
+            <th>Nombre de Institución</th>
+            <th>Iniciales de Institución</th>
+            <th>Tema / Asunto</th>
+            <th>Descripción / Comunicación</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="newTable" >
+          <tr *ngFor="let item of JsonOutgetReporteComunicaion">
+            <td title="{{ item.codCorrespondenciaEnc }}">{{ item.codReferenciaSreci }}</td>
+            <td style="cursor:help" title="Nombre: {{ item.descDeptoFuncional }}">{{ item.inicialesDeptoFuncional }}</td>
+            <td>{{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }}</td>
+            <td >{{ item.perfilInstitucion }} </td>
+            <td style="cursor:help" title="Nombre: {{ item.perfilInstitucion }}" >{{ item.descInstitucion }}</td>
+            <td style="cursor:help" title="Descripción: {{ item.descCorrespondenciaEnc }}">{{ item.temaComunicacion }}</td>
+            <td style="cursor:help" title="Descripción: {{item.descCorrespondenciaEnc}}">
+                {{ (item.descCorrespondenciaEnc.length>10)? (item.descCorrespondenciaEnc | slice:0:40)+'..':(item.descCorrespondenciaEnc) }}
+            </td>
+            <td>
+              <span [ngClass]="{ 'text-warning': item.idEstado == 3,
+                              'text-primary': item.idEstado == 5,
+                              'text-success': item.idEstado == 7,
+                              'text-info': item.idEstado == 8 }"
+                data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
+                {{ item.descripcionEstado }} </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <hr>
+</div>

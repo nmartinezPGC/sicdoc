@@ -21,6 +21,7 @@ import { PdfComponent } from './components/pdf/pdf.component';
 // Imports de las Consultas de la Aplicacion
 import { ConsultaMasterComponent } from './components/consultas/consulta.master/consulta.master.component';
 import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
+import { ReporteResumidoComponent } from './components/consultas/reportes/reporte.resumido/reporte.resumido.component';
 
 // Imports de los Mantenimientos
 import { MantenimientoInstitucionesComponent } from './components/mantenimientos/instituciones/mantenimiento.institucion.component';
@@ -57,6 +58,7 @@ export const APP_ROUTES: Routes = [
   // Mapeo de Menu de Consultas
   { path: 'consultas/consulta-maestra-comunicacion', component: ConsultaMasterComponent },
   { path: 'consultas/consulta-generacion-reporte', component: ReporteGeneralComponent },
+  { path: 'consultas/consulta-reporte-resumido', component: ReporteResumidoComponent },
 
   // Mapeo de Menu de Mantenimientos
   { path: 'mantenimientos/mantenimiento-instituciones', component: MantenimientoInstitucionesComponent },
