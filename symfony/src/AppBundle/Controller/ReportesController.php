@@ -403,6 +403,9 @@ class ReportesController extends Controller{
                     $fecha_inicial      = ($params->fechaInicial != null) ? $params->fechaInicial : null;
                     
                     $direccion_user     = $identity->idDireccion;
+                    $depto_func_user    = $identity->idDeptoFuncional;
+                    $tipo_user          = $identity->idTipoUser;
+                    $tipo_func          = $identity->idTipoFunc;
 
                     //Evaluamos que los Campos del Json  no sean Null ni 0. ********
                     if( $fecha_inicial != null && $fecha_final != null )
@@ -417,7 +420,7 @@ class ReportesController extends Controller{
                         // INI | Eval Params
                         // Evaluamos el Tipo de Query a Eejecutar
                         // Lanzamos el Query, con todos los Parametros *************
-                        if( $direccion_user != 0 ){                         
+                        if( ($direccion_user != 0 && $tipo_user == 4) || ($direccion_user != 0 && $tipo_user == 1) ){                         
                             $opt = "1";
                             $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                         . "DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
@@ -439,8 +442,34 @@ class ReportesController extends Controller{
                                         . "c.fechaIngreso <= '".$fecha_inicial."' AND "
                                         . 'dep.idDireccionSreci = '.$direccion_user.' AND '                                                                               
                                         . 'tcom.idTipoComunicacion = 1 '                                                                               
-                                        . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                        
-                        }                                       
+                                        . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;
+                        } else {
+                            $opt = "2";
+                            $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                                        . "DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
+                                        . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
+                                        . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
+                                        . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional,  '
+                                        . 'fasig.idFuncionario, fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
+                                        . 'c.descCorrespondenciaEnc, c.temaComunicacion, inst.descInstitucion, inst.perfilInstitucion, est.idEstado, est.descripcionEstado '
+                                        . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                        . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
+                                        . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
+                                        . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '                                    
+                                        . 'INNER JOIN BackendBundle:TblDireccionesSreci dep WITH dep.idDireccionSreci = c.idDireccionSreci '
+                                        . 'INNER JOIN BackendBundle:TblFuncionarios func WITH func.idFuncionario = c.idFuncionarioAsignado '
+                                        . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                        . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = c.idTipoComunicacion '
+                                        . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '                                        
+                                        . "WHERE c.fechaIngreso >= '".$fecha_inicial."' AND "
+                                        . "c.fechaIngreso <= '".$fecha_inicial."' AND "
+                                        . 'dep.idDireccionSreci = '.$direccion_user.' AND '
+                                        . 'dfunc.idDeptoFuncional = '.$idDeptoFuncional.' AND '                                                                               
+                                        . 'tcom.idTipoComunicacion = 1 '                                                                               
+                                        . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;
+                        }                        
+                        
+                        // Ejecuta el Query
                         $correspondenciaFind = $query->getResult();                                  
 
                         // Evalua el Resultado de la Consulta

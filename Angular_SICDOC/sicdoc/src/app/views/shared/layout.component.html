@@ -83,7 +83,8 @@
                   <img src="/assets/icons/comunicacion/professional-profile-with-image_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Generación de Reportes</a>
                 <hr>
-                <a class="dropdown-item" [routerLink]="['consultas/consulta-reporte-resumido']" routerLinkActive="active">
+                <a class="dropdown-item" *ngIf="identity.idTipoFunc == 6 || identity.idTipoFunc == 4 || identity.idTipoFunc == 1"
+                        [routerLink]="['consultas/consulta-reporte-resumido']" routerLinkActive="active">
                   <img src="/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Reporte Resumido</a>
               </div>

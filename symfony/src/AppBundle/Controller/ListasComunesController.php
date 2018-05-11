@@ -1045,6 +1045,77 @@ class ListasComunesController extends Controller {
     
     
     /**
+     * @Route("/com-anulados-list", name="com-anulados-list")
+     * Creacion del Controlador: Total de Oficios Anulados
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00013.1
+     */
+    public function comAnuladasListAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEnc");
+
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento and '
+                    . 'a.idTipoComunicacion = :validComunicacion and a.idFuncionarioAsignado = :validUsuario ');
+            $qb->setParameter('validEstado', 4 )->setParameter('validDocumento', $tipo_documento )->setParameter('validComunicacion', $tipo_comunicacion )
+                    ->setParameter('validUsuario', $user_comunicacion );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No se ha encontrado parametros, contacte al Administrador !!"
+            );
+        }
+               
+        // Retorna el Dato de la Consulta
+        return $helpers->parserJson($data);
+    }//FIN | FND00013.1
+    
+    
+    /**
      * @Route("/asignar-oficios-list", name="asignar-oficios-list")
      * Creacion del Controlador: Listado de Todos Ofcios a Asignar, All
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
