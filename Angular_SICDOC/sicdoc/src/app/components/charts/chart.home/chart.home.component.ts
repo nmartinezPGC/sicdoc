@@ -28,6 +28,11 @@ export class ChartHomeComponent implements OnInit {
   public identity;
   public token;
 
+  // Propiedad de Loader
+  public loading      = 'show';
+  public alertSuccess = 'show';
+  public alertError   = 'show';
+
   // Json del Recuento de Datos
   // Oficios
   public JsonOutgetListaOficiosIngresados:any[];
@@ -53,7 +58,7 @@ export class ChartHomeComponent implements OnInit {
 
   // Propiedades de los Resumenes
   // Oficios
-  public countOficiosIngresados:number = 120;
+  public countOficiosIngresados:number;
   public countOficiosPendientes:number;
   public countOficiosFinalizados:number;
 
@@ -119,23 +124,32 @@ export class ChartHomeComponent implements OnInit {
   ];
 
   //Total de Comunicaciones
-  public totalOficios:number = 70;
-  public totalMemos:number = 60;
-  public totalNotas:number = 10;
-  public totalCirculares:number = 10;
-  public totalCorreos:number = 24;
-  public totalLlamadas:number = 32;
-  public totalReuniones:number = 15;
+  public totalOficios:number[];
+  public totalMemos:number[];
+  public totalNotas:number[];
+  public totalCirculares:number[];
+  public totalCorreos:number[];
+  public totalLlamadas:number[];
+  public totalReuniones:number[];
 
-  public arrayTotales:number[] = [ 70, 60, 10, 10, 24, 32, 15 ];
+  //Resumen del Chart
+  public _arrayTotales:number[] ;
+  public _arrayTotalesIngresado:number[] ;
+  public _arrayTotalesPendiente:number[] ;
+  public _arrayTotalesResuelto:number[] ;
+  public _arrayTotalesAnulado:number[] ;
+
+
+  // public barChartData:any[];
 
   public barChartData:any[] = [
-    {data: this.arrayTotales, label: 'Total'},
-    {data: [this.countOficiosIngresados, 59, 8, 8, 6, 5, 4], label: 'Ingresado'},
-    {data: [5, 48, 4, 1, 6, 7, 9], label: 'Pendiente'},
-    {data: [60, 8, 4, 9, 8, 2, 9], label: 'Resuelto'},
-    {data: [2, 4, 4, 9, 6], label: 'Anulado'}
+    {data: this._arrayTotales, label: 'Total'},
+    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Ingresado'},
+    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Pendiente'},
+    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Resuelto'},
+    {data: [0, 0, 0, 0, 0], label: 'Anulado'}
   ];
+
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
@@ -146,6 +160,7 @@ export class ChartHomeComponent implements OnInit {
                private changeDetectorRef: ChangeDetectorRef,
                private toastyService:ToastyService){
       //Codigo frl Constrcutor
+
  }
 
  ngOnInit(){
@@ -161,6 +176,10 @@ export class ChartHomeComponent implements OnInit {
 
    this.getlistaOficosIngresados();
 
+   // Eventos de Señaloizacion
+   this.loading = "hide";
+
+   this.randomize();
  }
 
   // events
@@ -172,6 +191,10 @@ export class ChartHomeComponent implements OnInit {
     console.log(e);
   }
 
+  /*
+   * Cargar
+  */
+
   public randomize():void {
     // Only Change 3 values
     let data = [
@@ -182,9 +205,26 @@ export class ChartHomeComponent implements OnInit {
       56,
       (Math.random() * 100),
       40];
+
     let clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
+
+    //Data de Totales
+    this._arrayTotales          = [ 70, 60, 10, 10, 24, 32, 15 ];
+    this._arrayTotalesIngresado = [ 10, 15, 2,  3,  7,  12, 5];
+    this._arrayTotalesPendiente = [ 20, 17, 6,  5,  20, 15, 6];
+    this._arrayTotalesResuelto  = [ 35, 35, 1,  5,  10, 10, 2];
+    this._arrayTotalesAnulado   = [ 20, 25, 1,  4,  9,  9,  3];
+
+    //Clonamos el Dato de l Array del Chart
+    clone[0].data = this._arrayTotales;
+    clone[1].data = this._arrayTotalesIngresado;
+    clone[2].data = this._arrayTotalesPendiente;
+    clone[3].data = this._arrayTotalesResuelto;
+    clone[4].data = this._arrayTotalesAnulado;
+
+    // Setea el Nuevo valor del Array del Chart
     this.barChartData = clone;
+
     /**
      * (My guess), for Angular to recognize the change in the dataset
      * it has to change the dataset variable directly,
@@ -211,21 +251,29 @@ export class ChartHomeComponent implements OnInit {
     this.paramsIdTipoComSend.idTipoCom = 1;
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 2;
-
+    alert('Paso 1, Entra en Funcion');
+    this.loading = 'show';
     this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-ingresadas-list").subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosIngresados = response.data;
-            this.countOficiosIngresados = 80;
-            alert(this.countOficiosIngresados);
+            this.countOficiosIngresados = Number(this.JsonOutgetListaOficiosIngresados);
+            // alert(this.countOficiosIngresados);
+            alert('Paso 1, Entra en Funcion, *** Error');
             this.addToast(4,"Error", response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetListaOficiosIngresados = response.data;
             this.countOficiosIngresados =  Number(this.JsonOutgetListaOficiosIngresados);
-            alert(this.countOficiosIngresados);
+            //alert(this.countOficiosIngresados);
+            alert('Paso 1, Entra en Funcion, *** success ** Totales *** ' + this.countOficiosIngresados);
+            // this.arrayTotales = [ 70, 60, 10, 10, 24, 32, 15 ];
+
+            // console.log(this.barChartData1);
+            this.loading = 'show';
+            // this.addToast(2,"Aviso ", response.msg);
           }
         });
   } // FIN : FND-00008
