@@ -1,0 +1,7 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Charts | Resumen General
+charts_resumenComunicacionList:
+    path: /resumen-comunicacion-list
+    defaults: { _controller: "AppBundle:Charts:resumenComunicacionList" }
+    methods: POST

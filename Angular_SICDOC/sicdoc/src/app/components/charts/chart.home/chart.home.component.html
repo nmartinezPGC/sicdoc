@@ -1,11 +1,12 @@
 <div>
   <!-- Loader de Carga de los Datos -->
-  <div id="loader-2" *ngIf="loading == 'gg' " style="margin-left:45%; margin-bottom:2%;">
-    <!-- <img src="assets/images/aguarde.gif" alt="Cargando Tareas"> -->
-    <img src="assets/images/832.gif" alt="Cargando Tareas">
+  <div id="loader-2" *ngIf="loading == 'show' " style="margin-left:35%; margin-bottom:2%;margin-top:5% ">
+    <p style="margin-left:5% ">Cargando datos estadísticos ...</p>
+    <img src="assets/images/745.gif" alt="Cargando Tareas">
   </div>
-  <p>Resumen de las Comunicaciones</p>
-  <div style="display: block" *ngIf="loading == 'show' ">
+
+  <div style="display: block" *ngIf="showChart == 'show' " >
+    <p>Resumen de las Comunicaciones</p>
     <canvas baseChart
             [datasets]="barChartData"
             [labels]="barChartLabels"
@@ -16,5 +17,5 @@
             (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
   </div>
-  <button (click)="randomize()">Update</button>
+  <!-- <button (click)="randomize()">Update</button> -->
 </div>

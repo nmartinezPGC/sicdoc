@@ -420,7 +420,7 @@ class ReportesController extends Controller{
                         // INI | Eval Params
                         // Evaluamos el Tipo de Query a Eejecutar
                         // Lanzamos el Query, con todos los Parametros *************
-                        if( ($direccion_user != 0 && $tipo_user == 4) || ($direccion_user != 0 && $tipo_user == 1) ){                         
+                        if( ($direccion_user != 0 && $tipo_user == 5) || ($direccion_user != 0 && $tipo_user == 1) ){                         
                             $opt = "1";
                             $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                         . "DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
@@ -464,7 +464,7 @@ class ReportesController extends Controller{
                                         . "WHERE c.fechaIngreso >= '".$fecha_inicial."' AND "
                                         . "c.fechaIngreso <= '".$fecha_inicial."' AND "
                                         . 'dep.idDireccionSreci = '.$direccion_user.' AND '
-                                        . 'dfunc.idDeptoFuncional = '.$idDeptoFuncional.' AND '                                                                               
+                                        . 'dfunc.idDeptoFuncional = '.$depto_func_user.' AND '                                                                               
                                         . 'tcom.idTipoComunicacion = 1 '                                                                               
                                         . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;
                         }                        

@@ -59,3 +59,8 @@ app_mantenimientos:
 app_vinculacionComunicacion:
     resource: "@AppBundle/Resources/config/routing/vinculacion.yml"
     prefix: /vinculacionComunicacion
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Charts
+app_charts:
+    resource: "@AppBundle/Resources/config/routing/charts.yml"
+    prefix: /charts

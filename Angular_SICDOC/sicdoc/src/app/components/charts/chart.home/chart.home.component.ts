@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 
 //Importamos los Servicios
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
+import { ChartsService } from '../../../services/charts/charts.service'; //Servico Charts
 
 //Libreria toasty
 import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} from 'ng2-toasty';
@@ -18,7 +19,7 @@ import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} f
 @Component({
   selector: 'app-chart-home',
   templateUrl: './chart.home.component.html',
-  providers: [ ListasComunesService ]
+  providers: [ ListasComunesService, ChartsService ]
 })
 export class ChartHomeComponent implements OnInit {
   //Parametros de la Clase
@@ -29,7 +30,8 @@ export class ChartHomeComponent implements OnInit {
   public token;
 
   // Propiedad de Loader
-  public loading      = 'show';
+  public loading      = 'hide';
+  public showChart    = 'hide';
   public alertSuccess = 'show';
   public alertError   = 'show';
 
@@ -45,14 +47,14 @@ export class ChartHomeComponent implements OnInit {
   public JsonOutgetListaMemosFinalizados:any[];
 
   // Correos
-  public JsonOutgetListaCorreosIngresados:any[];
-  public JsonOutgetListaCorreosPendientes:any[];
-  public JsonOutgetListaCorreosFinalizados:any[];
+  public JsonOutgetListaNotasIngresados:any[];
+  public JsonOutgetListaNotasPendientes:any[];
+  public JsonOutgetListaNotasFinalizados:any[];
 
   // Llamadas
-  public JsonOutgetListaLlamadasIngresados:any[];
-  public JsonOutgetListaLlamadasPendientes:any[];
-  public JsonOutgetListaLlamadasFinalizados:any[];
+  public JsonOutgetListaCicularesIngresados:any[];
+  public JsonOutgetListaCicularesPendientes:any[];
+  public JsonOutgetListaCicularesFinalizados:any[];
 
   // FIN de Encabezados **********************
 
@@ -95,7 +97,7 @@ export class ChartHomeComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels:string[] = ['Oficios', 'Memos', 'Notas', 'Circulares', 'Correos', 'Llamadas', 'Reuniones'];
+  public barChartLabels:string[] = ['Oficios', 'Memos', 'Notas', 'Circulares'];
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
 
@@ -105,10 +107,10 @@ export class ChartHomeComponent implements OnInit {
       backgroundColor: 'rgba(196, 194, 194, 0.6)',
       borderColor: 'rgba(232, 229, 229, 0.2)'
     },
-    { // verde - Ingresado
+    /*{ // verde - Ingresado
       backgroundColor: 'rgba(39, 174, 96, 0.6)',
       borderColor: 'rgba(30, 132, 73, 0.2)'
-    },
+    },*/
     { // Amarillo - Pendiente
       backgroundColor: 'rgba(241, 196, 15, 0.6)',
       borderColor: 'rgba(247, 220, 111, 0.2)'
@@ -124,13 +126,13 @@ export class ChartHomeComponent implements OnInit {
   ];
 
   //Total de Comunicaciones
-  public totalOficios:number[];
-  public totalMemos:number[];
-  public totalNotas:number[];
-  public totalCirculares:number[];
-  public totalCorreos:number[];
-  public totalLlamadas:number[];
-  public totalReuniones:number[];
+  public _totalOficios:number;
+  public _totalMemos:number;
+  public _totalNotas:number;
+  public _totalCirculares:number;
+  public _totalCorreos:number;
+  public _totalLlamadas:number;
+  public _totalReuniones:number;
 
   //Resumen del Chart
   public _arrayTotales:number[] ;
@@ -141,18 +143,19 @@ export class ChartHomeComponent implements OnInit {
 
 
   // public barChartData:any[];
+  //{data: [0, 0, 0, 0], label: 'Ingresado'},
 
   public barChartData:any[] = [
     {data: this._arrayTotales, label: 'Total'},
-    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Ingresado'},
-    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Pendiente'},
-    {data: [0, 0, 0, 0, 0, 0, 0], label: 'Resuelto'},
-    {data: [0, 0, 0, 0, 0], label: 'Anulado'}
+    {data: [0, 0, 0, 0], label: 'Pendiente'},
+    {data: [0, 0, 0, 0], label: 'Resuelto'},
+    {data: [0, 0, 0, 0], label: 'Anulado'}
   ];
 
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
+               private _chartService: ChartsService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
@@ -174,12 +177,16 @@ export class ChartHomeComponent implements OnInit {
      "idTipoDoc" : "",
    }
 
+   //Array de los Resumenes de las Comunicaciones
    this.getlistaOficosIngresados();
+   //this.getlistaMemosIngresados();
+   //this.getlistaNotasIngresados();
+   //this.getlistaCircularesIngresados();
 
    // Eventos de Señaloizacion
-   this.loading = "hide";
+   this.loading = 'show';
+   this.showChart = 'hide';
 
-   this.randomize();
  }
 
   // events
@@ -194,7 +201,6 @@ export class ChartHomeComponent implements OnInit {
   /*
    * Cargar
   */
-
   public randomize():void {
     // Only Change 3 values
     let data = [
@@ -208,22 +214,51 @@ export class ChartHomeComponent implements OnInit {
 
     let clone = JSON.parse(JSON.stringify(this.barChartData));
 
+    //instacia de la valores de la data de los Resumen
+    let barOficio = JSON.parse(JSON.stringify(this.JsonOutgetListaOficiosIngresados));
+    let barMemo = JSON.parse(JSON.stringify(this.JsonOutgetListaMemosIngresados));
+    let barNotas = JSON.parse(JSON.stringify(this.JsonOutgetListaNotasIngresados));
+    let barCircular = JSON.parse(JSON.stringify(this.JsonOutgetListaCicularesIngresados));
+
+    console.log('Imprime bar Oficio *********** ');
+    console.log(barOficio[0]);
+
+    console.log('Imprime bar Memo *********** ');
+    console.log(barMemo[0]);
+
+    console.log('Imprime bar Notas *********** ');
+    console.log(barNotas[0]);
+
+    console.log('Imprime bar Circular *********** ');
+    console.log(barCircular[0]);
+
+    console.log('Suma de totales');
+    this._totalOficios = Number(barOficio[0].PENDIENTE) + Number(barOficio[0].RESUELTO) + Number(barOficio[0].ANULADO);
+    this._totalMemos   = Number(barMemo[0].PENDIENTE) + Number(barMemo[0].RESUELTO) + Number(barMemo[0].ANULADO);
+    this._totalNotas   = Number(barNotas[0].PENDIENTE) + Number(barNotas[0].RESUELTO) + Number(barNotas[0].ANULADO);
+    this._totalCirculares = Number(barCircular[0].PENDIENTE) + Number(barCircular[0].RESUELTO) + Number(barCircular[0].ANULADO);
+    console.log( this._totalOficios );
+
     //Data de Totales
-    this._arrayTotales          = [ 70, 60, 10, 10, 24, 32, 15 ];
-    this._arrayTotalesIngresado = [ 10, 15, 2,  3,  7,  12, 5];
-    this._arrayTotalesPendiente = [ 20, 17, 6,  5,  20, 15, 6];
-    this._arrayTotalesResuelto  = [ 35, 35, 1,  5,  10, 10, 2];
-    this._arrayTotalesAnulado   = [ 20, 25, 1,  4,  9,  9,  3];
+    this._arrayTotales          = [ this._totalOficios, this._totalMemos, this._totalNotas, this._totalCirculares];
+    //this._arrayTotalesIngresado = [ 10, 15, 2,  3];
+    this._arrayTotalesPendiente = [ barOficio[0].PENDIENTE, barMemo[0].PENDIENTE, barNotas[0].PENDIENTE,  barCircular[0].PENDIENTE];
+    this._arrayTotalesResuelto  = [ barOficio[0].RESUELTO, barMemo[0].RESUELTO, barNotas[0].RESUELTO,  barCircular[0].RESUELTO];
+    this._arrayTotalesAnulado   = [ barOficio[0].ANULADO, barMemo[0].ANULADO, barNotas[0].ANULADO,  barCircular[0].ANULADO];
 
     //Clonamos el Dato de l Array del Chart
     clone[0].data = this._arrayTotales;
-    clone[1].data = this._arrayTotalesIngresado;
-    clone[2].data = this._arrayTotalesPendiente;
-    clone[3].data = this._arrayTotalesResuelto;
-    clone[4].data = this._arrayTotalesAnulado;
+    //clone[1].data = this._arrayTotalesIngresado;
+    clone[1].data = this._arrayTotalesPendiente;
+    clone[2].data = this._arrayTotalesResuelto;
+    clone[3].data = this._arrayTotalesAnulado;
 
     // Setea el Nuevo valor del Array del Chart
     this.barChartData = clone;
+
+    // Eventos de Señaloizacion
+    this.showChart = 'show';
+    this.loading = 'hide';
 
     /**
      * (My guess), for Angular to recognize the change in the dataset
@@ -249,31 +284,126 @@ export class ChartHomeComponent implements OnInit {
   getlistaOficosIngresados() {
     //Llamar al metodo, de Contador de Comunicaciones Pendientes
     this.paramsIdTipoComSend.idTipoCom = 1;
-    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
-    this.paramsIdTipoComSend.idTipoDoc = 2;
-    alert('Paso 1, Entra en Funcion');
+    // this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    // this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    // Eventos de Señaloizacion
     this.loading = 'show';
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-ingresadas-list").subscribe(
+
+    this._chartService.arrayComunicacion( this.paramsIdTipoComSend ).subscribe(
         response => {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosIngresados = response.data;
-            this.countOficiosIngresados = Number(this.JsonOutgetListaOficiosIngresados);
-            // alert(this.countOficiosIngresados);
-            alert('Paso 1, Entra en Funcion, *** Error');
+            //this.countOficiosIngresados = Number(this.JsonOutgetListaOficiosIngresados);
             this.addToast(4,"Error", response.msg);
+            this.loading = 'hide';
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetListaOficiosIngresados = response.data;
-            this.countOficiosIngresados =  Number(this.JsonOutgetListaOficiosIngresados);
-            //alert(this.countOficiosIngresados);
-            alert('Paso 1, Entra en Funcion, *** success ** Totales *** ' + this.countOficiosIngresados);
-            // this.arrayTotales = [ 70, 60, 10, 10, 24, 32, 15 ];
+            //this.countOficiosIngresados =  Number(this.JsonOutgetListaOficiosIngresados);
+            //console.log(this.JsonOutgetListaOficiosIngresados);
+            this.getlistaMemosIngresados();
+          }
+        });
+  } // FIN : FND-00008
 
-            // console.log(this.barChartData1);
-            this.loading = 'show';
-            // this.addToast(2,"Aviso ", response.msg);
+
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaMemosIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    //this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    //this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._chartService.arrayComunicacion( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaMemosIngresados = response.data;
+            this.addToast(4,"Error", response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaMemosIngresados = response.data;
+            this.getlistaNotasIngresados();
+
+            //this.randomize();
+          }
+        });
+  } // FIN : FND-00008
+
+
+
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaNotasIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 3;
+    //this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    //this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._chartService.arrayComunicacion( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaNotasIngresados = response.data;
+            this.addToast(4,"Error", response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaNotasIngresados = response.data;
+
+            this.getlistaCircularesIngresados();
+            //this.randomize();
+          }
+        });
+  } // FIN : FND-00008
+
+
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaCircularesIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 4;
+    //this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    //this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._chartService.arrayComunicacion( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaCicularesIngresados = response.data;
+            this.addToast(4,"Error", response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaCicularesIngresados = response.data;
+
+            this.randomize();
           }
         });
   } // FIN : FND-00008
