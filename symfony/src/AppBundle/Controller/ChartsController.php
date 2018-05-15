@@ -349,7 +349,7 @@ class ChartsController extends Controller {
                                             (SELECT COUNT(ce3.idTipoDocumento) FROM BackendBundle:TblCorrespondenciaEnc ce3 WHERE ce3.idTipoDocumento = :idTipoCom
                                                                                AND ce3.idEstado = 5 AND ce3.idFuncionarioAsignado = :idUsuario ) AS RESUELTO,
                                             (SELECT COUNT(ce4.idTipoDocumento) FROM BackendBundle:TblCorrespondenciaEnc ce4 WHERE ce4.idTipoDocumento = :idTipoCom
-                                                                               AND ce4.idEstado = 7 AND ce4.idFuncionarioAsignado = :idUsuario ) AS ANULADO
+                                                                               AND ce4.idEstado = 4 AND ce4.idFuncionarioAsignado = :idUsuario ) AS ANULADO
                                     FROM BackendBundle:TblTipoDocumento td 
                                     WHERE td.idTipoDocumento IN ( :idTipoCom )  
                                     GROUP BY td.idTipoDocumento  
