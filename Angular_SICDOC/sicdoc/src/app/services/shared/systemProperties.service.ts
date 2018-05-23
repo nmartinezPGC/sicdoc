@@ -25,7 +25,7 @@ export class SystemPropertiesService {
   public urlServerResourse:string = "http://172.17.0.250/sicdoc/symfony/web/";
 
   // Indicador del entorno a Copilar | 1 = Server | 2 = Localhost
-  public indicatorIPCompiler:number = 1;
+  public indicatorIPCompiler:number = 2;
 
   /****************************************************
   * Funcion: FND-00001
