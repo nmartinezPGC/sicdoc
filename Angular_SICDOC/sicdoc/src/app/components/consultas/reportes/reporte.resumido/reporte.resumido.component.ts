@@ -244,7 +244,7 @@ export class ReporteResumidoComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },*/
-                  { // Columna de Codigo Comunicación
+                  /*{ // Columna de Codigo Comunicación
                       "targets": [ 2 ],
                       "visible": false,
                       "searchable": true
@@ -253,7 +253,7 @@ export class ReporteResumidoComponent implements OnInit {
                       "targets": [ 3 ],
                       "visible": false,
                       "searchable": true
-                  }
+                  }*/
             ],
 
             // paging: false,

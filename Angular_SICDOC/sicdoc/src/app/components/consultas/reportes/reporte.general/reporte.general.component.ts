@@ -244,10 +244,20 @@ export class ReporteGeneralComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },
-                  { // Columna de Codigo Comunicación
+                  /*{ // Columna de Codigo Comunicación
                       "targets": [ 2 ],
                       "visible": false,
                       "searchable": true
+                  },*/
+                  {//fECHAS
+                    "targets": [ 6 ],
+                    "visible": false,
+                    "searchable": true
+                  },
+                  {
+                    "targets": [ 7 ],
+                    "visible": false,
+                    "searchable": true
                   },
                   { // Columna de Descripcion
                       "targets": [ 10 ],

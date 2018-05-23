@@ -142,7 +142,7 @@ class ReportesController extends Controller{
                                     . 'c.idTipoDocumento IN ('.$funcionarios_array_convert.') AND '
                                     . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
-                                    . "c.fechaIngreso <= '".$fecha_inicial."' AND "                           
+                                    . "c.fechaIngreso <= '".$fecha_final."' AND "                           
                                     . 'c.idDeptoFuncional = '.$id_sub_direccion.' AND ' 
                                     . 'c.idFuncionarioAsignado = '.$id_funcionario_asignado.' '
                                     . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                                                            
@@ -439,9 +439,10 @@ class ReportesController extends Controller{
                                         . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = c.idTipoComunicacion '
                                         . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '                                        
                                         . "WHERE c.fechaIngreso >= '".$fecha_inicial."' AND "
-                                        . "c.fechaIngreso <= '".$fecha_inicial."' AND "
+                                        . "c.fechaIngreso <= '".$fecha_final."' AND "
                                         . 'dep.idDireccionSreci = '.$direccion_user.' AND '                                                                               
-                                        . 'tcom.idTipoComunicacion = 1 '                                                                               
+                                        . 'tcom.idTipoComunicacion = 1 AND '                                                                               
+                                        . 'tdoc.idTipoDocumento = 1 '                                                                               
                                         . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;
                         } else {
                             $opt = "2";
@@ -462,10 +463,11 @@ class ReportesController extends Controller{
                                         . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH tcom.idTipoComunicacion = c.idTipoComunicacion '
                                         . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '                                        
                                         . "WHERE c.fechaIngreso >= '".$fecha_inicial."' AND "
-                                        . "c.fechaIngreso <= '".$fecha_inicial."' AND "
+                                        . "c.fechaIngreso <= '".$fecha_final."' AND "
                                         . 'dep.idDireccionSreci = '.$direccion_user.' AND '
                                         . 'dfunc.idDeptoFuncional = '.$depto_func_user.' AND '                                                                               
-                                        . 'tcom.idTipoComunicacion = 1 '                                                                               
+                                        . 'tcom.idTipoComunicacion = 1 AND '  
+                                        . 'tdoc.idTipoDocumento = 1 '
                                         . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;
                         }                        
                         
