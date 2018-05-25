@@ -46,7 +46,7 @@
               </div>
             </div>
 
-            <hr>
+            <hr class="hr-new">
             <!-- Tema y Descripcion de la Comunicacion -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -71,7 +71,7 @@
                               minlength="10"  >
                   </textarea>
 
-                    <hr>
+                    <!-- <hr class="hr-new"> -->
               </div>
             </div>
 
@@ -110,6 +110,57 @@
                        disabled value="{ _editarComunicacionModel.horaFinalizacion }" >
               </div>
             </div>
+
+            <hr class="hr-new">
+            <!-- Institucion de COmunicacion -->
+            <div class="row">
+              <!-- Lista de Paises -->
+      				<div class="col-xs-12 col-sm-6 col-md-4">
+      					<div class="form-group">
+                  <h6>País / Entidad de Comunicación</h6>
+                  <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+                        title="País / Entidad donde viene la Comunicación"
+                        ngControl="idPais" [(ngModel)]="_editarComunicacionModel.idPais" tabindex="4">
+                      <option value="0">País</option>
+                      <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
+      					</div>
+      				</div>
+
+              <!-- Tipo de Institucion -->
+              <div class="col-xs-12 col-sm-6 col-md-3">
+      					<div class="form-group">
+                  <h6>Tipo de Institución</h6>
+                  <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
+                        #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+                        ngControl="idTipoInstitucion" [(ngModel)]="_editarComunicacionModel.idTipoInstitucion" tabindex="5"
+                        (change)="getlistaInstituciones()" >
+                      <option value="0" >Tipo de Institución</option>
+                      <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
+      					</div>
+      				</div>
+
+              <!-- Instituciones de la Comunicacion -->
+              <div class="col-xs-12 col-sm-6 col-md-5">
+                <div class="form-group">
+                  <h6>Institución de Comunicación</h6>
+                  <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación"
+                        #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+                        ngControl="idInstitucion" [(ngModel)]="_editarComunicacionModel.idInstitucion"  tabindex="6">
+                      <option value="0">Selecciona una Institución</option>
+                      <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">
+                          {{ list.descInstitucion }} | {{ list.perfilInstitucion }}
+                      </option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
+                 <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
+                 <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
+                </div>
+              </div>
+      			</div>
 
             <hr class="colorgraph">
             <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->

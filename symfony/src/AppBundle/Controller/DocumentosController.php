@@ -545,7 +545,7 @@ class DocumentosController extends Controller{
                         $opt = 1;
                         $data = array(
                             "status" => "succes",                
-                            "code" => "200",
+                            "code" => 200,
                             "opt"  => $opt,
                             "msg" => "Documento Borrado Existosamente !!",
                             "data" => $path_of_file
@@ -553,8 +553,8 @@ class DocumentosController extends Controller{
                     } else {
                         $opt = 2;
                         $data = array(
-                            "status" => "succes",                
-                            "code" => "500",
+                            "status" => "error",                
+                            "code" => 500,
                             "opt"  => $opt,
                             "path" => $path,
                             "nameFile" => $nombre_de_archivo_anterior,
@@ -566,7 +566,7 @@ class DocumentosController extends Controller{
                     $opt = 3;
                     $data = array(
                         "status" => "error",                
-                        "code" => "500",   
+                        "code" => 500,   
                         "opt"  => $opt,
                         "msg" => "Documento No Exsite, vefica la extención o contacta al Administrador !!",
                         "data" => $path_of_file
@@ -827,7 +827,7 @@ class DocumentosController extends Controller{
                     $data = array(
                         "status" => "success", 
                         "code"   => 200, 
-                        "msg"    => "Se han ingresado el/los Documentos Exitosamente ",
+                        "msg"    => "Se ha ingresado el Documento Exitosamente ",
                         //"data"   => $correspondenciaConsulta
                     );
             }else {
@@ -914,7 +914,7 @@ class DocumentosController extends Controller{
                     //Ingresamos un valor en la Tabla **********************
                     //Bitacora Borrao Documentos *******************************                        
                     $bitacoraDeleter->setDescDocumento( $desc_documento ); //Set de Descripcion
-                    $bitacoraDeleter->setJustificacionBorrado( "Borrado desde la ventana ..." ); //Set de Descripcion
+                    $bitacoraDeleter->setJustificacionBorrado( "Borrado desde la ventana ... " ); //Set de Descripcion
                     $bitacoraDeleter->setFechaBorrado( $fecha_ingreso ); //Set de Fecha Borrado
                     $bitacoraDeleter->setHoraBorrado( $hora_ingreso ); //Set de Fecha Salida
                     
@@ -970,7 +970,7 @@ class DocumentosController extends Controller{
                     //Array de Mensajes
                     $data = array(
                         "status" => "error", 
-                        "code"   => 400, 
+                        "code"   => 500, 
                         "msg"    => "No se ha Borrado el Documento, intentalo de nuevo ... ",
                         //"data"   => $correspondenciaConsulta
                     );
@@ -987,7 +987,7 @@ class DocumentosController extends Controller{
         }else {
             $data = array(
                 "status" => "error",                
-                "code" => "400",                
+                "code" => 500,                
                 "msg" => "Autorizacion de Token no valida, tu sessión ha caducado !!"                
             );
         }

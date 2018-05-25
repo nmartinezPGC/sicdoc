@@ -4,8 +4,11 @@ import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 import { HttpModule,  Http, Response, Headers } from '@angular/http';
 //import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload'; // Liberia de Documentos
 
+//Libreria toasty
+import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} from 'ng2-toasty';
+
 // Lirerias para el AutoComplete
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subscription, Subject} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -125,6 +128,17 @@ export class AgregarDocumentosComponent implements OnInit {
 
   // Instacia de la variable del Modelo | Json de Parametros
   public _documentModel: AgregarDocumentoModel;
+
+  // Propiedades de Toasty
+  getTitle(title:string, num: number): string {
+        return title + ' se cerrara en ' +  num + ' segundos ';
+  }
+
+  getMessage(msg:string, num: number): string {
+      // return msg + ' ' + num;
+      return msg;
+  }
+
   addForm: FormGroup; // form group instance
 
   constructor( private _listasComunes: ListasComunesService,
@@ -135,7 +149,8 @@ export class AgregarDocumentosComponent implements OnInit {
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
                private changeDetectorRef: ChangeDetectorRef,
-               private _http: Http) {
+               private _http: Http,
+               private toastyService:ToastyService) {
      // Codigo del Constructor
      // Seteo de la Ruta de la Url Config
      this.urlConfigLocal = this._agregarDocumentosService.url;
@@ -214,6 +229,12 @@ export class AgregarDocumentosComponent implements OnInit {
    * Fecha: 2018-03-06
   **********************************************************/
   onSubmit(forma:NgForm){
+    //validamos que se suba el documento
+    if( this._documentModel.pdfDocumento == "" ){
+      this.addToast(4,"Error: ", "Debes subir el documento para continuar ... ");
+      return;
+    }
+
     // Envio de los Datos, a la API, con el fin de registrarlo en la BD
     this.loading = "show";
 
@@ -238,6 +259,7 @@ export class AgregarDocumentosComponent implements OnInit {
             //Cerramos el Loading
             this.closeModal("#closeModalFinCom");
             //Oculta el Div de Alerta despues de 3 Segundos
+            this.addToast(2,"En hora buena: ",response.msg);
             setTimeout(function() {
                 $("#alertSuccess").fadeOut(1500);
             },3000);
@@ -252,6 +274,7 @@ export class AgregarDocumentosComponent implements OnInit {
             this.mensajes = this.errorMessage;
 
             //Oculta el Div de Alerta despues de 3 Segundos
+            this.addToast(4,"Error: ", this.mensajes);
             setTimeout(function() {
                 $("#alertError").fadeOut(1500);
             },3000);
@@ -422,7 +445,9 @@ export class AgregarDocumentosComponent implements OnInit {
             // Oculta los Loaders
             this.loading_table = 'hide';
             this.loadTabla2 = true;
-            alert(response.msg);
+            //Mensaje de notificacion
+            this.addToast(4,"Error: ",response.msg);
+            // alert(response.msg);
           }else{
             this.JsonOutgetlistaDocumentos = response.data;
             //this.valoresdataDetJson ( response.data );
@@ -680,7 +705,9 @@ export class AgregarDocumentosComponent implements OnInit {
 
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert(response.msg);
+            //Mensaje de notificacion
+            this.addToast(4,"Error: ",response.msg);
+            // alert(response.msg);
 
             // Oculatamos el Loader
             this.loading = "hide";
@@ -695,7 +722,9 @@ export class AgregarDocumentosComponent implements OnInit {
             // Ocultamos el Loader
             this.loading = "hide";
             //Mensaje de alerta del error en cuestion
-            alert(response.msg);
+            //Mensaje de notificacion
+            this.addToast(2,"En hora buena: ",response.msg);
+            // alert(response.msg);
           }
         });
   } // FIN | FND-00018.1
@@ -729,10 +758,66 @@ export class AgregarDocumentosComponent implements OnInit {
           // login successful so redirect to return url
           if(response.status == "error"){
             //Mensaje de alerta del error en cuestion
-            alert(response.msg);
+            //Mensaje de notificacion
+            this.addToast(4,"Error: ",response.msg);
+            // alert(response.msg);
           }
         });
   } // FIN : FND-00019
+
+
+  /*****************************************************
+  * Funcion: FND-000020
+  * Fecha: 31-03-2018
+  * Descripcion: Libreria Toasty para los mensajes
+  * Objetivo: Metodo de msg en la APP
+  ******************************************************/
+  addToast(options:number,title:string, msg:string) {
+      let interval = 1000;
+      let timeoutIn = 11000;
+      let seconds = timeoutIn / 1000;
+      let subscription: Subscription;
+
+       let toastOptions: ToastOptions = {
+           title: this.getTitle(title,0),
+           msg: this.getMessage(msg,0),
+           showClose: true,
+           timeout: 7000,
+           theme: 'bootstrap',
+           onAdd: (toast: ToastData) => {
+               console.log('Toast ' + toast.id + ' has been added!');
+               // Run the timer with 1 second iterval
+               let observable = Observable.interval(interval);
+               // Start listen seconds beat
+               subscription = observable.subscribe((count: number) => {
+                   // Update title of toast
+                   toast.title = this.getTitle(title, ( seconds - count - 1 ));
+                   // Update message of toast
+                   toast.msg = this.getMessage(msg, count);
+                   // Extra condition to hide Toast after 10 sec
+                   if (count > 10) {
+                       // We use toast id to identify and hide it
+                       this.toastyService.clear(toast.id);
+                   }
+               });
+
+           },
+           onRemove: function(toast: ToastData) {
+               console.log('Toast ' + toast.id + ' has been removed!');
+               // Stop listenning
+               subscription.unsubscribe();
+           }
+       };
+
+       switch ( options ) {
+           case 0: this.toastyService.default(toastOptions); break; //default
+           case 1: this.toastyService.info(toastOptions); break; //info
+           case 2: this.toastyService.success(toastOptions); break; //success
+           case 3: this.toastyService.wait(toastOptions); break; //wait
+           case 4: this.toastyService.error(toastOptions); break; //error
+           case 5: this.toastyService.warning(toastOptions); break; //warning
+       }
+   } //FIN | FND-000020
 
 
 

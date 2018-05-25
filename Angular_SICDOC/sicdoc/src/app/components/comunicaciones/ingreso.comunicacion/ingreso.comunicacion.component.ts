@@ -907,6 +907,13 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
      //Llamar al metodo, de Login para Obtener la Identidad
      this.paramsSecuenciaIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
      //alert(this.comunicacion.idTipoDocumento);
+     //Generamos la Instancia para los datos por Defaul
+     this.comunicacion.idPais = 0;
+     this.comunicacion.idTipoInstitucion = 0;
+     this.comunicacion.idInstitucion = 0;
+
+     this.JsonOutgetlistaInstitucion = [];
+
      //Evaluamos el valor del Tipo de Documento
      if( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
        this.paramsSecuencia.codSecuencial = "COM-OUT-OFI";
@@ -933,6 +940,14 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
+       //Seteamos la Institcuion por Defecto sreci
+       this.comunicacion.idPais = 1;
+       this.comunicacion.idTipoInstitucion = 1;
+
+       /* Carga el listado de la Instituciones de los Parametros **************/
+       this.getlistaInstituciones();
+       this.comunicacion.idInstitucion = 7;
+
       } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-NOTA-VERBAL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
@@ -956,6 +971,14 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
        this.maxlengthCodReferencia = "30";
        this.minlengthCodReferencia = "5";
        this.pattern ="";
+
+       //Seteamos la Institcuion por Defecto sreci
+       this.comunicacion.idPais = 1;
+       this.comunicacion.idTipoInstitucion = 1;
+
+       /* Carga el listado de la Instituciones de los Parametros **************/
+       this.getlistaInstituciones();
+       this.comunicacion.idInstitucion = 7;
 
       } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
        this.paramsSecuencia.codSecuencial = "COM-OUT-MAIL";

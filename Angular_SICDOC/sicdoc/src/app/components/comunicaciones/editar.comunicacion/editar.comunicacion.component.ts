@@ -63,11 +63,17 @@ export class EditarComunicacionComponent implements OnInit {
   public temaComFind;
   public descComFind;
 
+  private params;
+
   // Llenamos las Lista del HTML
   public JsonOutgetComunicacionChange:any[];
   public JsonOutgetComunicacionFind:any[];
   public JsonOutgetlistaDireccionSRECI:any[];
   public JsonOutgetlistaSubDireccionSRECI:any[];
+
+  public JsonOutgetlistaPaises:any[];
+  public JsonOutgetlistaTipoInstitucion:any[];
+  public JsonOutgetlistaInstitucion:any[];
 
   // Json de AutoCompleter Funcionarios
   public JsonOutgetlistaFuncionarios:any[];
@@ -207,8 +213,17 @@ export class EditarComunicacionComponent implements OnInit {
      this.selectedItems = [];
      this.itemList = [];
 
+     // Iniciamos los Parametros de Instituciones
+     this.params = {
+       "idPais"  : "",
+       "idTipoInstitucion"  : ""
+     };
+
      // Lista de Direcciones
      // this.getlistaDireccionesSRECI();
+     this.getlistaPaises();
+     this.getlistaTipoInstituciones();
+
   } // FIN | ngOnInit()
 
 
@@ -393,6 +408,12 @@ export class EditarComunicacionComponent implements OnInit {
       this._editarComunicacionModel.inicialesDireccionSreci =  dataIn[0].inicialesDireccionSreci;
       this._editarComunicacionModel.descEstado =  dataIn[0].descripcionEstado;
 
+      //Institucion
+      this._editarComunicacionModel.idPais =  dataIn[0].idPais;
+      this._editarComunicacionModel.idTipoInstitucion =  dataIn[0].idTipoInstitucion;
+      this._editarComunicacionModel.idInstitucion      =  dataIn[0].idInstitucion;
+
+      this.getlistaInstituciones();
 
       // Asignacion a Datos de Modales
       this.codOficioIntModal = this._editarComunicacionModel.codCorrespondencia;
@@ -474,6 +495,89 @@ export class EditarComunicacionComponent implements OnInit {
            case 5: this.toastyService.warning(toastOptions); break; //warning
        }
    } //FIN | FND-00007
+
+   /******************************************************
+   * Funcion: FND-00008
+   * Fecha: 30-07-2017
+   * Descripcion: Carga la Lista de los Paises.
+   * Objetivo: Obtener la lista de los Paises de la BD,
+   * Llamando a la API, por su metodo (paises-list).
+   *******************************************************/
+   getlistaPaises() {
+     //Llamar al metodo, de Login para Obtener la Identidad
+     this._listasComunes.listasComunes("","paises-list").subscribe(
+         response => {
+           // successful so redirect to return url
+           this.mensajes = response.msg;
+           if(response.status == "error"){
+             //Mensaje de alerta del error en cuestion
+             this.JsonOutgetlistaPaises = response.data;
+             // alert(response.msg);
+             this.addToast(4,"Error",this.mensajes);
+           }else{
+             //this.data = JSON.stringify(response.data);
+             this.JsonOutgetlistaPaises = response.data;
+           }
+         });
+   } // FIN : FND-00008
+
+
+   /*****************************************************
+   * Funcion: FND-00009
+   * Fecha: 29-07-2017
+   * Descripcion: Carga la Lista de los Tipos de
+   * Instituciones
+   * Objetivo: Obtener la lista de los Tipos de
+   * Instituciones de la BD, Llamando a la API, por su
+   * metodo (tipo-instituciones-sreci-list).
+   ******************************************************/
+   getlistaTipoInstituciones() {
+     //Llamar al metodo, de Login para Obtener la Identidad
+     this._listasComunes.listasComunes("","tipo-instituciones-sreci-list").subscribe(
+         response => {
+           // successful so redirect to return url
+           this.mensajes = response.msg;
+           if(response.status == "error"){
+             //Mensaje de alerta del error en cuestion
+             this.JsonOutgetlistaTipoInstitucion = response.data;
+             // alert(response.msg);
+             this.addToast(4,"Error",this.mensajes);
+           }else{
+             //this.data = JSON.stringify(response.data);
+             this.JsonOutgetlistaTipoInstitucion = response.data;
+           }
+         });
+   } // FIN : FND-00009
+
+
+   /*****************************************************
+   * Funcion: FND-000010
+   * Fecha: 31-07-2017
+   * Descripcion: Carga la Lista de las Instituciones
+   * Objetivo: Obtener la lista de los Tipos de usuarios
+   * de la BD, Llamando a la API, por su metodo
+   * (instituciones-sreci-list).
+   ******************************************************/
+   getlistaInstituciones() {
+       this.params.idPais = this._editarComunicacionModel.idPais;
+       this.params.idTipoInstitucion = this._editarComunicacionModel.idTipoInstitucion;
+       //Llamar al metodo, de Login para Obtener la Identidad
+       //console.log(this.params);
+       this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
+         response => {
+           // successful so redirect to return url
+           this.mensajes = response.msg;
+           if(response.status == "error"){
+             //Mensaje de alerta del error en cuestion
+             this.JsonOutgetlistaInstitucion = response.data;
+             // alert(response.msg);
+             this.addToast(4,"Error",this.mensajes);
+           }else{
+             this.JsonOutgetlistaInstitucion = response.data;
+             // console.log(response.data);
+           }
+         });
+    } // FIN : FND-000010
 
 
 }
