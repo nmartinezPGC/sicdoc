@@ -2,18 +2,18 @@ BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
     indexes:
-        fki_id_depto_funcional_secuencias:
-            columns:
-                - id_depto_funcional
-        fki_tipo_user_secuencias:
-            columns:
-                - id_tipo_usuario
         fki_direccion_sec:
             columns:
                 - id_direccion_sreci
+        fki_id_depto_funcional_secuencias:
+            columns:
+                - id_depto_funcional
         fki_secuncia_doc:
             columns:
                 - id_tipo_documento
+        fki_tipo_user_secuencias:
+            columns:
+                - id_tipo_usuario
         idx_cod_secuencia:
             columns:
                 - cod_secuencial

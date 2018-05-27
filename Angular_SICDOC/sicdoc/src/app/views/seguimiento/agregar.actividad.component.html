@@ -36,9 +36,10 @@
   <hr>
 
   <div class="col-xs-12 col-md-12 col-lg-12" *ngIf=" loadTabla1 == true">
-    <table id="example" class="table table-striped table-bordered" cellspacing="0"  >
+    <table id="example" class="table table-striped table-hover table-bordered" cellspacing="0"  >
         <thead >
             <tr>
+              <th>No.</th>
               <th>Estado</th>
               <th>No. Interno</th>
               <th>No. Ingresado</th>
@@ -51,7 +52,8 @@
         </thead>
 
         <tbody >
-            <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search ">
+            <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search; let i = index ">
+              <td >{{ i + 1 }}</td>
               <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-danger' : item.idEstado == 6,
                                 'text-primary' : item.idEstado == 7, 'text-success' : item.idEstado == 5 }" >
                 <!-- <p class="alert alert-primary"> -->

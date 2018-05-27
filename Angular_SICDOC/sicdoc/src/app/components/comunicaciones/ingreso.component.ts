@@ -10,6 +10,10 @@ import {Observable, Subscription, Subject} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
+// Libreria para Crear el PDF
+import * as jsPDF from "jspdf";
+import 'jspdf-autotable';
+
 //Importamos los Servicios
 import { LoginService } from '../../services/login/login.service'; //Servico del Login
 import { IngresoComunicacionService } from '../../services/comunicaciones/ingreso.service'; //Servico del Comunicaciones
@@ -308,6 +312,32 @@ export class IngresoComunicacionComponent implements OnInit{
      this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
 
   } // Fin | Definicion del Constructor
+
+  /*****************************************************
+  * Fecha: 15-10-2017
+  * Funcion: generatePDF
+  * Descripcion: Metodo que Genera el PDF, con la Data
+  * ya Cargada con los criterios de seleccion
+  ******************************************************/
+  generatePDF() {
+    var doc = new jsPDF();
+    //doc.addImage('assets/images/sreci.png', 'PNG', 15, 40, 200, 114);
+   doc.text(10, 10, 'Hello everybody');
+   doc.text(10, 20, 'My name is');
+   doc.text(10, 40, 'Contact me at');
+   doc.text(10, 30, 'I have just created a simple pdf using jspdf');
+   doc.setFont("times");
+   doc.setFontType("italic");
+   doc.text(50, 40, this.comunicacion.temaCorrespondencia); //append email id in pdf
+   doc.setFontType("bold");
+   doc.setTextColor(255, 0, 0); //set font color to red
+   doc.text(60, 20, this.comunicacion.descCorrespondencia); //append first name in pdf
+   doc.text(100, 20, this.comunicacion.codCorrespondencia); //append last name in pdf
+   doc.addPage(); // add new page in pdf
+   doc.setTextColor(165, 0, 0);
+   doc.text(10, 20, 'extra page to write');
+   doc.save('katara.pdf'); // Save the PDF with name "katara"...
+  } // FIN | generatePDF
 
 
   // INI | Metodo OnInit

@@ -2,9 +2,9 @@ BackendBundle\Entity\TblCorrespondenciaDet:
     type: entity
     table: tbl_correspondencia_det
     indexes:
-        cod_oficio_respuesta:
+        fki_det_user:
             columns:
-                - cod_oficio_respuesta
+                - id_usuario
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
@@ -14,9 +14,9 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_func_det_asignado:
             columns:
                 - id_funcionario_asignado
-        fki_det_user:
+        cod_oficio_respuesta:
             columns:
-                - id_usuario
+                - cod_oficio_respuesta
         fki_fk-det_estado:
             columns:
                 - id_estado

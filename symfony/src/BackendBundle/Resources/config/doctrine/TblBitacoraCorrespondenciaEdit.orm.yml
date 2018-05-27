@@ -1,0 +1,118 @@
+BackendBundle\Entity\TblBitacoraCorrespondenciaEdit:
+    type: entity
+    table: tbl_bitacora_correspondencia_edit
+    indexes:
+        fki_edit_corre_enc:
+            columns:
+                - id_correspondencia_enc
+        fki_edit2_institucion:
+            columns:
+                - id_institucion_actual
+        fki_edit1_institucion:
+            columns:
+                - id_institucion_anterior
+        fki_id_edit_func:
+            columns:
+                - id_funcionario_asignado
+        fki_edit_estado:
+            columns:
+                - id_estado
+    id:
+        idCorrespondenciaEdit:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_correspondencia_edit
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descCorrespondenciaActual:
+            type: string
+            nullable: true
+            length: 1500
+            options:
+                fixed: false
+            column: desc_correspondencia_actual
+        descCorrespondenciaAnterior:
+            type: string
+            nullable: true
+            length: 1500
+            options:
+                fixed: false
+            column: desc_correspondencia_anterior
+        temaComunicacionAnterior:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+            column: tema_comunicacion_anterior
+        temaComunicacionActual:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+            column: tema_comunicacion_actual
+        fechaEdicion:
+            type: date
+            nullable: true
+            column: fecha_edicion
+        horaEdicion:
+            type: time
+            nullable: true
+            column: hora_edicion
+    manyToOne:
+        idCorrespondenciaEnc:
+            targetEntity: TblCorrespondenciaEnc
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_enc:
+                    referencedColumnName: id_correspondencia_enc
+            orphanRemoval: false
+        idFuncionarioAsignado:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario_asignado:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idInstitucionAnterior:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion_anterior:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idInstitucionActual:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion_actual:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

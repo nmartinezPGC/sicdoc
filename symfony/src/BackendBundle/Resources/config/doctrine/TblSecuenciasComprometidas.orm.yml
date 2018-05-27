@@ -2,18 +2,18 @@ BackendBundle\Entity\TblSecuenciasComprometidas:
     type: entity
     table: tbl_secuencias_comprometidas
     indexes:
-        fki_tipo_doc_secu:
-            columns:
-                - id_tipo_documento
-        fki_depto_sec:
+        IDX_C90F0044FBD636DF:
             columns:
                 - id_depto_funcional
-        fki_user_sec:
-            columns:
-                - id_usuario
-        fki_estado_secuencias:
+        IDX_C90F0044256D3E98:
             columns:
                 - id_estado_secuencia
+        IDX_C90F004469B92C8F:
+            columns:
+                - id_tipo_documento
+        IDX_C90F0044FCF8192D:
+            columns:
+                - id_usuario
     id:
         idSecuenciaComp:
             type: integer

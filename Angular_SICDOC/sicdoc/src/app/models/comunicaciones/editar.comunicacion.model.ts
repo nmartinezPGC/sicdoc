@@ -13,6 +13,7 @@ export class EditarComunicacionModel{
 
       // Datos de Relaciones de Tablas
       public idInstitucion:number,
+      public idInstitucionAnterior:number,
       public idUsuario:string, // Tipo de Dato String, porque no se selecciona
       public idTipoFuncionario:number, // Tipo de Funcionarios
       public idUsuarioAsaignado:number, // Usuario que se le asigna el Oficio
@@ -81,6 +82,9 @@ export class EditarComunicacionModel{
       public inicialesDireccionSreci:string,
       public descEstado:string,
 
+      //Bitacora
+      public descComunicacionAnterior:string,
+      public temaComunicacionAnterior:string,
 
     ){}
 

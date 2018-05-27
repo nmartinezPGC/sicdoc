@@ -25,7 +25,7 @@ use BackendBundle\Entity\TblSecuenciasComprometidas;
 
 //Traslado de Comunicacion
 use BackendBundle\Entity\TblTrasladoComunicacion;
-
+use BackendBundle\Entity\TblBitacoraCorrespondenciaEdit;
 
 
 /********************************************************************
@@ -714,6 +714,7 @@ class IngresoCorrespondenciaController extends Controller{
      ***************************************************************************/
     public function editCorrespondenciaAction(Request $request) 
     {
+        date_default_timezone_set('America/Tegucigalpa');
         //Instanciamos el Servicio Helpers
         $helpers = $this->get("app.helpers");
         //Recoger el Hash
@@ -738,14 +739,21 @@ class IngresoCorrespondenciaController extends Controller{
                       
                 //Datos generales de la Tabla, que viene del Json
                 $desc_correspondencia     = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
+                $desc_correspondencia_anterior  = ($params->descComunicacionAnterior != null) ? $params->descComunicacionAnterior : null ;                
                 $tema_correspondencia     = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
+                $tema_correspondencia_anterior   = ($params->temaComunicacionAnterior != null) ? $params->temaComunicacionAnterior : null ;                
+                $id_estado     = ($params->idEstado != null) ? $params->idEstado : null ;
+                
                 $fecha_modificacion       = new \DateTime('now');
                 //$fecha_maxima_entrega     = ($params->fecha_maxima_entrega != null) ? $params->fecha_maxima_entrega : null ;                 
                 
+                $hora_modificacion = new \DateTime('now');            
+                $hora_modificacion->format('H:i');                
                 
                 //Relaciones de la Tabla con Otras.
                 // Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
-                //$cod_institucion      = ($params->cod_institucion != null) ? $params->cod_institucion : null ;
+                $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
+                $cod_institucion_anterior  = ($params->idInstitucionAnterior != null) ? $params->idInstitucionAnterior : null ;
                 
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
                 $cod_usuario          = $identity->sub;
@@ -787,18 +795,18 @@ class IngresoCorrespondenciaController extends Controller{
                                 
                                 //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                                 //Instanciamos de la Clase TblInstituciones
-                                /*$institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                                $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
                                     array(
-                                       "codInstitucion" => $cod_institucion                        
+                                       "idInstitucion" => $cod_institucion
                                     ));                    
                                 $correspondenciaEdit->setIdInstitucion($institucion); //Set de Codigo de Institucion*/
 
                                 //Instanciamos de la Clase TblUsuario
                                 /*$usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                                     array(
-                                       "codUsuario" => $identity->codUser                           
+                                       "idUsuario" => $cod_usuario
                                     ));                    
-                                $correspondenciaEdit->setIdUsuario($usuario); //Set de Codigo de Usuario*/
+                                //$correspondenciaEdit->setIdUsuario($usuario); //Set de Codigo de Usuario*/
 
                                 //Instanciamos de la Clase TblEstados                        
                                 /*$estado = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
@@ -815,8 +823,44 @@ class IngresoCorrespondenciaController extends Controller{
                                 $correspondenciaEdit->setIdDireccionSreci($direccion); //Set de Codigo de Dreicciones Sreci */
                                 //Finaliza Busqueda de Integridad entre Tablas
                                 
+                                // ************************************************************
+                                //Seteo de Datos Generales de la tabla: TblTrasladoComunicacion
+                                $bitacoraEditCorrespondencia = new TblBitacoraCorrespondenciaEdit();
+                                
+                                //Instanciamos de la Clase TblUsuario
+                                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                                    array(
+                                       "idUsuario" => $cod_usuario
+                                    ));
+                                //$bitacoraEditCorrespondencia->setIdFuncionarioAsignado($usuario_asignado); //Set de Codigo de Usuario*/
+                                
+                                $estado_edit = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                                    array(
+                                     "idEstado" => $id_estado   
+                                    ));
+                
+                                //Instanciamos de la Clase TblInstituciones
+                                $institucion_anterior = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                                    array(
+                                        "idInstitucion" => $cod_institucion_anterior
+                                ));
+                                
+                                $bitacoraEditCorrespondencia->setIdCorrespondenciaEnc( $correspondenciaEdit ); //Set de Correspondencia Enc
+                                //$bitacoraEditCorrespondencia->setIdUsuario( $usuario ); //Set de Usuario Creador
+                                $bitacoraEditCorrespondencia->setIdFuncionarioAsignado( $usuario_asignado ); //Set de Funcionario Asignado
+                                $bitacoraEditCorrespondencia->setFechaEdicion( $fecha_modificacion ); //Set de Fecha de Modificacion
+                                $bitacoraEditCorrespondencia->setHoraEdicion( $hora_modificacion ); //Set Hora de Modificacion
+                                $bitacoraEditCorrespondencia->setDescCorrespondenciaAnterior( $desc_correspondencia_anterior ); //Set Descripcion Anterior
+                                $bitacoraEditCorrespondencia->setDescCorrespondenciaActual( $desc_correspondencia ); //Set Descripcion Actual
+                                $bitacoraEditCorrespondencia->setTemaComunicacionActual( $tema_correspondencia ); //Set Tema Anterior
+                                $bitacoraEditCorrespondencia->setTemaComunicacionAnterior( $tema_correspondencia_anterior ); //Set Tema Actual
+                                $bitacoraEditCorrespondencia->setIdInstitucionAnterior( $institucion_anterior ); //Set Institucion Anterior
+                                $bitacoraEditCorrespondencia->setIdInstitucionActual( $institucion ); //Set Institucion Actual
+                                $bitacoraEditCorrespondencia->setIdEstado( $estado_edit ); //Set Institucion Actual
+                                
                                 //Realizar la Persistencia de los Datos y enviar a la BD
                                 $em->persist($correspondenciaEdit);
+                                $em->persist($bitacoraEditCorrespondencia);
                                 $em->flush();
 
                                 //Array de Mensajes

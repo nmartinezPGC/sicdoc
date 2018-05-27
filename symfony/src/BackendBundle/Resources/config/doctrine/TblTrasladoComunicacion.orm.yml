@@ -2,15 +2,15 @@ BackendBundle\Entity\TblTrasladoComunicacion:
     type: entity
     table: tbl_traslado_comunicacion
     indexes:
-        IDX_C069FC6DFCF8192D:
-            columns:
-                - id_usuario
         IDX_C069FC6D603C5679:
             columns:
                 - id_correspondencia_enc
         IDX_C069FC6DE5311430:
             columns:
                 - id_usuario_asignado
+        IDX_C069FC6DFCF8192D:
+            columns:
+                - id_usuario
     id:
         idTraslado:
             type: integer
@@ -38,16 +38,6 @@ BackendBundle\Entity\TblTrasladoComunicacion:
                 fixed: false
             column: justificacion_traslado
     manyToOne:
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
         idCorrespondenciaEnc:
             targetEntity: TblCorrespondenciaEnc
             cascade: {  }
@@ -67,5 +57,15 @@ BackendBundle\Entity\TblTrasladoComunicacion:
             joinColumns:
                 id_usuario_asignado:
                     referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

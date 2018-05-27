@@ -34,6 +34,7 @@
     <table id="example" class="table table-striped table-hover table-responsive" cellspacing="0" width="100%"   >
         <thead >
             <tr>
+              <th>No</th>
               <th>Estado</th>
               <th>Código Interno</th>
               <th>Código Ingresado</th>
@@ -46,7 +47,8 @@
         </thead>
 
         <tbody >
-            <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search ">
+            <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search; let i = index ">
+              <td>{{ i + 1 }}</td>
               <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-info' : item.idEstado == 8,
                               'text-success': item.idEstado == 7 }" >
                 <!-- <p class="alert alert-primary"> -->

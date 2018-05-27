@@ -176,7 +176,7 @@ export class EditarComunicacionComponent implements OnInit {
       // Definicion de la Insercion de los Datos de Documentos
       this._editarComunicacionModel = new EditarComunicacionModel(1,
             "", "", "", "", "",
-            0, "0", 0, 0, "3", 0, 0, "0",
+            0, 0, "0", 0, 0, "3", 0, 0, "0",
             "0", "0","0", "0", "0",
             0, 0,
             0, 0,
@@ -188,7 +188,8 @@ export class EditarComunicacionComponent implements OnInit {
             "", "", "",
             "", "", "", "" ,"", "", "", "",
             "", "",
-            "", "", "");
+            "", "", "",
+            "", "");
 
       // Iniciamos los Parametros de Sub Direcciones
       this.datosConsulta = {
@@ -234,6 +235,12 @@ export class EditarComunicacionComponent implements OnInit {
   **********************************************************/
   onSubmit(forma:NgForm){
     // Envio de los Datos, a la API, con el fin de registrarlo en la BD
+    //Validacion de Accion de Mensaje
+    let confirmaPeticion = confirm('Esta seguro de actualizar la información');
+    if( confirmaPeticion == false ){
+      return -1;
+    }
+
     this.loading = "show";
     //console.log( this._editarComunicacionModel );
 
@@ -257,7 +264,6 @@ export class EditarComunicacionComponent implements OnInit {
             this.ngOnInit();
 
             //Cerramos el Loading
-            //this.closeModal("#closeModalFinCom");
             //Oculta el Div de Alerta despues de 3 Segundos
             setTimeout(function() {
                 $("#alertSuccess").fadeOut(1500);
@@ -377,7 +383,10 @@ export class EditarComunicacionComponent implements OnInit {
       // Contenido
       this._editarComunicacionModel.idTipoDocumento = dataIn[0].idTipoDocumento;
       this._editarComunicacionModel.descCorrespondencia = dataIn[0].descCorrespondenciaEnc;
+      this._editarComunicacionModel.descComunicacionAnterior = dataIn[0].descCorrespondenciaEnc;
       this._editarComunicacionModel.temaCorrespondencia = dataIn[0].temaComunicacion;
+      this._editarComunicacionModel.temaComunicacionAnterior = dataIn[0].temaComunicacion;
+
       // Usuario Creador
       this._editarComunicacionModel.idUsuarioAsaignado    = dataIn[0].idUsuario;
       //Fechas
@@ -410,8 +419,9 @@ export class EditarComunicacionComponent implements OnInit {
 
       //Institucion
       this._editarComunicacionModel.idPais =  dataIn[0].idPais;
-      this._editarComunicacionModel.idTipoInstitucion =  dataIn[0].idTipoInstitucion;
-      this._editarComunicacionModel.idInstitucion      =  dataIn[0].idInstitucion;
+      this._editarComunicacionModel.idTipoInstitucion    =  dataIn[0].idTipoInstitucion;
+      this._editarComunicacionModel.idInstitucion        =  dataIn[0].idInstitucion;
+      this._editarComunicacionModel.idInstitucionAnterior =  dataIn[0].idInstitucion;
 
       this.getlistaInstituciones();
 
