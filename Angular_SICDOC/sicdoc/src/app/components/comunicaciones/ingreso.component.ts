@@ -320,8 +320,10 @@ export class IngresoComunicacionComponent implements OnInit{
   * ya Cargada con los criterios de seleccion
   ******************************************************/
   generatePDF() {
+    //var imgData = 'data:image/jpeg;base64,'+ Base64.encode('Koala.jpeg');
     var doc = new jsPDF();
-    //doc.addImage('assets/images/sreci.png', 'PNG', 15, 40, 200, 114);
+
+    doc.addImage('assets/images/sreci.png', 'PNG', 15, 40, 200, 114);
    doc.text(10, 10, 'Hello everybody');
    doc.text(10, 20, 'My name is');
    doc.text(10, 40, 'Contact me at');
