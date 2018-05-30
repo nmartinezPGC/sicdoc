@@ -42,7 +42,7 @@
               <th>Tema de Comunicación</th>
               <th>Fecha Creación</th>
               <th>Fecha Entrega.</th>
-              <th style="width:70px">Accion</th>
+              <th style="width:95px">Accion</th>
             </tr>
         </thead>
 
@@ -60,8 +60,8 @@
               <td style="cursor: help" title="Descripcion: {{ item.perfilInstitucion }}"> {{ item.descInstitucion }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.descCorrespondenciaEnc }}"> {{ item.temaComunicacion }} </td>
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
-              <td> {{ item.fechaIngreso | date :'dd-MMM-yyyy' }} </td>
-              <td> {{ item.fechaMaxEntrega | date :'dd-MMM-yyyy' }} </td>
+              <td> {{ item.fechaIngreso | date :'dd-MM-yyyy' }} </td>
+              <td> {{ item.fechaMaxEntrega | date :'dd-MM-yyyy' }} </td>
               <td>
                   <!-- Boton de Respuesta para la Comunicacion de Entrada -->
                   <!-- <a *ngIf="(item.idEstado == 3 || item.idEstado == 7 ) && (item.idTipoDocumento == 1 || item.idTipoDocumento == 2)
@@ -89,7 +89,7 @@
                                                          item.temaComunicacion, item.descInstitucion, item.perfilInstitucion);
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m3" >
-                    <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicación">
+                    <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicación (Correo Electronico, Llamada, visita etc.)">
                   </a>
 
                   <!-- Boton de Finalizar Comunicacion -->
@@ -103,7 +103,7 @@
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m" >
                       <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i> -->
-                      <img src="/assets/icons/comunicacion/verified-text-paper_blue_24x24.png" class="d-inline-block align-top" alt="" title="Finalizar Comunicación" >
+                      <img src="/assets/icons/comunicacion/verified-text-paper_blue_24x24.png" class="d-inline-block align-top" alt="" title="Finalizar Comunicación (Se debe subir documento de soporte adjunto)" >
                   </a>
 
                   <!-- Boton de Anular Comunicacion -->
@@ -117,8 +117,21 @@
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m4" >
                       <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Anular Comunicacion" >assignment_turned_in</i> -->
-                      <img src="/assets/icons/comunicacion/education-access-concept_24x24.png" class="d-inline-block align-top" alt="" title="Anular Comunicación" >
+                      <img src="/assets/icons/comunicacion/education-access-concept_24x24.png" class="d-inline-block align-top" alt="" title="Anular Comunicación (Se debe justificar porque se anula la Comunicación)" >
                   </a>
+
+                  <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+                                                         item.idDeptoFuncional,
+                                                         item.nombre1Funcionario, item.apellido1Funcionario,
+                                                         item.nombre2Funcionario, item.apellido2Funcionario,
+                                                         item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
+                                                         item.idTipoDocumento, item.idTipoComunicacion,
+                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion ); getlistaDocumentosTable();"
+                               data-toggle="modal" data-target="#t_and_c_m5" >
+
+                    <img src="/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png" class="d-inline-block align-top" alt="" title="Ver Documento de soporte">
+                  </a>
+
               </td>
             </tr>
         </tbody>
@@ -144,7 +157,7 @@
         <!-- Formulario del Oficio Asignado -->
           <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(finalizarOficioAsignado, 1)" name="finalizarOficioForm" role="form">
             <!-- fila 1 del Formulario -->
-            <h4>Finalización de Comunicación | {{ idCorrepEncModal }}</h4>
+            <h4>Finalización de Comunicación | {{ codOficioRefModal }}</h4>
             <hr class="colorgraph">
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -286,7 +299,7 @@
             <!-- Formulario del Oficio Asignado -->
               <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(creacionOficioAsignado, 2)" name="finalizarOficioForm" role="form">
                 <!-- fila 1 del Formulario -->
-                <h4>Creacion de Comunicación de Respuesta | {{ idCorrepEncModal }}</h4>
+                <h4>Creacion de Comunicación de Respuesta | {{ codOficioRefModal }}</h4>
                 <hr class="colorgraph">
                 <div class="row">
                   <div class="col-md-4 mb-3">
@@ -356,7 +369,7 @@
         <!-- Formulario del Oficio Asignado -->
           <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(agregarActividadResp, 3)" name="finalizarOficioForm" role="form">
             <!-- fila 1 del Formulario -->
-            <h4>Agregar Actividad a Comunicacion | {{ idCorrepEncModal }}</h4>
+            <h4>Agregar Actividad a Comunicacion | {{ codOficioRefModal }}</h4>
             <hr class="colorgraph">
             <div class="row">
               <div class="col-md-4 mb-3">
@@ -426,7 +439,7 @@
         <!-- Formulario del Oficio Asignado -->
           <form #AnularComForm="ngForm" (ngSubmit)="onSubmit(agregarActividadResp, 4)" name="AnularComForm" role="form">
             <!-- fila 1 del Formulario -->
-            <h4>Anular Comunicación | {{ idCorrepEncModal }}</h4>
+            <h4>Anular Comunicación | {{ codOficioRefModal }}</h4>
             <hr class="colorgraph">
             <div class="row">
               <div class="col-md-4 mb-3">
@@ -476,6 +489,82 @@
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<!-- Modal de Ver Documento de soporte de la Comunicacion-->
+<div *ngIf="idEstadoModal != 5 " class="modal fade" id="t_and_c_m5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
+        <h4 class="modal-title" id="myModalLabel">Comunicación No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+        <!-- Loader de Carga de los Datos -->
+        <div id="loader-2" *ngIf="loading_table == 'show'" >
+          <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Formulario del Oficio Asignado -->
+          <form #AnularComForm="ngForm" (ngSubmit)="onSubmit(agregarActividadResp, 4)" name="AnularComForm" role="form">
+            <!-- fila 1 del Formulario -->
+            <h4>Documento(s) de la Comunicación | {{ codOficioRefModal }}</h4>
+            <hr class="colorgraph">
+            <!-- fila 2 del Formulario -->
+            <div class="row">
+              <div class="col-md-12 mb-4">
+                <!-- Tabla de Funcionarios disponibles para asignar -->
+                <div class="table table-striped table-bordered" id="demo2" style="height: 300px; overflow: auto">
+                  <!-- Loader de Carga de los Datos -->
+                  <div id="loader-2" *ngIf="loading_table == 'show'" >
+                    <p style="margin-left:35%; margin-top:7%; margin-bottom:2%;">Buscando información de Documentos ...</p>
+                    <img src="assets/images/832.gif" alt="Cargando Tareas" style="margin-left:45%;" >
+                  </div>
+
+                  <table class="table table-striped" cellspacing="0" width="100%"
+                      *ngIf="loadTabla2 == true">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Código Documento</th>
+                        <th>Fecha Creacion</th>
+                        <th>Documento</th>
+                        <th>Descargar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of JsonOutgetlistaDocumentosUpload; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ item.codDocumento }}</td>
+                        <td>{{ item.fechaIngreso | date :'dd-MM-yyyy' }}</td>
+                        <td>{{ item.descDocumento }}</td>
+                        <td>
+                          <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5" title="Ver Documento de soporte"
+                            href="{{ urlComplete + item.urlDocumento }}" target="_blank">
+                              <i class="material-icons">photo</i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <hr class="colorgraph">
+            <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+            <!-- <button type="button" class="btn btn-primary">Limpiar</button> -->
+            <!-- <button class="btn btn-success" type="submit" [disabled]="!AnularComForm.valid" style="cursor: pointer">Guardar</button> -->
+            <button type="button" id="closeModalAnulaCom" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
+        </form>
+    </div>
+      <div class="modal-footer">
+
+      </div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.Modal de Ver Documento de soporte de la Comunicacion -->
 
 
 </div> <!--  Fin de container -->

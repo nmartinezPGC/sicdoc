@@ -20,6 +20,7 @@ import { IngresoComunicacionService } from '../../services/comunicaciones/ingres
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
 import { VinculacionComunicacionService } from '../../services/comunicaciones/vinculacion.service'; //Servico Vinculacion de Comunicacion
 import { UploadService } from '../../services/shared/upload.service'; //Servico Carga de Arhcivos
+import { CaseSecuencesService } from '../../services/shared/caseSecuences.service'; //Servico caseSecuence
 
 // Contact Service
 import { ContactosService } from '../../services/contactos/contacto.service'; //Servico La Clase Contactos
@@ -51,7 +52,7 @@ declare var $:any;
   templateUrl: '../../views/comunicaciones/ingreso.component.html',
   styleUrls: ['../../views/comunicaciones/style.component.css'],
   providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService,
-              ContactosService, VinculacionComunicacionService]
+              ContactosService, VinculacionComunicacionService, CaseSecuencesService]
 })
 
 
@@ -74,6 +75,8 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSubDirAcom;
   private paramsSubDirComVinculante;
   private paramsTipoFuncionario; // Parametros para el Filtro de Funcionario
+
+  private paramsSecuenciaActividadAgregar;// Parametro para seleccionar el Secuencial
 
   private paramsDocumentosSend; // Parametros para los Documentos enviados
 
@@ -265,6 +268,7 @@ export class IngresoComunicacionComponent implements OnInit{
   constructor( private _loginService: LoginService,
                private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
+               private _caseSecuencesService: CaseSecuencesService,
                private _consultaContactoService: ContactosService,
                private _ingresoComunicacion: IngresoComunicacionService,
                private _router: Router,
@@ -470,7 +474,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     $(".chkSinSeguimiento").attr("checked", false);
 
-
+    
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
                                            0, "0", 0, 0, "7", 1, 0, 0, "0", "0",
@@ -854,22 +858,34 @@ export class IngresoComunicacionComponent implements OnInit{
   * Objetivo: Sumar 5 dias a la fecha Maxima de entrega
   *****************************************************/
   convertirFecha() {
-    let day = String(this.fechaHoy.getDate() + 5 );
-    let month = String(this.fechaHoy.getMonth() + 1 );
-    const year = String(this.fechaHoy.getFullYear() );
+    //Funcion de Sumatoria de Fechas
+    var d = new Date();
+    let calendario = this.sumarDias(d, 5);
+    let diaCal = String(calendario.getDate() );
+    let mesCal = String(calendario.getMonth() + 1 );
+    let anioCal = String(calendario.getFullYear() );
 
-    if(day.length < 2  ){
+    if(diaCal.length < 2  ){
       //alert("Dia Falta el 0");
-      day = "0" + day;
-    }else if(month.length < 2){
-      //alert("Mes Falta el 0");
-      month = "0" + month;
+      diaCal = "0" + diaCal;
     }
-    this.fechafin = year + "-" + month + "-" + day ;
+    if(mesCal.length < 2){
+      //alert("Mes Falta el 0");
+      mesCal = "0" + mesCal;
+    }
+
+    //Retorna la fecha seteada
+    this.fechafin = anioCal + "-" + mesCal + "-" + diaCal ;
     //this.fechafin = day + "-" + month + "-" + year;
     // console.log("Dia " + day + " Mes " + month + " Año " + year);
   } // FIN : FND-00001.2
 
+  /* Función que suma o resta días a una fecha, si el parámetro
+   días es negativo restará los días*/
+  sumarDias(fecha, dias){
+    fecha.setDate(fecha.getDate() + dias);
+    return fecha;
+  }
 
   /****************************************************
   * Funcion: FND-00001.3
@@ -1023,7 +1039,6 @@ export class IngresoComunicacionComponent implements OnInit{
   * ( tipo-documento-list ).
   ******************************************************/
   getlistaTipoDocumentos() {
-
       this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
         response => {
           // successful so redirect to return url
@@ -1053,6 +1068,7 @@ export class IngresoComunicacionComponent implements OnInit{
   getCodigoCorrespondencia(){
      //Llamar al metodo, de Codigo de Secuencias para Obtener la Identidad
      this.paramsSecuenciaIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
+     this.paramsSecuenciaIn.idTipoComunicacion = 1;
      //alert(this.comunicacion.idTipoDocumento);
      //Generamos la Instancia para los datos por Defaul
      this.comunicacion.idPais = 0;
@@ -1063,9 +1079,9 @@ export class IngresoComunicacionComponent implements OnInit{
 
      //Evaluamos el valor del Tipo de Documento
      if( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
-       this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
@@ -1074,9 +1090,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="";
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-MEMO";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-MEMO";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
@@ -1093,9 +1109,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.comunicacion.idInstitucion = 7;
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 3 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-NOTA-VERBAL";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-NOTA-VERBAL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
       //  $( "#codReferenciaSreci" ).prop( "disabled", true );
@@ -1105,12 +1121,11 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="";
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-CIRCULAR";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-CIRCULAR";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
-      //  $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
        this.maxlengthCodReferencia = "30";
        this.minlengthCodReferencia = "5";
@@ -1125,9 +1140,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.comunicacion.idInstitucion = 7;
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 5 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-MAIL";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-MAIL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
@@ -1138,9 +1153,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="^[^@]+@[^@]+\.[a-zA-Z]{2,}$";
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
-       this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
@@ -1150,9 +1165,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="^([0-9])*$";
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 8 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-VERB";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-VERB";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_verb";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
@@ -1162,9 +1177,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="";
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-REUNION";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-REUNION";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
@@ -1174,9 +1189,9 @@ export class IngresoComunicacionComponent implements OnInit{
        this.pattern ="";
 
      }else if ( this.paramsSecuenciaIn.idTipoDocumento == 10 ) {
-       this.paramsSecuencia.codSecuencial = "COM-IN-EVENTO";
+       /*this.paramsSecuencia.codSecuencial = "COM-IN-EVENTO";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;
+       this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
@@ -1184,8 +1199,17 @@ export class IngresoComunicacionComponent implements OnInit{
        this.maxlengthCodReferencia = "38";
        this.minlengthCodReferencia = "15";
        this.pattern ="";
-
      }// Fin de Condicion
+
+     //Objetivo: Seleccionar la Secuencia
+     let paramsSendIn =
+               this._caseSecuencesService.caseSecuenceCab( this.paramsSecuenciaIn.idTipoComunicacion, this.paramsSecuenciaIn.idTipoDocumento );
+
+     // Asignamos los valores a los parametros de Secuencia a Enviar
+     this.paramsSecuencia.codSecuencial = paramsSendIn.codSecuencial;
+     this.paramsSecuencia.tablaSecuencia = paramsSendIn.tablaSecuencia;
+     this.paramsSecuencia.idTipoDocumento = paramsSendIn.idTipoDocumento;
+
 
     //Llamar al metodo, de Login para Obtener la Identidad
     this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
@@ -1217,9 +1241,11 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getCodigoCorrespondenciaDet( idTipoDocumentoIn:number ){
      //Llamar al metodo, de Login para Obtener la Identidad
-    //  this.paramsSecuenciaDetIn.idTipoDocumento = this.comunicacion.idTipoDocumento;
+     this.paramsSecuenciaDet.idTipoDocumento = this.comunicacion.idTipoDocumento;
+     this.paramsSecuenciaDet.idTipoComunicacion = 1;
+
      //Evaluamos el valor del Tipo de Documento
-     if( idTipoDocumentoIn == 1 ){
+    /* if( idTipoDocumentoIn == 1 ){
        this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
        this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn ;
@@ -1253,9 +1279,18 @@ export class IngresoComunicacionComponent implements OnInit{
        this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
      } else if ( idTipoDocumentoIn == 10 ) {
        this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-EVENTO";
-       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
-       this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
-     }// Fin de Condicion
+       this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";*/
+       //this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumentoIn;
+    // } // Fin de Condicion
+
+     //Objetivo: Seleccionar la Secuencia
+     let paramsSendIn =
+               this._caseSecuencesService.caseSecuence( this.paramsSecuenciaDet.idTipoComunicacion, this.paramsSecuenciaDet.idTipoDocumento );
+
+     // Asignamos los valores a los parametros de Secuencia a Enviar
+     this.paramsSecuenciaDet.codSecuencial = paramsSendIn.codSecuencial;
+     this.paramsSecuenciaDet.tablaSecuencia = paramsSendIn.tablaSecuencia;
+     this.paramsSecuenciaDet.idTipoDocumento = paramsSendIn.idTipoDocumento;
 
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);

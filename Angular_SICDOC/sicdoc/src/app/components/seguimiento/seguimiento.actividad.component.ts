@@ -39,7 +39,7 @@ declare var $:any;
   providers: [ SeguimientoActividadService, ListasComunesService ]
 })
 export class SeguimientoActividadComponent implements OnInit {
-  public titulo:string = "Seguimiento de Actividad";
+  public titulo:string = "Detalle de Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
 

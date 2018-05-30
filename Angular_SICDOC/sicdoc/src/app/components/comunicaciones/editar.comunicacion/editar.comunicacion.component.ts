@@ -264,7 +264,7 @@ export class EditarComunicacionComponent implements OnInit {
             this.ngOnInit();
 
             //Cerramos el Loading
-            //Oculta el Div de Alerta despues de 3 Segundos
+            //Oculta el Div de Alerta despues de 3 Segundos          
             setTimeout(function() {
                 $("#alertSuccess").fadeOut(1500);
             },3000);

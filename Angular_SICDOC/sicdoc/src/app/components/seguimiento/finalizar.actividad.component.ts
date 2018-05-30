@@ -15,6 +15,7 @@ import 'rxjs/add/operator/map';
 import { ListasComunesService } from '../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../services/shared/upload.service'; //Servico Carga de Arhcivos
 import { FinalizarActividadService } from '../../services/seguimiento/finalizar.actividad.service'; //Servicio de la Clase Finalizar
+import { CaseSecuencesService } from '../../services/shared/caseSecuences.service'; //Servico caseSecuence
 
 // Importamos los Pipes de la Forma
 import { GenerateDatePipe } from '../../pipes/common/generate.date.pipe';
@@ -35,10 +36,10 @@ declare var $:any;
   selector: 'finalizar-actividad',
   templateUrl: '../../views/seguimiento/finalizar.actividad.component.html',
   styleUrls: ['../../views/seguimiento/finalizar.actividad.component.css'],
-  providers: [ FinalizarActividadService, ListasComunesService, UploadService ]
+  providers: [ FinalizarActividadService, ListasComunesService, UploadService, CaseSecuencesService ]
 })
 export class FinalizarActividadComponent implements OnInit {
-  public titulo:string = "Agregar / Finalizar Actividad";
+  public titulo:string = "Agregar / Finalizar / Anular Comunicación";
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
@@ -83,6 +84,10 @@ export class FinalizarActividadComponent implements OnInit {
 
   // public JsonOutgetCodigoSecuenciaActividadAgregar:any[];
   public JsonOutgetCodigoSecuenciaActividadAgregar;
+
+  //Parametros de documentos subidos anteriores
+  public JsonOutgetlistaDocumentosUpload:any[];
+  public paramsDocumentos;
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
@@ -144,6 +149,7 @@ export class FinalizarActividadComponent implements OnInit {
 
   constructor( private _listasComunes: ListasComunesService,
                private _uploadService: UploadService,
+               private _caseSecuencesService: CaseSecuencesService,
                private _finalizarOficio: FinalizarActividadService,
                private _router: Router,
                private _route: ActivatedRoute,
@@ -246,6 +252,11 @@ export class FinalizarActividadComponent implements OnInit {
       "codDocument": "",
       "extDocument": ""
     }
+
+    //Iniciamos los Parametros de Json de Documentos
+    this.paramsDocumentos = {
+      "searchValueSend" : ""
+    };
 
     // Generar la Lista de Secuenciales
     // this.listarCodigoCorrespondenciaDet(  );
@@ -809,8 +820,13 @@ export class FinalizarActividadComponent implements OnInit {
   listarCodigoCorrespondenciaDet( idTipoDocumento:number, idTipoComunicacion:number ){
     //Llamar al metodo, de Login para Obtener la Identidad
     console.log('Paso 1 FND-00004');
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumento;
+    this.paramsSecuenciaDet.idTipoComunicacion = idTipoComunicacion;
+
+
     //console.log('params Paso 1 ' + " Tipo Doc "+idTipoDocumento + " Tipo Com "+idTipoComunicacion);
-    if( idTipoDocumento == 1 ){
+    /*if( idTipoDocumento == 1 ){
       // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
       if( idTipoComunicacion == 1 ){
         this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
@@ -906,7 +922,16 @@ export class FinalizarActividadComponent implements OnInit {
         this.paramsSecuenciaDet.idTipoDocumento = idTipoDocumento;
       }
 
-    }// Fin de Condicion
+    }// Fin de Condicion*/
+
+    //Objetivo: Seleccionar la Secuencia
+    let paramsSendIn =
+              this._caseSecuencesService.caseSecuence( this.paramsSecuenciaDet.idTipoComunicacion, this.paramsSecuenciaDet.idTipoDocumento );
+
+    // Asignamos los valores a los parametros de Secuencia a Enviar
+    this.paramsSecuenciaDet.codSecuencial = paramsSendIn.codSecuencial;
+    this.paramsSecuenciaDet.tablaSecuencia = paramsSendIn.tablaSecuencia;
+    this.paramsSecuenciaDet.idTipoDocumento = paramsSendIn.idTipoDocumento;
 
 
     //Llamar al metodo, de Login para Obtener la Identidad
@@ -948,34 +973,34 @@ export class FinalizarActividadComponent implements OnInit {
     //this.finalizarOficios.idDeptoFuncional = this.identity.idDeptoFuncional;
 
     if( idTipoDocumentoIN == 1 ){
-      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = this.identity.inicialesDireccion;
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
       //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
     } else if ( idTipoDocumentoIN == 2 ) {
-      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = this.identity.inicialesDireccion;
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
     } else if ( idTipoDocumentoIN == 3 ) {
-      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = this.identity.inicialesDireccion;
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
       //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     } else if ( idTipoDocumentoIN == 4 ) {
-      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = this.identity.inicialesDireccion;
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = idTipoDocumentoIN;
       //New params
       this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idDeptoFuncional;
       //this.paramsSecuenciaOficioRespuesta.idDeptoFuncional = this.identity.idTipoUser;
     }else {
-      this.paramsSecuenciaOficioRespuesta.codSecuencial = "SCPI";
+      this.paramsSecuenciaOficioRespuesta.codSecuencial = this.identity.inicialesDireccion;
       this.paramsSecuenciaOficioRespuesta.tablaSecuencia = "tbl_comunicacion_enc";
       this.paramsSecuenciaOficioRespuesta.idTipoDocumento = "1";
       //New params
@@ -1275,6 +1300,44 @@ export class FinalizarActividadComponent implements OnInit {
    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
    console.log(this.JsonOutgetListaDocumentos);
  } // FIN | FND-00013
+
+
+ /*****************************************************
+ * Funcion: FND-000014
+ * Fecha: 01-11-2017
+ * Descripcion: Carga la Lista de los Documentos de la
+ * Comunicacion de la BD que pertenecen al usaurio
+ * Logeado, en el Detalle
+ * Objetivo: Obtener la lista de los Documentos de las
+ * Comunicaciones de la BD, Llamando a la API, por su
+ * metodo ( documentos/listar-documentos ).
+ ******************************************************/
+ getlistaDocumentosTable() {
+   // Laoding
+   this.loading_table = 'show';
+   this.loadTabla2 = false;
+   this.paramsDocumentos.searchValueSend =  this.codOficioIntModal;
+   console.log( "eEntra en getlistaDocumentosTable " + this.paramsDocumentos);
+   // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+   this._listasComunes.listasDocumentosToken( this.paramsDocumentos, "listar-documentos" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+          this.JsonOutgetlistaDocumentosUpload = response.data;
+           // Oculta los Loaders
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           alert(response.msg);
+         }else{
+           this.JsonOutgetlistaDocumentosUpload = response.data;
+           //this.valoresdataDetJson ( response.data );
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           console.log( this.JsonOutgetlistaDocumentosUpload );
+         }
+       });
+ } // FIN | FND-000014
 
 
 }

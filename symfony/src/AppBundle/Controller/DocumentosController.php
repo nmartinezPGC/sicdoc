@@ -154,7 +154,7 @@ class DocumentosController extends Controller{
             $data = array(
                 "status" => "error",                
                 "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha caducado !!"                
             );
         }        
         //Retorno de la Funcion ************************************************
@@ -469,15 +469,14 @@ class DocumentosController extends Controller{
                 $data = array(
                     "status" => "error",
                     "code"   => 400,
-                    "msg"    => "No existe Documentos asociados a la Coumunicacion, "
-                                . "comuniquese con el Administrador !!"
+                    "msg"    => "No existe Documentos asociados a la Comunicación "
                 );
             }
         }else {
             $data = array(
                 "status" => "error",
                 "code"   => 400,
-                "msg"    => "No existe Datos en la Tabla de Documentos, comuniquese con el Administrador !!"
+                "msg"    => "No existe Datos en la Tabla de Documentos, no se ha cargado documentos de soporte !!"
             );
         }
                

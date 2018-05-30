@@ -271,7 +271,8 @@ export class ReporteGeneralComponent implements OnInit {
                // Boton de excelHtml5
                  {
                     extend: 'excelHtml5',
-                    title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                    //title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                    title: 'Informe de Comunicaciones ' + ' del: ' + $("#dtFechaIni").val() + ' hasta: ' + $("#dtFechaFin").val(),
                       text: 'Exportar en Excel',
                       customize: function( xlsx ) {
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
@@ -295,7 +296,8 @@ export class ReporteGeneralComponent implements OnInit {
                   },
                   text: 'Imprimir Todos',
                   message: 'Listado de Comunicaciones',
-                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                  //title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                  title: 'Informe de Comunicaciones ' + ' del: ' + $("#dtFechaIni").val() + ' hasta: ' + $("#dtFechaFin").val(),
                   orientation: 'landscape',
                   pageSize: 'A4',
                 },
@@ -305,8 +307,14 @@ export class ReporteGeneralComponent implements OnInit {
                   extend: 'pdfHtml5',
                   orientation: 'landscape',
                   pageSize: 'A4',
-                  title: 'Informe de Comunicaciones' + ' / ' + newFecha,
+                  title: 'Informe de Comunicaciones ' + ' del: ' + $("#dtFechaIni").val() + ' hasta: ' + $("#dtFechaFin").val(),
                   text: 'Exportar a PDF',
+                  exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 8, 10, 11 ]
+                  },
+                  customize: function(doc){
+                    doc.pageMargins = [10,15,10,10];
+                  }
                 },
 
                 /*{

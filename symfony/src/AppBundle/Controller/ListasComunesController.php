@@ -1521,7 +1521,7 @@ class ListasComunesController extends Controller {
     public function finalizarOficiosListAction(Request $request )
     {
         //Seteo de variables Globales
-        ini_set('memory_limit', '512M');
+        //ini_set('memory_limit', '512M');
         date_default_timezone_set('America/Tegucigalpa');
         
         //Instanciamos el Servicio Helpers y Jwt

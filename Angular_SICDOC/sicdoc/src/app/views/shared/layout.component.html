@@ -23,24 +23,29 @@
                   Comunicación
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" [routerLink]="['comunicacion/ingreso-de-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['comunicacion/ingreso-de-comunicacion']" routerLinkActive="active"
+                    title="Opción que permite Registrar el Ingreso de Comunicación, que proviene fuera de la SRECI">
                     <img src="/assets/icons/comunicacion/businessmen-disussing_green_24x24.png" class="d-inline-block align-top" alt="">
                     Ingreso de Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['comunicacion/salida-de-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['comunicacion/salida-de-comunicacion']" routerLinkActive="active"
+                      title="Opción que permite Registrar las Salidas de Comunicación; externas(Oficios, Notas Verbales), así como las internas(Memos, Circulares, Correos etc.) de la SRECI">
                     <img src="/assets/icons/comunicacion/businessmen-disussing_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Salida de Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['comunicacion/editar-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['comunicacion/editar-comunicacion']" routerLinkActive="active"
+                      title="Opción que permite Editar la información de la Comunicación; se requier el No. Interno de Comunicación (Ejm. COM-IN-XXX-XX), el cual se puede ver en la ventana de Consulta General">
                     <img src="/assets/icons/comunicacion/written-page_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Editar Comunicación</a>
                   <hr>
-                    <a class="dropdown-item" [routerLink]="['comunicacion/documentos-de-comunicacion']" routerLinkActive="active">
+                    <a class="dropdown-item" [routerLink]="['comunicacion/documentos-de-comunicacion']" routerLinkActive="active"
+                        title="Opción que permite Subir Documentos de la Comunicación que no se han registrado; se requier el No. Interno de Comunicación (Ejm. COM-IN-XXX-XX), el cual se puede ver en la ventana de Consulta General">
                       <img src="/assets/icons/comunicacion/computer-and-books-studying-tools_24x24.png" class="d-inline-block align-top" alt="">
                       Documentos de Comunicación</a>
                   <hr>
                     <a class="dropdown-item" *ngIf="identity.idTipoFunc == 6 || identity.idTipoFunc == 4 || identity.idTipoFunc == 1"
-                         [routerLink]="['comunicacion/traslado-de-comunicacion']" routerLinkActive="active">
+                         [routerLink]="['comunicacion/traslado-de-comunicacion']" routerLinkActive="active"
+                          title="Opción que permite Realizar el Traslado de la Comunicación que no corresponde al Funcionario Asigando; se requier el No. Interno de Comunicación (Ejm. COM-IN-XXX-XX), el cual se puede ver en la ventana de Consulta General">
                       <img src="/assets/icons/comunicacion/delivery-man-giving-a-package-to-a-man.png" class="d-inline-block align-top" alt="">
                       Traslado de Comunicación</a>
                 </div>
@@ -56,14 +61,15 @@
                              [routerLink]="['seguimiento/asignar-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/management_green_24x24.png" class="d-inline-block align-top" alt="">
                     Asignar Comunicación</a>
+                    <hr>
                   <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
                   <a class="dropdown-item" [routerLink]="['seguimiento/finalizar-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/shopping-support-online_brow_24x24.png" class="d-inline-block align-top" alt="">
-                    Agregar / Finalizar Comunicación</a>
+                    Agregar / Finalizar / Anular Comunicación</a>
                   <hr>
                   <a class="dropdown-item" [routerLink]="['seguimiento/seguimiento-comunicacion']" routerLinkActive="active">
                     <img src="/assets/icons/comunicacion/man-reading_blue_24x24.png" class="d-inline-block align-top" alt="">
-                    Seguimiento de Comunicación</a>
+                    Detalle de Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a> -->
                 </div>
               </li>

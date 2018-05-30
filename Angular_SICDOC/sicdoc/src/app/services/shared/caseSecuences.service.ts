@@ -22,6 +22,7 @@ export class CaseSecuencesService {
 
   // Parametros de Data
   public paramsSend;
+  public paramsSendCab;
 
   //Constructor de la Clase
   constructor( private _http: Http,
@@ -152,6 +153,129 @@ export class CaseSecuencesService {
     // Retorno de los Datos
     return this.paramsSend;
   } // FIN : FND-00001
+
+
+
+  /*****************************************************************************
+  * Funcion: FND-00001.1
+  * Fecha: 06-03-2018
+  * Descripcion: Ejecuta el Swich, de los Datos a Enviar, por los Parametros de
+  * Tipo de Comunicacion y Tipo de Documento
+  * Objetivo: Obtener la Secuenia del Tipo de Documento y Tipo de Comunicacion
+  * Params: idTipoComunicacion, idTipoDocumento
+  * ( caseSecuenceCab ).
+  *****************************************************************************/
+  caseSecuenceCab( idTipoComunicacionIn:number, idTipoDocumentoIn:number ){
+    // this.url = this._systemPropertiesService.getmethodUrlService();
+    // Dato del retorno de la Secuecia
+    this.paramsSendCab = {
+      "codSecuencial"  : "",
+      "tablaSecuencia" : "",
+      "idTipoDocumento" : ""
+    };
+    //let listaIn = lista;
+
+    // Evaluacion de la Informacion enviada por la Funcion
+    if( idTipoDocumentoIn == 1 ){
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-OFI";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-OFI";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn ;
+     }
+
+    } else if ( idTipoDocumentoIn == 2 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-MEMO";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-MEMO";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+    } else if ( idTipoDocumentoIn == 3 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-NOTA-VERBAL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-NOTA-VERBAL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+   } else if ( idTipoDocumentoIn == 4 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-CIRCULAR";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-CIRCULAR";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+    } else if ( idTipoDocumentoIn == 5 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-MAIL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_mail";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-MAIL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_mail";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+   } else if ( idTipoDocumentoIn == 7 ){
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-CALL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_call";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else if ( idTipoComunicacionIn == 2 ) {
+       this.paramsSendCab.codSecuencial = "COM-OUT-CALL";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_call";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+    } else if ( idTipoDocumentoIn == 8 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-VERB";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_verb";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-VERB";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_verb";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+
+   }else if ( idTipoDocumentoIn == 9 ) {
+     // Verifica si el Tipo de Comunicacion es Entrada (1) / Salida (2)
+     if( idTipoComunicacionIn == 1 ){
+       this.paramsSendCab.codSecuencial = "COM-IN-REUNION";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     } else {
+       this.paramsSendCab.codSecuencial = "COM-OUT-REUNION";
+       this.paramsSendCab.tablaSecuencia = "tbl_comunicacion_enc";
+       this.paramsSendCab.idTipoDocumento = idTipoDocumentoIn;
+     }
+   }// Fin de Condicion
+
+    // Retorno de los Datos
+    return this.paramsSendCab;
+  }
 
 
   /****************************************************
