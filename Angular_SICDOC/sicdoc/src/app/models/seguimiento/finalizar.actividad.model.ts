@@ -40,6 +40,7 @@ export class FinalizarActividad{
 
       public pdfDocumento,
 
+      public direccionCorrespondencia:string,
 
 
     ){}

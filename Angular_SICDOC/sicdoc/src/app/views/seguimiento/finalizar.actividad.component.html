@@ -35,13 +35,13 @@
         <thead >
             <tr>
               <th>No</th>
-              <th>Estado</th>
               <th>Código Interno</th>
               <th>Código Ingresado</th>
               <th>Institución Remitente</th>
               <th>Tema de Comunicación</th>
               <th>Fecha Creación</th>
               <th>Fecha Entrega.</th>
+              <th>Estado</th>
               <th style="width:95px">Accion</th>
             </tr>
         </thead>
@@ -49,19 +49,17 @@
         <tbody >
             <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search; let i = index ">
               <td>{{ i + 1 }}</td>
-              <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-info' : item.idEstado == 8,
-                              'text-success': item.idEstado == 7 }" >
-                <!-- <p class="alert alert-primary"> -->
-                  {{ item.descripcionEstado }}
-                <!-- </p> -->
-              </td>
-              <td> {{ item.codCorrespondenciaEnc }} </td>
+              <td style="cursor: help" title="{{ item.idCorrespondenciaEnc }}" > {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.perfilInstitucion }}"> {{ item.descInstitucion }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.descCorrespondenciaEnc }}"> {{ item.temaComunicacion }} </td>
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso | date :'dd-MM-yyyy' }} </td>
               <td> {{ item.fechaMaxEntrega | date :'dd-MM-yyyy' }} </td>
+              <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-info' : item.idEstado == 8,
+                              'text-success': item.idEstado == 7 }" >
+                  {{ item.descripcionEstado }}
+              </td>
               <td>
                   <!-- Boton de Respuesta para la Comunicacion de Entrada -->
                   <!-- <a *ngIf="(item.idEstado == 3 || item.idEstado == 7 ) && (item.idTipoDocumento == 1 || item.idTipoDocumento == 2)
@@ -182,23 +180,56 @@
             </div>
 
             <div class="row">
-              <div class="col-md-12 mb-3">
+              <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault02">Actividad realizada</label> -->
                 <input type="text" class="form-control" [(ngModel)]="finalizarOficios.actividadOficio" name="actividadOficio" id="actividadOficio"
                     placeholder="Actividad realizada" required value="">
-
+                  <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Actividad es obligatoria</small>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-4 mb-3">
+              <div class="col-xs-12 col-sm-5 col-md-5">
                 <!-- <label for="validationDefault02">Actividad realizada</label> -->
                 <input type="text" class="form-control" [(ngModel)]="finalizarOficios.codOficioRespuesta" name="codOficioRespuesta" id="codOficioRespuesta"
                     placeholder="Comunicación de Respuesta" required value="{{ idCorrepEncModal }}" disabled>
               </div>
+
+              <!-- Comunicacion Enviada a Correspondencia | Estado = 14 -->
+              <div class="col-xs-12 col-sm-7 col-md-7">
+                <div class="panel panel-primary">
+                 <div class="panel-body">
+                   <h6 title="La Comunicación requiere ser enviada a la Unidad de Correspondencia, para la entrega de forma presencial" class="text-on-pannel text-primary">
+                     <strong class="text-uppercase">
+                       <label class="custom-control custom-checkbox">
+                         <input type="checkbox" name="chkCorrespondencia" class="custom-control-input chkCorrespondencia"
+                             (click)="checkEnviarCorrespondencia()" >
+                         <span class="custom-control-indicator"></span>
+                         <span class="custom-control-description">Enviar a Unidad de Correspondencia</span>
+                         <input style="width:0px;height:0px;color:white" type="text" value="2" name="estadoCorrepondencia" id="estadoCorrepondencia" >
+                       </label>
+                     </strong>
+                   </h6>
+                </div>
+               </div>
+             </div>
+
             </div>
 
 
+            <div class="row" *ngIf="showDireccionCorrespondencia == true ">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <!-- <label for="validationDefault02">Actividad realizada</label> -->
+                <textarea #direccionCorrespondencia="ngModel" type="text" name="direccionCorrespondencia" id="direccionCorrespondencia"
+                        ngControl="direccionCorrespondencia" [(ngModel)]="finalizarOficios.descripcionOficio" maxlength="600" minlength="15"
+                        class="form-control" placeholder="Dirección del destinatario" rows="3">
+                        <!-- <small class="form-text text-muted" *ngIf="direccionCorrespondencia.errors?.required" >La Descripción es obligatoria</small> -->
+                        <small class="form-text text-muted" *ngIf="direccionCorrespondencia.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
+                </textarea>
+              </div>
+            </div>
+
+            <hr>
             <!-- Seccion de Anexos -->
             <!-- <h4>Anexos</h4> -->
             <div class="row">

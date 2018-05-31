@@ -31,6 +31,10 @@ import { MantenimientoSolicitudCambioFechasComponent } from './components/manten
 // Imports de los Contactos
 import { ContactosComponent } from './components/contactos/contacto.component';
 
+//imports de Correspondencia
+import { CorrespondenciaEntradaComponent } from './components/correspondencia/correspondencia.entrada/correspondencia.entrada.component';
+import { CorrespondenciaSalidaComponent } from './components/correspondencia/correspondencia.salida/correspondencia.salida.component';
+
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
   { path: 'index', component: DefaultComponent },
@@ -67,6 +71,10 @@ export const APP_ROUTES: Routes = [
 
   // Mapeo de Opcion de Contactos
   { path: 'contactos/contactos-sreci', component: ContactosComponent },
+
+  // Mapeo de Opcion de Correspondencia
+  { path: 'correspondencia/entrada-de-correspondencia', component: CorrespondenciaEntradaComponent },
+  { path: 'correspondencia/salida-de-correspondencia', component: CorrespondenciaSalidaComponent },
 
   // Ruta Default
   { path: '**', pathMatch: 'full', redirectTo: 'index' }

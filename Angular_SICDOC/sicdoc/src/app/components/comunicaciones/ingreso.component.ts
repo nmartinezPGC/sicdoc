@@ -474,7 +474,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
     $(".chkSinSeguimiento").attr("checked", false);
 
-    
+
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
     this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
                                            0, "0", 0, 0, "7", 1, 0, 0, "0", "0",

@@ -18,6 +18,22 @@
               <img src="/assets/icons/home_64x64.png" width="40" height="40" class="d-inline-block align-top" alt="" style="margin-left:-5%; padding: 5px">
               <a class="navbar-brand" [routerLink]="['index']" > Dashboard</a>
               <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
+              <li class="nav-item dropdown" *ngIf="identity.idTipoFunc == 3 || identity.idTipoFunc == 1">
+                <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Correspondencia
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" [routerLink]="['correspondencia/entrada-de-correspondencia']" routerLinkActive="active"
+                    title="Opción que permite Registrar el Ingreso de Correspondencia, que proviene fuera de la SRECI">
+                    <img src="/assets/icons/comunicacion/email_in.png" class="d-inline-block align-top" alt="">
+                    Ingreso de Correspondencia</a>
+                  <hr>
+                  <a class="dropdown-item" [routerLink]="['correspondencia/salida-de-correspondencia']" routerLinkActive="active"
+                      title="Opción que permite Registrar las Salidas de Correspondencia; externas(Oficios, Notas Verbales) de la SRECI">
+                    <img src="/assets/icons/comunicacion/email_out.png" class="d-inline-block align-top" alt="">
+                    Salida de Correspondencia</a>
+                 </div>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Comunicación
@@ -63,7 +79,8 @@
                     Asignar Comunicación</a>
                     <hr>
                   <!-- <a class="dropdown-item" [routerLink]="['agregar-actividad']" routerLinkActive="active">Agregar Actividad</a> -->
-                  <a class="dropdown-item" [routerLink]="['seguimiento/finalizar-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['seguimiento/finalizar-comunicacion']" routerLinkActive="active"
+                      title="Opción que permite dar Seguimiento a las Comunicaciones Pendientes">
                     <img src="/assets/icons/comunicacion/shopping-support-online_brow_24x24.png" class="d-inline-block align-top" alt="">
                     Agregar / Finalizar / Anular Comunicación</a>
                   <hr>

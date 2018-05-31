@@ -43,6 +43,8 @@ export class FinalizarActividadComponent implements OnInit {
   public fechaHoy:Date = new Date();
   public fechafin:string;
 
+  public showDireccionCorrespondencia:boolean = false;
+
   public urlConfigLocal:string;
   public urlResourseLocal:string;
   public urlComplete:string;
@@ -238,7 +240,8 @@ export class FinalizarActividadComponent implements OnInit {
     // Definicion de la Insercion de los Datos de Nuevo Usuario
     this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null,
                                null, null, null,  null,  null, null, 5,  null, null, null,
-                               null, null, null, null, null, null, null, null);
+                               null, null, null, null, null, null, null, null,
+                               null);
 
     // Inicializamos el Llenado de las Tablas
     this.getlistaFinalizarOficiosTable();
@@ -278,6 +281,7 @@ export class FinalizarActividadComponent implements OnInit {
   * Submit
   ******************************************************/
   closeModal( nameBotton ){
+    this.showDireccionCorrespondencia = false;
     setTimeout(function() {
       // $('#t_and_c_m').modal('hide');
       $( nameBotton ).click();
@@ -1339,5 +1343,34 @@ export class FinalizarActividadComponent implements OnInit {
        });
  } // FIN | FND-000014
 
+
+ /******************************************************************
+ * Funcion: FND-000015
+ * Fecha: 12-02-2018
+ * Descripcion: Chekear Comunicacion para Enviar a Correspondencia
+ *******************************************************************/
+ checkEnviarCorrespondencia(){
+   //Prepara el Prototipo de la Funcion
+   this.showDireccionCorrespondencia = false;
+
+   $('.chkCorrespondencia').each(function () {
+       if (this.checked) {
+         //alert('Activado ' + this.comunicacionSinSeguimientoNew );
+         $("#estadoCorrepondencia").val(1);
+       } else {
+         // alert('Activado ' + this.comunicacionSinSeguimientoNew );
+         $("#estadoCorrepondencia").val(2);
+       }
+   });
+
+   //Evalua la habilitacion de la Direccion de la Correspondencia
+   if( $('#estadoCorrepondencia').val() == 1 ){
+     this.showDireccionCorrespondencia = true;
+     // alert('Selecciona');
+   }else if( $('#estadoCorrepondencia').val() == 2 ){
+     this.showDireccionCorrespondencia = false;
+     // alert('DesSelecciona');
+   }
+ } // FIN | FND-000015
 
 }
