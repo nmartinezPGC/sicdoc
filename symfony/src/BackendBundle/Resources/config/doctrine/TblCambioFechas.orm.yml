@@ -2,18 +2,18 @@ BackendBundle\Entity\TblCambioFechas:
     type: entity
     table: tbl_cambio_fechas
     indexes:
-        idx_cod_cambio_fechas:
-            columns:
-                - cod_correspondencia
-        fki_uer_cambio:
-            columns:
-                - id_usuario_creacion
         fki_estados_solictud:
             columns:
                 - id_estado_solicitud
+        fki_uer_cambio:
+            columns:
+                - id_usuario_creacion
         fki_user_solicitud:
             columns:
                 - id_usuario_solicitud
+        idx_cod_cambio_fechas:
+            columns:
+                - cod_correspondencia
     id:
         idCambioFecha:
             type: integer

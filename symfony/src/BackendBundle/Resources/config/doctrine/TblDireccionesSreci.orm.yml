@@ -37,4 +37,11 @@ BackendBundle\Entity\TblDireccionesSreci:
             options:
                 fixed: false
             column: iniciales_direccion_sreci
+        emailDireccion:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: email_direccion
     lifecycleCallbacks: {  }

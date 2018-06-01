@@ -123,4 +123,33 @@ class TblDireccionesSreci
 
         return $this;
     }
+    /**
+     * @var string
+     */
+    private $emailDireccion;
+
+
+    /**
+     * Set emailDireccion
+     *
+     * @param string $emailDireccion
+     *
+     * @return TblDireccionesSreci
+     */
+    public function setEmailDireccion($emailDireccion)
+    {
+        $this->emailDireccion = $emailDireccion;
+
+        return $this;
+    }
+
+    /**
+     * Get emailDireccion
+     *
+     * @return string
+     */
+    public function getEmailDireccion()
+    {
+        return $this->emailDireccion;
+    }
 }

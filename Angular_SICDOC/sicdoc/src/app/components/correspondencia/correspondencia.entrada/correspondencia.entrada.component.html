@@ -81,6 +81,24 @@
             </div>
 
             <hr class="hr-new">
+
+            <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1 " >
+                <!-- Direccion Encargada del tema de la Comunicacion -->
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <h6>Unidad Responsable</h6>
+                    <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
+                          ngControl="idDireccionSreci" [(ngModel)]="_entradaCorrespondenciaModel.idDireccionSreci" tabindex="8"  (change)="getlistaSubDireccionesSRECI()" >
+                        <option value="0">Sub Secretaría Responsable </option>
+                        <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
+                    </select>
+                    <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Sub Secretaría responsable</small>
+                    <small class="form-text text-muted" *ngIf="idDireccionSreci.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small>
+                  </div>
+               </div>
+             </div>
+
+            <hr class="hr-new">
             <!-- Institucion de COmunicacion -->
             <div class="row">
               <!-- Lista de Paises -->
@@ -225,7 +243,7 @@
             <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
             <div class="card-block" style="margin-left:8px">
               <h4 class="card-title">Resumen</h4>
-              <p class="card-text">Resumen de la información registrada de las Comunicaciones.</p>
+              <p class="card-text">Resumen de la información registrada de la Correspondencia.</p>
             </div>
             <ul class="list-group list-group-flush">
               <!-- Oficios -->
@@ -233,20 +251,10 @@
               <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
               <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countOficiosFinalizados }} </span> </li>
 
-              <!-- Memoramdums -->
+              <!-- Notas Verbales -->
               <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Memos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
-              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Memos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
-
-              <!-- Correos -->
-              <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-              <li class="list-group-item"> <i class="material-icons">markunread_mailbox</i> Correos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countCorreosPendientes }} </span> </li>
-              <li class="list-group-item"> <i class="material-icons">contact_mail</i> Correos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countCorreosFinalizados }} </span> </li>
-
-              <!-- Llamadas -->
-              <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-              <li class="list-group-item"> <i class="material-icons">call</i> Llamadas Pendientes -- | <span class="badge badge-pill badge-warning"> {{ countLlamadasPendientes }} </span> </li>
-              <li class="list-group-item"> <i class="material-icons">call_end</i> Llamadas Finalizadas -- | <span class="badge badge-pill badge-primary"> {{ countLlamadasFinalizados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Notas Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Notas Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
 
             </ul>
 

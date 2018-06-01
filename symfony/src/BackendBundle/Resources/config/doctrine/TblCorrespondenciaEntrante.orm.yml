@@ -1,0 +1,99 @@
+BackendBundle\Entity\TblCorrespondenciaEntrante:
+    type: entity
+    table: tbl_correspondencia_entrante
+    indexes:
+        IDX_46EEBE80603C5679:
+            columns:
+                - id_correspondencia_enc
+        IDX_46EEBE80EF433A34:
+            columns:
+                - id_institucion
+        IDX_46EEBE80D9471F32:
+            columns:
+                - id_direccion_sreci
+    id:
+        idCorrespondenciaEntrante:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_correspondencia_entrante
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codCorrespondenciaEntrante:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: cod_correspondencia_entrante
+        codReferenciaSreci:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: cod_referencia_sreci
+        fechaIngreso:
+            type: date
+            nullable: true
+            column: fecha_ingreso
+        horaIngreso:
+            type: time
+            nullable: true
+            column: hora_ingreso
+        asuntoCorrespondencia:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+            column: asunto_correspondencia
+        descripcionCorrespondencia:
+            type: string
+            nullable: true
+            length: 1500
+            options:
+                fixed: false
+            column: descripcion_correspondencia
+        observacionesCorrespondencia:
+            type: string
+            nullable: true
+            length: 350
+            options:
+                fixed: false
+            column: observaciones_correspondencia
+    manyToOne:
+        idCorrespondenciaEnc:
+            targetEntity: TblCorrespondenciaEnc
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_enc:
+                    referencedColumnName: id_correspondencia_enc
+            orphanRemoval: false
+        idInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idDireccionSreci:
+            targetEntity: TblDireccionesSreci
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_direccion_sreci:
+                    referencedColumnName: id_direccion_sreci
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

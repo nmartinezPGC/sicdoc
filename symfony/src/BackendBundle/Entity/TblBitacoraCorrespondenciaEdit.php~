@@ -341,4 +341,33 @@ class TblBitacoraCorrespondenciaEdit
     {
         return $this->idEstado;
     }
+    /**
+     * @var \BackendBundle\Entity\TblInstituciones
+     */
+    private $idInstitucionAnterior;
+
+
+    /**
+     * Set idInstitucionAnterior
+     *
+     * @param \BackendBundle\Entity\TblInstituciones $idInstitucionAnterior
+     *
+     * @return TblBitacoraCorrespondenciaEdit
+     */
+    public function setIdInstitucionAnterior(\BackendBundle\Entity\TblInstituciones $idInstitucionAnterior = null)
+    {
+        $this->idInstitucionAnterior = $idInstitucionAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get idInstitucionAnterior
+     *
+     * @return \BackendBundle\Entity\TblInstituciones
+     */
+    public function getIdInstitucionAnterior()
+    {
+        return $this->idInstitucionAnterior;
+    }
 }

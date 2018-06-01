@@ -1,0 +1,116 @@
+BackendBundle\Entity\TblCorrespondenciaSalida:
+    type: entity
+    table: tbl_correspondencia_salida
+    indexes:
+        fki_depto_salida:
+            columns:
+                - id_depto_funcional
+        fki_funcionario_asig_salida:
+            columns:
+                - id_funcionario_asignado
+        fki_funcionario_repartidor:
+            columns:
+                - id_funcionario_repartidor
+        fki_direccion_salida:
+            columns:
+                - id_direccion_sreci
+        fki_institucion_salida:
+            columns:
+                - id_institucion
+    id:
+        idCorrespondenciaSalida:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_correspondencia_salida
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codCorrespondenciaSalida:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: cod_correspondencia_salida
+        nombreDestinatario:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: nombre_destinatario
+        fechaRecepcion:
+            type: date
+            nullable: true
+            column: fecha_recepcion
+        horaRecepcion:
+            type: time
+            nullable: true
+            column: hora_recepcion
+        fechaEntrega:
+            type: date
+            nullable: true
+            column: fecha_entrega
+        horaEntrega:
+            type: time
+            nullable: true
+            column: hora_entrega
+        acuseDeEntrega:
+            type: boolean
+            nullable: true
+            column: acuse_de_entrega
+    manyToOne:
+        idDireccionSreci:
+            targetEntity: TblDireccionesSreci
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_direccion_sreci:
+                    referencedColumnName: id_direccion_sreci
+            orphanRemoval: false
+        idDeptoFuncional:
+            targetEntity: TblDepartamentosFuncionales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_depto_funcional:
+                    referencedColumnName: id_depto_funcional
+            orphanRemoval: false
+        idFuncionarioAsignado:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario_asignado:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
+        idInstitucion:
+            targetEntity: TblInstituciones
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_institucion:
+                    referencedColumnName: id_institucion
+            orphanRemoval: false
+        idFuncionarioRepartidor:
+            targetEntity: TblFuncionarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_funcionario_repartidor:
+                    referencedColumnName: id_funcionario
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
