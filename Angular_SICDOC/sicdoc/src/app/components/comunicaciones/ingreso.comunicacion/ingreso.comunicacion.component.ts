@@ -1260,21 +1260,21 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                 Correspondencia = 2
              ******************************************************************/
             //  if( _DireccionSreciId == 8 ){ //"SSCPI"
-             if( _subSecretariSreciDespacho == true ){ //"SSCPI"
+             if( _subSecretariSreciDespacho == 1 ){ //"SSCPI"
                // Enviamos la Secuencia con Nuevo Valor | SCPI
                //Codigo de la Referencia, el cual se Utiliza en el Documento a Send
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
-                                                      this.codigoSecuenciaGen + '-' + _anioCod;
+                                                      this.codigoSecuenciaGen + '/' + this.identity.iniUser + '-' +  _anioCod;
                //Codigo SCPI | Generado por el Sistema | Sin el Nombre Dir
                this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
                                                              this.codigoSecuenciaGen + '-' + _anioCod ;
              }else {
                // Enviamos la Secuencia con Nuevo Valor | sin SCPI
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
-                                                      this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
+                                                      this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' + _anioCod;
                //Codigo SCPI | Generado por el Sistema, con Toda la Contatenacion
                this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
-                                                             this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod ;
+                                                             this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' +  _anioCod;
 
              }
 

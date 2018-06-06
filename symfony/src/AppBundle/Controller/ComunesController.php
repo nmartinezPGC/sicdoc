@@ -235,7 +235,7 @@ class ComunesController extends Controller {
            
             //$new_depto_funcional = $depto_funcional;
             /*Ejecucion de la Secuencia  segun Parametros *********************/
-            if( $depto_funcional == 8 && $codigo_secuencia == "SCPI" ){
+            if( $depto_funcional == 8 && $codigo_secuencia == $iniciales_direccion ){
                 $despacho = 1;
                 $sec = 1.1;
                 //$new_depto_funcional = $depto_funcional;
@@ -254,7 +254,7 @@ class ComunesController extends Controller {
                         "despacho"       => $despacho
                     ));
 
-            }else if( $depto_funcional != 8 && $codigo_secuencia == "SCPI" ) {
+            }else if( $depto_funcional != 8 && $codigo_secuencia == $iniciales_direccion ) {
                 $despacho = 0;
                 $sec = 1.2;
                 // Query para Obtener todos las secuencias segun Parametros de la Tabla: TblSecuenciales
@@ -264,7 +264,7 @@ class ComunesController extends Controller {
                         "tablaSecuencia"    => $tabla_secuencia,  // Tabla de la Secuencia a Obtener
                         "idTipoDocumento"   => $tipo_documento, // Tipo de Documento (Oficio)
                         //"idTipoUsuario"     => $tipo_funcionario, // Tipo de Funcionario 
-                        "idDeptoFuncional"  => 7, // Depto Funcional (Direccion)
+                        //"idDeptoFuncional"  => $depto_funcional, // Depto Funcional (Direccion)
                         //"idDireccionSreci"  => $direccion_sreci, // Direccion SRECI
                         //"idTipoFuncionario"  => $id_tipo_funcionario, // Direccion SRECI
                         //"reservada"       => "N"
@@ -325,7 +325,7 @@ class ComunesController extends Controller {
             $optSec = 0;
             //var_dump($countSecuenciaComprometida . " ---- " . $codigo_secuencia );
             //Evalua los Resultados de la Consulta
-            if( $countSecuenciaComprometida == 0  && $codigo_secuencia == "SCPI" ){
+            if( $countSecuenciaComprometida == 0  && $codigo_secuencia == $iniciales_direccion ){
                 // Condicion para Actualizar Datos de la Secuencia
                 //if( $secuencias->getReservada() === "N"  ){
                     $optSec = 1.1;
@@ -378,7 +378,7 @@ class ComunesController extends Controller {
                     $count_Sec = count($comprometidasSecuencias); 
                     $data = $comprometidasSecuencias;
                 //}  else if ( $secuencias->getReservada() === "S" ) {
-            } else if ( $countSecuenciaComprometida > 0 && $codigo_secuencia == "SCPI" ) {
+            } else if ( $countSecuenciaComprometida > 0 && $codigo_secuencia == $iniciales_direccion ) {
                     $optSec = 1.2;
                     //$comprometidasSecuencias = new TblSecuenciasComprometidas(); 
                     // Query para Obtener todos las Sec. de la Tabla: TblSecuenciasComprometidas
@@ -394,7 +394,7 @@ class ComunesController extends Controller {
                     $count_Sec = count($comprometidasSecuencias);
                     $data = $comprometidasSecuencias;
                // }             
-            } else if ( $codigo_secuencia != "SCPI" ) {                
+            } else if ( $codigo_secuencia != $iniciales_direccion ) {                
                 // Condicion para Actualizar Datos de la Secuencia
                 if( $secuencias->getReservada() === "N"  ){                    
                     //Opcion de Secuencia

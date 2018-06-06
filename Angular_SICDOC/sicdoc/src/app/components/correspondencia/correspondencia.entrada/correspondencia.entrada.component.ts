@@ -76,6 +76,9 @@ export class CorrespondenciaEntradaComponent implements OnInit {
   // Json de Documentos
   public JsonOutgetlistaDocumentos:any[];
   public JsonOutgetlistaDocumentosNew:any[];
+
+  public JsonOutgetlistaDireccionSRECI:any[];
+
   public paramsDocumentos;
 
   // Array de Documentos de Comunicacion
@@ -179,6 +182,9 @@ export class CorrespondenciaEntradaComponent implements OnInit {
    };
 
    // Lista de Direcciones
+   // Llamado a la Opcion de llenado de las Sub Direcciones
+   this.getlistaDireccionesSRECI();
+
    // this.getlistaDireccionesSRECI();
    this.getlistaPaises();
    this.getlistaTipoInstituciones();
@@ -560,5 +566,31 @@ export class CorrespondenciaEntradaComponent implements OnInit {
             }
           });
     } // FIN : FND-00019
+
+
+    /*****************************************************
+    * Funcion: FND-00007
+    * Fecha: 31-08-2017
+    * Descripcion: Carga la Lista de las Direcciones de
+    * SRECI
+    * Objetivo: Obtener la lista de las Direcciones SRECI
+    * de la BD, Llamando a la API, por su metodo
+    * (dir-sreci-list).
+    ******************************************************/
+    getlistaDireccionesSRECI() {
+      //Llamar al metodo, de Login para Obtener la Identidad
+      this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              // alert(response.msg);
+              this.addToast(4,"Error", response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetlistaDireccionSRECI = response.data;
+            }
+          });
+    } // FIN : FND-00007
 
 }

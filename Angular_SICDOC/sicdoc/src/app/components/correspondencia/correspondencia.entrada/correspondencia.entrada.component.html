@@ -40,7 +40,7 @@
                   <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número de la Correspondencia</small>
                   <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
                       Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
-                  <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" >
+                  <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
                   <!-- <input type="button" value="Toasty" (click)="addToast('Alerta','Alerta de Prueba')" class="btn btn-primary" > -->
                   <ng2-toasty [position]="'top-right'" ></ng2-toasty>
               </div>
@@ -82,14 +82,17 @@
 
             <hr class="hr-new">
 
-            <div class="row" *ngIf=" identity.idTipoFunc == 1 || identity.idTipoFunc == 4 || identity.idTipoUser == 1 " >
+            <div class="row" >
                 <!-- Direccion Encargada del tema de la Comunicacion -->
                 <div class="col-xs-12 col-sm-6 col-md-6">
                   <div class="form-group">
-                    <h6>Unidad Responsable</h6>
+                    <!-- <h6>Unidad Responsable</h6> -->
+                    <small class="form-text text-muted">
+                        Unidad Responsable
+                    </small>
                     <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
                           ngControl="idDireccionSreci" [(ngModel)]="_entradaCorrespondenciaModel.idDireccionSreci" tabindex="8"  (change)="getlistaSubDireccionesSRECI()" >
-                        <option value="0">Sub Secretaría Responsable </option>
+                        <option value="0">Unidad Responsable </option>
                         <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
                     </select>
                     <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Sub Secretaría responsable</small>
@@ -104,7 +107,10 @@
               <!-- Lista de Paises -->
       				<div class="col-xs-12 col-sm-6 col-md-4">
       					<div class="form-group">
-                  <h6>País / Entidad de Comunicación</h6>
+                  <!-- <h6>País / Entidad de Comunicación</h6> -->
+                  <small class="form-text text-muted">
+                      País / Entidad de Comunicación
+                  </small>
                   <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
                         title="País / Entidad donde viene la Comunicación"
                         ngControl="idPais" [(ngModel)]="_entradaCorrespondenciaModel.idPais" tabindex="4">
@@ -118,7 +124,10 @@
               <!-- Tipo de Institucion -->
               <div class="col-xs-12 col-sm-6 col-md-3">
       					<div class="form-group">
-                  <h6>Tipo de Institución</h6>
+                  <!-- <h6>Tipo de Institución</h6> -->
+                  <small class="form-text text-muted">
+                      Tipo de Institución
+                  </small>
                   <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
                         #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
                         ngControl="idTipoInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idTipoInstitucion" tabindex="5"
@@ -133,7 +142,10 @@
               <!-- Instituciones de la Comunicacion -->
               <div class="col-xs-12 col-sm-6 col-md-5">
                 <div class="form-group">
-                  <h6>Institución de Comunicación</h6>
+                  <!-- <h6>Institución de Comunicación</h6> -->
+                  <small class="form-text text-muted">
+                      Institución de Comunicación
+                  </small>
                   <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación"
                         #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
                         ngControl="idInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idInstitucion"  tabindex="6">
@@ -217,20 +229,19 @@
 
             <hr class="colorgraph">
             <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->
+            <button class="btn btn-success" type="submit" [disabled]="!correspondenciaInForm.valid" style="cursor: pointer">
+               <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
+              Guardar Correspondencia
+            </button>
             <a class="btn btn-warning" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
               <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
               Limpiar
             </a>
-
             <!-- <a class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
                  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
               <img src="assets/icons/comunicacion/two-way-arrows.png" alt="Cargando imagen">
               Guardar Edición
             </a> -->
-            <button class="btn btn-success" type="submit" [disabled]="!correspondenciaInForm.valid" style="cursor: pointer">
-               <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
-              Guardar Edición
-            </button>
 
             <!-- Boton de Enviar la Solicitud -->
           </form>

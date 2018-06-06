@@ -1218,7 +1218,7 @@ class ListasComunesController extends Controller {
         $tipo_funcionario_entitie = $tipo_usuario->getIdTipoFuncionario(); // Obtenemos la Entidad Completa
         $tipo_funcionario = $tipo_funcionario_entitie->getIdTipoFuncionario(); // Obtenemos el Tipo de Funcionario
         // Es Director y solo el Puede Asignar Oficios
-        if ( $tipo_funcionario === 6 || $tipo_funcionario === 3 ) {        
+        if ( $tipo_funcionario === 6 || $tipo_funcionario === 1 ) {        
             // Evaluamos si si hizo una consulta desde la caja Search
             if ( $search != null ) {
                //Consulta con ParamSearch
