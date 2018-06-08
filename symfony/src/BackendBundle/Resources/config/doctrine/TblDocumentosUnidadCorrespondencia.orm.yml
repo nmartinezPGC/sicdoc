@@ -1,0 +1,72 @@
+BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
+    type: entity
+    table: tbl_documentos_unidad_correspondencia
+    indexes:
+        fki_corr_unid:
+            columns:
+                - id_correspondencia_entrante
+        fki_user_doc:
+            columns:
+                - id_usuario
+    id:
+        idDocumento:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_documento
+            generator:
+                strategy: SEQUENCE
+    fields:
+        urlDocumento:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: url_documento
+        descDocumento:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+            column: desc_documento
+        fechaIngreso:
+            type: date
+            nullable: true
+            column: fecha_ingreso
+        horaIngreso:
+            type: time
+            nullable: true
+            column: hora_ingreso
+        codDocumento:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: cod_documento
+    manyToOne:
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idCorrespondenciaEntrante:
+            targetEntity: TblCorrespondenciaEntrante
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_entrante:
+                    referencedColumnName: id_correspondencia_entrante
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

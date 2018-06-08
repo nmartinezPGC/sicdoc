@@ -2,6 +2,15 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
     type: entity
     table: tbl_correspondencia_entrante
     indexes:
+        fki_corr_estados:
+            columns:
+                - id_estado
+        fki_tipo_doc_corr:
+            columns:
+                - id_tipo_documento
+        fki_user_corr:
+            columns:
+                - id_usuario
         IDX_46EEBE80603C5679:
             columns:
                 - id_correspondencia_enc
@@ -65,6 +74,14 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
             options:
                 fixed: false
             column: observaciones_correspondencia
+        fechaRecibido:
+            type: date
+            nullable: true
+            column: fecha_recibido
+        horaRecibido:
+            type: time
+            nullable: true
+            column: hora_recibido
     manyToOne:
         idCorrespondenciaEnc:
             targetEntity: TblCorrespondenciaEnc
@@ -95,5 +112,35 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
             joinColumns:
                 id_direccion_sreci:
                     referencedColumnName: id_direccion_sreci
+            orphanRemoval: false
+        idEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
+            orphanRemoval: false
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
             orphanRemoval: false
     lifecycleCallbacks: {  }

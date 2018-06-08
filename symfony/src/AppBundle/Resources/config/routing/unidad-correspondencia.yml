@@ -1,0 +1,7 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Unidad de Correspondencia
+unidadCorrespondencia_entradaCorrespondencia:
+    path: /entrada-correspondencia
+    defaults: { _controller: "AppBundle:UnidadCorrespondencia:entradaCorrespondencia" }
+    methods: POST

@@ -1,0 +1,26 @@
+## YAML Template.
+---
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
+comunesUnidadCorrespondencia_upload_image:
+    path: /upload-image
+    defaults: { _controller: "AppBundle:Comunes:uploadImage" }
+    methods: POST
+
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
+comunesUnidadCorrespondencia_upload_documento:
+    path: /upload-documento
+    defaults: { _controller: "AppBundle:Comunes:uploadDocumento" }
+    methods: POST
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios
+comunesUnidadCorrespondencia_genSecuenciaComIn:
+    path: /gen-secuencia-comunicacion-in
+    defaults: { _controller: "AppBundle:Comunes:genSecuenciaComIn" }
+    methods: POST
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo Documentos con Opcion #
+comunesUnidadCorrespondencia_uploadDocumentoOpction:
+    path: /documentos-upload-options
+    defaults: { _controller: "AppBundle:Comunes:uploadDocumentoOpction" }
+    methods: POST
+   

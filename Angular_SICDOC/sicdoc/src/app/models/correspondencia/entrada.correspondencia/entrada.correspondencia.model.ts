@@ -11,8 +11,8 @@ export class EntradaCorrespondenciaModel{
 
       // Datos de Relaciones de Tablas
       public idPais:number,
-      public idInstitucion:number,
       public idTipoInstitucion:number,
+      public idInstitucion:number,
 
       public idUsuario:string, // Tipo de Dato String, porque no se selecciona
       public idEstado:string, // Tipo de Dato String, porque no se selecciona

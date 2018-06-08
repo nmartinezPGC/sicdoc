@@ -64,3 +64,18 @@ app_vinculacionComunicacion:
 app_charts:
     resource: "@AppBundle/Resources/config/routing/charts.yml"
     prefix: /charts
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Unidad de Correspondencia
+app_unidadCorrespondencia:
+    resource: "@AppBundle/Resources/config/routing/unidad-correspondencia.yml"
+    prefix: /unidad-correspondencia
+
+## Redireccionamiento de las Ruta por Defecto | Modulo de Unidad de Correspondencia
+app_documentoUnidadCorrespondencia:
+    resource: "@AppBundle/Resources/config/routing/documentos-unidad-correspondencia.yml"
+    prefix: /documentos-unidad-correspondencia
+    
+## Redireccionamiento de las Ruta por Defecto | Modulo de Comunes
+app_comunesUnidadCorrespondencia:
+    resource: "@AppBundle/Resources/config/routing/comunes-unidad-correspondencia.yml"
+    prefix: /comunes-unidad-correspondencia

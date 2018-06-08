@@ -28,6 +28,24 @@ export class EntradaCorrespondenciaService {
       this.urlResourses = this._systemPropertiesService.getmethodUrlResourses();
   }
 
+
+  /*********************************************************
+  * Funcion: FND-00002                                     *
+  * Fecha: 07-06-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API ( /unidad-correspondencia/entrada-correspondencia ).*
+  * Objetivo: Ingresar nueva Correspondencia                   *
+  *********************************************************/
+  registerNuevaCorrespondencia( correpondencia_to_register ){
+      let json = JSON.stringify( correpondencia_to_register );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+    return this._http.post(this.url + "/unidad-correspondencia/entrada-correspondencia", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00002
+
+
   /*********************************************************
   * Funcion: FND-00003                                     *
   * Fecha: 07-03-2018                                      *
@@ -41,7 +59,7 @@ export class EntradaCorrespondenciaService {
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
     // Retorno de la Funcion
-    return this._http.post(this.url + "/documentos/subir-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+      return this._http.post(this.url + "/documentos-unidad-correspondencia/subir-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 

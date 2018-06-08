@@ -191,6 +191,68 @@ export class CorrespondenciaEntradaComponent implements OnInit {
   }
 
 
+  /*********************************************************
+   * Funcion de Grabacion del Traslado de Comunicación
+   * Nuevos en la BD
+   * Fecha: 2018-03-06
+  **********************************************************/
+  onSubmit(forma:NgForm){
+    // Envio de los Datos, a la API, con el fin de registrarlo en la BD
+    this.loading = "show";
+
+    this._EntradaCorrespondenciaService.registerNuevaCorrespondencia( this._entradaCorrespondenciaModel ).subscribe(
+      response => {
+          // Obtenemos el Status de la Peticion
+          this.status = response.status;
+          this.mensajes = response.msg;
+
+          // Condicionamos la Respuesta
+          if(this.status != "success"){
+              this.status = "error";
+              this.mensajes = response.msg;
+              if(this.loading = 'show'){
+                this.loading = 'hidden';
+              }
+              // alert(this.mensajes);
+              this.addToast(4, 'Error:', this.mensajes);
+          }else{
+            this.loading = 'hidden';
+            this.ngOnInit();
+
+            //Cerramos el Loading
+            //this.closeModal("#closeModalFinCom");
+            //Oculta el Div de Alerta despues de 3 Segundos
+            setTimeout(function() {
+                $("#alertSuccess").fadeOut(1500);
+            },3000);
+
+            //Mensage la Alerta de Success | Submit
+            this.addToast(2, 'Confirmado:', this.mensajes);
+          }
+      }, error => {
+          //Regisra cualquier Error de la Llamada a la API
+          this.errorMessage = <any>error;
+
+          //Evaluar el error
+          if(this.errorMessage != null){
+            console.log(this.errorMessage);
+            this.mensajes = this.errorMessage;
+            this.addToast(4,"Error: Contacta al Administrador ",this.mensajes);
+            //Oculta el Div de Alerta despues de 3 Segundos
+            setTimeout(function() {
+                $("#alertError").fadeOut(1500);
+            },3000);
+
+            //Ocultamos el Loading
+            if(this.loading = 'show'){
+              this.loading = 'hidden';
+            }
+          }
+      });
+  } // FIN | OnngSubmit()
+
+
+
   /*****************************************************
   * Funcion: FND-00001.4
   * Fecha: 28-02-2018

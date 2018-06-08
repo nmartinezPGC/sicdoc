@@ -1,0 +1,43 @@
+## YAML Template.
+---
+# Ruta para Ingresar los Documentos de la API
+documentoUnidadCorrespondencia_new:
+    path: /new
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:new" }
+    methods: POST
+
+documentoUnidadCorrespondencia_edit:
+    path: /edit/{id}
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:edit", id:null }
+    methods: POST
+    
+documentoUnidadCorrespondencia_upload_image:
+    path: /upload-image/{id}
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:upload", id:null }
+    methods: POST
+    
+documentoUnidadCorrespondencia_upload_pdf:
+    path: /upload-pdf/{id}
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:upload", id:null }
+    methods: POST
+    
+documentoUnidadCorrespondencia_listaDocumentos:
+    path: /listar-documentos
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:listaDocumentos" }
+    methods: POST
+    
+documentoUnidadCorrespondencia_borrarDocumentoServer:
+    path: /borrar-documento-server
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:borrarDocumentoServer" }
+    methods: POST
+
+documentoUnidadCorrespondencia_subirDocumentosComunicacion:
+    path: /subir-documentos-comunicacion
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:subirDocumentosComunicacion" }
+    methods: POST
+    
+documentoUnidadCorrespondencia_borrarDocumentosComunicacion:
+    path: /borrar-documentos-comunicacion
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:borrarDocumentosComunicacion" }
+    methods: POST
+    
