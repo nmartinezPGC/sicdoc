@@ -165,6 +165,37 @@ export class CorrespondenciaEntradaComponent implements OnInit {
           this.identity.sub, "7", 0, "",
           "", null);
 
+    // Json de Documento a Borrar
+    this.JsonOutgetListaDocumentosDelete = {
+      "codDocument": "",
+      "extDocument": "",
+      "indicadorExt":""
+    }
+
+    // Array de los Documentos enviados
+    this.JsonOutgetListaDocumentos = [];
+    this.JsonOutgetListaDocumentosNew = [];
+    this.JsonOutgetListaDocumentosHist = [];
+
+    this.nextDocumento = 0;
+
+    // Json de Documento a Borrar
+    this.JsonOutgetListaDocumentosDelete = {
+      "codDocument": "",
+      "extDocument": "",
+      "indicadorExt": "",
+      "idCorrespondenciaDet": "",
+      "idCorrespondenciaEnc": "",
+      "descDocumento": ""
+    }
+
+    $("#newTable").children().remove();
+
+    // Limpiamos el Array de los Documentos
+    this.JsonOutgetListaDocumentos = [];
+
+    this._entradaCorrespondenciaModel.pdfDocumento = "";
+
     // Inicio de Detalle correspondencia
     this.JsonOutgetCodigoSecuenciaActividadAgregar = {
       "codSecuencial" : "",
@@ -455,7 +486,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
       this.filesToUpload = <Array<File>>fileInput.target.files;
 
       // Direccion del Metodo de la API
-      let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
+      let url = this.urlConfigLocal + "/comunes-unidad-correspondencia/documentos-upload-options";
 
       // Variables del Metodo
       let  error:string;
@@ -489,13 +520,11 @@ export class CorrespondenciaEntradaComponent implements OnInit {
         }
 
       // Seteamos el valore del Nombre del Documento
-      // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
-      // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
       let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
       // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
       codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
 
-      this.codigoSec = codigoSec + '-' + this.nextDocumento;
+      this.codigoSec = nameDoc + '-' + this.nextDocumento;
       this.nextDocumento = this.nextDocumento + 1;
 
       // Parametro para documento Seleccionado
@@ -533,65 +562,13 @@ export class CorrespondenciaEntradaComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
       this._entradaCorrespondenciaModel.pdfDocumento = "";
 
+      console.log(codDocumentoIn + ' ---- ' + extDocumentoIn);
+
       // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
       // Indicador = 1; ya que lleva la Externcion del Documento
       this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn, 1);
       console.log(this.JsonOutgetListaDocumentosNew);
     } // FIN | FND-00018
-
-
-    /*****************************************************
-    * Funcion: FND-00018.1
-    * Fecha: 15-02-2018
-    * Descripcion: Delete de nuevo File input, en Tabla
-    * ( deleteRowHomeFormSelect ).
-    ******************************************************/
-    deleteRowHomeFormSelect(codDocumentoIn:string, urlDocumentoIn:string, descDocumentoIn:string,
-                            idCorrespondenciaDetIn:number, idCorrespondenciaEncIn:number){
-      // Confirmacion de la Accion de Borrado de Documento
-      let confirmaPeticion = confirm('Estas Seguro de Borrar el Documento?');
-      if( confirmaPeticion == false ){
-        return -1;
-      }
-      //Loader
-      this.loading = "show";
-      //Llamar al metodo, de Login para Obtener la Identidad
-      // Agrega Items al Json
-
-      this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
-      this.JsonOutgetListaDocumentosDelete.extDocument = urlDocumentoIn;
-      this.JsonOutgetListaDocumentosDelete.indicadorExt = 2;
-      this.JsonOutgetListaDocumentosDelete.idCorrespondenciaDet = idCorrespondenciaDetIn;
-      this.JsonOutgetListaDocumentosDelete.idCorrespondenciaEnc = idCorrespondenciaEncIn;
-      this.JsonOutgetListaDocumentosDelete.descDocumento = descDocumentoIn;
-
-      // Solicitud del Servicio de la Busqueda
-      this._EntradaCorrespondenciaService.deleteDocumentos( this.JsonOutgetListaDocumentosDelete ).subscribe(
-          response => {
-            //alert(response.status);
-            this.statusConsultaCom = response.status;
-
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              //Mensaje de notificacion
-              this.addToast(4,"Error: ",response.msg);
-              // alert(response.msg);
-
-              // Oculatamos el Loader
-              this.loading = "hide";
-            }else{
-              // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
-              this.borrarDocumentoServer(codDocumentoIn, urlDocumentoIn, 2);
-
-              // Ocultamos el Loader
-              this.loading = "hide";
-              //Mensaje de alerta del error en cuestion
-              //Mensaje de notificacion
-              this.addToast(2,"En hora buena: ",response.msg);
-              // alert(response.msg);
-            }
-          });
-    } // FIN | FND-00018.1
 
 
     /*****************************************************
@@ -605,7 +582,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
       //Llamar al metodo, de Login para Obtener la Identidad
       // Agrega Items al Json
       this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
-
+      console.log('borrarDocumentoServer ++++  ' + this.JsonOutgetListaDocumentosDelete.codDocument);
       // Cambiamos la Extencion si es jpg
       if( extDocumentoIn == "jpg" || extDocumentoIn == "JPG" ){
         extDocumentoIn = "jpeg";
@@ -617,14 +594,12 @@ export class CorrespondenciaEntradaComponent implements OnInit {
       this.JsonOutgetListaDocumentosDelete.indicadorExt = indicadorExt;
 
       //Ejecucion del Servicio de Borrar Documento del Servidor
-      this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
+      this._uploadService.borrarDocumentoUC( this.JsonOutgetListaDocumentosDelete ).subscribe(
           response => {
             // login successful so redirect to return url
             if(response.status == "error"){
               //Mensaje de alerta del error en cuestion
-              //Mensaje de notificacion
               this.addToast(4,"Error: ",response.msg);
-              // alert(response.msg);
             }
           });
     } // FIN : FND-00019

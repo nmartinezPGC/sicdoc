@@ -16,12 +16,9 @@ export class UploadService {
 
   // Map de la API
   public url:string;
-  // public url = "http://localhost/sicdoc/symfony/web/app_dev.php"; // Local
-  // public url = "http://172.17.0.250/sicdoc/symfony/web/app.php"; // Server
-
 
   constructor( private _http: Http,
-               private _systemPropertiesService: SystemPropertiesService ) { 
+               private _systemPropertiesService: SystemPropertiesService ) {
       this.url = this._systemPropertiesService.getmethodUrlService();
     }
 
@@ -189,6 +186,22 @@ export class UploadService {
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
 
     return this._http.post(this.url + "/documentos/borrar-documento-server", params, { headers:headers }).map( res => res.json());
+  }
+
+
+  /****************************************************
+  * Funcion: FND-00003.1
+  * Fecha: 14-02-2018
+  * Descripcion: Metodo Ajax, para Borrar el Documento
+  * Objetivo: Borrar Documento del Servidor
+  *****************************************************/
+  borrarDocumentoUC( nombre_documento ){
+      let json = JSON.stringify( nombre_documento );
+
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+
+    return this._http.post(this.url + "/documentos-unidad-correspondencia/borrar-documento-server", params, { headers:headers }).map( res => res.json());
   }
 
 

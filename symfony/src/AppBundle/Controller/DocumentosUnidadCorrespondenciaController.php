@@ -394,7 +394,7 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      * 2 ) Lista los docuemntos segun parametro ( codCorrespondenciaEnc )      *
-     * 3 ) Ruta = documentos/listar-documentos                                 * 
+     * 3 ) Ruta = documentos-unidad-correspondencia/listar-documentos                                 * 
      ***************************************************************************/
     public function listaDocumentosAction(Request $request)
     {   
@@ -475,7 +475,7 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        * 
      * 2 ) Lista los docuemntos segun parametro ( codDocumento )               *
-     * 3 ) Ruta = /documentos/borrar-documento-server                          * 
+     * 3 ) Ruta = /documentos-unidad-correspondencia/borrar-documento-server                          * 
      ***************************************************************************/
     public function borrarDocumentoServerAction(Request $request, $id = null)
     {
@@ -500,7 +500,7 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
             $ext_documento = (isset($params->extDocument)) ? $params->extDocument : null;
             $indicador_borrado = (isset($params->indicadorExt)) ? $params->indicadorExt : 1;
             
-            $ruta = "uploads/correspondencia/";
+            $ruta = "uploads/unidad-correspondencia/";
             //$documento_id = $id;
             // Validamos que el Codigo no venga Null
             if( $cod_correspondencia != null || $cod_correspondencia != 0 ){
@@ -583,7 +583,7 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la                 *  
      *     Informacion.                                                               * 
      * 2 ) Lista los docuemntos segun parametro ( arrayDocumentos )                   *
-     * 3 ) Ruta = /documentos/subir-documentos-comunicacion                           *  
+     * 3 ) Ruta = /documentos-unidad-correspondencia/subir-documentos-comunicacion                           *  
      **********************************************************************************/
     public function subirDocumentosComunicacionAction(Request $request){
         date_default_timezone_set('America/Tegucigalpa');
@@ -841,7 +841,7 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la                 *  
      *     Informacion.                                                               * 
      * 2 ) Lista los docuemntos segun parametro ( codDocument )                       *
-     * 3 ) Ruta = /documentos/borrar-documentos-comunicacion                          *  
+     * 3 ) Ruta = /documentos-unidad-correspondencia/borrar-documentos-comunicacion                          *  
      **********************************************************************************/
     public function borrarDocumentosComunicacionAction(Request $request){
         date_default_timezone_set('America/Tegucigalpa');

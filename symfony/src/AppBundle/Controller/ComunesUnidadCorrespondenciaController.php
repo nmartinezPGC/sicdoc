@@ -23,7 +23,7 @@ use BackendBundle\Entity\TblSecuenciasComprometidas;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-class ComunesController extends Controller {
+class ComunesUnidadCorrespondenciaController extends Controller {
     //put your code here
     
     /**
@@ -82,7 +82,7 @@ class ComunesController extends Controller {
                     //$file_name = $file_nameIn . "." .$ext; 
                     //Movemos el Fichero
                     //$path_of_file = "uploads/correspondencia/correspondencia_".date('Y-m-d');
-                    $path_of_file = "uploads/correspondencia/";
+                    $path_of_file = "uploads/unidad-correspondencia/";
                     $file->move($path_of_file, $file_name);
                 
                     // Devolvemos el Mensaje de Array
@@ -489,7 +489,8 @@ class ComunesController extends Controller {
     
     
     /**
-     * @Route("comunes/documentos-upload-options", name="comunes/documentos-upload-options")
+     * @Route("comunes-unidad-correspondencia/documentos-upload-options", 
+     * name="comunes-unidad-correspondencia/documentos-upload-options")
      * Creacion del Controlador: Comunes Documentos PDF
      * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
      * @since 1.0
@@ -509,9 +510,6 @@ class ComunesController extends Controller {
         // Nombre del Documento
         $file_nameIn = $request->get("name_pdf");
                 
-        //Evaluamos la Autoriuzacion del Token
-        
-        //$em = $this->getDoctrine()->getManager();
         //Recoger el Fichero que viene por el POST y lo guardamos el HD
         $file      = $request->files->get("name_pdf");
                
@@ -543,7 +541,7 @@ class ComunesController extends Controller {
                     //$file_name = time().".".$ext;
                     $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
                     //Movemos el Fichero
-                    $path_of_file = "uploads/correspondencia/";
+                    $path_of_file = "uploads/unidad-correspondencia/";
                     $file->move($path_of_file, $file_name);                    
                 
                     // Devolvemos el Mensaje de Array

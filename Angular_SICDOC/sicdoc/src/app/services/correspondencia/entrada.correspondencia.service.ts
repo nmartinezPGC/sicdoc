@@ -76,7 +76,7 @@ export class EntradaCorrespondenciaService {
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
     // Retorno de la Funcion
-    return this._http.post(this.url + "/documentos/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/-unidad-correspondencia/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
 
 

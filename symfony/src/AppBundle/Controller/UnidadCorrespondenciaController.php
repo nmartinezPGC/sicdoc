@@ -228,10 +228,11 @@ class UnidadCorrespondenciaController extends Controller{
                                 $documentosIn = new TblDocumentosUnidadCorrespondencia();
 
                                 //Seteamos los valores de los Documentos Cargados                                
-                                $documentosIn->setFechaIngreso($fecha_ingreso); //Set Fecha Ingreso
-
-                                //$documentosIn->setDescDocumento("Documento de Respaldo"); //Set Documento Desc
-                                $documentosIn->setDescDocumento($nombreDoc); //Set Documento Desc / 2018-02-28                                
+                                $documentosIn->setFechaIngreso( $fecha_ingreso ); //Set Fecha Ingreso
+                                $documentosIn->setHoraIngreso( $hora_ingreso ); //Set Hora Ingreso
+                                
+                                $documentosIn->setDescDocumento( $nombreDoc ); //Set Documento Desc / 2018-02-28                                
+                                $documentosIn->setCodDocumento( $cod_correspondencia ); //Set Cod Documento / 2018-02-28                                
 
                                 //Instanciamos de la Clase TblUsuario
                                 $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
@@ -240,14 +241,6 @@ class UnidadCorrespondenciaController extends Controller{
                                     ));                    
                                 $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
 
-                                // Verificacion del Codigo de la Correspondenia  *******
-                                // Detalle  ********************************************
-                                $id_correspondencia_det_docu = $em->getRepository("BackendBundle:TblCorrespondenciaDet")->findOneBy(
-                                    array(
-                                        "codCorrespondenciaEntrante" => $cod_correspondencia_det . "-" . $new_secuencia_det
-                                    ));
-                                $documentosIn->setIdCorrespondenciaDet($id_correspondencia_det_docu); //Set de Id Correspondencia Det
-                                
                                 // Verificacion del Codigo de la Unidad Correspondenia*
                                 // Encabezado  *********************************
                                 $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaEntrante")->findOneBy(

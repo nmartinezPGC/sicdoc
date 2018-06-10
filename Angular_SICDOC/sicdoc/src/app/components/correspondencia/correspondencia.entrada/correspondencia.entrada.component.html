@@ -28,13 +28,13 @@
             <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
             <hr class="colorgraph">
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-xs-12 col-sm-8 col-md-8">
                   <!-- <label >No. Comunicacion</label> -->
                   <small class="form-text text-muted">
                       Ingresa el No. de Correspondencia Entrante
                   </small>
                   <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
-                         placeholder="No. de Correspondencia" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5" autofocus tabindex="1"
+                         placeholder="No. de Correspondencia" autofocus="true" minlength="5" maxlength="40" autofocus tabindex="1"
                          ngControl="codCorrespondencia" [(ngModel)]="_entradaCorrespondenciaModel.codCorrespondencia" required >
 
                   <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número de la Correspondencia</small>
@@ -192,7 +192,7 @@
                 <p id="status"></p>
 
                 <!-- tabla que muestra los Documentos subidos -->
-                <table class="table table-striped" >
+                <table class="table table-striped">
                    <thead>
                      <tr>
                        <th class="text-center">#</th>
@@ -203,7 +203,7 @@
                        <th class="text-center">Borrar</th>
                      </tr>
                    </thead>
-                   <tbody >
+                   <tbody id="newTable" >
                      <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
                                <td>{{ homeFormIndex + 1 }}</td>
                                <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>

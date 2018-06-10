@@ -3,24 +3,24 @@
 ## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
 comunesUnidadCorrespondencia_upload_image:
     path: /upload-image
-    defaults: { _controller: "AppBundle:Comunes:uploadImage" }
+    defaults: { _controller: "AppBundle:ComunesUnidadCorrespondencia:uploadImage" }
     methods: POST
 
 ## Redireccionamiento de las Ruta por Defecto | Modulo Documentos
 comunesUnidadCorrespondencia_upload_documento:
     path: /upload-documento
-    defaults: { _controller: "AppBundle:Comunes:uploadDocumento" }
+    defaults: { _controller: "AppBundle:ComunesUnidadCorrespondencia:uploadDocumento" }
     methods: POST
     
 ## Redireccionamiento de las Ruta por Defecto | Modulo Usuarios
 comunesUnidadCorrespondencia_genSecuenciaComIn:
     path: /gen-secuencia-comunicacion-in
-    defaults: { _controller: "AppBundle:Comunes:genSecuenciaComIn" }
+    defaults: { _controller: "AppBundle:ComunesUnidadCorrespondencia:genSecuenciaComIn" }
     methods: POST
     
 ## Redireccionamiento de las Ruta por Defecto | Modulo Documentos con Opcion #
 comunesUnidadCorrespondencia_uploadDocumentoOpction:
     path: /documentos-upload-options
-    defaults: { _controller: "AppBundle:Comunes:uploadDocumentoOpction" }
+    defaults: { _controller: "AppBundle:ComunesUnidadCorrespondencia:uploadDocumentoOpction" }
     methods: POST
    
