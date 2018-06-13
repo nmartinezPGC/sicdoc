@@ -133,7 +133,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
        // Seteo de la Ruta de la Url Config
        this.urlConfigLocal = this._EntradaCorrespondenciaService.url;
        this.urlResourseLocal = this._EntradaCorrespondenciaService.urlResourses;
-       this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
+       this.urlComplete = this.urlResourseLocal + "uploads/unidad-correspondencia/";
 
        //Carga el Listado de Funcionarios de la SRECI
        // this.getlistaFuncionariosSreci();

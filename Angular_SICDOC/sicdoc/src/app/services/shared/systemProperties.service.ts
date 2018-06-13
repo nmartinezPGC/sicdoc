@@ -24,8 +24,11 @@ export class SystemPropertiesService {
   public urlServerConfig:string = "http://172.17.0.250/sicdoc/symfony/web/app.php";
   public urlServerResourse:string = "http://172.17.0.250/sicdoc/symfony/web/";
 
-  // Indicador del entorno a Copilar | 1 = Server | 2 = Localhost
-  public indicatorIPCompiler:number = 2;
+  public urlServerLocalConfig:string = "http://172.17.3.128/sicdoc/symfony/web/app.php";
+  public urlServerLocalResourse:string = "http://172.17.3.128/sicdoc/symfony/web/";
+
+  // Indicador del entorno a Copilar | 1 = Server | 2 = ServerLocal | 3 = Localhost
+  public indicatorIPCompiler:number = 3;
 
   /****************************************************
   * Funcion: FND-00001
@@ -42,6 +45,8 @@ export class SystemPropertiesService {
     if( indicadorIp == 1 ){
       urlEnviroment = this.urlServerConfig;
     }else if ( indicadorIp == 2 ){
+      urlEnviroment = this.urlServerLocalConfig;
+    }else if ( indicadorIp == 3 ){
       urlEnviroment = this.urlLocalConfig;
     }
 
@@ -65,6 +70,8 @@ export class SystemPropertiesService {
     if( indicadorIp == 1 ){
       urlEnviromentResourse = this.urlServerResourse;
     }else if ( indicadorIp == 2 ){
+      urlEnviromentResourse = this.urlServerLocalResourse;
+    }else if ( indicadorIp == 3 ){
       urlEnviromentResourse = this.urlLocalResourse;
     }
 

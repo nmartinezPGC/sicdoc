@@ -81,6 +81,25 @@
               </div>
             </div>
 
+            <br>
+            <div class="row">
+              <div class="col-12">
+                  <!-- <label >Descripcion Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Observaciones de la Correspondencia
+                  </small>
+                  <textarea #descCorrespondencia="ngModel" class="form-control" id="observaciones" name="observaciones" rows="4"
+                              placeholder="Observaciones de la Correspondencia" type="text" required tabindex="3"
+                              [(ngModel)]="_entradaCorrespondenciaModel.observaciones" ngControl="observaciones"
+                              minlength="15"  >
+                  </textarea>
+                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.required" >Debes ingresar El Contenido de la Correspondencia</small> -->
+                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.minlength" > -->
+                      <!-- Se nesesita por lo menos {{ observaciones.errors.minlength.requiredLength }} caracteres, para continuar</small> -->
+                    <!-- <hr class="hr-new"> -->
+              </div>
+            </div>
+
             <hr class="hr-new">
 
             <div class="row" >

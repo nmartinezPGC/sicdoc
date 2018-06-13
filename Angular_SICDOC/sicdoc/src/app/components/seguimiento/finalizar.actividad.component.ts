@@ -145,6 +145,7 @@ export class FinalizarActividadComponent implements OnInit {
   public extencionDocumento:string;
   public seziDocumento:number;
 
+  public nombreDoc:string;
 
   public dataDismiss:string = "modal";
 
@@ -594,6 +595,11 @@ export class FinalizarActividadComponent implements OnInit {
     // Tamaño
     let sizeByte:number = this.filesToUpload[0].size;
     let siezekiloByte:number =  Math.round( sizeByte / 1024 );
+
+    let nameDoc = this.filesToUpload[0].name;
+
+    // incluir - 2018-02-27
+    this.nombreDoc = nameDoc;
 
     this.seziDocumento = ( siezekiloByte / 1024 );
 
@@ -1249,7 +1255,8 @@ export class FinalizarActividadComponent implements OnInit {
   this.JsonOutgetListaDocumentos.push({
     "nameDoc": newSecAct,
     "extDoc": this.extencionDocumento,
-    "pesoDoc": this.seziDocumento
+    "pesoDoc": this.seziDocumento,
+    "nombreDoc" : this.nombreDoc
   });
 
 

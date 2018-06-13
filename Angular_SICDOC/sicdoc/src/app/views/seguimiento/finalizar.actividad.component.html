@@ -273,12 +273,12 @@
                    <tbody >
                      <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentos; let homeFormIndex = index">
                                <td>{{ homeFormIndex + 1 }}</td>
-                               <td class="text-center">{{ suchnewrow.nameDoc }}</td>
+                               <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}">{{ suchnewrow.nombreDoc }}</td>
                                <td class="text-center" >{{ suchnewrow.extDoc }}</td>
                                <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
                                <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
                                        href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
-                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                 <img style="width:50px; height:50px; box-shadow:8px 10px 5px 0px #888888"
                                    src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
                                    onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
                                    alt="Cargando Imagen ..." ></a>
