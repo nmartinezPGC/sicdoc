@@ -76,8 +76,43 @@ export class EntradaCorrespondenciaService {
       //console.log(json);
       let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
     // Retorno de la Funcion
-    return this._http.post(this.url + "/-unidad-correspondencia/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
+    return this._http.post(this.url + "/unidad-correspondencia/borrar-documentos-comunicacion", params, { headers:headers }).map( res => res.json());
   } // FIN : FND-00003
+
+
+  /*********************************************************
+  * Funcion: FND-00005                                     *
+  * Fecha: 07-03-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API (/documentos-unidad-correspondencia/com-ingresadas-list).*
+  * Objetivo: Ingresar nuevos Documentos                   *
+  *********************************************************/
+  documentosIngresados( documentos_to_register ){
+      let json = JSON.stringify( documentos_to_register );
+      let params = "json=" + json;
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+      return this._http.post(this.url + "/documentos-unidad-correspondencia/com-ingresadas-list", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00005
+
+
+
+  /*********************************************************
+  * Funcion: FND-00006                                    *
+  * Fecha: 07-03-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API ( //documentos-unidad-correspondencia/com-recibidas-list ).*
+  * Objetivo: Ingresar nuevos Documentos                   *
+  *********************************************************/
+  documentosRecibidos( documentos_to_register ){
+      let json = JSON.stringify( documentos_to_register );
+      let params = "json=" + json;
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+      return this._http.post(this.url + "/documentos-unidad-correspondencia/com-recibidas-list", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00006
 
 
   /****************************************************

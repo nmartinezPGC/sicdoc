@@ -979,4 +979,142 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
         return $helpers->parserJson($data);       
     }// FIN
     
+    
+    
+    /**
+     * @Route("/com-ingresadas-list", name="com-ingresadas-list")
+     * Creacion del Controlador: Total de Oficios Ingresados
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00004
+     */
+    public function comIngresadasListAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEntrante");
+
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
+            $qb->setParameter('validEstado', 7 )->setParameter('validDocumento', $tipo_documento );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
+        }else {
+            $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No se ha encontrado parametros a enviar, contacte al Administrador !!"
+                );
+        }      
+        // Retorno de los Datos
+        return $helpers->parserJson($data);
+    }//FIN | FND00004
+    
+    
+    
+    /**
+     * @Route("/com-recibidas-list", name="com-recibidas-list")
+     * Creacion del Controlador: Total de Oficios Recibidos
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00005
+     */
+    public function comRecibidasListAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        // Parametros enviados por el Json
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            //Recogemos el ID del Depto. Funcional *****************************
+            $tipo_comunicacion = (isset($params->idTipoCom)) ? $params->idTipoCom : null; 
+            $user_comunicacion = (isset($params->idFuncionarioAsignado)) ? $params->idFuncionarioAsignado : null; 
+            $tipo_documento    = (isset($params->idTipoDoc)) ? $params->idTipoDoc : null; 
+        
+            // Creacion del Metodo Create Query Builder | hace mas Efectiva la *****
+            // Busqueda a la BD  ***************************************************
+            $em = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository("BackendBundle:TblCorrespondenciaEntrante");
+
+            // Declaracion del Alias de la tabla
+            $qb = $em->createQueryBuilder('a');
+
+            // Query a la BD
+            $qb->select('COUNT(a)');
+            $qb->where('a.idEstado = :validEstado and a.idTipoDocumento = :validDocumento ');
+            $qb->setParameter('validEstado', 15 )->setParameter('validDocumento', $tipo_documento );
+
+            $count = $qb->getQuery()->getSingleScalarResult();
+
+
+            // Condicion de la Busqueda
+            if ( $count >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $count
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos en la Tabla de Correspondencia !!"
+                );
+            }            
+        }else {
+            $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No se ha encontrado parametros a enviar, contacte al Administrador !!"
+                );
+        }      
+        // Retorno de los Datos
+        return $helpers->parserJson($data);
+    }//FIN | FND00005
+    
 }

@@ -27,13 +27,15 @@
 
             <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
             <hr class="colorgraph">
+
             <div class="row">
               <div class="col-xs-12 col-sm-8 col-md-8">
+                <div class="form-group">
                   <!-- <label >No. Comunicacion</label> -->
                   <small class="form-text text-muted">
                       Ingresa el No. de Correspondencia Entrante
                   </small>
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control"
                          placeholder="No. de Correspondencia" autofocus="true" minlength="5" maxlength="40" autofocus tabindex="1"
                          ngControl="codCorrespondencia" [(ngModel)]="_entradaCorrespondenciaModel.codCorrespondencia" required >
 
@@ -41,20 +43,40 @@
                   <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
                       Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
                   <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
-                  <!-- <input type="button" value="Toasty" (click)="addToast('Alerta','Alerta de Prueba')" class="btn btn-primary" > -->
-                  <ng2-toasty [position]="'top-right'" ></ng2-toasty>
+
+                </div>
               </div>
+
+              <!-- Tipo de Documento de Correspondencia -->
+              <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="form-group">
+                  <!-- <label >No. Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Selecciona el tipo de comunicación
+                  </small>
+                  <select #idTipoDocumento="ngModel" class="form-control" name="idTipoDocumento" id="idTipoDocumento" required tabindex="2"
+                        ngControl="idTipoDocumento" [(ngModel)]="_entradaCorrespondenciaModel.idTipoDocumento">
+                      <option value="0">Tipo de comunicación </option>
+                      <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" >
+                        {{ list.descTipoDocumento }}
+                      </option>
+                  </select>
+                  <!-- <small class="form-text text-muted" *ngIf="idTipoDocumento.value == 0 || idTipoDocumento.value == null " >Debes Seleccionar un Tipo de Comunicacion</small> -->
+                  <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicación</small>
+                </div>
+              </div>
+
             </div>
 
             <hr class="hr-new">
             <!-- Tema y Descripcion de la Comunicacion -->
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="col-xs-12 col-sm-9 col-md-9">
                 <small class="form-text text-muted">
                     Tema de la Correspondencia
                 </small>
-                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-7"
-                        placeholder="Tema de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="2"
+                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control"
+                        placeholder="Tema de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
                          value="" [(ngModel)]="_entradaCorrespondenciaModel.temaCorrespondencia" >
                     <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Debes ingresar El Tema de la Correspondencia</small>
                     <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >
@@ -70,7 +92,7 @@
                       Descripción de la Correspondencia
                   </small>
                   <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="4"
-                              placeholder="Descripción de la Correspondencia" type="text" required tabindex="3"
+                              placeholder="Descripción de la Correspondencia" type="text" required tabindex="4"
                               [(ngModel)]="_entradaCorrespondenciaModel.descCorrespondencia" ngControl="descCorrespondencia"
                               minlength="15"  >
                   </textarea>
@@ -89,7 +111,7 @@
                       Observaciones de la Correspondencia
                   </small>
                   <textarea #descCorrespondencia="ngModel" class="form-control" id="observaciones" name="observaciones" rows="4"
-                              placeholder="Observaciones de la Correspondencia" type="text" required tabindex="3"
+                              placeholder="Observaciones de la Correspondencia" type="text" tabindex="5"
                               [(ngModel)]="_entradaCorrespondenciaModel.observaciones" ngControl="observaciones"
                               minlength="15"  >
                   </textarea>
@@ -108,17 +130,18 @@
                   <div class="form-group">
                     <!-- <h6>Unidad Responsable</h6> -->
                     <small class="form-text text-muted">
-                        Unidad Responsable de Correspondencia
+                        Área Responsable de Correspondencia
                     </small>
                     <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
-                          ngControl="idDireccionSreci" [(ngModel)]="_entradaCorrespondenciaModel.idDireccionSreci" tabindex="4"  >
-                        <option value="0">Unidad Responsable </option>
+                          ngControl="idDireccionSreci" [(ngModel)]="_entradaCorrespondenciaModel.idDireccionSreci" tabindex="6"  >
+                        <option value="0">Área Responsable </option>
                         <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
                     </select>
                     <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Sub Secretaría responsable</small>
                     <small class="form-text text-muted" *ngIf="idDireccionSreci.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small>
                   </div>
                </div>
+
              </div>
 
             <hr class="hr-new">
@@ -133,7 +156,7 @@
                   </small>
                   <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
                         title="País / Entidad donde viene la Correspondencia"
-                        ngControl="idPais" [(ngModel)]="_entradaCorrespondenciaModel.idPais" tabindex="5">
+                        ngControl="idPais" [(ngModel)]="_entradaCorrespondenciaModel.idPais" tabindex="7">
                       <option value="0">País / Entidad de Correspondencia</option>
                       <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
                   </select>
@@ -150,7 +173,7 @@
                   </small>
                   <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
                         #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
-                        ngControl="idTipoInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idTipoInstitucion" tabindex="6"
+                        ngControl="idTipoInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idTipoInstitucion" tabindex="8"
                         (change)="getlistaInstituciones()" >
                       <option value="0" >Tipo de Institución</option>
                       <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
@@ -168,7 +191,7 @@
                   </small>
                   <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación"
                         #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
-                        ngControl="idInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idInstitucion"  tabindex="7">
+                        ngControl="idInstitucion" [(ngModel)]="_entradaCorrespondenciaModel.idInstitucion"  tabindex="9">
                       <option value="0">Selecciona una Institución</option>
                       <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">
                           {{ list.descInstitucion }} | {{ list.perfilInstitucion }}
@@ -253,7 +276,7 @@
                <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
               Guardar Correspondencia
             </button>
-            <a class="btn btn-warning" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
+            <a class="btn btn-warning" tabindex="11"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
               <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
               Limpiar
             </a>
@@ -279,19 +302,19 @@
             <ul class="list-group list-group-flush">
               <!-- Oficios -->
               <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
-              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countOficiosFinalizados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosIngresados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Recibidos -- | <span class="badge badge-pill badge-primary"> {{ countOficiosPendientes }} </span> </li>
 
               <!-- Notas Verbales -->
               <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
               <li class="list-group-item"> <i class="material-icons">assignment_late</i> Notas Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
-              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Notas Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Notas Recibidas -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
 
             </ul>
 
           </div>
 
           </div>
-
+<ng2-toasty [position]="'top-right'" ></ng2-toasty>
 </div>
 <!-- Fin de Contenedor -->

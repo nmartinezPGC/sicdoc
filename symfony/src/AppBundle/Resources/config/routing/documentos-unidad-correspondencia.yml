@@ -41,3 +41,13 @@ documentoUnidadCorrespondencia_borrarDocumentosComunicacion:
     defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:borrarDocumentosComunicacion" }
     methods: POST
     
+documentoUnidadCorrespondencia_comIngresadasList:
+    path: /com-ingresadas-list
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:comIngresadasList" }
+    methods: POST
+    
+documentoUnidadCorrespondencia_comRecibidasList:
+    path: /com-recibidas-list
+    defaults: { _controller: "AppBundle:DocumentosUnidadCorrespondencia:comRecibidasList" }
+    methods: POST
+    
