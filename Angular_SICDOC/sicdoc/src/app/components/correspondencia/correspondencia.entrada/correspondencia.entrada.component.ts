@@ -248,7 +248,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
    //Area de Resumenes de las Correspondencia
    this.getlistaOficosIngresados();
    this.getlistaOficosRecibidos();
-   
+
   }
 
 
@@ -751,6 +751,39 @@ export class CorrespondenciaEntradaComponent implements OnInit {
             }
           });
     } // FIN : FND-000010
+
+
+    /*****************************************************
+    * Funcion: FND-000011
+    * Fecha: 11-09-2017
+    * Descripcion: Carga de las Notas que se han ingresado
+    * a la Tabla tbl_comunicacion_enc
+    * Objetivo: Obtener la lista de los Oficios Ingresados
+    * de la BD, Llamando a la API, por su metodo
+    * (com-ingresada-list).
+    ******************************************************/
+    getlistaOficosIngresadas() {
+      //Llamar al metodo, de Contador de Comunicaciones Pendientes
+      this.paramsIdTipoComSend.idTipoCom = 2;
+      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+      this.paramsIdTipoComSend.idTipoDoc = 3;
+
+      this._EntradaCorrespondenciaService.documentosRecibidos( this.paramsIdTipoComSend ).subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetListaOficiosIngresados = response.data;
+              this.countNotasIngresados = "0";
+              //alert(response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetListaOficiosIngresados = response.data;
+              this.countNotasIngresados = this.JsonOutgetListaOficiosIngresados;
+              //alert(this.countOficios);
+            }
+          });
+    } // FIN : FND-000011
 
 
 
