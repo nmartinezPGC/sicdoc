@@ -14,12 +14,12 @@ export class AgregarActividad{
       public apellido2FuncionarioAsigmado:string,
 
       //Datos de la Busqueda
-      public buscadorOficio:string,
+      public buscadorOficio:string = "Asignación de Comunicación, favor dar seguimiento",
 
       //Datos de la Tabla
       public idDeptoFuncional:number,
       public idEstadoAsigna:number,
-      
+
       public idTipoFuncionario:number,
 
     ){}

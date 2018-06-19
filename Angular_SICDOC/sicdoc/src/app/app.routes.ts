@@ -52,8 +52,8 @@ export const APP_ROUTES: Routes = [
   // Mapeo de Menu de Seguimiento
   { path: 'seguimiento/asignar-comunicacion', component: IngresoActividadComponent },
   { path: 'seguimiento/asignar-comunicacion/:page', component: IngresoActividadComponent },
-  { path: 'agregar-actividad', component: IngresoActividadComponent },
-  { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
+  // { path: 'agregar-actividad', component: IngresoActividadComponent },
+  // { path: 'agregar-actividad/:page', component: IngresoActividadComponent },
   { path: 'seguimiento/finalizar-comunicacion', component: FinalizarActividadComponent },
   { path: 'seguimiento/finalizar-comunicacion/:page', component: IngresoActividadComponent },
   { path: 'seguimiento/seguimiento-comunicacion', component: SeguimientoActividadComponent },

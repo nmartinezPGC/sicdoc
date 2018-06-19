@@ -12,7 +12,7 @@
 				<h2>{{ titulo }}</h2>
 				<hr class="colorgraph">
 				<div class="form-group " >
-            <input type="email" name="email" id="email" #email="ngModel" ngControl="email" [(ngModel)]="user.email"
+            <input type="email" name="email" id="email" #email="ngModel" ngControl="email" [(ngModel)]="user.email" autofocus
             class="form-control input-lg" required minlength=10 placeholder="nombre@dominio.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
 
             <span *ngIf="email.errors?.pattern" >El campo no tiene formato de Correo</span>

@@ -14,8 +14,8 @@ export class AgregarActividadService {
   //Propiedades de la Clases
   //URL Base de la Clase, Referencia a la API | Symfony
   public url:string;
-  //public url = "http://localhost/sicdoc/symfony/web/app_dev.php";
-  // public url = "http://172.17.0.250/sicdoc/symfony/web/app.php";
+  public urlResourses:string;
+  
 
   //Variables para el localStorage
   public identity;
@@ -23,8 +23,9 @@ export class AgregarActividadService {
 
   //Constructor de la Clase
   constructor( private _http: Http,
-              private _systemPropertiesService: SystemPropertiesService ) { 
+              private _systemPropertiesService: SystemPropertiesService ) {
     this.url = this._systemPropertiesService.getmethodUrlService();
+    this.urlResourses = this._systemPropertiesService.getmethodUrlResourses();
   }
 
 

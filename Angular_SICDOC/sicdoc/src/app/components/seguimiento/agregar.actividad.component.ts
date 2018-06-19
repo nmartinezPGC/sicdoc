@@ -66,6 +66,16 @@ export class IngresoActividadComponent implements OnInit{
   private tableAgregarActividadFechamaxima;
   private asignaFuncionarioSend; // Json de Datos de Envio a Asignar
 
+  //Parametros de documentos subidos anteriores
+  public JsonOutgetlistaDocumentosUpload:any[];
+  public paramsDocumentos;
+
+  public loadTabla2:boolean = false;
+
+  public urlConfigLocal:string;
+  public urlResourseLocal:string;
+  public urlComplete:string;
+
   // variables del Paginador
   public pages;
   public pagePrev = 1;
@@ -143,8 +153,12 @@ export class IngresoActividadComponent implements OnInit{
               private _router: Router,
               private _route: ActivatedRoute,
               private _appComponent: AppComponent,
-              private _http: Http
-  ){}
+              private _http: Http){
+    // Seteo de la Ruta de la Url Config
+    this.urlConfigLocal = this._asignaOficio.url;
+    this.urlResourseLocal = this._asignaOficio.urlResourses;
+    this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
+  }
 
 
   closeModal( nameBotton ){
@@ -187,10 +201,33 @@ export class IngresoActividadComponent implements OnInit{
     //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Oficio Asignado
-    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  null, null, 3, null);
+    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  "Asignación de Comunicación, favor dar seguimiento", null, 3, null);
 
     // Lista de la tabla de Funcionarios
     this.deptoFuncional();
+
+    //Iniciamos los Parametros de Json de Documentos
+    this.paramsDocumentos = {
+      "searchValueSend" : ""
+    };
+
+
+    setTimeout(function () {
+      $ (function () {
+          $('#example').DataTable({
+            // Refresca la Data y Borra de Memoria los Datos anteriores
+            destroy: true,
+            retrieve: true,
+            // Barra Vertical de la Tabla
+            scrollY:       "450px",
+            scrollX:        true,
+            scrollCollapse: true,
+
+            //Selecciona las Filas
+            select: true
+          });
+      });
+    }, 500);
 
   } // Fin de Metodo ngOnInit()
 
@@ -460,6 +497,8 @@ export class IngresoActividadComponent implements OnInit{
        this.nombre2FuncModalAsignacion = nombre2FuncModalAsignacionIn;
        this.apellido2FuncModalAsignacion = apellido2FuncModalAsignacion;
 
+       this.asignarOficios.buscadorOficio = "Estimad@, " + nombre1FuncModalAsignacionIn + " " + apellido1FuncModalAsignacionIn + ", " + "favor dar Siguimiento a la Comunicación";
+
        return true;
      }else{
        return false;
@@ -563,6 +602,44 @@ export class IngresoActividadComponent implements OnInit{
    }
 
  } // FIN : FND-00001.5
+
+
+ /*****************************************************
+ * Funcion: FND-000014
+ * Fecha: 01-11-2017
+ * Descripcion: Carga la Lista de los Documentos de la
+ * Comunicacion de la BD que pertenecen al usaurio
+ * Logeado, en el Detalle
+ * Objetivo: Obtener la lista de los Documentos de las
+ * Comunicaciones de la BD, Llamando a la API, por su
+ * metodo ( documentos/listar-documentos ).
+ ******************************************************/
+ getlistaDocumentosTable() {
+   // Laoding
+   this.loading_table = 'show';
+   this.loadTabla2 = false;
+   this.paramsDocumentos.searchValueSend =  this.codOficioIntModal;
+   console.log( "Entra en getlistaDocumentosTable " + this.paramsDocumentos);
+   // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+   this._listasComunes.listasDocumentosToken( this.paramsDocumentos, "listar-documentos" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+          this.JsonOutgetlistaDocumentosUpload = response.data;
+           // Oculta los Loaders
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           alert(response.msg);
+         }else{
+           this.JsonOutgetlistaDocumentosUpload = response.data;
+           //this.valoresdataDetJson ( response.data );
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           console.log( this.JsonOutgetlistaDocumentosUpload );
+         }
+       });
+ } // FIN | FND-000014
 
 
 } // Fin del Component

@@ -267,7 +267,7 @@ export class FinalizarActividadComponent implements OnInit {
     //this.listarCodigoCorrespondenciaOfiResp();
 
     // Inicializamos laTabla
-    // this.fillDataTable();
+    this.fillDataTable();
 
   } // FIN | ngOnInit()
 
@@ -789,6 +789,8 @@ export class FinalizarActividadComponent implements OnInit {
     // Se Comentta el Llamado; porque estropea el Acceso a la Cache de Symfony *
     // Se hace el Llamado desde: FND-00001.1
 
+    this.finalizarOficios.actividadOficio = "Remisión de la Información";
+
     // Cambia el valor de optionModal
     this.optionModal = 2;
   } // FIN : FND-00002
@@ -1199,7 +1201,14 @@ export class FinalizarActividadComponent implements OnInit {
    setTimeout(function () {
      $ (function () {
          $('#example').DataTable({
-           "destroy": true,
+           // Refresca la Data y Borra de Memoria los Datos anteriores
+           destroy: true,
+           retrieve: true,
+           // Barra Vertical de la Tabla
+           scrollY:       "450px",
+           scrollX:        true,
+           scrollCollapse: true,
+
            // Tamaño de la Pagina
            "pageLength": 5,
            // Cambiar las Propiedades de Lenguaje
@@ -1217,6 +1226,8 @@ export class FinalizarActividadComponent implements OnInit {
                        "previous":   "Anterior"
                    },
            },
+           //Selecciona las Filas
+           select: true
          });
      });
    }, 500);

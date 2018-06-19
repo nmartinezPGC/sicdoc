@@ -24,12 +24,12 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" [routerLink]="['correspondencia/entrada-de-correspondencia']" routerLinkActive="active"
-                    title="Opción que permite Registrar el Ingreso de Correspondencia, que proviene fuera de la SRECI">
+                    title="Opción que permite Registrar el Ingreso de Correspondencia, externas(Oficios, Notas Verbales) que proviene fuera de la SRECI">
                     <img src="/assets/icons/comunicacion/email_in.png" class="d-inline-block align-top" alt="">
                     Ingreso de Correspondencia</a>
                   <hr>
                   <a class="dropdown-item" [routerLink]="['correspondencia/salida-de-correspondencia']" routerLinkActive="active"
-                      title="Opción que permite Registrar las Salidas de Correspondencia; externas(Oficios, Notas Verbales) de la SRECI">
+                      title="Opción que permite Registrar la Salida de Correspondencia; internas (Memos, Circulares) externas(Oficios, Notas Verbales) de la SRECI">
                     <img src="/assets/icons/comunicacion/email_out.png" class="d-inline-block align-top" alt="">
                     Salida de Correspondencia</a>
                  </div>
@@ -57,7 +57,7 @@
                     <a class="dropdown-item" [routerLink]="['comunicacion/documentos-de-comunicacion']" routerLinkActive="active"
                         title="Opción que permite Subir Documentos de la Comunicación que no se han registrado; se requier el No. Interno de Comunicación (Ejm. COM-IN-XXX-XX), el cual se puede ver en la ventana de Consulta General">
                       <img src="/assets/icons/comunicacion/computer-and-books-studying-tools_24x24.png" class="d-inline-block align-top" alt="">
-                      Documentos de Comunicación</a>
+                      Agregar Documentos de Comunicación</a>
                   <hr>
                     <a class="dropdown-item" *ngIf="identity.idTipoFunc == 6 || identity.idTipoFunc == 4 || identity.idTipoFunc == 1"
                          [routerLink]="['comunicacion/traslado-de-comunicacion']" routerLinkActive="active"
@@ -74,7 +74,8 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" *ngIf="identity.idTipoUser == 5 || identity.idTipoUser == 4 || identity.idTipoUser == 1"
-                             [routerLink]="['seguimiento/asignar-comunicacion']" routerLinkActive="active">
+                             [routerLink]="['seguimiento/asignar-comunicacion']" routerLinkActive="active"
+                      title="Opción que permite asignar comunicaciones a funcionarios que estan bajo el cargo del Director/Jefe/Encargado">
                     <img src="/assets/icons/comunicacion/management_green_24x24.png" class="d-inline-block align-top" alt="">
                     Asignar Comunicación</a>
                     <hr>
@@ -84,7 +85,8 @@
                     <img src="/assets/icons/comunicacion/shopping-support-online_brow_24x24.png" class="d-inline-block align-top" alt="">
                     Agregar / Finalizar / Anular Comunicación</a>
                   <hr>
-                  <a class="dropdown-item" [routerLink]="['seguimiento/seguimiento-comunicacion']" routerLinkActive="active">
+                  <a class="dropdown-item" [routerLink]="['seguimiento/seguimiento-comunicacion']" routerLinkActive="active"
+                        title="Opción que permite visualizar toda la información de la comunicacion que es asignada">
                     <img src="/assets/icons/comunicacion/man-reading_blue_24x24.png" class="d-inline-block align-top" alt="">
                     Detalle de Comunicación</a>
                   <!-- <a class="dropdown-item" [routerLink]="['finalizar-actividad']">Agregar Documentos / Comunicacion</a> -->
@@ -98,11 +100,13 @@
                 Consultas
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" [routerLink]="['consultas/consulta-maestra-comunicacion']" routerLinkActive="active">
+                <a class="dropdown-item" [routerLink]="['consultas/consulta-maestra-comunicacion']" routerLinkActive="active"
+                    title="Opción que permite realizar una busqueda de todo el historico de comunicaciones">
                   <img src="/assets/icons/comunicacion/opened-book-with-a-magnifier_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Consulta General de Comunicaciones</a>
                 <hr>
-                <a class="dropdown-item" [routerLink]="['consultas/consulta-generacion-reporte']" routerLinkActive="active">
+                <a class="dropdown-item" [routerLink]="['consultas/consulta-generacion-reporte']" routerLinkActive="active"
+                    title="Opción que permite realizar reportes segun los criterios seleccionados previamente">
                   <img src="/assets/icons/comunicacion/professional-profile-with-image_blue_24x24.png" class="d-inline-block align-top" alt="">
                   Generación de Reportes</a>
                 <hr>
@@ -119,11 +123,13 @@
                 Mantenimientos
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" [routerLink]="['mantenimientos/solicitud-cambio-fecha']" routerLinkActive="active">
+                    <a class="dropdown-item" [routerLink]="['mantenimientos/solicitud-cambio-fecha']" routerLinkActive="active"
+                        title="Opción que permite solicitar el cambio de la fecha de entrega">
                       <img src="/assets/icons/comunicacion/spring-desktop-calendar-variant_blue_24x24.png" class="d-inline-block align-top" alt="">
                       Solicitud de Cambio de Fecha / Entrega</a>
                     <hr>
-                    <a class="dropdown-item" [routerLink]="['mantenimientos/mantenimiento-instituciones']" routerLinkActive="active">
+                    <a class="dropdown-item" [routerLink]="['mantenimientos/mantenimiento-instituciones']" routerLinkActive="active"
+                            title="Opción que permite Buscar/Editar y Agregar Instituciones que usa SICDOC">
                         <img src="/assets/icons/comunicacion/group_24x24.png" class="d-inline-block align-top" alt="">
                       Agregar / Editar Instituciones</a>
                     <!-- <li class="nav-item dropdown"><a class="dropdown-item" [routerLink]="['mantenimiento-instituciones']" routerLinkActive="active">Solicitud de Cambio d Fecha</a></li> -->
@@ -140,8 +146,6 @@
               <li>
                 <a class="user-image" >
                   <img src="{{ urlComplete + identity.imagenUsuario }}" style="width:50px" alt="">
-                  <!-- <img src="http://localhost/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">                   -->
-                  <!-- <img src="http://172.17.0.250/sicdoc/symfony/web/uploads/users/{{ identity.imagenUsuario }}" style="width:50px" alt="">                   -->
                 </a>
               </li>
               <li class="nav-item dropdown">

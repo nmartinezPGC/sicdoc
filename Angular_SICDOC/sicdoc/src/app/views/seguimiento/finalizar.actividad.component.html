@@ -49,7 +49,7 @@
         <tbody >
             <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search; let i = index ">
               <td>{{ i + 1 }}</td>
-              <td style="cursor: help" title="{{ item.idCorrespondenciaEnc }}" > {{ item.codCorrespondenciaEnc }} </td>
+              <td style="cursor: pointer" title="{{ item.idCorrespondenciaEnc }}" > {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.perfilInstitucion }}"> {{ item.descInstitucion }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.descCorrespondenciaEnc }}"> {{ item.temaComunicacion }} </td>
@@ -118,6 +118,7 @@
                       <img src="/assets/icons/comunicacion/education-access-concept_24x24.png" class="d-inline-block align-top" alt="" title="Anular Comunicación (Se debe justificar porque se anula la Comunicación)" >
                   </a>
 
+                  <!-- Boton de Documentos -->
                   <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
                                                          item.idDeptoFuncional,
                                                          item.nombre1Funcionario, item.apellido1Funcionario,
@@ -157,14 +158,14 @@
             <!-- fila 1 del Formulario -->
             <h4>Finalización de Comunicación | {{ codOficioRefModal }}</h4>
             <hr class="colorgraph">
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="validationDefault01">Funcionario Asignado</label>
                 <input type="text" class="form-control" id="validationDefault01" placeholder="Funcionario Asignado"
                        value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
               </div>
 
-            </div>
+            </div> -->
 
             <!-- fila 2 del Formulario -->
             <div class="row">
@@ -188,15 +189,17 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-xs-12 col-sm-5 col-md-5">
+            <!-- Fila de Documentos y Unidad de Correspondencia -->
+            <!-- <div class="row"> -->
+              <!-- Codigo de Respuesta -->
+              <!-- <div class="col-xs-12 col-sm-5 col-md-5"> -->
                 <!-- <label for="validationDefault02">Actividad realizada</label> -->
-                <input type="text" class="form-control" [(ngModel)]="finalizarOficios.codOficioRespuesta" name="codOficioRespuesta" id="codOficioRespuesta"
+                <!-- <input type="text" class="form-control" [(ngModel)]="finalizarOficios.codOficioRespuesta" name="codOficioRespuesta" id="codOficioRespuesta"
                     placeholder="Comunicación de Respuesta" required value="{{ idCorrepEncModal }}" disabled>
-              </div>
+              </div> -->
 
               <!-- Comunicacion Enviada a Correspondencia | Estado = 14 -->
-              <div class="col-xs-12 col-sm-7 col-md-7">
+              <!-- <div class="col-xs-12 col-sm-7 col-md-7">
                 <div class="panel panel-primary">
                  <div class="panel-body">
                    <h6 title="La Comunicación requiere ser enviada a la Unidad de Correspondencia, para la entrega de forma presencial" class="text-on-pannel text-primary">
@@ -212,9 +215,9 @@
                    </h6>
                 </div>
                </div>
-             </div>
+             </div> -->
 
-            </div>
+            <!-- </div> -->
 
 
             <div class="row" *ngIf="showDireccionCorrespondencia == true ">
