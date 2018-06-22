@@ -325,24 +325,37 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   generatePDF() {
     //var imgData = 'data:image/jpeg;base64,'+ Base64.encode('Koala.jpeg');
-    var doc = new jsPDF();
+    var img = new Image();
+    img.src = 'assets/images/sreci.png';
+    var doc = new jsPDF("p", "mm", "a4");
+    // var doc = new jsPDF();
 
-    doc.addImage('assets/images/sreci.png', 'PNG', 15, 40, 200, 114);
-   doc.text(10, 10, 'Hello everybody');
-   doc.text(10, 20, 'My name is');
-   doc.text(10, 40, 'Contact me at');
-   doc.text(10, 30, 'I have just created a simple pdf using jspdf');
-   doc.setFont("times");
-   doc.setFontType("italic");
-   doc.text(50, 40, this.comunicacion.temaCorrespondencia); //append email id in pdf
+   doc.addImage(img, 'png', 130, 5, 70, 25 );
+   //doc.addImage('assets/images/sreci.png', 'PNG', 15, 40, 200, 114);
+   doc.text(10, 40, 'Oficio No. ' + this.comunicacion.codReferenciaSreci); // Numero de Comunicación
+   doc.text(110, 50, 'Tegucigalpa M.D.C., ' + this.fechaHoy.getDay() +  ' de ' + this.fechaHoy.getMonth() + ' de ' + this.fechaHoy.getFullYear() );
+
+   // Datos Generales
+   doc.text(10, 60, 'Sr(a) ');
    doc.setFontType("bold");
+   doc.text(10, 70, 'Nombre de Persona de Destino');
+   doc.setFontType("normal");
+   doc.text(10, 80, 'Cargo de Persona');
+   doc.text(10, 90, 'Institucion');
+   //doc.setFont("times");
+   //doc.setFontType("italic");
+
+   // Contenido de Comunicacion
+   doc.text(10, 100, 'Tema de Comunicacion ' + this.comunicacion.temaCorrespondencia); //append email id in pdf
+   // doc.setFontType("bold");
    doc.setTextColor(255, 0, 0); //set font color to red
-   doc.text(60, 20, this.comunicacion.descCorrespondencia); //append first name in pdf
-   doc.text(100, 20, this.comunicacion.codCorrespondencia); //append last name in pdf
-   doc.addPage(); // add new page in pdf
+   doc.text(10, 110, 'Descripcion de Comunicacion' + this.comunicacion.descCorrespondencia); //append first name in pdf
+   doc.text(100, 120, this.comunicacion.codReferenciaSreci); //append last name in pdf
+   /*doc.addPage(); // add new page in pdf
    doc.setTextColor(165, 0, 0);
-   doc.text(10, 20, 'extra page to write');
-   doc.save('katara.pdf'); // Save the PDF with name "katara"...
+   doc.text(10, 20, 'extra page to write');*/
+   // doc.save('Comunicación_' + this.comunicacion.codReferenciaSreci + '.pdf'); // Save the PDF with name "katara"...
+   window.open(doc.output('bloburl'), '_blank');
   } // FIN | generatePDF
 
 
