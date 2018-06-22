@@ -1264,17 +1264,20 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
                // Enviamos la Secuencia con Nuevo Valor | SCPI
                //Codigo de la Referencia, el cual se Utiliza en el Documento a Send
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
-                                                      this.codigoSecuenciaGen + '/' + this.identity.iniUser + '-' +  _anioCod;
+                                                      this.codigoSecuenciaGen + '-' +  _anioCod;
+                                                      // this.codigoSecuenciaGen + '/' + this.identity.iniUser + '-' +  _anioCod;
                //Codigo SCPI | Generado por el Sistema | Sin el Nombre Dir
                this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
                                                              this.codigoSecuenciaGen + '-' + _anioCod ;
              }else {
                // Enviamos la Secuencia con Nuevo Valor | sin SCPI
                this.comunicacion.codReferenciaSreci = this.valorSecuenciaGen + '-' +
-                                                      this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' + _anioCod;
+                                                      this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' + _anioCod;
+                                                      //this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' + _anioCod;
                //Codigo SCPI | Generado por el Sistema, con Toda la Contatenacion
                this.comunicacion.secuenciaComunicacionSCPI = this.valorSecuenciaGen + '-' +
-                                                             this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' +  _anioCod;
+                                                             this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '-' +  _anioCod;
+                                                             // this.codigoSecuenciaGen + '-' + _DireccionSRECIName + '/' + this.identity.iniUser + '-' +  _anioCod;
 
              }
 
