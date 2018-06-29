@@ -164,7 +164,7 @@ class ReportesController extends Controller{
                         
                     } else if ( $id_sub_direccion != 0 && $id_funcionario_asignado == 0 ) {                        
                         //Todos Los Parametros de la Consulta
-                        $opt = "2";
+                        $opt = "222";
                         
                         /***** Nuevo Metodo de Consulta a BD | Opcion #2 *******
                          *Consulta de Registros con Fechas, Arrays y Funcion. y*
@@ -193,7 +193,7 @@ class ReportesController extends Controller{
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' AND "                                    
                                     . 'c.idDeptoFuncional = '.$id_sub_direccion.' '
-                                    . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                                                            
+                                    . 'ORDER BY  c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC ') ;   
                     
                         //$correspondenciaFind = $query->getResult();
                         
@@ -237,7 +237,7 @@ class ReportesController extends Controller{
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' AND "
                                     . "c.idFuncionarioAsignado = '".$id_funcionario_asignado."' "
-                                    . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                                                            
+                                    . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC') ;                                                            
                     
                         //$correspondenciaFind = $query->getResult();
                         
@@ -281,7 +281,7 @@ class ReportesController extends Controller{
                                     . 'c.idTipoComunicacion IN ('.$method_array_convert.') AND '
                                     . "c.fechaIngreso >= '".$fecha_inicial."' AND "
                                     . "c.fechaIngreso <= '".$fecha_final."' "                                    
-                                    . 'ORDER BY c.codCorrespondenciaEnc, c.idCorrespondenciaEnc ASC') ;                                                            
+                                    . 'ORDER BY  c.idCorrespondenciaEnc, c.codCorrespondenciaEnc ASC') ;                                                            
                     
                         //$usuario_asignado = $query->getResult();
                         
