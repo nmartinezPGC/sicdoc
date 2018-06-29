@@ -349,7 +349,7 @@ export class IngresoComunicacionComponent implements OnInit{
    doc.text(10, 100, 'Tema de Comunicacion ' + this.comunicacion.temaCorrespondencia); //append email id in pdf
    // doc.setFontType("bold");
    doc.setTextColor(255, 0, 0); //set font color to red
-   var lines = doc.splitTextToSize(this.comunicacion.descCorrespondencia, 250);
+   var lines = doc.splitTextToSize(this.comunicacion.descCorrespondencia, 220);
    doc.text(10, 110, lines); //append first name in pdf
 
    doc.text(100, 160, this.comunicacion.codReferenciaSreci); //append last name in pdf
