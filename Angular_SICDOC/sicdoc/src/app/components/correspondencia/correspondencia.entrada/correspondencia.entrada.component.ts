@@ -249,6 +249,9 @@ export class CorrespondenciaEntradaComponent implements OnInit {
    this.getlistaOficosIngresados();
    this.getlistaOficosRecibidos();
 
+   this.getlistaNotasIngresados();
+   this.getlistaNotasRecibidos();
+
   }
 
 
@@ -721,6 +724,39 @@ export class CorrespondenciaEntradaComponent implements OnInit {
 
 
     /*****************************************************
+    * Funcion: FND-00009.1
+    * Fecha: 11-09-2017
+    * Descripcion: Carga de los Oficios que se han ingresado
+    * a la Tabla tbl_comunicacion_enc
+    * Objetivo: Obtener la lista de los Oficios Ingresados
+    * de la BD, Llamando a la API, por su metodo
+    * (com-ingresada-list).
+    ******************************************************/
+    getlistaNotasIngresados() {
+      //Llamar al metodo, de Contador de Comunicaciones Pendientes
+      this.paramsIdTipoComSend.idTipoCom = 2;
+      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+      this.paramsIdTipoComSend.idTipoDoc = 3;
+
+      this._EntradaCorrespondenciaService.documentosIngresados( this.paramsIdTipoComSend ).subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetListaNotasIngresados = response.data;
+              this.countNotasIngresados = "0";
+              //alert(response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetListaNotasIngresados = response.data;
+              this.countNotasIngresados = this.JsonOutgetListaNotasIngresados;
+              //alert(this.countOficios);
+            }
+          });
+    } // FIN : FND-00009.1
+
+
+    /*****************************************************
     * Funcion: FND-000010
     * Fecha: 11-09-2017
     * Descripcion: Carga de los Oficios que se han ingresado
@@ -740,13 +776,13 @@ export class CorrespondenciaEntradaComponent implements OnInit {
             // login successful so redirect to return url
             if(response.status == "error"){
               //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaOficiosIngresados = response.data;
+              this.JsonOutgetListaOficiosPendientes = response.data;
               this.countOficiosPendientes = "0";
               //alert(response.msg);
             }else{
               //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaOficiosIngresados = response.data;
-              this.countOficiosPendientes = this.JsonOutgetListaOficiosIngresados;
+              this.JsonOutgetListaOficiosPendientes = response.data;
+              this.countOficiosPendientes = this.JsonOutgetListaOficiosPendientes;
               //alert(this.countOficios);
             }
           });
@@ -754,15 +790,15 @@ export class CorrespondenciaEntradaComponent implements OnInit {
 
 
     /*****************************************************
-    * Funcion: FND-000011
+    * Funcion: FND-000010.1
     * Fecha: 11-09-2017
-    * Descripcion: Carga de las Notas que se han ingresado
+    * Descripcion: Carga de los Oficios que se han ingresado
     * a la Tabla tbl_comunicacion_enc
     * Objetivo: Obtener la lista de los Oficios Ingresados
     * de la BD, Llamando a la API, por su metodo
     * (com-ingresada-list).
     ******************************************************/
-    getlistaOficosIngresadas() {
+    getlistaNotasRecibidos() {
       //Llamar al metodo, de Contador de Comunicaciones Pendientes
       this.paramsIdTipoComSend.idTipoCom = 2;
       this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
@@ -773,17 +809,17 @@ export class CorrespondenciaEntradaComponent implements OnInit {
             // login successful so redirect to return url
             if(response.status == "error"){
               //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaOficiosIngresados = response.data;
+              this.JsonOutgetListaNotasFinalizados = response.data;
               this.countNotasIngresados = "0";
               //alert(response.msg);
             }else{
               //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaOficiosIngresados = response.data;
-              this.countNotasIngresados = this.JsonOutgetListaOficiosIngresados;
+              this.JsonOutgetListaNotasFinalizados = response.data;
+              this.countNotasIngresados = this.JsonOutgetListaNotasFinalizados;
               //alert(this.countOficios);
             }
           });
-    } // FIN : FND-000011
+    } // FIN : FND-000010.1
 
 
 

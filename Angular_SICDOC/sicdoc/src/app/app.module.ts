@@ -93,6 +93,7 @@ import { ChartHomeComponent } from './components/charts/chart.home/chart.home.co
 import { ReporteResumidoComponent } from './components/consultas/reportes/reporte.resumido/reporte.resumido.component';
 import { CorrespondenciaEntradaComponent } from './components/correspondencia/correspondencia.entrada/correspondencia.entrada.component';
 import { CorrespondenciaSalidaComponent } from './components/correspondencia/correspondencia.salida/correspondencia.salida.component';
+import { AcuseRecibidoComponent } from './components/correspondencia/acuse-recibido/acuse-recibido.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { CorrespondenciaSalidaComponent } from './components/correspondencia/cor
     ChartHomeComponent,
     ReporteResumidoComponent,
     CorrespondenciaEntradaComponent,
-    CorrespondenciaSalidaComponent
+    CorrespondenciaSalidaComponent,
+    AcuseRecibidoComponent
   ],
   imports: [
     BrowserModule,

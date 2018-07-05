@@ -34,6 +34,7 @@ import { ContactosComponent } from './components/contactos/contacto.component';
 //imports de Correspondencia
 import { CorrespondenciaEntradaComponent } from './components/correspondencia/correspondencia.entrada/correspondencia.entrada.component';
 import { CorrespondenciaSalidaComponent } from './components/correspondencia/correspondencia.salida/correspondencia.salida.component';
+import { AcuseRecibidoComponent } from './components/correspondencia/acuse-recibido/acuse-recibido.component';
 
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
@@ -75,6 +76,7 @@ export const APP_ROUTES: Routes = [
   // Mapeo de Opcion de Correspondencia
   { path: 'correspondencia/entrada-de-correspondencia', component: CorrespondenciaEntradaComponent },
   { path: 'correspondencia/salida-de-correspondencia', component: CorrespondenciaSalidaComponent },
+  { path: 'correspondencia/recepcion-de-correspondencia', component: AcuseRecibidoComponent },
 
   // Ruta Default
   { path: '**', pathMatch: 'full', redirectTo: 'index' }
