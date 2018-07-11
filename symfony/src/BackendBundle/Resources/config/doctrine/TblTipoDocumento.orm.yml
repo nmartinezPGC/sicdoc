@@ -52,4 +52,10 @@ BackendBundle\Entity\TblTipoDocumento:
             options:
                 default: false
             column: act_salida
+        actCorrespondencia:
+            type: boolean
+            nullable: true
+            options:
+                default: false
+            column: act_correspondencia
     lifecycleCallbacks: {  }

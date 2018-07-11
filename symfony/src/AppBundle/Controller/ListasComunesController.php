@@ -684,9 +684,9 @@ class ListasComunesController extends Controller {
         
         //Seleccionamos el Caso de Busqueda
         switch ( $actDocument ){
-            case 1:
+            case "1":
                     // Query para Obtener todos los Estados de la Tabla: TblTipoDocumento
-                    // Con parametro de Tipo de Documento
+                    // Con parametro de Tipo de Documento, para Datos Generales
                     $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
                         array(
                             "activo" => TRUE,
@@ -694,16 +694,27 @@ class ListasComunesController extends Controller {
                         ),array("idTipoDocumento" => "ASC")
                     );
                 $opt = 1;
-                break;                
+                break;
+            case "2":
+                // Query para Obtener todos los tipos de Documentos de la Tabla: TblTipoDocumento
+                    // Con parametro de Tipo de Documento , para la Unidad de Correspondencia
+                    $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
+                        array(
+                            "activo" => TRUE,
+                            "actCorrespondencia" => TRUE
+                        ),array("idTipoDocumento" => "ASC")
+                    );
+                $opt = 2;
+                break;
             default :
-                    // Query para Obtener todos los Estados de la Tabla: TblTipoDocumento
+                    // Query para Obtener todos los tipos de Documentos de la Tabla: TblTipoDocumento
                     // Sin Parametros
                     $tipo_documento = $em->getRepository("BackendBundle:TblTipoDocumento")->findBy(
                         array(
                             "activo" => TRUE
                         ),array("idTipoDocumento" => "ASC")
                     );
-                $opt = 2;
+                $opt = 3;
                 break;
         } // Fin de Switch
         
@@ -714,7 +725,7 @@ class ListasComunesController extends Controller {
                 "status" => "success",
                 "code"   => 200,
                 "opt"    => $opt,
-                "activo" => $activo,
+                "activo" => $actDocument,
                 "data"   => $tipo_documento
             );
         }else {
@@ -1361,7 +1372,8 @@ class ListasComunesController extends Controller {
                 // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
                 $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
                 array(
-                    "idDeptoFuncional" => $depto_funcional                        
+                    "idDeptoFuncional" => $depto_funcional,
+                    "idEstado" => 1
                 ));
             }            
             

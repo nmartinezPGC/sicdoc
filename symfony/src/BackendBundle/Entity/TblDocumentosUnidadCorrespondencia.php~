@@ -196,4 +196,33 @@ class TblDocumentosUnidadCorrespondencia
     {
         return $this->idCorrespondenciaEntrante;
     }
+    /**
+     * @var string
+     */
+    private $codDocumento;
+
+
+    /**
+     * Set codDocumento
+     *
+     * @param string $codDocumento
+     *
+     * @return TblDocumentosUnidadCorrespondencia
+     */
+    public function setCodDocumento($codDocumento)
+    {
+        $this->codDocumento = $codDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get codDocumento
+     *
+     * @return string
+     */
+    public function getCodDocumento()
+    {
+        return $this->codDocumento;
+    }
 }

@@ -341,4 +341,33 @@ class TblFuncionarios
     {
         return $this->idUsuario;
     }
+    /**
+     * @var \BackendBundle\Entity\TblEstados
+     */
+    private $idEstado;
+
+
+    /**
+     * Set idEstado
+     *
+     * @param \BackendBundle\Entity\TblEstados $idEstado
+     *
+     * @return TblFuncionarios
+     */
+    public function setIdEstado(\BackendBundle\Entity\TblEstados $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \BackendBundle\Entity\TblEstados
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
 }

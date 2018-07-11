@@ -1,3 +1,320 @@
-<p>
-  correspondencia.salida works!
-</p>
+<div class="container">
+  <!-- Datos Generales de los Usuarios -->
+  <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-9 col-sm-offset-2 col-md-offset-3">
+        <!-- Div que representan las Acciones al Ingresar un Usuario -->
+        <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Bien hecho!</strong> {{ mensajes }}
+        </div>
+
+        <div class="alert alert-danger alert-dismissible fade show" id="alertError" role="alert" *ngIf="status == 'error'" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Que mal!</strong> {{ mensajes }}
+        </div>
+
+        <!-- Loader de Carga de la Pagina -->
+        <div class="loader-new" *ngIf="loading == 'show' " >
+          <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+        </div>
+
+        <form #correspondenciaInForm="ngForm" (ngSubmit)="onSubmit(correspondenciaInForm)" name="correspondenciaInForm" role="form">
+            <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+
+            <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
+            <hr class="colorgraph">
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-8 col-md-8">
+                <div class="form-group">
+                  <!-- <label >No. Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Ingresa el No. de Correspondencia de Salida
+                  </small>
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control"
+                         placeholder="No. de Correspondencia" autofocus="true" minlength="5" maxlength="40" autofocus tabindex="1"
+                         ngControl="codCorrespondencia" [(ngModel)]="_SalidaCorrespondenciaModel.codCorrespondencia" required >
+
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número de la Correspondencia</small>
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
+                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
+                  <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
+
+                </div>
+              </div>
+
+              <!-- Tipo de Documento de Correspondencia -->
+              <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="form-group">
+                  <!-- <label >No. Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Selecciona el tipo de comunicación
+                  </small>
+                  <select #idTipoDocumento="ngModel" class="form-control" name="idTipoDocumento" id="idTipoDocumento" required tabindex="2"
+                        ngControl="idTipoDocumento" [(ngModel)]="_SalidaCorrespondenciaModel.idTipoDocumento">
+                      <option value="0">Tipo de comunicación </option>
+                      <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" >
+                        {{ list.descTipoDocumento }}
+                      </option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idTipoDocumento.value == 0 || idTipoDocumento.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
+                  <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicación</small>
+                </div>
+              </div>
+
+            </div>
+
+            <hr class="hr-new">
+            <!-- Tema y Descripcion de la Comunicacion -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-9 col-md-9">
+                <small class="form-text text-muted">
+                    Tema de la Correspondencia
+                </small>
+                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control"
+                        placeholder="Tema de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
+                         value="" [(ngModel)]="_SalidaCorrespondenciaModel.temaCorrespondencia" >
+                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Debes ingresar El Tema de la Correspondencia</small>
+                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >
+                        Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <div class="col-12">
+                  <!-- <label >Descripcion Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Descripción de la Correspondencia
+                  </small>
+                  <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="4"
+                              placeholder="Descripción de la Correspondencia" type="text" required tabindex="4"
+                              [(ngModel)]="_SalidaCorrespondenciaModel.descCorrespondencia" ngControl="descCorrespondencia"
+                              minlength="15"  >
+                  </textarea>
+                  <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Debes ingresar El Contenido de la Correspondencia</small>
+                  <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >
+                      Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
+                    <!-- <hr class="hr-new"> -->
+              </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <div class="col-12">
+                  <!-- <label >Descripcion Comunicacion</label> -->
+                  <small class="form-text text-muted">
+                      Observaciones de la Correspondencia
+                  </small>
+                  <textarea #descCorrespondencia="ngModel" class="form-control" id="observaciones" name="observaciones" rows="4"
+                              placeholder="Observaciones de la Correspondencia" type="text" tabindex="5"
+                              [(ngModel)]="_SalidaCorrespondenciaModel.observaciones" ngControl="observaciones"
+                              minlength="15"  >
+                  </textarea>
+                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.required" >Debes ingresar El Contenido de la Correspondencia</small> -->
+                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.minlength" > -->
+                      <!-- Se nesesita por lo menos {{ observaciones.errors.minlength.requiredLength }} caracteres, para continuar</small> -->
+                    <!-- <hr class="hr-new"> -->
+              </div>
+            </div>
+
+            <hr class="hr-new">
+
+            <div class="row" >
+                <!-- Direccion Encargada del tema de la Comunicacion -->
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <!-- <h6>Unidad Responsable</h6> -->
+                    <small class="form-text text-muted">
+                        Área Responsable de Correspondencia
+                    </small>
+                    <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
+                          ngControl="idDireccionSreci" [(ngModel)]="_SalidaCorrespondenciaModel.idDireccionSreci" tabindex="6"  >
+                        <option value="0">Área Responsable </option>
+                        <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
+                    </select>
+                    <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Sub Secretaría responsable</small>
+                    <small class="form-text text-muted" *ngIf="idDireccionSreci.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small>
+                  </div>
+               </div>
+
+             </div>
+
+            <hr class="hr-new">
+            <!-- Institucion de COmunicacion -->
+            <div class="row">
+              <!-- Lista de Paises -->
+      				<div class="col-xs-12 col-sm-6 col-md-4">
+      					<div class="form-group">
+                  <!-- <h6>País / Entidad de Comunicación</h6> -->
+                  <small class="form-text text-muted">
+                      País / Entidad de Correspondencia
+                  </small>
+                  <select #idPais="ngModel" class="form-control" name="idPais" id="idPais"
+                        title="País / Entidad donde viene la Correspondencia"
+                        ngControl="idPais" [(ngModel)]="_SalidaCorrespondenciaModel.idPais" tabindex="7">
+                      <option value="0">País / Entidad de Correspondencia</option>
+                      <option *ngFor="let list of JsonOutgetlistaPaises" value="{{ list.idPais }}">{{ list.descPais }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idPais.value == 0 || idPais.value == null " >Debes Seleccionar un País</small>
+      					</div>
+      				</div>
+
+              <!-- Tipo de Institucion -->
+              <div class="col-xs-12 col-sm-6 col-md-3">
+      					<div class="form-group">
+                  <!-- <h6>Tipo de Institución</h6> -->
+                  <small class="form-text text-muted">
+                      Tipo de Institución
+                  </small>
+                  <select title="Tipo de Comunicación, si es Cooperante, Embajada, Ong etc."
+                        #idTipoInstitucion="ngModel" class="form-control" name="idTipoInstitucion" id="idTipoInstitucion"
+                        ngControl="idTipoInstitucion" [(ngModel)]="_SalidaCorrespondenciaModel.idTipoInstitucion" tabindex="8"
+                        (change)="getlistaInstituciones()" >
+                      <option value="0" >Tipo de Institución</option>
+                      <option *ngFor="let list of JsonOutgetlistaTipoInstitucion" value="{{ list.idTipoInstitucion }}">{{ list.descTipoInstitucion }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idTipoInstitucion.value == 0 || idTipoInstitucion.value == null " >Debes Seleccionar un tipo de Institución</small>
+      					</div>
+      				</div>
+
+              <!-- Instituciones de la Comunicacion -->
+              <div class="col-xs-12 col-sm-6 col-md-5">
+                <div class="form-group">
+                  <!-- <h6>Institución de Comunicación</h6> -->
+                  <small class="form-text text-muted">
+                      Institución de Comunicación
+                  </small>
+                  <select title="Debes de selecionar un País y Tipo de Institución, para asi poder seleccionar la Institución de la comunicación"
+                        #idInstitucion="ngModel" class="form-control" name="idInstitucion" id="idInstitucion"
+                        ngControl="idInstitucion" [(ngModel)]="_SalidaCorrespondenciaModel.idInstitucion"  tabindex="9">
+                      <option value="0">Selecciona una Institución</option>
+                      <option *ngFor="let list of JsonOutgetlistaInstitucion" value="{{ list.idInstitucion }}">
+                          {{ list.descInstitucion }} | {{ list.perfilInstitucion }}
+                      </option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idInstitucion.value == 0 || idInstitucion.value == null " >Debes Seleccionar una Institución</small>
+                 <!-- <input #hideCom="ngModel" type="hidden" name="hideCom" ngControl="hideCom" [(ngModel)]="comunicacion.hideCom" value="{{ comunicacion.idInstitucion }}" required> -->
+                 <!-- <small class="form-text text-muted" *ngIf="hideCom.errors?.required" >Debes Seleccionar una Sub Dirección JJJJ</small> -->
+                </div>
+              </div>
+
+      			</div>
+
+            <!-- Seccion de Anexos -->
+            <!-- <h4>Anexos</h4> -->
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="custom-file">
+                    <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                         ngControl="pdfDocumento" [(ngModel)]="_SalidaCorrespondenciaModel.pdfDocumento" placeholder="Subir Pdf ..."
+                         aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
+                    <span class="custom-file-control"></span>
+                </label>
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
+              <div class="col-xs-12 col-md-8 col-lg-12">
+                <!-- Barra de Progreso de Carga de la Imagen -->
+                <div class="progress">
+                    <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                        role="progressbar"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="0"
+                        style="width:1%">
+                    </div>
+                </div>
+                <p id="status"></p>
+
+                <!-- tabla que muestra los Documentos subidos -->
+                <table class="table table-striped">
+                   <thead>
+                     <tr>
+                       <th class="text-center">#</th>
+                       <th class="text-center">Nombre de Documento</th>
+                       <th class="text-center">Extencion</th>
+                       <th class="text-center">Peso/Mb</th>
+                       <th class="text-center">Documento</th>
+                       <th class="text-center">Borrar</th>
+                     </tr>
+                   </thead>
+                   <tbody id="newTable" >
+                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
+                               <td>{{ homeFormIndex + 1 }}</td>
+                               <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
+                               <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                               <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                 <img style="width:60px; height:60px; box-shadow:8px 10px 5px 0px #888888"
+                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                   alt="Cargando Imagen ..." ></a>
+                               </td>
+                               <td class="text-center">
+                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                       class="btn btn-danger" style="padding: 2px; cursor:pointer;">
+                                     Borrar</button>
+                               </td>
+                       </tr>
+                   </tbody>
+                 </table>
+
+              </div>
+            </div>
+
+            <hr class="colorgraph">
+            <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->
+            <button class="btn btn-success" type="submit" [disabled]="!correspondenciaInForm.valid" style="cursor: pointer">
+               <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
+              Guardar Correspondencia
+            </button>
+            <a class="btn btn-warning" tabindex="11"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
+              <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
+              Limpiar
+            </a>
+            <!-- <a class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
+                 style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
+              <img src="assets/icons/comunicacion/two-way-arrows.png" alt="Cargando imagen">
+              Guardar Edición
+            </a> -->
+
+            <!-- Boton de Enviar la Solicitud -->
+          </form>
+            <!-- Fin de Formulario -->
+        </div>
+
+        <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+        <div class="col-2">
+          <div class="card" style="width: 16rem; margin-top:5px">
+            <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
+            <div class="card-block" style="margin-left:8px">
+              <h4 class="card-title">Resumen</h4>
+              <p class="card-text">Resumen de la información registrada de la Correspondencia.</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <!-- Oficios -->
+              <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosIngresados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Recibidos -- | <span class="badge badge-pill badge-primary"> {{ countOficiosPendientes }} </span> </li>
+
+              <!-- Notas Verbales -->
+              <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
+              <li class="list-group-item"> <i class="material-icons">assignment_late</i> Notas Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countNotasIngresados }} </span> </li>
+              <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Notas Recibidas -- | <span class="badge badge-pill badge-primary"> {{ countNotasIngresados }} </span> </li>
+
+            </ul>
+
+          </div>
+
+          </div>
+<ng2-toasty [position]="'top-right'" ></ng2-toasty>
+</div>
+<!-- Fin de Contenedor -->

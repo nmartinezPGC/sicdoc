@@ -178,7 +178,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
     this._entradaCorrespondenciaModel = new EntradaCorrespondenciaModel(1,
           "", "", "", "",
           0, 0, 0,
-          this.identity.sub, "7", 0, "",
+          this.identity.sub, "7", 0, "0",
           "", null);
 
     // Json de Documento a Borrar
@@ -674,7 +674,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
     * ( tipo-documento-list ).
     ******************************************************/
       getlistaTipoDocumentos() {
-        this._listasComunes.listasComunes( "" ,"tipo-documento-list?activo=1").subscribe(
+        this._listasComunes.listasComunes( 2 ,"tipo-documento-list?activo=2").subscribe(
           response => {
             // login successful so redirect to return url
             if(response.status == "error"){

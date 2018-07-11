@@ -5,6 +5,9 @@ BackendBundle\Entity\TblFuncionarios:
         fki_user_funci:
             columns:
                 - id_usuario
+        fki_estado_func:
+            columns:
+                - id_estado
         fki_depto_func:
             columns:
                 - id_depto_funcional
@@ -106,5 +109,15 @@ BackendBundle\Entity\TblFuncionarios:
             joinColumns:
                 id_usuario:
                     referencedColumnName: id_usuario
+            orphanRemoval: false
+        idEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado:
+                    referencedColumnName: id_estado
             orphanRemoval: false
     lifecycleCallbacks: {  }
