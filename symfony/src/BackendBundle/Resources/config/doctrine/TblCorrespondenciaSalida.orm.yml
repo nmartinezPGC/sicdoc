@@ -62,6 +62,13 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
             type: boolean
             nullable: true
             column: acuse_de_entrega
+        direccionDestinatario:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+            column: direccion_destinatario
     manyToOne:
         idDireccionSreci:
             targetEntity: TblDireccionesSreci

@@ -196,4 +196,33 @@ class TblTipoDocumento
     {
         return $this->actSalida;
     }
+    /**
+     * @var boolean
+     */
+    private $actCorrespondencia = false;
+
+
+    /**
+     * Set actCorrespondencia
+     *
+     * @param boolean $actCorrespondencia
+     *
+     * @return TblTipoDocumento
+     */
+    public function setActCorrespondencia($actCorrespondencia)
+    {
+        $this->actCorrespondencia = $actCorrespondencia;
+
+        return $this;
+    }
+
+    /**
+     * Get actCorrespondencia
+     *
+     * @return boolean
+     */
+    public function getActCorrespondencia()
+    {
+        return $this->actCorrespondencia;
+    }
 }

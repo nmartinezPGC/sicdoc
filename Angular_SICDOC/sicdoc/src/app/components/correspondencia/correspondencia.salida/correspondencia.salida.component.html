@@ -73,10 +73,10 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-9 col-md-9">
                 <small class="form-text text-muted">
-                    Tema de la Correspondencia
+                    Nombre de destinatario de Correspondencia
                 </small>
                   <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control"
-                        placeholder="Tema de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
+                        placeholder="Nombre de destinatario de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
                          value="" [(ngModel)]="_SalidaCorrespondenciaModel.temaCorrespondencia" >
                     <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Debes ingresar El Tema de la Correspondencia</small>
                     <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >
@@ -89,10 +89,10 @@
               <div class="col-12">
                   <!-- <label >Descripcion Comunicacion</label> -->
                   <small class="form-text text-muted">
-                      Descripción de la Correspondencia
+                      Dirección de destinatario de la Correspondencia
                   </small>
                   <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="4"
-                              placeholder="Descripción de la Correspondencia" type="text" required tabindex="4"
+                              placeholder="Direccioón de destinatario de la Correspondencia" type="text" required tabindex="4"
                               [(ngModel)]="_SalidaCorrespondenciaModel.descCorrespondencia" ngControl="descCorrespondencia"
                               minlength="15"  >
                   </textarea>
@@ -101,26 +101,7 @@
                       Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
                     <!-- <hr class="hr-new"> -->
               </div>
-            </div>
-
-            <br>
-            <div class="row">
-              <div class="col-12">
-                  <!-- <label >Descripcion Comunicacion</label> -->
-                  <small class="form-text text-muted">
-                      Observaciones de la Correspondencia
-                  </small>
-                  <textarea #descCorrespondencia="ngModel" class="form-control" id="observaciones" name="observaciones" rows="4"
-                              placeholder="Observaciones de la Correspondencia" type="text" tabindex="5"
-                              [(ngModel)]="_SalidaCorrespondenciaModel.observaciones" ngControl="observaciones"
-                              minlength="15"  >
-                  </textarea>
-                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.required" >Debes ingresar El Contenido de la Correspondencia</small> -->
-                  <!-- <small class="form-text text-muted" *ngIf="observaciones.errors?.minlength" > -->
-                      <!-- Se nesesita por lo menos {{ observaciones.errors.minlength.requiredLength }} caracteres, para continuar</small> -->
-                    <!-- <hr class="hr-new"> -->
-              </div>
-            </div>
+            </div>            
 
             <hr class="hr-new">
 

@@ -370,4 +370,33 @@ class TblCorrespondenciaSalida
     {
         return $this->idFuncionarioRepartidor;
     }
+    /**
+     * @var string
+     */
+    private $direccionDestinatario;
+
+
+    /**
+     * Set direccionDestinatario
+     *
+     * @param string $direccionDestinatario
+     *
+     * @return TblCorrespondenciaSalida
+     */
+    public function setDireccionDestinatario($direccionDestinatario)
+    {
+        $this->direccionDestinatario = $direccionDestinatario;
+
+        return $this;
+    }
+
+    /**
+     * Get direccionDestinatario
+     *
+     * @return string
+     */
+    public function getDireccionDestinatario()
+    {
+        return $this->direccionDestinatario;
+    }
 }
