@@ -101,6 +101,10 @@ export class ReporteGeneralComponent implements OnInit {
   // Objeto que Controlara la Forma
   forma:FormGroup;
 
+  // Visualizacion de Componentes
+  public showCardDirecion: boolean = false;
+  public showCardFuncionario: boolean = false;
+
   // Area de Direcciones
   protected selectedDireccion: string;
   protected selectedFuncionario: string;
@@ -341,6 +345,8 @@ export class ReporteGeneralComponent implements OnInit {
   * Descripcion: Metodo inicial del Programa
   ******************************************************/
   ngOnInit() {
+    // Hacemos que la variable del Local Storge este en la API
+    this.identity = JSON.parse(localStorage.getItem('identity'));
     // Seteamos los valores de busqueda del Search
     this.searchStrDireccion = "";
     this.searchStrFuncionario = "";
@@ -359,6 +365,26 @@ export class ReporteGeneralComponent implements OnInit {
 
     // Cargamos el Script de Jquery nesesarios
     // this.loadScript('https://code.jquery.com/jquery-1.12.4.js');
+
+    // Condicion del Depto Funcional y su Perfil
+    if ( this.identity.idTipoFunc == 4 || this.identity.idTipoFunc == 1 ) {
+      // Seteamos y Parseamos a Int el idInstitucion
+      alert('Paso 1');
+      this.showCardDirecion = true;
+      this.showCardFuncionario = true;
+      //this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;
+    } else if ( this.identity.idTipoFunc == 6 ) {
+      alert('Paso 2');
+      this.showCardDirecion = false;
+      this.showCardFuncionario = true;
+      this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;
+    } else {
+      alert('Paso 3');
+      this.showCardDirecion = false;
+      this.showCardFuncionario = false;
+      this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;
+      this._ModelReporteGeneral.idFuncionarioAsignado = this.identity.sub;
+    }
 
   } // FIN ngOnInit
 
@@ -567,8 +593,8 @@ export class ReporteGeneralComponent implements OnInit {
   ******************************************************/
   protected onSelectedDireccion( item: CompleterItem ) {
     this.selectedDireccion = item? item.originalObject.idDeptoFuncional : "";
-    // Seteamos y Parseamos a Int el idInstitucion
-    this._ModelReporteGeneral.idDireccion = parseInt(this.selectedDireccion);
+      // Seteamos y Parseamos a Int el idInstitucion
+      this._ModelReporteGeneral.idDireccion = parseInt(this.selectedDireccion);
   } // FIN | FND-00004
 
 

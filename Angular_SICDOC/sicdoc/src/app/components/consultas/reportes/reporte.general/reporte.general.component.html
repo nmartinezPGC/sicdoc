@@ -45,9 +45,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" *ngIf="(identity.idTipoFunc == 4 || identity.idTipoFunc == 1 || identity.idTipoFunc == 6)" >
               <div class="card">
-                <div class="card-block">
+                <div class="card-block" *ngIf="showCardDirecion == true" >
                   <h3 class="card-title">Seleción de Dirección</h3>
                   <!-- Todas las Opciones -->
                   <!-- <label class="custom-control custom-checkbox">
@@ -57,7 +57,7 @@
                   </label> -->
                   <!-- Input de Busqueda de las Direcciones -->
                   <!-- Loader de Carga de los Datos -->
-                  <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idDireccion"
+                  <ng2-completer inputClass="form-control" fieldTabindex="true" name="idDireccion"
                       [(ngModel)]="searchStrDireccion" inputId="1"
                       [datasource]="dataServiceSubDireccion" [minSearchLength]="2" textSearching="Buscando ..."
                       textNoResults="No se han encontrado nada ..."
@@ -67,7 +67,7 @@
                   <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
 
-                <div class="card-block">
+                <div class="card-block" *ngIf="showCardFuncionario == true">
                   <h3 class="card-title">Seleción de Funcionario</h3>
                   <!-- Todas las Opciones -->
                   <!-- <label class="custom-control custom-checkbox">
