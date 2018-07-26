@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         // AppComponent, para actualizar el Menu
         this._appComponent.ngOnInit();
         //this._router.navigate(["/login"]);
-        this._router.navigateByUrl('/login');
+        this._router.navigateByUrl('/auth/login');
         // Redireccionamos a la Pagina Oficial
         //window.location.href= "/index";
       }

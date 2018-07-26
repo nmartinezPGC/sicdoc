@@ -1,0 +1,305 @@
+<div class="container">
+  <!-- Datos Generales de los Usuarios -->
+  <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <!-- Div que representan las Acciones al Ingresar un Usuario -->
+        <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Bien hecho!</strong> {{ mensajes }}
+        </div>
+
+        <div class="alert alert-danger alert-dismissible fade show" id="alertError" role="alert" *ngIf="status == 'error'" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Que mal!</strong> {{ mensajes }}
+        </div>
+
+        <!-- Loader de Carga de la Pagina -->
+        <div class="loader-new" *ngIf="loading == 'show' " >
+          <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
+        </div>
+
+        <form #documentosComForm="ngForm" (ngSubmit)="onSubmit(documentosComForm)" name="documentosComForm" role="form">
+            <h2> {{ titulo }} <small> | SICDOC.</small></h2>
+
+            <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
+            <hr class="colorgraph">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <h4>Nombres</h4>
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                         placeholder="Primer Nombre" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
+                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número Interno de la Comunicación</small>
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
+                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
+                  <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
+
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                         placeholder="Segundo Nombre" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
+                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-8 col-md-6">
+                <div class="form-group">
+                  <h4>Apellidos</h4>
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                         placeholder="Primer Apellido" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
+                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número Interno de la Comunicación</small>
+                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
+                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
+                  <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
+
+                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                         placeholder="Primer Apellido" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
+                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                </div>
+              </div>
+            </div>
+
+            <hr>
+            <!-- Identidad y Iniciales del Usuario -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                  <div class="form-group">
+                    <small class="form-text text-muted">
+                        Identidad de usuario
+                    </small>
+                    <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
+                        placeholder="Tema de la Comunicacion" ngControl="temaCorrespondencia"
+                         value="" [(ngModel)]="_editUserModel.temaCorrespondencia" >
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                  <div class="form-group">
+                    <small class="form-text text-muted">
+                        Iniciales de usuario
+                    </small>
+                      <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
+                            placeholder="Tema de la Comunicacion" ngControl="temaCorrespondencia"
+                             value="" [(ngModel)]="_editUserModel.temaCorrespondencia" >
+                  </div>
+                </div>
+            </div>
+
+            <hr>
+            <!-- Imagen de Usuario   -->
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                  <small class="form-text text-muted">
+                      Imagen de usuario
+                  </small>
+                  <label class="custom-file">
+                      <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                           ngControl="pdfDocumento" [(ngModel)]="_editUserModel.pdfDocumento" placeholder="Subir Pdf ..."
+                           aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
+                      <span class="custom-file-control"></span>
+                  </label>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <div class="col-xs-12 col-md-8 col-lg-12">
+                <!-- Barra de Progreso de Carga de la Imagen -->
+                <div class="progress">
+                    <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                        role="progressbar"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="0"
+                        style="width:1%">
+                    </div>
+                </div>
+                <p id="status"></p>
+
+                <!-- tabla que muestra los Documentos subidos -->
+                <table class="table table-striped" >
+                   <thead>
+                     <tr>
+                       <th class="text-center">#</th>
+                       <th class="text-center">Nombre de Documento</th>
+                       <th class="text-center">Extencion</th>
+                       <th class="text-center">Peso/Mb</th>
+                       <th class="text-center">Documento</th>
+                       <th class="text-center">Borrar</th>
+                     </tr>
+                   </thead>
+                   <tbody >
+                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
+                               <td>{{ homeFormIndex + 1 }}</td>
+                               <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
+                               <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                               <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                   alt="Cargando Imagen ..." ></a>
+                               </td>
+                               <td class="text-center">
+                                 <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+                                   <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
+                                 </a> -->
+                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                       class="btn btn-danger" style="padding: 2px; cursor:pointer;">
+                                     Borrar</button>
+                               </td>
+                       </tr>
+                   </tbody>
+                 </table>
+
+
+              </div>
+            </div>
+
+            <hr class="colorgraph">
+            <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->
+            <button type="button" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
+              <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
+              Guardar
+            </button>
+            <!-- <input type="button" value="Agregar Documentos ..." data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" id="boton" tabindex="18"
+                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" > -->
+            <a class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
+                 style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
+              <img src="assets/icons/comunicacion/open-folder-with-document.png" alt="Cargando imagen">
+              Agregar Imagen...
+            </a>
+            <!-- Boton de Enviar la Solicitud -->
+          </form>
+            <!-- Fin de Formulario -->
+        </div>
+
+            <!-- Modal de Finalizar Actividad -->
+            <div *ngIf="idEstadoModal == 5 " class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                  data-backdrop="static" data-keyboard="false">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
+                    <h4 class="modal-title" id="myModalLabel">Comunicacion No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+                    <!-- Loader de Carga de los Datos -->
+                    <div id="loader-2" *ngIf="loading_table == 'show'" >
+                      <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+                    </div>
+                  </div>
+
+                  <div class="modal-body">
+                    <!-- Formulario del Oficio Asignado -->
+                      <form #sendDocumentosCom="ngForm" (ngSubmit)="onSubmit(sendDocumentosCom)" name="sendDocumentosCom" role="form">
+                        <!-- fila 1 del Formulario -->
+                        <h4>Agregar imagen | Usuario</h4>
+                        <hr class="colorgraph">
+                        <!-- Seccion de Anexos -->
+                        <!-- <h4>Anexos</h4> -->
+                        <div class="row">
+                          <div class="col-xs-12 col-md-12 col-lg-12">
+                            <label class="custom-file">
+                                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
+                                     ngControl="pdfDocumento" [(ngModel)]="_editUserModel.pdfDocumento" placeholder="Subir Pdf ..."
+                                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
+                                <span class="custom-file-control"></span>
+                            </label>
+                          </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8 col-lg-12">
+                            <!-- Barra de Progreso de Carga de la Imagen -->
+                            <div class="progress">
+                                <div id="upload-progress-bar" class="progress-bar progress-bar-success"
+                                    role="progressbar"
+                                    aria-valuenow="0"
+                                    aria-valuemin="0"
+                                    aria-valuemax="0"
+                                    style="width:1%">
+                                </div>
+                            </div>
+                            <p id="status"></p>
+
+                            <!-- tabla que muestra los Documentos subidos -->
+                            <table class="table table-striped" >
+                               <thead>
+                                 <tr>
+                                   <th class="text-center">#</th>
+                                   <th class="text-center">Nombre de Documento</th>
+                                   <th class="text-center">Extencion</th>
+                                   <th class="text-center">Peso/Mb</th>
+                                   <th class="text-center">Documento</th>
+                                   <th class="text-center">Borrar</th>
+                                 </tr>
+                               </thead>
+                               <tbody >
+                                 <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
+                                           <td>{{ homeFormIndex + 1 }}</td>
+                                           <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
+                                           <td class="text-center" >{{ suchnewrow.extDoc }}</td>
+                                           <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
+                                           <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
+                                                   href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                             <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
+                                               src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                               onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
+                                               alt="Cargando Imagen ..." ></a>
+                                           </td>
+                                           <td class="text-center">
+                                             <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
+                                               <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
+                                             </a> -->
+                                               <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                                   class="btn btn-danger" style="padding: 2px; cursor:pointer;">
+                                                 Borrar</button>
+                                           </td>
+                                   </tr>
+                               </tbody>
+                             </table>
+
+                          </div>
+                        </div>
+
+                        <hr class="colorgraph">
+
+                        <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+                        <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
+                        <button class="btn btn-success" type="submit" [disabled]="!sendDocumentosCom.valid" style="cursor: pointer">
+                           <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando Imagen">
+                          Guardar Documentos
+                        </button>
+                        <button  type="button" id="closeModalFinCom"
+                                class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">
+                          <img src="assets/icons/comunicacion/close.png" alt="">
+                         Cerrar
+                        </button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+
+    </div>
+
+
+
+    <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
+    <div class="col-5" onloadedmetadata="">
+      <!-- Imagen del Usuario -->
+      <img src="/assets/images/Loading-Gris-62154.gif" alt="">
+    </div>
+  </div>
+  <!-- Fin de Contenido de la Fila Mayor -->
+
+</div>
+<!-- Fin de Contenedor -->
+
+<ng2-toasty [position]="'top-right'" ></ng2-toasty>

@@ -369,17 +369,17 @@ export class ReporteGeneralComponent implements OnInit {
     // Condicion del Depto Funcional y su Perfil
     if ( this.identity.idTipoFunc == 4 || this.identity.idTipoFunc == 1 ) {
       // Seteamos y Parseamos a Int el idInstitucion
-      alert('Paso 1');
+      // alert('Paso 1');
       this.showCardDirecion = true;
       this.showCardFuncionario = true;
       //this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;
     } else if ( this.identity.idTipoFunc == 6 ) {
-      alert('Paso 2');
+      // alert('Paso 2');
       this.showCardDirecion = false;
       this.showCardFuncionario = true;
       this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;
     } else {
-      alert('Paso 3');
+      // alert('Paso 3');
       this.showCardDirecion = false;
       this.showCardFuncionario = false;
       this._ModelReporteGeneral.idDireccion = this.identity.idDeptoFuncional;

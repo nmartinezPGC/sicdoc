@@ -5,6 +5,7 @@ import { RouterModule, Routes, ActivatedRoute, Router, ROUTER_CONFIGURATION } fr
 import { LoginComponent } from './components/login/login.component';
 import { DefaultComponent } from './components/login/default.component';
 import { RegisterComponent } from './components/login/register.component';
+import { ModificaUsuarioComponent } from './components/login/modifica.usuario/modifica.usuario.component';
 // Menu de comunicaciones
 import { IngresoComunicacionComponent } from './components/comunicaciones/ingreso.component';
 import { IngresoComunicacionPorTipoComponent } from './components/comunicaciones/ingreso.comunicacion/ingreso.comunicacion.component';
@@ -39,9 +40,10 @@ import { AcuseRecibidoComponent } from './components/correspondencia/acuse-recib
 export const APP_ROUTES: Routes = [
   //Ruta por defecto
   { path: 'index', component: DefaultComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'login/:id', component: LoginComponent },
-  { path: 'registro', component: RegisterComponent },
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/login/:id', component: LoginComponent },
+  { path: 'auth/usuario-nuevo', component: RegisterComponent },
+  { path: 'auth/editar-usuario', component: ModificaUsuarioComponent },
 
   // Mapeo del Menu de Comunicaciones
   { path: 'comunicacion/ingreso-de-comunicacion', component: IngresoComunicacionComponent },

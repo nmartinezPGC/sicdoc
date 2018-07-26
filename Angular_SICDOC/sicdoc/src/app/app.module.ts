@@ -94,6 +94,7 @@ import { ReporteResumidoComponent } from './components/consultas/reportes/report
 import { CorrespondenciaEntradaComponent } from './components/correspondencia/correspondencia.entrada/correspondencia.entrada.component';
 import { CorrespondenciaSalidaComponent } from './components/correspondencia/correspondencia.salida/correspondencia.salida.component';
 import { AcuseRecibidoComponent } from './components/correspondencia/acuse-recibido/acuse-recibido.component';
+import { ModificaUsuarioComponent } from './components/login/modifica.usuario/modifica.usuario.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import { AcuseRecibidoComponent } from './components/correspondencia/acuse-recib
     ReporteResumidoComponent,
     CorrespondenciaEntradaComponent,
     CorrespondenciaSalidaComponent,
-    AcuseRecibidoComponent
+    AcuseRecibidoComponent,
+    ModificaUsuarioComponent
   ],
   imports: [
     BrowserModule,

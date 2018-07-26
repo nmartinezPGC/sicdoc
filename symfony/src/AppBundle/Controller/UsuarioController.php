@@ -298,15 +298,10 @@ class UsuarioController extends Controller{
             $apellido1 = (isset($params->apellido1) && ctype_alpha($params->apellido1) ) ? $params->apellido1 : null;
             $apellido2 = (isset($params->apellido2) && ctype_alpha($params->apellido2) ) ? $params->apellido2 : null;
             $email = (isset($params->email)) ? $params->email : null;            
-            //Seccion de Relaciones entre Tablas ********************************************************************
-            $cod_estado = (isset($params->cod_estado)) ? $params->cod_estado : null;
-            $cod_tipo_funcionario = (isset($params->cod_tipo_funcionario)) ? $params->cod_tipo_funcionario : null;
-            $cod_depto_funcional = (isset($params->cod_depto_funcional)) ? $params->cod_depto_funcional : null;
-            $cod_tipo_usuario = (isset($params->cod_tipo_usuario)) ? $params->cod_tipo_usuario : null;                        
+          
             //Datos de Bitacora *************************************************************************************
             $createdAt = new \DateTime("now");
-            $image = null;
-            $password = (isset($params->password)) ? $params->password : null;
+            $image = (isset($params->pdfDocumento)) ? $params->pdfDocumento : null;          
             
             //Validamos el Email ************************************************************************************
             $emailConstraint = new Assert\Email();
@@ -316,8 +311,7 @@ class UsuarioController extends Controller{
             //Entitie Manager Definition ****************************************************************************
             $em = $this->getDoctrine()->getManager();
             
-            if ($email != null && count($valid_email) == 0 &&
-                $nombre1 != null && $apellido1 != null ){
+            if ( $nombre1 != null && $apellido1 != null ){
                 //Instanciamos la Entidad TblUsuario *****************************************                
                 //$usuario = new TblUsuarios();                
                 //Seteamos los valores de Identificacion ***********************
@@ -326,42 +320,15 @@ class UsuarioController extends Controller{
                 $usuario->setNombre2Usuario($nombre2);
                 $usuario->setApellido1Usuario($apellido1);
                 $usuario->setApellido2Usuario($apellido2);
-                $usuario->setEmailUsuario($email);
-                //Seteamos los valores de Relaciones de Tablas *******************************
-                //Instancia a la Tabla: TblEstados *****************************                
-                $estados = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
-                            array(
-                                "codEstado" => $cod_estado
-                            )) ;
-                $usuario->setCodEstado($estados);
-                //Instancia a la Tabla: TblTipoFuncionarios ********************                
-                $tipoFuncionario = $em->getRepository("BackendBundle:TblTiposFuncionarios")->findOneBy(
-                            array(
-                                "codTipoFuncionario" => $cod_tipo_funcionario
-                            )) ;
-                $usuario->setCodTipoFuncionario($tipoFuncionario);  
-                //Instancia a la Tabla: TblDepartamentosFuncionales ************                
-                $deptoFuncional = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(
-                            array(
-                                "codDeptoFuncional" => $cod_depto_funcional
-                            )) ;
-                $usuario->setCodDeptoFuncional($deptoFuncional);
-                //Instancia a la Tabla: TblTipoUsuario *************************                
-                $tipoUsuario = $em->getRepository("BackendBundle:TblTipoUsuario")->findOneBy(
-                            array(
-                                "codTipoUsuario" => $cod_tipo_usuario
-                            )) ;
-                $usuario->setCodTipoUsuario($tipoUsuario);
+                
                 //Seteamos el Resto de campos de la Tabla: TblUsuarios *********
                 $usuario->setInicialesUsuario($iniciales);
-                //Cifrar la Contraseña *****************************************
-                if ($password != null) {                            
-                    $pwd = hash('sha256', $password);                
-                    $usuario->setPasswordUsuario($pwd);                
-                }
+                
                 $usuario->setImagenUsuario($image);
                 //Seteamos los valores de la Bitacora **************************
-                $usuario->setFechaCreacion($createdAt);                
+                $usuario->setFechaModificacion($createdAt);  
+                
+                
                 //Verificacion del Codigo y Email en la Tabla: TblUsuarios *****                
                 $isset_user_mail = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
                         array(
@@ -373,13 +340,10 @@ class UsuarioController extends Controller{
                         array(
                           "codUsuario" => $cod_usuario
                         ));
+                
                 //Verificamos que el retorno de la Funcion sea = 0 *************                
                 if(count($isset_user_cod) == 0 || $identity->email == $email ){
-                    $em->persist($usuario);
-                    //$em->persist($estados);
-                    //$em->persist($tipoUsuario);
-                    //$em->persist($tiposFuncionarios);
-                    //$em->persist($deptosFuncionales);                    
+                    $em->persist($usuario);                                
                     $em->flush();
                     //Seteamos el array de Mensajes a enviar *******************
                     $data = array(
