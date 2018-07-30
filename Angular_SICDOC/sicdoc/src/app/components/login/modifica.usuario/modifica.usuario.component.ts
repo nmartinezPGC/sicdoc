@@ -41,7 +41,7 @@ export class ModificaUsuarioComponent implements OnInit {
   public hasAnotherDropZoneOver:boolean = false;
 
   // Datos de la Vetana
-  public titulo:string = "Editar Prefil de Usuario";
+  public titulo:string = "Editar Perfil de Usuario";
   public fechaHoy:Date = new Date();
 
   // Loader
@@ -72,6 +72,9 @@ export class ModificaUsuarioComponent implements OnInit {
   public status;
   public statusConsultaCom;
   public mensajes;
+
+  public identity;
+  public token;
 
   // parametros multimedia
   public loading_table  = 'hide';
@@ -157,6 +160,10 @@ export class ModificaUsuarioComponent implements OnInit {
    * la Comunicación
   *************************************************/
   ngOnInit() {
+    // Hacemos que la variable del Local Storge este en la API
+    this.identity = JSON.parse(localStorage.getItem('identity'));
+    this.token = localStorage.getItem('token');
+
     // Inicializacion del Model
     // Iniciamos los Parametros de Json de Documentos
     this.paramsDocumentos = {
@@ -172,40 +179,12 @@ export class ModificaUsuarioComponent implements OnInit {
           0, 0,
           null);
 
-      // Iniciamos los Parametros de Sub Direcciones
-      this.datosConsulta = {
-        "temaComunicacion"    : "",
-        "descComunicacion"    : "",
-        "fechaFechaIngreso"   : "",
-        "fechaFechaEntrega"   : "",
-        "emailUserCreador"    : "",
-        "idComunicacion"      : "",
-        "idTipoComunicacion"  : "",
-        "idTipoDocumento"     : ""
-      };
-
-      // Inicio de Detalle correspondencia
-      this.JsonOutgetCodigoSecuenciaActividadAgregar = {
-        "codSecuencial" : "",
-        "valor2" : ""
-      };
-
       // Array de los Documentos enviados
       this.JsonOutgetListaDocumentos = [];
       this.JsonOutgetListaDocumentosNew = [];
       this.JsonOutgetListaDocumentosHist = [];
 
-      // this._editUserModel.pdfDocumento = "";
-
-      // Json de Documento a Borrar
-      this.JsonOutgetListaDocumentosDelete = {
-        "codDocument": "",
-        "extDocument": "",
-        "indicadorExt": "",
-        "idCorrespondenciaDet": "",
-        "idCorrespondenciaEnc": "",
-        "descDocumento": ""
-      }
+      this._editUserModel.pdfDocumento = "";
 
   } // FIN | ngOnInit()
 
@@ -226,7 +205,7 @@ export class ModificaUsuarioComponent implements OnInit {
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
+    let url = this.urlConfigLocal + "/usuario/upload-image-user";
 
     // Variables del Metodo
     let  error:string;
@@ -260,11 +239,7 @@ export class ModificaUsuarioComponent implements OnInit {
       }
 
     // Seteamos el valore del Nombre del Documento
-    // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].valor2 + 1;
-    // let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2 + 1;
-    let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
-    // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
-    codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
+    codigoSec = this.identity.codUser;
 
     this.codigoSec = codigoSec + '-' + this.nextDocumento;
     this.nextDocumento = this.nextDocumento + 1;
@@ -272,7 +247,7 @@ export class ModificaUsuarioComponent implements OnInit {
     // Parametro para documento Seleccionado
     this._editUserModel.pdfDocumento = this.codigoSec;
 
-    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec], this.filesToUpload ).then(
+    this._uploadService.makeFileRequest( this.token, url, [ 'image', this.codigoSec], this.filesToUpload ).then(
         ( result ) => {
           this.resultUpload = result;
           status = this.resultUpload.status;
@@ -281,9 +256,8 @@ export class ModificaUsuarioComponent implements OnInit {
             console.log(this.resultUpload);
             alert(this.resultUpload.msg);
           }
-          // this.finalizarOficios.pdfDocumento = this.resultUpload.data;
           // Añadimos a la Tabla Temporal los Items Subidos
-          this.createNewFileInput( codigoSec );
+          // this.createNewFileInput( codigoSec );
         },
         ( error ) => {
           alert(error);

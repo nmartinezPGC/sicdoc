@@ -28,39 +28,39 @@
             <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
             <hr class="colorgraph">
             <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-6">
+              <div class="col-xs-12 col-sm-8 col-md-6">
                 <div class="form-group">
                   <h4>Nombres</h4>
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
+                  <input #primerNombre="ngModel" type="text" name="primerNombre" id="primerNombre" class="form-control col-6"
                          placeholder="Primer Nombre" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
-                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                         ngControl="primerNombre" [(ngModel)]="_editUserModel.primerNombre" required >
 
-                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número Interno de la Comunicación</small>
-                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
-                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
+                  <small class="form-text text-muted" *ngIf="primerNombre.errors?.required" >Debes ingresar el Primer Nombre</small>
+                  <small class="form-text text-muted" *ngIf="primerNombre.errors?.minlength" >
+                      Se nesesita por lo menos {{ primerNombre.errors.minlength.requiredLength }} caracteres</small>
                   <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
 
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
-                         placeholder="Segundo Nombre" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
-                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                  <input #segundoNombre="ngModel" type="text" name="segundoNombre" id="segundoNombre" class="form-control col-6"
+                         placeholder="Segundo Nombre" minlength="5"
+                         ngControl="segundoNombre" [(ngModel)]="_editUserModel.segundoNombre" >
                 </div>
               </div>
 
               <div class="col-xs-12 col-sm-8 col-md-6">
                 <div class="form-group">
                   <h4>Apellidos</h4>
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
-                         placeholder="Primer Apellido" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
-                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                  <input #primerApellido="ngModel" type="text" name="primerApellido" id="primerApellido" class="form-control col-6"
+                         placeholder="Primer Apellido" minlength="5"
+                         ngControl="primerApellido" [(ngModel)]="_editUserModel.primerApellido" required >
 
-                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.required" >Debes ingresar el Número Interno de la Comunicación</small>
-                  <small class="form-text text-muted" *ngIf="codCorrespondencia.errors?.minlength" >
-                      Se nesesita por lo menos {{ codCorrespondencia.errors.minlength.requiredLength }} caracteres, para realizar la busqueda</small>
+                  <small class="form-text text-muted" *ngIf="primerApellido.errors?.required" >Debes ingresar el Primer Apellido</small>
+                  <small class="form-text text-muted" *ngIf="primerApellido.errors?.minlength" >
+                      Se nesesita por lo menos {{ primerApellido.errors.minlength.requiredLength }} caracteres</small>
                   <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
 
-                  <input #codCorrespondencia="ngModel" type="text" name="codCorrespondencia" id="codCorrespondencia" class="form-control col-6"
-                         placeholder="Primer Apellido" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
-                         ngControl="codCorrespondencia" [(ngModel)]="_editUserModel.codCorrespondencia" required >
+                  <input #segundoApellido="ngModel" type="text" name="segundoApellido" id="segundoApellido" class="form-control col-6"
+                         placeholder="Primer Apellido" minlength="5"
+                         ngControl="segundoApellido" [(ngModel)]="_editUserModel.segundoApellido" >
                 </div>
               </div>
             </div>
@@ -73,9 +73,13 @@
                     <small class="form-text text-muted">
                         Identidad de usuario
                     </small>
-                    <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
-                        placeholder="Tema de la Comunicacion" ngControl="temaCorrespondencia"
-                         value="" [(ngModel)]="_editUserModel.temaCorrespondencia" >
+                    <input #codUsuario="ngModel" type="text" name="codUsuario" id="codUsuario" class="form-control col-6"
+                        placeholder="Identidad de usuario" ngControl="codUsuario"
+                         value="" [(ngModel)]="_editUserModel.codUsuariocodUsuario" required >
+
+                         <small class="form-text text-muted" *ngIf="codUsuario.errors?.required" >Debes ingresar la Identidad</small>
+                         <small class="form-text text-muted" *ngIf="codUsuario.errors?.minlength" >
+                             Se nesesita por lo menos {{ codUsuario.errors.minlength.requiredLength }} caracteres</small>
                   </div>
                 </div>
 
@@ -84,9 +88,9 @@
                     <small class="form-text text-muted">
                         Iniciales de usuario
                     </small>
-                      <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control col-6"
-                            placeholder="Tema de la Comunicacion" ngControl="temaCorrespondencia"
-                             value="" [(ngModel)]="_editUserModel.temaCorrespondencia" >
+                      <input #inicialesUsuario="ngModel" type="text" name="inicialesUsuario" id="inicialesUsuario" class="form-control col-6"
+                            placeholder="Iniciales de usuario" ngControl="inicialesUsuario"
+                             value="" [(ngModel)]="_editUserModel.inicialesUsuario" >
                   </div>
                 </div>
             </div>
@@ -96,7 +100,7 @@
             <div class="row">
                 <div class="col-xs-12 col-md-12 col-lg-12">
                   <small class="form-text text-muted">
-                      Imagen de usuario
+                      Editar Imagen de usuario
                   </small>
                   <label class="custom-file">
                       <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
@@ -123,7 +127,7 @@
                 <p id="status"></p>
 
                 <!-- tabla que muestra los Documentos subidos -->
-                <table class="table table-striped" >
+                <!-- <table class="table table-striped" >
                    <thead>
                      <tr>
                        <th class="text-center">#</th>
@@ -134,8 +138,8 @@
                        <th class="text-center">Borrar</th>
                      </tr>
                    </thead>
-                   <tbody >
-                     <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
+                   <tbody > -->
+                     <!-- <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
                                <td>{{ homeFormIndex + 1 }}</td>
                                <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
                                <td class="text-center" >{{ suchnewrow.extDoc }}</td>
@@ -147,17 +151,17 @@
                                    onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
                                    alt="Cargando Imagen ..." ></a>
                                </td>
-                               <td class="text-center">
+                               <td class="text-center"> -->
                                  <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
                                    <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
                                  </a> -->
-                                   <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
+                                   <!-- <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
                                        class="btn btn-danger" style="padding: 2px; cursor:pointer;">
                                      Borrar</button>
                                </td>
                        </tr>
                    </tbody>
-                 </table>
+                 </table> -->
 
 
               </div>
@@ -194,98 +198,6 @@
                       <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
                     </div>
                   </div>
-
-                  <div class="modal-body">
-                    <!-- Formulario del Oficio Asignado -->
-                      <form #sendDocumentosCom="ngForm" (ngSubmit)="onSubmit(sendDocumentosCom)" name="sendDocumentosCom" role="form">
-                        <!-- fila 1 del Formulario -->
-                        <h4>Agregar imagen | Usuario</h4>
-                        <hr class="colorgraph">
-                        <!-- Seccion de Anexos -->
-                        <!-- <h4>Anexos</h4> -->
-                        <div class="row">
-                          <div class="col-xs-12 col-md-12 col-lg-12">
-                            <label class="custom-file">
-                                <input #pdfDocumento="ngModel" type="file" class="form-control-file" id="pdfDocumento" name="pdfDocumento"
-                                     ngControl="pdfDocumento" [(ngModel)]="_editUserModel.pdfDocumento" placeholder="Subir Pdf ..."
-                                     aria-describedby="fileHelp" (change)="fileChangeEvent($event)" >
-                                <span class="custom-file-control"></span>
-                            </label>
-                          </div>
-                        </div>
-
-                        <hr>
-                        <div class="row">
-                          <div class="col-xs-12 col-md-8 col-lg-12">
-                            <!-- Barra de Progreso de Carga de la Imagen -->
-                            <div class="progress">
-                                <div id="upload-progress-bar" class="progress-bar progress-bar-success"
-                                    role="progressbar"
-                                    aria-valuenow="0"
-                                    aria-valuemin="0"
-                                    aria-valuemax="0"
-                                    style="width:1%">
-                                </div>
-                            </div>
-                            <p id="status"></p>
-
-                            <!-- tabla que muestra los Documentos subidos -->
-                            <table class="table table-striped" >
-                               <thead>
-                                 <tr>
-                                   <th class="text-center">#</th>
-                                   <th class="text-center">Nombre de Documento</th>
-                                   <th class="text-center">Extencion</th>
-                                   <th class="text-center">Peso/Mb</th>
-                                   <th class="text-center">Documento</th>
-                                   <th class="text-center">Borrar</th>
-                                 </tr>
-                               </thead>
-                               <tbody >
-                                 <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
-                                           <td>{{ homeFormIndex + 1 }}</td>
-                                           <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
-                                           <td class="text-center" >{{ suchnewrow.extDoc }}</td>
-                                           <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
-                                           <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
-                                                   href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
-                                             <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
-                                               src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
-                                               onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
-                                               alt="Cargando Imagen ..." ></a>
-                                           </td>
-                                           <td class="text-center">
-                                             <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
-                                               <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
-                                             </a> -->
-                                               <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
-                                                   class="btn btn-danger" style="padding: 2px; cursor:pointer;">
-                                                 Borrar</button>
-                                           </td>
-                                   </tr>
-                               </tbody>
-                             </table>
-
-                          </div>
-                        </div>
-
-                        <hr class="colorgraph">
-
-                        <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-                        <!-- <button type="reset" class="btn btn-primary">Limpiar</button> -->
-                        <button class="btn btn-success" type="submit" [disabled]="!sendDocumentosCom.valid" style="cursor: pointer">
-                           <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando Imagen">
-                          Guardar Documentos
-                        </button>
-                        <button  type="button" id="closeModalFinCom"
-                                class="btn btn-danger" data-dismiss="modal"  data-backdrop="static" data-keyboard="false" style="cursor: pointer">
-                          <img src="assets/icons/comunicacion/close.png" alt="">
-                         Cerrar
-                        </button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
 
     </div>
 
