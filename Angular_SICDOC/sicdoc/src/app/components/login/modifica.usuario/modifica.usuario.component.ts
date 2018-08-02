@@ -15,6 +15,7 @@ import 'rxjs/add/operator/map';
 import { AgregarDocumentosService } from '../../../services/comunicaciones/agregar.documentos.service'; //Servico de Agregar Documentos
 import { ListasComunesService } from '../../../services/shared/listas.service'; //Servico Listas Comunes
 import { UploadService } from '../../../services/shared/upload.service'; //Servico Carga de Arhcivos
+import { UsuariosEditService } from '../../../services/usuarios/usuario.edit.service'; //Servico Editar Usuario
 
 import { AppComponent } from '../../../app.component'; //Servico del Login
 
@@ -32,7 +33,7 @@ declare var $:any;
   selector: 'app-modifica.usuario',
   templateUrl: './modifica.usuario.component.html',
   styleUrls: ['./modifica.usuario.component.css'],
-  providers: [ ListasComunesService, UploadService, AgregarDocumentosService, UploadService ]
+  providers: [ ListasComunesService, UploadService, AgregarDocumentosService, UploadService, UsuariosEditService ]
 })
 export class ModificaUsuarioComponent implements OnInit {
   // Propiedades de la Clase
@@ -100,6 +101,10 @@ export class ModificaUsuarioComponent implements OnInit {
 
   private paramsSecuenciaActividadAgregar;
 
+  // Parametros de la Conuslta del Usuario
+  private JsonOutDetailsUser;
+  private paramsJsonSendDetailsUser;
+
   // Variables Modales
   public codOficioIntModal;
   public codOficioActModal;
@@ -142,6 +147,7 @@ export class ModificaUsuarioComponent implements OnInit {
   constructor( private _listasComunes: ListasComunesService,
                private _agregarDocumentosService: AgregarDocumentosService,
                private _uploadService: UploadService,
+               private _usuariosEditService: UsuariosEditService,
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
@@ -164,16 +170,21 @@ export class ModificaUsuarioComponent implements OnInit {
     this.identity = JSON.parse(localStorage.getItem('identity'));
     this.token = localStorage.getItem('token');
 
-    // Inicializacion del Model
     // Iniciamos los Parametros de Json de Documentos
     this.paramsDocumentos = {
       "searchValueSend" : ""
     };
 
+    // Iniciamos los Parametros de Json de Consulta
+    this.paramsJsonSendDetailsUser = {
+      "idUser" : this.identity.sub
+    };
+
+    // Inicializacion del Model
     // Definicion de la Insercion de los Datos de Documentos
-    this._editUserModel = new EditUsuarios(1,
+    this._editUserModel = new EditUsuarios(this.identity.sub,
           "", "", "", "", "",
-          "", "", "", "",
+          this.identity.email, "", "", "",
           "", 0, 0, 0, 0,
           "",
           0, 0,
@@ -185,6 +196,9 @@ export class ModificaUsuarioComponent implements OnInit {
       this.JsonOutgetListaDocumentosHist = [];
 
       this._editUserModel.pdfDocumento = "";
+
+      // Cargamos el Detalle del Usuario
+      this.getUserDetails();
 
   } // FIN | ngOnInit()
 
@@ -303,5 +317,92 @@ export class ModificaUsuarioComponent implements OnInit {
    this._editUserModel.pdfDocumento = this.JsonOutgetListaDocumentosNew;
    console.log(this.JsonOutgetListaDocumentosNew);
   } // FIN | FND-00002
+
+
+  /*****************************************************
+  * Funcion: FND-000003
+  * Fecha: 02-08-2018
+  * Descripcion: Carga el detalle del Usuario consultado
+  * Objetivo: Obtener el detalle del Usuario a Modificar
+  * metodo ( usuarios/user-details ).
+  ******************************************************/
+  getUserDetails() {
+    // Laoding
+    this.loading = 'show';
+    // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+    this._usuariosEditService.userDetail( this.paramsJsonSendDetailsUser ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutDetailsUser = response.data;
+            // Oculta los Loaders
+            this.loading = 'hide';
+            //Mensaje de notificacion
+            alert(response.msg);
+          }else{
+            this.JsonOutDetailsUser = response.data;
+            //this.valoresdataDetJson ( response.data );
+            this.loading = 'hide';
+            console.log( this.JsonOutDetailsUser );
+
+            // Instancia de los Datos en el Documento
+            this.cargarPerfil( this.JsonOutDetailsUser );
+          }
+        });
+  } // FIN | FND-000003
+
+
+  /*****************************************************
+  * Funcion: FND-000004
+  * Fecha: 02-08-2018
+  * Descripcion: Carga el detalle del Usuario consultado
+  * a los inputs del DOM
+  * Objetivo: Obtener el detalle del Usuario a Modificar
+  ******************************************************/
+  cargarPerfil( data_to_user ) {
+    // Seteamos los vaolres de la Consulta al DOM
+    this._editUserModel.primerNombre = data_to_user.nombre1Usuario;
+    this._editUserModel.segundoNombre = data_to_user.nombre2Usuario;
+    this._editUserModel.primerApellido = data_to_user.apellido1Usuario;
+    this._editUserModel.segundoApellido = data_to_user.apellido2Usuario;
+
+    this._editUserModel.codUsuario = data_to_user.codUsuario;
+    this._editUserModel.inicialesUsuario = data_to_user.inicialesUsuario;
+  } // FIN | FND-000004
+
+
+  /*****************************************************
+  * Funcion: FND-000003
+  * Fecha: 02-08-2018
+  * Descripcion: Enviar los parametros del usuario para
+  * su posterior edicion en la BD
+  * Objetivo: Actualizar datos del Usuario a Modificar
+  * metodo ( usuarios/edit ).
+  ******************************************************/
+  editUser() {
+    // Laoding
+    this.loading = 'show';
+    // Llamado al Method de Editar Usuario
+    this._usuariosEditService.editUser( this._editUserModel ).subscribe(
+        response => {
+          // editUser Method
+          if(response.status == "error"){
+            // Oculta los Loaders
+            this.loading = 'hide';
+            //Mensaje de notificacion
+            alert(response.msg);
+          }else{
+            this.loading = 'hide';
+            console.log( this._editUserModel );
+            //Mensaje de notificacion
+            alert(response.msg);
+          }
+    });
+  }
+
+  cleanForm() {
+    this.ngOnInit();
+  }
 
 }

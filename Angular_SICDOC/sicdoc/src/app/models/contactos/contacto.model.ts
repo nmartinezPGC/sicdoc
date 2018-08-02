@@ -32,6 +32,8 @@ export class  Contactos {
       public pdfDocumento:string,
       public imgDocumento:string,
 
+      public cargoFuncional:string,
+
 
     ){}
 

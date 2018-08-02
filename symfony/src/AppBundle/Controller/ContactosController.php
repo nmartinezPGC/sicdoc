@@ -111,6 +111,8 @@ class ContactosController extends Controller{
             //Documentos enviados
             $pdf_documento   = (isset($params->pdfDocumento)) ? $params->pdfDocumento  : null;
             $img_documento   = (isset($params->imgDocumento)) ? $params->imgDocumento  : null;
+            
+            $cargo_funcional   = (isset($params->cargoFuncional)) ? $params->cargoFuncional  : null;
         
             //Verificacion del Codigo y Email en la Tabla: TblContactos ********                
             $isset_contact_mail = $em->getRepository("BackendBundle:TblContactos")
@@ -151,6 +153,8 @@ class ContactosController extends Controller{
                     $contactoNew->setCelular2Contacto($celular_2);
                     $contactoNew->setTelefono1Contacto($telefono_1);
                     $contactoNew->setTelefono2Contacto($telefono_2);
+                    
+                    $contactoNew->setCargoFuncional($cargo_funcional);
 
                     //Seteamos los valores de Relaciones de Tablas *************
                     //Instancia a la Tabla: TblInstituciones *******************                

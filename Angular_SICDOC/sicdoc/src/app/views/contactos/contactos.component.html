@@ -23,6 +23,7 @@
                       <th>Correos</th>
                       <th>Institución de Contacto</th>
                       <th>Tipo Institución</th>
+                      <th>Cargo Funcional</th>
                       <th>Contacto SRECI</th>
                       <th>Dirección SRECI</th>
                       <th>Download</th>
@@ -36,19 +37,18 @@
                   <td >{{ item.email1Contacto }} - {{ item.email2Contacto }}</td>
                   <td >{{ item.idInstitucion.descInstitucion }}</td>
                   <td >{{ item.idInstitucion.idTipoInstitucion.descTipoInstitucion }}</td>
+                  <td >{{ item.cargoFuncional }}</td>
                   <td >{{ item.idFuncionario.nombre1Funcionario }}
                        {{ item.idFuncionario.apellido1Funcionario }}</td>
                   <td >{{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}</td>
                   <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                     href="{{ urlComplete + item.perfilContacto }}" target="_blank">
-                    <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}"> -->
-                    <!-- href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.perfilContacto }}"> -->                    
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
                       <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5"
                         href="{{ urlComplete + item.fotoContacto }}" target="_blank">
                         <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
-                        <!-- href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->                        
+                        <!-- href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
                           <i class="material-icons">photo</i>
                       </a>
                   </td>
@@ -105,7 +105,7 @@
                         </div>
                         <hr>
                         <!-- Seccion de Correos -->
-                        <h4>Datos de Mensajeria</h4>
+                        <h4>Datos de Mensajeria y Cargo</h4>
                         <div class="row">
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Primer Correo</label>
@@ -120,6 +120,13 @@
                             <input #email2Contacto="ngModel" type="mail" class="form-control" name="email2Contacto" id="email2Contacto" placeholder="name@example.com"
                                 [(ngModel)]="consultaContactos.email2Contacto" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                           <small class="form-text text-muted" *ngIf="email2Contacto.errors?.pattern" >el campo no tiene formato de correo</small>
+                          </div>
+
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label for="exampleInputEmail1">Cargo Funcional</label>
+                            <input #cargoFuncional="ngModel" type="text" class="form-control" name="cargoFuncional" id="cargoFuncional" placeholder="Cargo Funcional"
+                                [(ngModel)]="consultaContactos.cargoFuncional" required>
+                          <small class="form-text text-muted" *ngIf="cargoFuncional.errors?.required" >Ingresa el Cargo Funcional</small>
                           </div>
                         </div>
 

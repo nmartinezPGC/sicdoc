@@ -20,3 +20,8 @@ usuario_changePassUser:
     path: /change-pass-user
     defaults: { _controller: "AppBundle:Usuario:changePassUser" }
     methods: POST
+
+usuario_detailsUser:
+    path: /user-details
+    defaults: { _controller: "AppBundle:Usuario:detailsUser" }
+    methods: POST

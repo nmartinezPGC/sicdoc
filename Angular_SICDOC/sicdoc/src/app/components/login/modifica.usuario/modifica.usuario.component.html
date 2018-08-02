@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Datos Generales de los Usuarios -->
   <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="col-xs-12 col-sm-8 col-md-8">
         <!-- Div que representan las Acciones al Ingresar un Usuario -->
         <div class="alert alert-success alert-dismissible fade show"  id="alertSuccess" role="alert" *ngIf="status == 'success'" >
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -22,7 +22,7 @@
           <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
         </div>
 
-        <form #documentosComForm="ngForm" (ngSubmit)="onSubmit(documentosComForm)" name="documentosComForm" role="form">
+        <form #documentosComForm="ngForm"  name="documentosComForm" role="form">
             <h2> {{ titulo }} <small> | SICDOC.</small></h2>
 
             <!-- Formulario de Solicitud de Cambio de Fecha Maxima de Entrega -->
@@ -30,7 +30,9 @@
             <div class="row">
               <div class="col-xs-12 col-sm-8 col-md-6">
                 <div class="form-group">
-                  <h4>Nombres</h4>
+                  <small class="form-text text-muted">
+                      Primer Nombre
+                  </small>
                   <input #primerNombre="ngModel" type="text" name="primerNombre" id="primerNombre" class="form-control col-6"
                          placeholder="Primer Nombre" (keyup.enter)="buscaComunicacion()" autofocus="true" minlength="5"
                          ngControl="primerNombre" [(ngModel)]="_editUserModel.primerNombre" required >
@@ -40,6 +42,9 @@
                       Se nesesita por lo menos {{ primerNombre.errors.minlength.requiredLength }} caracteres</small>
                   <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
 
+                  <small class="form-text text-muted">
+                      Segundo Nombre
+                  </small>
                   <input #segundoNombre="ngModel" type="text" name="segundoNombre" id="segundoNombre" class="form-control col-6"
                          placeholder="Segundo Nombre" minlength="5"
                          ngControl="segundoNombre" [(ngModel)]="_editUserModel.segundoNombre" >
@@ -48,7 +53,9 @@
 
               <div class="col-xs-12 col-sm-8 col-md-6">
                 <div class="form-group">
-                  <h4>Apellidos</h4>
+                  <small class="form-text text-muted">
+                      Primer Apellido
+                  </small>
                   <input #primerApellido="ngModel" type="text" name="primerApellido" id="primerApellido" class="form-control col-6"
                          placeholder="Primer Apellido" minlength="5"
                          ngControl="primerApellido" [(ngModel)]="_editUserModel.primerApellido" required >
@@ -58,6 +65,9 @@
                       Se nesesita por lo menos {{ primerApellido.errors.minlength.requiredLength }} caracteres</small>
                   <!-- <input type="button" value="Buscar" (click)="buscaComunicacion()" class="btn btn-primary" > -->
 
+                  <small class="form-text text-muted">
+                      Segundo Apellido
+                  </small>
                   <input #segundoApellido="ngModel" type="text" name="segundoApellido" id="segundoApellido" class="form-control col-6"
                          placeholder="Primer Apellido" minlength="5"
                          ngControl="segundoApellido" [(ngModel)]="_editUserModel.segundoApellido" >
@@ -75,7 +85,7 @@
                     </small>
                     <input #codUsuario="ngModel" type="text" name="codUsuario" id="codUsuario" class="form-control col-6"
                         placeholder="Identidad de usuario" ngControl="codUsuario"
-                         value="" [(ngModel)]="_editUserModel.codUsuariocodUsuario" required >
+                         value="" [(ngModel)]="_editUserModel.codUsuario" required >
 
                          <small class="form-text text-muted" *ngIf="codUsuario.errors?.required" >Debes ingresar la Identidad</small>
                          <small class="form-text text-muted" *ngIf="codUsuario.errors?.minlength" >
@@ -113,7 +123,7 @@
 
             <br>
             <div class="row">
-              <div class="col-xs-12 col-md-8 col-lg-12">
+              <div class="col-xs-12 col-md-12 col-lg-12">
                 <!-- Barra de Progreso de Carga de la Imagen -->
                 <div class="progress">
                     <div id="upload-progress-bar" class="progress-bar progress-bar-success"
@@ -126,92 +136,32 @@
                 </div>
                 <p id="status"></p>
 
-                <!-- tabla que muestra los Documentos subidos -->
-                <!-- <table class="table table-striped" >
-                   <thead>
-                     <tr>
-                       <th class="text-center">#</th>
-                       <th class="text-center">Nombre de Documento</th>
-                       <th class="text-center">Extencion</th>
-                       <th class="text-center">Peso/Mb</th>
-                       <th class="text-center">Documento</th>
-                       <th class="text-center">Borrar</th>
-                     </tr>
-                   </thead>
-                   <tbody > -->
-                     <!-- <tr *ngFor="let suchnewrow of JsonOutgetListaDocumentosNew; let homeFormIndex = index">
-                               <td>{{ homeFormIndex + 1 }}</td>
-                               <td class="text-center" title="Código: {{ suchnewrow.nameDoc }}" >{{ suchnewrow.nombreDoc }}</td>
-                               <td class="text-center" >{{ suchnewrow.extDoc }}</td>
-                               <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
-                               <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
-                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
-                                 <img style="width:100px; height:100px; box-shadow:8px 10px 5px 0px #888888"
-                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
-                                   onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
-                                   alt="Cargando Imagen ..." ></a>
-                               </td>
-                               <td class="text-center"> -->
-                                 <!-- <a style="cursor: pointer;" (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )">
-                                   <img src="assets/icons/comunicacion/throw-to-paper-bin.png" title="Borrar Documento" alt="Cargando tarea">
-                                 </a> -->
-                                   <!-- <button  (click)="deleteRowHomeForm(homeFormIndex, suchnewrow.nameDoc, suchnewrow.extDoc )" type="button"
-                                       class="btn btn-danger" style="padding: 2px; cursor:pointer;">
-                                     Borrar</button>
-                               </td>
-                       </tr>
-                   </tbody>
-                 </table> -->
-
-
               </div>
             </div>
 
             <hr class="colorgraph">
             <!-- <input type="button" value="Limpiar" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()" > -->
-            <button type="button" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
+            <button type="button" class="btn btn-warning" tabindex="17"  style="cursor: pointer;" (click)="cleanForm()"  name="button">
               <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando imagen">
               Guardar
             </button>
-            <!-- <input type="button" value="Agregar Documentos ..." data-toggle="modal" data-target="#t_and_c_m" class="btn btn-primary" id="boton" tabindex="18"
-                    [disabled]="!documentosComForm.valid"  style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" > -->
-            <a class="btn btn-primary" data-toggle="modal" data-target="#t_and_c_m" tabindex="18"
-                 style="cursor: pointer;" (click)="listarCodigoCorrespondenciaAgregarActividad()" >
-              <img src="assets/icons/comunicacion/open-folder-with-document.png" alt="Cargando imagen">
-              Agregar Imagen...
-            </a>
+            <button type="button" class="btn btn-success" tabindex="17"  style="cursor: pointer;" (click)="editUser()"  name="button">
+              <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando imagen">
+              Guardar Cambios
+            </button>
+
             <!-- Boton de Enviar la Solicitud -->
           </form>
             <!-- Fin de Formulario -->
-        </div>
-
-            <!-- Modal de Finalizar Actividad -->
-            <div *ngIf="idEstadoModal == 5 " class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-                  data-backdrop="static" data-keyboard="false">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
-                    <h4 class="modal-title" id="myModalLabel">Comunicacion No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
-                    <!-- Loader de Carga de los Datos -->
-                    <div id="loader-2" *ngIf="loading_table == 'show'" >
-                      <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
-                    </div>
-                  </div>
-
-    </div>
-
-
-
-    <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
-    <div class="col-5" onloadedmetadata="">
-      <!-- Imagen del Usuario -->
-      <img src="/assets/images/Loading-Gris-62154.gif" alt="">
-    </div>
-  </div>
-  <!-- Fin de Contenido de la Fila Mayor -->
-
-</div>
+      </div>
 <!-- Fin de Contenedor -->
 
+<!-- Datos Generales de los Usuarios -->
+      <div class="col-4">
+        <img src="{{ urlComplete + identity.imagenUsuario }}" style="width:350px" alt="">
+      </div>
+
+</div>
+
+</div>
 <ng2-toasty [position]="'top-right'" ></ng2-toasty>

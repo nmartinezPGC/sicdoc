@@ -130,7 +130,8 @@ export class ContactosComponent implements OnInit {
     this.consultaContactos = new Contactos ( 0, null, null, null, null, null,
                                              null, null,
                                              null, null, null, null,
-                                             null, null,  0, 0, null, null);
+                                             null, null,  0, 0, null, null,
+                                             null);
 
     // Ejecucion de la Lista de Instituciones
     this.getlistaInstituciones();
@@ -377,7 +378,7 @@ export class ContactosComponent implements OnInit {
     let url = this.urlConfigLocal + "/contactos/contacto-upload-perfil";
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/contactos/contacto-upload-perfil";
     // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/contactos/contacto-upload-perfil";
-    
+
     // Variables del Metodo
     let  error:string;
     let  status:string;
@@ -430,10 +431,10 @@ export class ContactosComponent implements OnInit {
   * ( downloadDocumento ).
   ******************************************************/
   downloadDocumento(downloadUrl){
-    var url= window.URL.createObjectURL( this.urlComplete + "uploads/contactos/perfiles/" );    
-    // var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");    
+    var url= window.URL.createObjectURL( this.urlComplete + "uploads/contactos/perfiles/" );
+    // var url= window.URL.createObjectURL("http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/");
     //var url= window.URL.createObjectURL("http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/");
-    
+
      let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005

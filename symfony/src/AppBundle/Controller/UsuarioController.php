@@ -272,69 +272,67 @@ class UsuarioController extends Controller{
         //Ejecutamos todo el Codigo restante
         $identity = $helpers->authCheck($hash, true);    
         $em = $this->getDoctrine()->getManager();
-        $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+        
+        // Instacia de la Clase de Usuario a Modificar
+        $usuarioEdit = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                 array(
                     "idUsuario" => $identity->sub
             ));        
         $json = $request->get("json", null);
-        $params = json_decode($json);
+        $params = json_decode( $json );
         
-        //Array de Mensajes
-        $data = $data = array(
-                "status" => "error",                
-                "code" => "400",                
-                "msg" => "Usuario no actualizado, hay problemas en los Datos !!"                
-            ); 
         
         //Evaluamos el Json
         if ($json != null) {
-            //Variables que vienen del Json ***********************************************
-            //Seccion de Identificacion ***************************************************
+            //Variables que vienen del Json ************************************
+            //Seccion de Identificacion ****************************************
             //El ID no se incluye; ya que es un campo Serial            
-            $cod_usuario = (isset($params->cod_usuario)) ? $params->cod_usuario : null;
-            $iniciales = (isset($params->iniciales)) ? $params->iniciales : null;
-            $nombre1 = (isset($params->nombre1) && ctype_alpha($params->nombre1) ) ? $params->nombre1 : null;
-            $nombre2 = (isset($params->nombre2) && ctype_alpha($params->nombre2) ) ? $params->nombre2 : null;
-            $apellido1 = (isset($params->apellido1) && ctype_alpha($params->apellido1) ) ? $params->apellido1 : null;
-            $apellido2 = (isset($params->apellido2) && ctype_alpha($params->apellido2) ) ? $params->apellido2 : null;
-            $email = (isset($params->email)) ? $params->email : null;            
+            $cod_usuario = (isset($params->codUsuario)) ? $params->codUsuario : null;
+            $iniciales = (isset($params->inicialesUsuario)) ? $params->inicialesUsuario : null;
+            $nombre1 = (isset($params->primerNombre))  ? $params->primerNombre : null;
+            $nombre2 = (isset($params->segundoNombre)) ? $params->segundoNombre : null;
+            $apellido1 = (isset($params->primerApellido)) ? $params->primerApellido : null;
+            $apellido2 = (isset($params->segundoApellido)) ? $params->segundoApellido : null;
+            $email = (isset($params->emailUsuario)) ? $params->emailUsuario : null;            
           
-            //Datos de Bitacora *************************************************************************************
+            //Datos de Bitacora ************************************************
             $createdAt = new \DateTime("now");
-            $image = (isset($params->pdfDocumento)) ? $params->pdfDocumento : null;          
+            //$image = (isset($params->pdfDocumento)) ? $params->pdfDocumento : null;          
             
-            //Validamos el Email ************************************************************************************
-            $emailConstraint = new Assert\Email();
-            $emailConstraint->message = "El Email no es valido!!";
+            //Validamos el Email ***********************************************
+            //$emailConstraint = new Assert\Email();
+            //$emailConstraint->message = "El Email no es valido!!";
             
-            $valid_email = $this->get("validator")->validate($email, $emailConstraint);
-            //Entitie Manager Definition ****************************************************************************
+            //$valid_email = $this->get("validator")->validate($email, $emailConstraint);
+            //Entitie Manager Definition ***************************************
             $em = $this->getDoctrine()->getManager();
             
             if ( $nombre1 != null && $apellido1 != null ){
-                //Instanciamos la Entidad TblUsuario *****************************************                
-                //$usuario = new TblUsuarios();                
+                //Instanciamos la Entidad TblUsuario ***************************
+                
+                //$usuarioEdit = new TblUsuarios(); 
+
                 //Seteamos los valores de Identificacion ***********************
-                $usuario->setcodUsuario($cod_usuario);                
-                $usuario->setNombre1Usuario($nombre1);
-                $usuario->setNombre2Usuario($nombre2);
-                $usuario->setApellido1Usuario($apellido1);
-                $usuario->setApellido2Usuario($apellido2);
+                $usuarioEdit->setcodUsuario($cod_usuario);                
+                $usuarioEdit->setNombre1Usuario($nombre1);
+                $usuarioEdit->setNombre2Usuario($nombre2);
+                $usuarioEdit->setApellido1Usuario($apellido1);
+                $usuarioEdit->setApellido2Usuario($apellido2);
                 
                 //Seteamos el Resto de campos de la Tabla: TblUsuarios *********
-                $usuario->setInicialesUsuario($iniciales);
+                $usuarioEdit->setInicialesUsuario($iniciales);
                 
-                $usuario->setImagenUsuario($image);
+                // $usuario->setImagenUsuario($image);
                 //Seteamos los valores de la Bitacora **************************
-                $usuario->setFechaModificacion($createdAt);  
-                
+                $usuarioEdit->setFechaModificacion($createdAt);  
+                    
                 
                 //Verificacion del Codigo y Email en la Tabla: TblUsuarios *****                
                 $isset_user_mail = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
                         array(
                           "emailUsuario" => $email
                         ));
-        
+                
                 //Verificacion del Codigo del Usuario **************************
                 $isset_user_cod = $em->getRepository("BackendBundle:TblUsuarios")->findBy(
                         array(
@@ -342,14 +340,14 @@ class UsuarioController extends Controller{
                         ));
                 
                 //Verificamos que el retorno de la Funcion sea = 0 *************                
-                if(count($isset_user_cod) == 0 || $identity->email == $email ){
-                    $em->persist($usuario);                                
+                if(count( $isset_user_cod) == 0 || $identity->email == $email ){
+                    $em->persist($usuarioEdit);                                
                     $em->flush();
                     //Seteamos el array de Mensajes a enviar *******************
                     $data = array(
                         "status" => "success",                
                         "code" => "200",                
-                        "msg" => "Usuario actualizado !!"                
+                        "msg" => "Usuario actualizado, debes cerrar cesion para visualizar los cambios !!"                
                     );
                 } else {
                     $data = array(
@@ -358,12 +356,18 @@ class UsuarioController extends Controller{
                         "msg" => "Error al registrar, el Usuario ya existe !!"                
                     );
                 }
-            }
+            } else {
+                $data = array(
+                    "status" => "error",                
+                    "code" => "300",                
+                    "msg" => "El Nombre y Apellido no pueden ser nulos !! . $nombre1 "                
+                );
+            }            
         } else {
             $data = array(
                 "status" => "error",                
                 "code" => "400",                
-                "msg" => "Autorizacion de Token no valida !!"                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha caducado !!"                
             );
         }
         }
@@ -657,5 +661,62 @@ class UsuarioController extends Controller{
         
         return $fecha_salida;
     } // FIN | FND00005
+    
+    
+    /**
+     * @Route("/user-details", name="user-details")
+     * Creacion del Controlador: Detalle de los Usuarios
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00006
+     */
+    public function detailsUserAction(Request $request)
+    {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $json = $request->get("json", null);
+        $params = json_decode($json);
+        
+        //Evaluamos el Json
+        if ($json != null) {
+            //Variables que vienen del Json ************************************
+            ////Recogemos el ID del Usuario ************************************
+            $id_usuario   = (isset($params->idUser)) ? $params->idUser : null;
+            
+            // Query para Obtener todos los Estados de la Tabla: TblUsuarios
+            $userDetails= $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                    array(
+                        "idUsuario" => $id_usuario
+                    ));
+            
+
+            // Condicion de la Busqueda
+            if (count( $userDetails ) >= 1 ) {
+                $data = array(
+                    "status" => "success",
+                    "code"   => 200,
+                    "data"   => $userDetails
+                );
+            }else {
+                $data = array(
+                    "status" => "error",
+                    "code"   => 400,
+                    "msg"    => "No existe Datos de Funcionario para este Usuario !!"
+                );
+            }
+        }else {
+            $data = array(
+                "status" => "error",
+                "code"   => 400,
+                "msg"    => "No existe Datos en la Tabla de Funcionarios, comuniquese con el Administrador !!"
+            );
+        }
+               
+        return $helpers->parserJson($data);
+    }//FIN | FND00006
     
 }
