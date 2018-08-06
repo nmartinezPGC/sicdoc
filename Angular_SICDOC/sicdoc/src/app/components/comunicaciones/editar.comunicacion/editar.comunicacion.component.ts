@@ -20,6 +20,8 @@ import { NgForm }    from '@angular/forms';
 // Importamos la CLase Usuarios del Modelo
 import { EditarComunicacionModel } from '../../../models/comunicaciones/editar.comunicacion.model'; // Modelo a Utilizar
 
+import { VinculacionComunicacionService } from '../../../services/comunicaciones/vinculacion.service'; //Servico Vinculacion de Comunicacion
+
 // Libreria toasty
 import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} from 'ng2-toasty';
 
@@ -29,7 +31,7 @@ declare var $:any;
   selector: 'app-editar.comunicacion',
   templateUrl: './editar.comunicacion.component.html',
   styleUrls: ['./editar.comunicacion.component.css'],
-  providers: [ ListasComunesService, EditarComunicacionService, CaseSecuencesService ]
+  providers: [ ListasComunesService, EditarComunicacionService, CaseSecuencesService, VinculacionComunicacionService ]
 })
 export class EditarComunicacionComponent implements OnInit {
   // Propiedades de la Clase
@@ -42,6 +44,11 @@ export class EditarComunicacionComponent implements OnInit {
   public status;
   public statusConsultaCom;
   public mensajes;
+
+  private paramsSubDirComVinculante;
+  public JsonOutgetlistaSubDireccionSRECIComVinculantes:any[]; // Uso para las Comunicaciones viculantes | 2018-02-20
+
+  public JsonOutgetlistaTiposDocumentos:any[];
 
   // Loader
   public loading = "hide";
@@ -81,7 +88,14 @@ export class EditarComunicacionComponent implements OnInit {
   // Variables de Datos de envio
   public paramSearchValueSend:string = "";
 
+  public paramsComVinculante; // Parametros para las Comunicacion Vinculantes
+  public JsonOutgetlistaComunicacionVinculante:any[];  // Json para las Comunciacnon Vinculantes
   public paramsDocumentos;
+
+  // Select de Vinculacion de Comunicacion
+  itemComunicacionVincList = [];
+  selectedComunicacionVincItems = [];
+  settingsComunicacionVinc = {};
 
   // Variables Modales
   public codOficioIntModal;
@@ -147,7 +161,8 @@ export class EditarComunicacionComponent implements OnInit {
                private _appComponent: AppComponent,
                private changeDetectorRef: ChangeDetectorRef,
                private _http: Http,
-               private toastyService:ToastyService) {
+               private toastyService:ToastyService,
+               private _vinculacionComunicacionService: VinculacionComunicacionService,) {
        // Codigo del Constructor
        // Seteo de la Ruta de la Url Config
        this.urlConfigLocal = this._EditarComunicacionService.url;
@@ -159,11 +174,28 @@ export class EditarComunicacionComponent implements OnInit {
 
        // Cinfuguracion de los Selects
        this.settings = {
-         singleSelection: true,
-         text: "Selecciona el Funcionario que se Trasladara la Comunicación ... ",
-         searchPlaceholderText: "Busca al Funcionario por su Nombre ó Apellido",
-         enableSearchFilter: true
+         singleSelection: false,
+         text: "Selecciona las Direcciones acompañantes ... ",
+         selectAllText: 'Selecciona Todos',
+         unSelectAllText: 'Deselecciona Todos',
+         enableSearchFilter: true,
+         badgeShowLimit: 6
        };
+
+       // Configuracion del Select Dinamico
+       this.settingsComunicacionVinc = {
+        singleSelection: false,
+        text: "Selecciona las Comunicaciones Vinculantes ... ",
+        selectAllText: 'Selecciona Todas',
+        enableCheckAll: false,
+        unSelectAllText: 'Deselecciona Todas',
+        searchPlaceholderText: 'Selecciona la Comunicación que relaciona el tema ...',
+        enableSearchFilter: true,
+        limitSelection:7,
+        badgeShowLimit: 7,
+        maxHeight: 170,
+        //limitSelection:6
+      };
 
   } // Fin de Constructor
 
@@ -189,7 +221,12 @@ export class EditarComunicacionComponent implements OnInit {
             "", "", "", "" ,"", "", "", "",
             "", "",
             "", "", "",
-            "", "");
+            "", "", "");
+
+            this.selectedItems = [];
+            this.selectedComunicacionVincItems = [];
+            this.itemList = [];
+            this.itemComunicacionVincList = [];
 
       // Iniciamos los Parametros de Sub Direcciones
       this.datosConsulta = {
@@ -220,12 +257,62 @@ export class EditarComunicacionComponent implements OnInit {
        "idTipoInstitucion"  : ""
      };
 
+     // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
+     this.paramsSubDirComVinculante = {
+       "idDireccionSreciComVinc"  : ""
+     };
+
+     this.paramsComVinculante = {
+       "idDeptoFuncional"  : "",
+       "idTipoDocumento"  : "",
+       "idTipoComunicacion"  : ""
+     };
+
      // Lista de Direcciones
      // this.getlistaDireccionesSRECI();
      this.getlistaPaises();
      this.getlistaTipoInstituciones();
 
+     this.getlistaTipoDocumentos();
+
+     this.getlistaDireccionesSRECI();
+
   } // FIN | ngOnInit()
+
+  /******************************************************
+   * Funiones de Seleccion en Nuevo Control del Listas
+   * Metodologia: ng-selectec2
+   * Fecha: 2018-01-19
+   * Casos de uso: Lista de las Comunicacones viculantes
+  *******************************************************/
+  onItemComVinculanteSelect(item: any) {
+    console.log(item);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this._editarComunicacionModel.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this._editarComunicacionModel.comunicacionesVinculantes );
+  }
+
+  OnItemComVinculanteDeSelect(item: any) {
+    console.log(item);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this._editarComunicacionModel.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this._editarComunicacionModel.comunicacionesVinculantes );
+  }
+
+  onSelectComVinculanteAll(items: any) {
+    console.log(items);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this._editarComunicacionModel.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this._editarComunicacionModel.comunicacionesVinculantes );
+  }
+
+  onComVinculanteDeSelectAll(items: any) {
+    console.log(items);
+    this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+    this._editarComunicacionModel.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+    console.log( this._editarComunicacionModel.comunicacionesVinculantes );
+  }
+
 
 
   /*********************************************************
@@ -264,7 +351,7 @@ export class EditarComunicacionComponent implements OnInit {
             this.ngOnInit();
 
             //Cerramos el Loading
-            //Oculta el Div de Alerta despues de 3 Segundos          
+            //Oculta el Div de Alerta despues de 3 Segundos
             setTimeout(function() {
                 $("#alertSuccess").fadeOut(1500);
             },3000);
@@ -588,6 +675,157 @@ export class EditarComunicacionComponent implements OnInit {
            }
          });
     } // FIN : FND-000010
+
+
+    /*****************************************************
+    * Funcion: FND-00011.2
+    * Fecha: 20-01-2018
+    * Descripcion: Limpia el Arreglo de Contactos
+    * ( cleanComunicacionVinculante ).
+    ******************************************************/
+    cleanComunicacionVinculante(){
+      //Borra el Contenido del Arreglo de Comunicacones Vinculante
+      this.paramsComVinculante = {
+        "idDeptoFuncional"  : "",
+        "idTipoDocumento"  : "",
+        "idTipoComunicacion"  : ""
+      };
+    }
+
+
+    /*****************************************************
+    * Funcion: FND-000021
+    * Fecha: 20-02-2018
+    * Descripcion: Carga la Lista de las Direcciones de
+    * SRECI
+    * Objetivo: Obtener la lista de las Direcciones SRECI
+    * de la BD, Llamando a la API, por su metodo
+    * (dir-sreci-list).
+    ******************************************************/
+    getlistaDireccionesSRECI() {
+      //Llamar al metodo, de Login para Obtener la Identidad
+      this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              // alert(response.msg);
+              //Alerta de Mensajes
+              this.addToast(4,"Error",response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetlistaDireccionSRECI = response.data;
+            }
+          });
+    } // FIN : FND-000021
+
+
+    /*****************************************************
+    * Funcion: FND-000022
+    * Fecha: 20-02-2018
+    * Descripcion: Carga la Lista de las Sub Direcciones de
+    * SRECI
+    * Objetivo: Obtener la lista de las Direcciones SRECI
+    * de la BD, Llamando a la API, por su metodo
+    * ( subdir-sreci-list ).
+    ******************************************************/
+    getlistaSubDireccionesSRECIComVinculante() {
+      //Llamar al metodo, de Login para Obtener la Identidad
+      this.paramsSubDirComVinculante.idDireccionSreciComVinc = this._editarComunicacionModel.idDireccionSreci;
+
+      console.log(this.paramsSubDirComVinculante);
+
+      this._listasComunes.listasComunes( this.paramsSubDirComVinculante,"com-vinculantes-subdir-sreci-list").subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+              // alert(response.msg);
+
+              //Alerta de Mensajes
+              this.addToast(4,"Error",response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+            }
+          });
+    } // FIN : FND-000022
+
+    /*****************************************************
+    * Funcion: FND-00001
+    * Fecha: 25-09-2017
+    * Descripcion: Carga la Lista de los Tipos de Documentos
+    * Objetivo: Obtener la lista de los Tipos de usuarios
+    * de la BD, Llamando a la API, por su metodo
+    * ( tipo-documento-list ).
+    ******************************************************/
+      getlistaTipoDocumentos() {
+        this._listasComunes.listasComunes( "" ,"tipo-documento-list?activo=1").subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetlistaTiposDocumentos = response.data;
+              // alert(response.msg);
+              this.addToast(4,"Error",response.msg);
+            }else{
+              this.JsonOutgetlistaTiposDocumentos = response.data;
+              // console.log( this.JsonOutgetlistaTiposDocumentos );
+            }
+          });
+    } // FIN : FND-00001
+
+
+    /********************************************************
+    * Funcion: FND-0000020
+    * Fecha: 16-02-2018
+    * Descripcion: Carga la Lista de Todas las Comunicación
+    * que tiene el Departamento Funcional del Usuario
+    * Objetivo: Obtener la lista de Todas las Comunicaciones
+    * de la BD, Llamando a la API, por su metodo
+    * Params: idDeptoFuncional, idTipoDocumento, idTipoComunicacion
+    * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
+    **********************************************************/
+    getlistaComunicacionVinculanteAll(idOpcion:number) {
+      // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
+      // Condicionamos la Busqueda
+      if( idOpcion == 1 ){
+        this.paramsComVinculante.idDeptoFuncional = this._editarComunicacionModel.idDeptoFuncional;
+        this.paramsComVinculante.idTipoDocumento  = this._editarComunicacionModel.idTipoDocumento;
+        this.paramsComVinculante.idTipoComunicacion = [1];
+        //console.log('Caso #1 Ingreso');
+      }else if ( idOpcion == 2 ){
+        this.paramsComVinculante.idDeptoFuncional = this._editarComunicacionModel.idDeptoFuncional;
+        this.paramsComVinculante.idTipoDocumento  = this._editarComunicacionModel.idTipoDocumento;
+        this.paramsComVinculante.idTipoComunicacion = [2];
+        //console.log('Caso #2 Salidas');
+      }else if ( idOpcion == 3 ){
+        this.paramsComVinculante.idDeptoFuncional = this._editarComunicacionModel.idDeptoFuncional;
+        this.paramsComVinculante.idTipoDocumento  = this._editarComunicacionModel.idTipoDocumento;
+        this.paramsComVinculante.idTipoComunicacion = [1,2];
+        //console.log('Caso #3 Ambas');
+      }
+
+      //console.log(this.paramsComVinculante);
+      this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetlistaComunicacionVinculante = response.data;
+              this.itemComunicacionVincList = [];
+              // alert(response.msg);
+              //Alerta de Mensajes
+              this.addToast(4,"Error",response.msg);
+            }else{
+              this.JsonOutgetlistaComunicacionVinculante = response.data;
+
+              this.itemComunicacionVincList = this.JsonOutgetlistaComunicacionVinculante;
+              //console.log( this.JsonOutgetlistaComunicacionVinculante );
+            }
+          });
+    } // FIN : FND-0000020
 
 
 }

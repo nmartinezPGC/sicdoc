@@ -41,6 +41,7 @@
               <th>Tema de Comunicación</th>
               <th>Fecha Creación</th>
               <th>Fecha Entrega.</th>
+              <th>Com/Vinculante</th>
               <th>Estado</th>
               <th style="width:95px">Accion</th>
             </tr>
@@ -56,6 +57,7 @@
                 <!-- <td> {{ timeConverter( item.fechaMaxEntrega.timestamp )  }} </td> -->
               <td> {{ item.fechaIngreso | date :'dd-MM-yyyy' }} </td>
               <td> {{ item.fechaMaxEntrega | date :'dd-MM-yyyy' }} </td>
+              <td> {{ (item.comunicacionVinculante  !== null) ? ( item.comunicacionVinculante ) : "No tiene Vinculación" }} </td>
               <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-info' : item.idEstado == 8,
                               'text-success': item.idEstado == 7 }" >
                   {{ item.descripcionEstado }}

@@ -1571,7 +1571,7 @@ class ListasComunesController extends Controller {
                         "idEstado"              => [3,8,7]                        
                         //"idTipoDocumento"       => [1]
                     ), array("idCorrespondenciaEnc" => "ASC", "fechaIngreso" => "ASC") );*/
-            $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+            $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'inst.descInstitucion, inst.perfilInstitucion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
                                     . 'tcom.idTipoComunicacion, dfunc.idDeptoFuncional, fasig.idFuncionario, '

@@ -741,7 +741,7 @@ class IngresoCorrespondenciaController extends Controller{
                 $desc_correspondencia     = ($params->descCorrespondencia != null) ? $params->descCorrespondencia : null ;                
                 $desc_correspondencia_anterior  = ($params->descComunicacionAnterior != null) ? $params->descComunicacionAnterior : null ;                
                 $tema_correspondencia     = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
-                $tema_correspondencia_anterior   = ($params->temaComunicacionAnterior != null) ? $params->temaComunicacionAnterior : null ;                
+                $tema_correspondencia_anterior   = ($params->temaComunicacionAnterior != null) ? $params->temaComunicacionAnterior : null ;
                 $id_estado     = ($params->idEstado != null) ? $params->idEstado : null ;
                 
                 $fecha_modificacion       = new \DateTime('now');
@@ -757,6 +757,9 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
                 $cod_usuario          = $identity->sub;
+                
+                // 2018-02-19 | Comunicaciones Vinculantes al Tema
+                $comVinculante_send   = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
                 
                 // Envio por Json el Codigo de Estados | Buscar en la Tabla: TblEstados
                 //$cod_estado           = ($params->cod_estado != null) ? $params->cod_estado : null ;
@@ -790,8 +793,36 @@ class IngresoCorrespondenciaController extends Controller{
                             if (isset($identity->sub)) {
                                 //Seteamos los valores de los campos modificados
                                 $correspondenciaEdit->setDescCorrespondenciaEnc($desc_correspondencia);
-                                $correspondenciaEdit->settemaComunicacion($tema_correspondencia);
+                                $correspondenciaEdit->setTemaComunicacion($tema_correspondencia);
                                 $correspondenciaEdit->setFechaModificacion($fecha_modificacion);
+                                
+                                /* 2018-02-19
+                                * Campo de las Sub Comunicaciones Vinculantes
+                                * MEJ-000002
+                                */
+                                // *****************************************************
+                                if( $comVinculante_send != null ){
+                                    // Se convierte el Array en String
+                                    $ComVinc_array_convert   = json_encode($comVinculante_send);
+                                    $ComVinc_array_convert2  = json_decode($ComVinc_array_convert);
+
+                                    // Recorreros los Items del Array
+                                    $codigoComunicacionAcum = "";
+
+                                    foreach ( $ComVinc_array_convert2 as $arr ){                                
+                                        $idComunicacionVinculante     = $arr->id;
+                                        $codigoComunicacionVinculante = $arr->itemName;
+
+                                        if( $codigoComunicacionAcum != "" ){
+                                            $codigoComunicacionAcum = $codigoComunicacionAcum . ', ' . $codigoComunicacionVinculante;
+                                        }else {
+                                            $codigoComunicacionAcum = $codigoComunicacionVinculante;
+                                        }
+                                        // Asignamos las Sub Direcciones al Listado
+                                        $correspondenciaEdit->setComunicacionVinculante( $codigoComunicacionAcum );
+                                    }
+                                }
+                                // FIN | MEJ-000002
                                 
                                 //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
                                 //Instanciamos de la Clase TblInstituciones

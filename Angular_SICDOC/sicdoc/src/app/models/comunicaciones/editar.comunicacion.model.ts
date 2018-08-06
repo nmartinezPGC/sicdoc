@@ -86,6 +86,8 @@ export class EditarComunicacionModel{
       public descComunicacionAnterior:string,
       public temaComunicacionAnterior:string,
 
+      public comunicacionesVinculantes,
+
     ){}
 
 }
