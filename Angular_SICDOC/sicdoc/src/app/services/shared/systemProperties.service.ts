@@ -25,8 +25,8 @@ export class SystemPropertiesService {
   public urlServerResourse:string = "http://172.17.0.250/sicdoc/symfony/web/";
 
   // Entorno de Servidor | 3
-  public urlServerLocalConfig:string = "http://172.17.3.128/sicdoc/symfony/web/app.php";
-  public urlServerLocalResourse:string = "http://172.17.3.128/sicdoc/symfony/web/";
+  public urlServerLocalConfig:string = "http://172.17.0.128/sicdoc/symfony/web/app.php";
+  public urlServerLocalResourse:string = "http://172.17.0.128/sicdoc/symfony/web/";
 
   // Indicador del entorno a Copilar | 1 = Server | 2 = ServerLocal | 3 = Localhost
   public indicatorIPCompiler:number = 3;
