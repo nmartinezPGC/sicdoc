@@ -769,7 +769,7 @@ class IngresoCorrespondenciaController extends Controller{
                 
                 
                 //Evaluamos que el Codigo de Usuario no sea Null y la Descripcion tambien
-                if($correspondenciaId != null && $desc_correspondencia != null){
+                if($correspondenciaId != null && $desc_correspondencia != null) {
                     //La condicion fue Exitosa
                     //Instancia del Doctrine
                     $em = $this->getDoctrine()->getManager();

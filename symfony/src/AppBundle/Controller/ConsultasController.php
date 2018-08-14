@@ -94,9 +94,11 @@ class ConsultasController extends Controller{
                     // Localizamos el Oficio que se va a Buscar
                     // Verificacion del Tipo de Funcionario  ************
                     // Realizamos Condicion con swith ( $id_tipo_funcionario )
+                    $opt = 0;
                     switch ( $id_tipo_funcionario )
                     {
                         case 1: // Administrador del Sistema
+                            $opt = 1;
                             /*************************************************** 
                             * Query para Obtener los Datos de la Consulta ******                            
                             * Incidencia: INC.00001 | Consulta Lenta | Metodo  *
@@ -112,7 +114,7 @@ class ConsultasController extends Controller{
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
-                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '                                    
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
@@ -128,13 +130,14 @@ class ConsultasController extends Controller{
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 4: // Administrador de Correspondencia
+                            $opt = 2;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
-                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
@@ -156,13 +159,14 @@ class ConsultasController extends Controller{
                             $opcion_salida = $codigo_oficio_interno;
                             break;
                         case 6: // Director de Area
+                            $opt = 3;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
-                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
@@ -186,13 +190,14 @@ class ConsultasController extends Controller{
                             $opcion_salida = $codigo_oficio_externo;
                             break;
                         case 2: // Analista de Cartera / Funcionario
+                            $opt = 4;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tdoc.descTipoDocumento, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
-                                    . 'inst.descInstitucion, inst.perfilInstitucion '
+                                    . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
@@ -226,6 +231,7 @@ class ConsultasController extends Controller{
                             "status" => "success", 
                             "code"   => 200,
                             "recordsTotal" => $totalCorrespondenciaFind,
+                            "opcionSeleccionada" => $opt,
                             //"recordsFiltered" => $totalCorrespondenciaFind,
                             //"draw" => $totalCorrespondenciaFind,
                             "msg"    => "Se ha encontrado la Informacion solicitada",

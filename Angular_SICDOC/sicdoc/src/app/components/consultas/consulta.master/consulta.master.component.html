@@ -50,6 +50,7 @@
                       <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
                       <th>Funcionario Asignado</th>
+                      <th>Com / Vinculante</th>
                       <th>Estado</th>
                       <th>Ver</th>
                   </tr>
@@ -73,6 +74,7 @@
                     {{ item.temaComunicacion }}
                   </td>
                   <td > {{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }} </td>
+                  <td > {{ (item.comunicacionVinculante  !== null) ? ( item.comunicacionVinculante ) : "No tiene Vinculación" }}</td>
                   <td > <a style="cursor: pointer;" class="nav-link">
                       <span [ngClass]="{ 'text-warning': item.idEstado == 3,
                                       'text-danger': item.idEstado == 4,
