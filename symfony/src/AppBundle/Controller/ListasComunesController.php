@@ -1352,6 +1352,7 @@ class ListasComunesController extends Controller {
         $params = json_decode($json);
         
         //Evaluamos el Json
+        // var_dump($json);
         if ($json != null) {            
             //Variables que vienen del Json ************************************
             //Recogemos el ID del Depto. Funcional *****************************
@@ -1361,7 +1362,7 @@ class ListasComunesController extends Controller {
             
             //Evaluamos, Si el Tipo de Usuario es Director General, solo vea los
             //Directores Subordinados ( TipoUsuario = 6 )
-            if( $tipo_usuario == 5 ){
+            if( $tipo_usuario == 4 ){
                 // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
                 $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
                     array(
