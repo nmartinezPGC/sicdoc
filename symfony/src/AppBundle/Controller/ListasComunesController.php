@@ -1362,7 +1362,7 @@ class ListasComunesController extends Controller {
             
             //Evaluamos, Si el Tipo de Usuario es Director General, solo vea los
             //Directores Subordinados ( TipoUsuario = 6 )
-            if( $tipo_usuario == 4 ){
+            if( $tipo_usuario == 5 ){
                 // Query para Obtener todos los Funcionarios de la Tabla: TblFuncionarios
                 $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
                     array(
