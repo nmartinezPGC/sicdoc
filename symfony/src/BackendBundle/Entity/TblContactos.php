@@ -544,4 +544,33 @@ class TblContactos
     {
         return $this->idUsuarioModifica;
     }
+    /**
+     * @var string
+     */
+    private $trato;
+
+
+    /**
+     * Set trato
+     *
+     * @param string $trato
+     *
+     * @return TblContactos
+     */
+    public function setTrato($trato)
+    {
+        $this->trato = $trato;
+
+        return $this;
+    }
+
+    /**
+     * Get trato
+     *
+     * @return string
+     */
+    public function getTrato()
+    {
+        return $this->trato;
+    }
 }

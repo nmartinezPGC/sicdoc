@@ -17,6 +17,7 @@
                 cellspacing="0" style="font-size:15px;" *ngIf="loadTabla1 == true">
               <thead>
                   <tr>
+                      <th>Trato</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Telefonos</th>
@@ -31,24 +32,25 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of JsonOutgetlistaContactosEnc">
+                  <td >{{ item.trato }}</td>
                   <td >{{ item.nombre1Contacto }} - {{ item.nombre2Contacto }}</td>
                   <td >{{ item.apellido1Contacto }} - {{ item.apellido2Contacto }}</td>
-                  <td >{{ item.celular1Contacto }} - {{ item.celular2Contacto }}</td>
+                  <td >{{ item.celular1Contacto }} - {{ item.telefono1Contacto }}</td>
                   <td >{{ item.email1Contacto }} - {{ item.email2Contacto }}</td>
-                  <td >{{ item.idInstitucion.descInstitucion }}</td>
+                  <td style="cursor: help" title="{{ item.idInstitucion.perfilInstitucion }}">{{ item.idInstitucion.descInstitucion }}</td>
                   <td >{{ item.idInstitucion.idTipoInstitucion.descTipoInstitucion }}</td>
                   <td >{{ item.cargoFuncional }}</td>
                   <td >{{ item.idFuncionario.nombre1Funcionario }}
                        {{ item.idFuncionario.apellido1Funcionario }}</td>
-                  <td >{{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}</td>
+                  <td style="cursor: help" title="{{ item.idFuncionario.idDeptoFuncional.descDeptoFuncional }}" >
+                    {{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}
+                  </td>
                   <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                     href="{{ urlComplete + item.perfilContacto }}" target="_blank">
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
                       <a *ngIf="item.fotoContacto != null && item.fotoContacto.length > 5"
                         href="{{ urlComplete + item.fotoContacto }}" target="_blank">
-                        <!-- href="http://172.17.0.250/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
-                        <!-- href="http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/{{ item.fotoContacto }}" target="_blank"> -->
                           <i class="material-icons">photo</i>
                       </a>
                   </td>

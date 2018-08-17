@@ -119,6 +119,12 @@ BackendBundle\Entity\TblContactos:
             options:
                 fixed: false
             column: cargo_funcional
+        trato:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
     manyToOne:
         idUsuarioModifica:
             targetEntity: TblUsuarios
