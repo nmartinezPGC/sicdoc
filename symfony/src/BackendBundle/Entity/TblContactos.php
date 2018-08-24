@@ -573,4 +573,62 @@ class TblContactos
     {
         return $this->trato;
     }
+    /**
+     * @var boolean
+     */
+    private $habilitado = true;
+
+
+    /**
+     * Set habilitado
+     *
+     * @param boolean $habilitado
+     *
+     * @return TblContactos
+     */
+    public function setHabilitado($habilitado)
+    {
+        $this->habilitado = $habilitado;
+
+        return $this;
+    }
+
+    /**
+     * Get habilitado
+     *
+     * @return boolean
+     */
+    public function getHabilitado()
+    {
+        return $this->habilitado;
+    }
+    /**
+     * @var string
+     */
+    private $tipoContacto;
+
+
+    /**
+     * Set tipoContacto
+     *
+     * @param string $tipoContacto
+     *
+     * @return TblContactos
+     */
+    public function setTipoContacto($tipoContacto)
+    {
+        $this->tipoContacto = $tipoContacto;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoContacto
+     *
+     * @return string
+     */
+    public function getTipoContacto()
+    {
+        return $this->tipoContacto;
+    }
 }

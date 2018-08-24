@@ -12,12 +12,15 @@
       <!-- Opcion de Nuevo Contacto -->
       <button type="button" class="btn btn-outline-primary"
         data-toggle="modal" data-target="#t_and_c_m">Nuevo Contacto</button>
+        <br><br>
         <!-- Tabla de Contactos -->
-        <table id="example" class="table table-striped table-bordered"
+        <div class="col-xs-12 col-md-12 col-lg-12">
+        <table id="example" class="table table-striped table-hover table-responsive"
                 cellspacing="0" style="font-size:15px;" *ngIf="loadTabla1 == true">
               <thead>
                   <tr>
                       <th>Trato</th>
+                      <th>Tipo Contacto</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Telefonos</th>
@@ -27,12 +30,13 @@
                       <th>Cargo Funcional</th>
                       <th>Contacto SRECI</th>
                       <th>Dirección SRECI</th>
-                      <th>Download</th>
+                      <!-- <th>Download</th> -->
                   </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of JsonOutgetlistaContactosEnc">
-                  <td >{{ item.trato }}</td>
+                  <td style="cursor: pointer" >{{ item.trato }}</td>
+                  <td >{{ item.tipoContacto }}</td>
                   <td >{{ item.nombre1Contacto }} - {{ item.nombre2Contacto }}</td>
                   <td >{{ item.apellido1Contacto }} - {{ item.apellido2Contacto }}</td>
                   <td >{{ item.celular1Contacto }} - {{ item.telefono1Contacto }}</td>
@@ -45,7 +49,7 @@
                   <td style="cursor: help" title="{{ item.idFuncionario.idDeptoFuncional.descDeptoFuncional }}" >
                     {{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}
                   </td>
-                  <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
+                  <!-- <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                     href="{{ urlComplete + item.perfilContacto }}" target="_blank">
                           <i class="material-icons">picture_as_pdf</i>
                       </a>
@@ -53,10 +57,12 @@
                         href="{{ urlComplete + item.fotoContacto }}" target="_blank">
                           <i class="material-icons">photo</i>
                       </a>
-                  </td>
+                  </td> -->
                 </tr>
               <tbody>
             </table>
+
+            </div>
           <!-- Fin de Tabla de Contactos -->
 
             <!-- Modal Detalle de la Comunicacion Seleccionada -->
@@ -117,11 +123,27 @@
                           <small class="form-text text-muted" *ngIf="email1Contacto.errors?.pattern" >el campo no tiene formato de correo</small>
                           <small class="form-text text-muted" *ngIf="email1Contacto.errors?.required" >Ingresa el Correo de Contacto</small>
                           </div>
-                          <div class="col-xs-4 col-md-4 col-lg-4">
+                          <!-- <div class="col-xs-4 col-md-4 col-lg-4">
                             <label for="exampleInputEmail1">Segundo Correo</label>
                             <input #email2Contacto="ngModel" type="mail" class="form-control" name="email2Contacto" id="email2Contacto" placeholder="name@example.com"
                                 [(ngModel)]="consultaContactos.email2Contacto" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                           <small class="form-text text-muted" *ngIf="email2Contacto.errors?.pattern" >el campo no tiene formato de correo</small>
+                          </div> -->
+                          <!-- Institucion de Contacto-->
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label >Trato de Contacto</label>
+                              <select #tratoContacto="ngModel" name="tratoContacto" id="tratoContacto" required
+                                  ngControl="tratoContacto" [(ngModel)]="consultaContactos.tratoContacto" class="form-control">
+                                <option value="Licenciado(a)">Licenciado(a)</option>
+                                <option value="Ingeniero(a)">Ingeniero(a)</option>
+                                <option value="Abogado(a)">Abogado(a)</option>
+                                <option value="Director(a)">Director(a)</option>
+                                <option value="Ministro(a)">Ministro(a)</option>
+                                <option value="Asesor(a)">Asesor(a)</option>
+                                <option value="Jefe(a)">Jefe(a)</option>
+                                <option value="Master">Master</option>
+                                <option value="Doctor(a)">Doctor(a)</option>
+                              </select>
                           </div>
 
                           <div class="col-xs-4 col-md-4 col-lg-4">
@@ -134,7 +156,7 @@
 
                         <hr>
                         <!-- Seccion de Telefonia -->
-                        <h4>Datos de Telefonos</h4>
+                        <h4>Datos de Telefonos y Tipo de Contacto</h4>
                         <div class="row">
                           <!-- Celular de Contacto -->
                           <div class="col-xs-4 col-md-4 col-lg-4">
@@ -156,21 +178,33 @@
                              <small class="form-text text-muted" *ngIf="telefono1Contacto.errors?.pattern" >Solo se permite Inresar Números</small>
                           </div>
 
+                          <!-- Institucion de Contacto-->
+                          <div class="col-xs-4 col-md-4 col-lg-4">
+                            <label >Tipo de Contacto</label>
+                              <select #tipoContacto="ngModel" name="tipoContacto" id="tipoContacto" required
+                                  ngControl="tipoContacto" [(ngModel)]="consultaContactos.tipoContacto" class="form-control">
+                                <option value="REDECIH">REDECIH</option>
+                                <option value="REDECIP">REDECIP</option>
+                                <option value="GOBIERNO">GOBIERNO</option>
+                                <option value="PRIVADO">PRIVADO</option>
+                              </select>
+                          </div>
+
                         </div>
 
                         <hr>
                          <!-- Seccion de Relaciones -->
                          <h4>Datos de Institución del Contacto</h4>
                          <div class="row">
-                          <!-- Institucion de Contacto-->
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
-                             <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idInstitucion"
-                                 [(ngModel)]="searchStr" inputId="1" required
-                                 [datasource]="dataService" [minSearchLength]="2" textSearching="Buscando ..."
-                                 textNoResults="No se han encontrado nada ..."
-                                 placeholder="Selecciona una Institucion" (selected)="onSelected($event)" >
-                             </ng2-completer>
-                              <!-- <p>Selected: {{selectedInstitucion}}</p> -->
+                            <!-- Institucion de Contacto-->
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
+                               <ng2-completer inputClass="form-control"  fieldTabindex="true" name="idInstitucion"
+                                   [(ngModel)]="searchStr" inputId="1" required
+                                   [datasource]="dataService" [minSearchLength]="2" textSearching="Buscando ..."
+                                   textNoResults="No se han encontrado nada ..."
+                                   placeholder="Selecciona una Institucion" (selected)="onSelected($event)" >
+                               </ng2-completer>
+                                <!-- <p>Selected: {{selectedInstitucion}}</p> -->
                             </div>
                         </div>
 

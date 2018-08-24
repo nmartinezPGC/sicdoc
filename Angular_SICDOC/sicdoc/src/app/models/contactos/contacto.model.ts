@@ -33,6 +33,8 @@ export class  Contactos {
       public imgDocumento:string,
 
       public cargoFuncional:string,
+      public tipoContacto:string,
+      public tratoContacto:string,
 
 
     ){}

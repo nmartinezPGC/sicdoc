@@ -125,6 +125,18 @@ BackendBundle\Entity\TblContactos:
             length: 150
             options:
                 fixed: false
+        habilitado:
+            type: boolean
+            nullable: true
+            options:
+                default: true
+        tipoContacto:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: tipo_contacto
     manyToOne:
         idUsuarioModifica:
             targetEntity: TblUsuarios

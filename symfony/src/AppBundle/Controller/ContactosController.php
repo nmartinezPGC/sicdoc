@@ -40,7 +40,10 @@ class ContactosController extends Controller{
         $em = $this->getDoctrine()->getManager();
         
         // Query para Obtener todos los Contactos de la Tabla: TblContactos ****
-        $contactos = $em->getRepository("BackendBundle:TblContactos")->findAll();
+        $contactos = $em->getRepository("BackendBundle:TblContactos")->findBy(
+            array(
+                "habilitado" => true
+            ));
         
         // Condicion de la Busqueda
         if (count($contactos) >= 1 ) {
@@ -113,6 +116,10 @@ class ContactosController extends Controller{
             $img_documento   = (isset($params->imgDocumento)) ? $params->imgDocumento  : null;
             
             $cargo_funcional   = (isset($params->cargoFuncional)) ? $params->cargoFuncional  : null;
+            
+            $tipo_contacto   = (isset($params->tipoContacto)) ? $params->tipoContacto  : null;
+            
+            $trato_contacto   = (isset($params->tratoContacto)) ? $params->tratoContacto  : null;
         
             //Verificacion del Codigo y Email en la Tabla: TblContactos ********                
             $isset_contact_mail = $em->getRepository("BackendBundle:TblContactos")
@@ -155,6 +162,8 @@ class ContactosController extends Controller{
                     $contactoNew->setTelefono2Contacto($telefono_2);
                     
                     $contactoNew->setCargoFuncional($cargo_funcional);
+                    $contactoNew->setTipoContacto($tipo_contacto);
+                    $contactoNew->setTrato($trato_contacto);
 
                     //Seteamos los valores de Relaciones de Tablas *************
                     //Instancia a la Tabla: TblInstituciones *******************                

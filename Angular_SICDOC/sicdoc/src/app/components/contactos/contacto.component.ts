@@ -68,6 +68,8 @@ export class ContactosComponent implements OnInit {
   // Instacia del Objeto Model de la Clase
   public consultaContactos: Contactos;
 
+  public fechaHoy:Date = new Date();
+
   // parametros multimedia
   public loading  = 'show';
   public loading_table  = 'hide';
@@ -131,7 +133,7 @@ export class ContactosComponent implements OnInit {
                                              null, null,
                                              null, null, null, null,
                                              null, null,  0, 0, null, null,
-                                             null);
+                                             null, null, null);
 
     // Ejecucion de la Lista de Instituciones
     this.getlistaInstituciones();
@@ -139,7 +141,7 @@ export class ContactosComponent implements OnInit {
     // Ejecucion de la Lista Funcionarios
     this.getlistaFuncionariosSreci();
 
-    // Ejecucion de la Lista de Contactos
+    // Ejecucion de la Lista de Contactoss
     // this.getlistaContactosTableFind();
 
     // Llenado de la Tabla de Encabezado
@@ -324,9 +326,127 @@ export class ContactosComponent implements OnInit {
   * Params: none
   ******************************************************/
   fillDataTable(){
+    // Trabaja con las Fechas
+    // Actualiza el valor de la Secuencia
+    let mesAct = this.fechaHoy.getMonth() + 1;
+
+    // Mes Actual *************************
+    let final_month = mesAct.toString();
+    if( mesAct <= 9 ){
+      final_month = "0" + final_month;
+    }
+
+    // Dia del Mes *************************
+    let day = this.fechaHoy.getDate(); // Dia
+    let final_day = day.toString();
+    if( day <= 9 ){
+      final_day = "0" + final_day;
+    }
+
+    // Seteo de la Fecha Final
+    let newFecha = this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+
     setTimeout(function () {
       $ (function () {
-          $('#example').DataTable();
+          $('#example').DataTable({
+            // Refresca la Data y Borra de Memoria los Datos anteriores
+            destroy: true,
+            retrieve: true,
+            // Barra Vertical de la Tabla
+            scrollY:       "450px",
+            scrollX:        true,
+            scrollCollapse: true,
+
+            /*"fixedHeader": true,
+            "autoWidth": false,*/
+            // Tamaño de la Pagina
+            "pageLength": 5,
+            // Cambiar las Propiedades de Lenguaje
+            "language":{
+                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+                "info": "Mostrando pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrada de _MAX_ registros)",
+                    "loadingRecords": "Cargando...",
+                    "processing":     "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords":    "No se encontraron registros coincidentes",
+                    "paginate": {
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+            },
+            fixedColumns:   {
+              leftColumns: 2
+            },
+
+            // Parametro de Botones
+            dom: 'Bfrtip',
+            // Botones
+            buttons: [
+               // Boton de excelHtml5
+                 {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                      //columns: ':visible',
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                      modifier: {
+                          selected: null
+                      }
+                    },
+                    title: 'Informe de Contactos' + ' / ' + newFecha,
+                      text: 'Exportar en Excel',
+                      customize: function( xlsx ) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        $('row:first c', sheet).attr( 's', '42' );
+                      },
+                },
+
+               // Boton de Imprimir
+                {
+                  extend: 'print',
+                  utoPrint: false,
+                  exportOptions: {
+                    //columns: ':visible',
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                    modifier: {
+                          selected: null
+                    }
+                  },
+                    customize: function (win) {
+                      $(win.document.body).find('table').addClass('display').css('font-size', '10px');
+                      $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
+                          $(this).css('background-color','#D0D0D0');
+                      });
+                      $(win.document.body).find('h1').css('text-align','center');
+                  },
+                  text: 'Imprimir Todos',
+                  message: 'Listado de Contactos',
+                  title: 'Informe de Contactos' + ' / ' + newFecha,
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                },
+
+                // Boton de Importar a PDF
+                {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                    //columns: ':visible',
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+                    modifier: {
+                        selected: null
+                    }
+                  },
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                  title: 'Informe de Contactos' + ' / ' + newFecha,
+                  text: 'Exportar a PDF',
+                  messageTop: 'PDF de Contactos.'
+                },
+            ],
+            //Selecciona las Filas
+            select: true
+          });
           this.loading_tableIn = 'show';
       });
     }, 500);
