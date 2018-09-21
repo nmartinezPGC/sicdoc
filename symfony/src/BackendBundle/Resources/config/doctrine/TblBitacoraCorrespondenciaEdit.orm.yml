@@ -2,21 +2,21 @@ BackendBundle\Entity\TblBitacoraCorrespondenciaEdit:
     type: entity
     table: tbl_bitacora_correspondencia_edit
     indexes:
-        fki_edit1_institucion:
+        fki_edit3_institucion:
             columns:
-                - id_institucion_anterior
-        fki_edit_corre_enc:
-            columns:
-                - id_correspondencia_enc
+                - id_institucion_actual
         fki_edit_estado:
             columns:
                 - id_estado
         fki_edit2_institucion:
             columns:
-                - id_institucion_actual
+                - id_correspondencia_enc
         fki_id_edit_func:
             columns:
                 - id_funcionario_asignado
+        fki_edit1_institucion:
+            columns:
+                - id_institucion_anterior
     id:
         idCorrespondenciaEdit:
             type: integer

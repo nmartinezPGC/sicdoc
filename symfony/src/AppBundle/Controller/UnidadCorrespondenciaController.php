@@ -8,15 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\JsonResponse;
 //Importamos las Tablas a Relacionar
-use BackendBundle\Entity\TblCorrespondenciaEntrante;
+use BackendBundle\Entity\TblCorrespondenciaSalida;
 use BackendBundle\Entity\TblCorrespondenciaDet;
 use BackendBundle\Entity\TblUsuarios;
 use BackendBundle\Entity\TblDocumentosUnidadCorrespondencia;
 use BackendBundle\Entity\TblInstituciones;
 use BackendBundle\Entity\TblEstados;
 use BackendBundle\Entity\TblDireccionesSreci;
+use BackendBundle\Entity\TblDepartamentosFuncionales;
 use BackendBundle\Entity\TblSecuenciales;
 use BackendBundle\Entity\TblTipoComunicacion;
+use BackendBundle\Entity\TblCorrespondenciaEntrante;
 
 use Swift_MessageAcceptanceTest;
 
@@ -43,7 +45,8 @@ class UnidadCorrespondenciaController extends Controller{
      * Parametros:                                                             * 
      * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
      *     Informacion.                                                        *
-     * @Route("/unidad-correspondencia/entrada-correspondencia", name="/unidad-correspondencia/entrada-correspondencia") 
+     * @Route("/unidad-correspondencia/entrada-correspondencia", 
+     * name="/unidad-correspondencia/salida-correspondencia") 
      ***************************************************************************/
     public function entradaCorrespondenciaAction(Request $request) 
     {
@@ -251,7 +254,8 @@ class UnidadCorrespondenciaController extends Controller{
 
                                 // Pdf que se Agrega
                                 // validamos que se adjunta pdf
-                                $documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento
+                                //$documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento
+                                $documentosIn->setUrlDocumento( $nombreDoc ); //Set Url de Documento
 
                                 // Relizamos la persistencia de Datos de las Comunicaciones Detalle
                                 $em->persist($documentosIn); 
@@ -373,6 +377,315 @@ class UnidadCorrespondenciaController extends Controller{
         //Retorno de la Funcion ************************************************
         return $helpers->parserJson($data);
     } //Fin de la Funcion New Correspondencia ********************
+    
+    
+    
+    /* Funcion de Salida de Correspondencia ****************************************
+     * Parametros:                                                             * 
+     * 1 ) Recibe un Objeto Request con el Metodo POST, el Json de la          *  
+     *     Informacion.                                                        *
+     * @Route("/unidad-correspondencia/salida-correspondencia", 
+     * name="/unidad-correspondencia/salida-correspondencia") 
+     ***************************************************************************/
+    public function salidaCorrespondenciaAction(Request $request) 
+    {
+        //Instanciamos el Servicio Helpers
+        date_default_timezone_set('America/Tegucigalpa');
+        $helpers = $this->get("app.helpers");
+        //Recoger el Hash
+        //Recogemos el Hash y la Autorizacion del Mismo        
+        $hash = $request->get("authorization", null);
+        //Se Chekea el Token
+        $checkToken = $helpers->authCheck($hash);
+        //Evalua que el Token sea True
+        if($checkToken == true){
+            $identity = $helpers->authCheck($hash, true);
+            
+            //Convertimos los Parametros POSt a Json
+            $json = $request->get("json", null);
+           
+            //Comprobamos que Json no es Null
+            if ($json != null) {
+                //Decodificamos el Json
+                $params = json_decode($json);
+
+                //Parametros a Convertir                           
+                //Datos generales de la Tabla                
+                $cod_correspondencia  = ($params->codCorrespondencia != null) ? $params->codCorrespondencia : null ;
+                
+                $dir_destinatario     = ($params->dirDestinatario != null) ? $params->dirDestinatario : null ;                
+                $name_destinatario     = ($params->nombreDestinatario != null) ? $params->nombreDestinatario : null ;
+                
+                $tema_correspondencia = ($params->temaCorrespondencia != null) ? $params->temaCorrespondencia : null ;                
+                //$observacion_correspondencia = ($params->observaciones != null) ? $params->observaciones : null ;
+                
+                //$cod_referenciaSreci  = ($params->codReferenciaSreci != null) ? $params->codReferenciaSreci : null ;   
+                
+                $fecha_ingreso        = new \DateTime('now');
+                
+                $hora_ingreso = new \DateTime('now');            
+                $hora_ingreso->format('H:i');                
+                                       
+                // Fechas Nulas
+                $fecha_null = new \DateTime('2999-12-31');
+                
+                //Relaciones de la Tabla con Otras.
+                //Envio por Json el Codigo de Institucion | Buscar en la Tabla: TblInstituciones
+                $cod_institucion      = ($params->idInstitucion != null) ? $params->idInstitucion : null ;
+                
+                // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
+                $cod_usuario          = $identity->sub;
+                
+                // Envio por Json el Codigo de Estados | Buscar en la Tabla: TblEstados
+                $cod_estado           = ($params->idEstado != null) ? $params->idEstado : null ;                
+                
+                // Envio por Json el Codigo de Direccion Sreci | Buscar en la Tabla: TblDireccionesSreci
+                $cod_direccion_sreci  = ($params->idDireccionSreci != null) ? $params->idDireccionSreci : null ;
+                $cod_depto_sreci  = ($params->idDeptoFuncional != null) ? $params->idDeptoFuncional : null ;
+                
+                // Envio por Json el Codigo de Depto Funcional | Buscar en la Tabla: TblDepartamentosFuncionales
+                $cod_tipo_documento  = ($params->idTipoDocumento != null) ? $params->idTipoDocumento : null ;                                
+                
+                // Ruta del Pdf a Subir
+                $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
+                                                                                            
+                
+                //Evaluamos que el Codigo de Correspondencia no sea Null y la Descripcion tambien
+                if($cod_correspondencia != null && $tema_correspondencia != null &&
+                   $name_destinatario != null && $dir_destinatario != null ){
+                    //La condicion fue Exitosa
+                    //Instancia del Doctrine
+                    $em = $this->getDoctrine()->getManager();
+                    
+                    //Seteo de Datos Generales de la tabla: TblCorrespondenciaEntrante
+                    $correspondenciaNew = new TblCorrespondenciaSalida ;                   
+                    
+                    
+                    // Buscamos el Id de la Secuencia y Generamos el Codigo
+                    $correspondenciaNew->setCodCorrespondenciaSalida($cod_correspondencia);                    
+                    
+                    $correspondenciaNew->setDireccionDestinatario ($dir_destinatario);                    
+                    $correspondenciaNew->setNombreDestinatario ($name_destinatario);                    
+                                        
+                    $correspondenciaNew->setFechaRecepcion($fecha_ingreso);
+                    $correspondenciaNew->setHoraRecepcion($hora_ingreso); // Hora de Creacion                                        
+                                                        
+                    
+                    //variables de Otras Tablas, las Buscamos para saber si hay Integridad                
+                    //Instanciamos de la Clase TblInstituciones
+                    $institucion = $em->getRepository("BackendBundle:TblInstituciones")->findOneBy(
+                        array(
+                           "idInstitucion" => $cod_institucion                        
+                        ));                    
+                    $correspondenciaNew->setIdInstitucion($institucion); //Set de Codigo de Institucion
+                    
+                    //Instanciamos de la Clase TblUsuario
+                    $usuario = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                        array(
+                           "idUsuario" => $cod_usuario                         
+                        ));                    
+                    $correspondenciaNew->setIdUsuario($usuario); //Set de Codigo de Usuario
+                    
+                    //Instanciamos de la Clase TblFuncionarios
+                    $funcionario = $em->getRepository("BackendBundle:TblFuncionarios")->findOneBy(
+                        array(
+                           "idUsuario" => $cod_usuario
+                        ));                    
+                    $correspondenciaNew->setIdFuncionarioAsignado($funcionario); //Set de Codigo de Funcionario
+                    
+                    //Instanciamos de la Clase TblEstados                        
+                    $estado = $em->getRepository("BackendBundle:TblEstados")->findOneBy(                            
+                        array(
+                           "idEstado" => $cod_estado
+                        ));                    
+                    $correspondenciaNew->setIdEstado($estado); //Set de Codigo de Estados 
+                    
+                    // 2018-02-20
+                    // Si la Comuniacion es Sin Seguimiento la Hora de Finalizacion es la Misma que la de la Ingreso
+                    /*if( $estado->getIdEstado() == 5 ){
+                        $correspondenciaNew->setHoraFinalizacion( $hora_ingreso ); // Hora de Finalizacion
+                        $correspondenciaNew->setFechaFinalizacion( $fecha_ingreso ); // Fecha de Finalizacion
+                    }*/
+                    //Instanciamos de la Clase TblTipoDocumento
+                    $tipoDocumento = $em->getRepository("BackendBundle:TblTipoDocumento")->findOneBy(                            
+                        array(
+                           "idTipoDocumento" => $cod_tipo_documento
+                        ));                    
+                    $correspondenciaNew->setIdTipoDocumento($tipoDocumento); //Set de Codigo de Tipo de Documento 
+                    
+                    
+                    //Instanciamos de la Clase TblDireccionesSreci                        
+                    $direccion = $em->getRepository("BackendBundle:TblDireccionesSreci")->findOneBy(                            
+                        array(
+                           "idDireccionSreci" => $cod_direccion_sreci
+                        ));                    
+                    $correspondenciaNew->setIdDireccionSreci($direccion); //Set de Codigo de Dreicciones Sreci
+                    
+                    
+                    //Instanciamos de la Clase TblDeptosFuncionales
+                    $deptoFunc = $em->getRepository("BackendBundle:TblDepartamentosFuncionales")->findOneBy(                            
+                        array(
+                           "idDeptoFuncional" => $cod_depto_sreci
+                        ));                    
+                    $correspondenciaNew->setIdDeptoFuncional($deptoFunc); //Set de Codigo de Dreicciones Sreci
+                    
+                    //Instanciamos de la Clase TblTipoDocumentos
+                    /*$tipo_documento_in = $em->getRepository("BackendBundle:TblTipoDocumento")->findOneBy(                            
+                        array(
+                           "idTipoDocumento" => $cod_tipo_documento
+                        ));                    
+                    $correspondenciaNew->setIdTipoDocumento($tipo_documento_in); //Set de Codigo de Tipo de Documentos */                                                            
+                                        
+                    //Finaliza Busqueda de Integridad entre Tablas *************
+                    
+                    
+                    //Verificacion del Codigo de la Correspondencia *******************
+                    $isset_corresp_cod = $em->getRepository("BackendBundle:TblCorrespondenciaSalida")->findOneBy(
+                        array(
+                          "codCorrespondenciaSalida" => $cod_correspondencia
+                        ));
+                                        
+                    
+                    //Verificamos que el retorno de la Funcion sea = 0 ********* 
+                    if(count($isset_corresp_cod) == 0 ){
+                        //echo "Error 1";
+                        //Realizar la Persistencia de los Datos y enviar a la BD
+                        $em->persist($correspondenciaNew);
+                                                
+                        //Realizar la actualizacion en el storage de la BD
+                        $em->flush();
+                        
+                        
+                        // Ingresamos los Datos a la Tabla TblDocumentosUnidadCorrespondencia *******
+                        //Seteo del nuevo documentos de la tabla: TblDocumentosUnidadCorrespondencia
+                        // *****************************************************
+                        if( $pdf_send != null ){
+                            // Se convierte el Array en String
+                            $documentos_array_convert      = json_encode($pdf_send);
+                            $documentos_array_convert2      = json_decode($documentos_array_convert);
+
+                            // Recorreros los Items del Array
+                            foreach ( $documentos_array_convert2 as $arr ){                                
+                                $nameDoc = $arr->nameDoc;
+                                $extDoc = $arr->extDoc;
+                                $pesoDoc = $arr->pesoDoc;
+                                $nombreDoc = $arr->nombreDoc;
+                                
+                                // Cambiamos el Tipo de extencion jpg => jpeg
+                                if( $extDoc == "jpg" || $extDoc == "JPG" ){
+                                    $extDoc = "jpeg";
+                                }
+                                
+                                /* INC00001 | 2018-01-04
+                                * Corregir la Extencion del PDF a pdf
+                                */
+                                if( $extDoc == "PDF" ){
+                                    $extDoc = "pdf";
+                                }
+                                
+                                /* INC00002 | 2018-01-09
+                                * Corregir la Extencion del PNG a png
+                                */
+                                if( $extDoc == "PNG" ){
+                                    $extDoc = "png";
+                                }
+                                //var_dump($nameDoc);
+                                
+                                $documentosIn = new TblDocumentosUnidadCorrespondencia();
+
+                                //Seteamos los valores de los Documentos Cargados                                
+                                $documentosIn->setFechaIngreso( $fecha_ingreso ); //Set Fecha Ingreso
+                                $documentosIn->setHoraIngreso( $hora_ingreso ); //Set Hora Ingreso
+                                
+                                $documentosIn->setDescDocumento( $nombreDoc ); //Set Documento Desc / 2018-02-28                                
+                                $documentosIn->setCodDocumento( $cod_correspondencia ); //Set Cod Documento / 2018-02-28                                
+
+                                //Instanciamos de la Clase TblUsuario
+                                $usuarioDocumento = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
+                                    array(
+                                       "idUsuario" => $cod_usuario           
+                                    ));                    
+                                $documentosIn->setIdUsuario($usuarioDocumento); //Set de Codigo de Usuario 
+
+                                // Verificacion del Codigo de la Unidad Correspondenia*
+                                // Encabezado  *********************************
+                                $id_correspondencia_enc_docu = $em->getRepository("BackendBundle:TblCorrespondenciaSalida")->findOneBy(
+                                    array(
+                                        "codCorrespondenciaSalida" => $cod_correspondencia
+                                    ));
+                                $documentosIn->setIdCorrespondenciaSalida($id_correspondencia_enc_docu); //Set de Id Correspondencia Entrante
+
+                                // Pdf que se Agrega
+                                // validamos que se adjunta pdf
+                                //$documentosIn->setUrlDocumento($nameDoc . "." . $extDoc ); //Set Url de Documento                                
+                                $documentosIn->setUrlDocumento( $nombreDoc ); //Set Url de Documento
+
+                                // Relizamos la persistencia de Datos de las Comunicaciones Detalle
+                                $em->persist($documentosIn); 
+
+                                //Realizar la actualizacion en el storage de la BD
+                                $em->flush();
+                            } // Fin de foreach                            
+                        }
+                        // Fin de Grabacion de Documentos **********************
+                        
+                        // Fin de Comunicacion Detalle *************************
+                        
+                        // 
+                        //Consulta de esa Correspondencia recien Ingresada *****
+                        $correspondenciaConsulta = $em->getRepository("BackendBundle:TblCorrespondenciaSalida")->findOneBy(
+                            array(                                
+                                "codCorrespondenciaSalida" => $cod_correspondencia 
+                            ));
+                    
+                            //Array de Mensajes
+                            $data = array(
+                                "status" => "success", 
+                                "code"   => 200, 
+                                "msg"    => "Se ha ingresado la Correspondencia No. " . $cod_correspondencia .
+                                            " pronto recibira una notificación vía correo. Gracias",
+                                "data"   => $correspondenciaConsulta
+                            );
+                    }else{
+                        $data = array(
+                            "status" => "error",
+                            "desc"   => "Ya existe un codigo",
+                            "code"   => 400, 
+                            "data"   => $isset_corresp_cod,
+                            "msg"   => "Error al registrar, ya existe una Correspondencia con este código, ". $cod_correspondencia . 
+                                       " por favor ingrese otro !!"
+                        );                       
+                    }//Finaliza el Bloque de la validadacion de la Data en la Tabla
+                    // TblCorrespondenciaEnc
+                } else {
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "error",
+                       "desc"   => "Eror al Enviar el Json, faltan parametros",
+                       "code"   => 400, 
+                       "msg"   => "No se ha podido crear la Comunicación, falta ingresar información  !!"
+                    );
+                }                
+            } else {
+                    //Array de Mensajes
+                    $data = array(
+                       "status" => "error",
+                       "desc"   => "Eror al Enviar el Json, el Json no ha sido enviado",
+                       "code"   => 400, 
+                       "msg"   => "Comunicación no creada, falta ingresar los parametros !!"
+                    );
+                }
+            } else {
+            $data = array(
+                "status" => "error",
+                "desc"   => "El Token, es invalido",    
+                "code" => 500,                
+                "msg" => "Autorizacion de Token no valida, tu sesion ha expirado, cierra y vuelve a iniciar. !!"                
+            );
+        }        
+        //Retorno de la Funcion ************************************************
+        return $helpers->parserJson($data);
+    } //Fin de la Funcion Salida Correspondencia ********************
     
     
     /* Funcion de Editar Correspondencia****************************************

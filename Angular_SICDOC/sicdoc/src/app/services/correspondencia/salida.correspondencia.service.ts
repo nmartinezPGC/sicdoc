@@ -47,6 +47,23 @@ export class SalidaCorrespondenciaService {
 
 
   /*********************************************************
+  * Funcion: FND-00002.1                                   *
+  * Fecha: 05-09-2018                                      *
+  * Descripcion: Metodo Ajax, para Invocar el servicio     *
+  * a la API ( /unidad-correspondencia/salida-correspondencia ).*
+  * Objetivo: Ingresar Salida de Correspondencia           *
+  *********************************************************/
+  registerSalidaCorrespondencia( correpondencia_to_register ){
+      let json = JSON.stringify( correpondencia_to_register );
+      let params = "json=" + json + "&authorization=" + this.getToken();
+      //console.log(json);
+      let headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded'});
+    // Retorno de la Funcion
+    return this._http.post(this.url + "/unidad-correspondencia/salida-correspondencia", params, { headers:headers }).map( res => res.json());
+  } // FIN : FND-00002.1
+
+
+  /*********************************************************
   * Funcion: FND-00003                                     *
   * Fecha: 07-03-2018                                      *
   * Descripcion: Metodo Ajax, para Invocar el servicio     *

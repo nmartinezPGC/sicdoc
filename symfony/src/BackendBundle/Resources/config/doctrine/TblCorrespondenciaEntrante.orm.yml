@@ -2,24 +2,24 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
     type: entity
     table: tbl_correspondencia_entrante
     indexes:
-        fki_corr_estados:
+        IDX_46EEBE806A540E:
             columns:
                 - id_estado
-        fki_tipo_doc_corr:
-            columns:
-                - id_tipo_documento
-        fki_user_corr:
-            columns:
-                - id_usuario
         IDX_46EEBE80603C5679:
             columns:
                 - id_correspondencia_enc
-        IDX_46EEBE80EF433A34:
-            columns:
-                - id_institucion
         IDX_46EEBE80D9471F32:
             columns:
                 - id_direccion_sreci
+        IDX_46EEBE80EF433A34:
+            columns:
+                - id_institucion
+        IDX_46EEBE8069B92C8F:
+            columns:
+                - id_tipo_documento
+        IDX_46EEBE80FCF8192D:
+            columns:
+                - id_usuario
     id:
         idCorrespondenciaEntrante:
             type: integer
@@ -83,6 +83,16 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
             nullable: true
             column: hora_recibido
     manyToOne:
+        idEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado:
+                    referencedColumnName: id_estado
+            orphanRemoval: false
         idCorrespondenciaEnc:
             targetEntity: TblCorrespondenciaEnc
             cascade: {  }
@@ -92,16 +102,6 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
             joinColumns:
                 id_correspondencia_enc:
                     referencedColumnName: id_correspondencia_enc
-            orphanRemoval: false
-        idInstitucion:
-            targetEntity: TblInstituciones
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_institucion:
-                    referencedColumnName: id_institucion
             orphanRemoval: false
         idDireccionSreci:
             targetEntity: TblDireccionesSreci
@@ -113,25 +113,15 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
                 id_direccion_sreci:
                     referencedColumnName: id_direccion_sreci
             orphanRemoval: false
-        idEstado:
-            targetEntity: TblEstados
+        idInstitucion:
+            targetEntity: TblInstituciones
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                id_estado:
-                    referencedColumnName: id_estado
-            orphanRemoval: false
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
+                id_institucion:
+                    referencedColumnName: id_institucion
             orphanRemoval: false
         idTipoDocumento:
             targetEntity: TblTipoDocumento
@@ -142,5 +132,15 @@ BackendBundle\Entity\TblCorrespondenciaEntrante:
             joinColumns:
                 id_tipo_documento:
                     referencedColumnName: id_tipo_documento
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

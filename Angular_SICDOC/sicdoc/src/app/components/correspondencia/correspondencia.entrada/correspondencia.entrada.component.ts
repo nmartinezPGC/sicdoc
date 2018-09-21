@@ -178,7 +178,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
     this._entradaCorrespondenciaModel = new EntradaCorrespondenciaModel(1,
           "", "", "", "",
           0, 0, 0,
-          this.identity.sub, "7", 0, "0",
+          this.identity.sub, "14", 0, "0",
           "", null);
 
     // Json de Documento a Borrar
@@ -256,7 +256,7 @@ export class CorrespondenciaEntradaComponent implements OnInit {
 
 
   /*********************************************************
-   * Funcion de Grabacion del Traslado de Comunicación
+   * Funcion de Grabacion de Ingreso de Correspondencia
    * Nuevos en la BD
    * Fecha: 2018-03-06
   **********************************************************/
@@ -464,362 +464,365 @@ export class CorrespondenciaEntradaComponent implements OnInit {
     } // FIN : FND-000010
 
 
-    /*****************************************************
-    * Funcion: FND-00002
-    * Fecha: 18-10-2017
-    * Descripcion: Creacion de nuevo File input
-    * ( createNewFileInput ).
-    ******************************************************/
-    createNewFileInput( nameDoc ){
-     // Actualiza el valor de la Secuencia
-     let secActual = this.nextDocumento - 1;
-     let mesAct = this.fechaHoy.getMonth() + 1;
+  /*****************************************************
+  * Funcion: FND-00002
+  * Fecha: 18-10-2017
+  * Descripcion: Creacion de nuevo File input
+  * ( createNewFileInput ).
+  ******************************************************/
+  createNewFileInput( nameDoc ){
+   // Actualiza el valor de la Secuencia
+   let secActual = this.nextDocumento - 1;
+   let mesAct = this.fechaHoy.getMonth() + 1;
 
-     // Mes Actual
-     let final_month = mesAct.toString();
-     if( mesAct <= 9 ){
-       final_month = "0" + final_month;
-     }
+   // Mes Actual
+   let final_month = mesAct.toString();
+   if( mesAct <= 9 ){
+     final_month = "0" + final_month;
+   }
 
-     // Dia del Mes
-     let day = this.fechaHoy.getDate(); // Dia
-     let final_day = day.toString();
-     if( day <= 9 ){
-       final_day = "0" + final_day;
-     }
+   // Dia del Mes
+   let day = this.fechaHoy.getDate(); // Dia
+   let final_day = day.toString();
+   if( day <= 9 ){
+     final_day = "0" + final_day;
+   }
 
-     let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+   // let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+   let newSecAct = this.codigoSec;
 
-     this.JsonOutgetListaDocumentosNew.push({
-       "nameDoc": newSecAct,
-       "extDoc": this.extencionDocumento,
-       "pesoDoc": this.seziDocumento,
-       "nombreDoc" : this.nombreDoc
-     });
-
-
-     this._entradaCorrespondenciaModel.pdfDocumento = this.JsonOutgetListaDocumentosNew;
-     console.log(this.JsonOutgetListaDocumentosNew);
-    } // FIN | FND-00002
+   this.JsonOutgetListaDocumentosNew.push({
+     "nameDoc": newSecAct,
+     "extDoc": this.extencionDocumento,
+     "pesoDoc": this.seziDocumento,
+     "nombreDoc" : this.nombreDoc
+   });
 
 
-    /*****************************************************
-    * Funcion: FND-00003
-    * Fecha: 29-07-2017
-    * Descripcion: Carga la Imagen de usuario desde el File
-    * Objetivo: Obtener la imagen que se carga desde el
-    * control File de HTML
-    * (fileChangeEvent).
-    ******************************************************/
-    public filesToUpload: Array<File>;
-    public resultUpload;
-
-    fileChangeEvent(fileInput: any){
-      //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
-      this.filesToUpload = <Array<File>>fileInput.target.files;
-
-      // Direccion del Metodo de la API
-      let url = this.urlConfigLocal + "/comunes-unidad-correspondencia/documentos-upload-options";
-
-      // Variables del Metodo
-      let  error:string;
-      let  status:string;
-      let  codigoSec:string;
-
-      // Tamaño
-      let sizeByte:number = this.filesToUpload[0].size;
-      let siezekiloByte:number =  Math.round( sizeByte / 1024 );
-
-      this.seziDocumento = ( siezekiloByte / 1024 );
-
-      let type = this.filesToUpload[0].type;
-      let nameDoc = this.filesToUpload[0].name;
-
-      // incluir - 2018-02-27
-      this.nombreDoc = nameDoc;
-
-      var filename = $("#pdfDocumento").val();
-
-      // Use a regular expression to trim everything before final dot
-      this.extencionDocumento = filename.replace(/^.*\./, '');
-
-      //alert('Ext Doc ' + this.extencionDocumento);
-
-      //Modificacion; Cuando la extencion es PDF => pdf
-        if( this.extencionDocumento == "PDF" ){
-          this.extencionDocumento = "pdf";
-        }else if( this.extencionDocumento == "jpg" || this.extencionDocumento == "JPG" ) {
-          this.extencionDocumento = "jpeg";
-        }
-
-      // Seteamos el valore del Nombre del Documento
-      let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
-      // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
-      codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
-
-      this.codigoSec = nameDoc + '-' + this.nextDocumento;
-      this.nextDocumento = this.nextDocumento + 1;
-
-      // Parametro para documento Seleccionado
-      this._entradaCorrespondenciaModel.pdfDocumento = this.codigoSec;
-
-      this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec], this.filesToUpload ).then(
-          ( result ) => {
-            this.resultUpload = result;
-            status = this.resultUpload.status;
-            // console.log(this.resultUpload);
-            if(status === "error"){
-              console.log(this.resultUpload);
-              alert(this.resultUpload.msg);
-            }
-            // this.finalizarOficios.pdfDocumento = this.resultUpload.data;
-            // Añadimos a la Tabla Temporal los Items Subidos
-            this.createNewFileInput( codigoSec );
-          },
-          ( error ) => {
-            alert(error);
-            console.log(error);
-          });
-    } // FIN : FND-00003
+   this._entradaCorrespondenciaModel.pdfDocumento = this.JsonOutgetListaDocumentosNew;
+   console.log(this.JsonOutgetListaDocumentosNew);
+  } // FIN | FND-00002
 
 
-    /*****************************************************
-    * Funcion: FND-00018
-    * Fecha: 15-02-2018
-    * Descripcion: Delete de nuevo File input, en Tabla
-    * ( deleteRowHomeForm ).
-    ******************************************************/
-    deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
-      // Borra el Elemento al Json
-      this.JsonOutgetListaDocumentosNew.splice(homeFormIndex,1);
-      this.changeDetectorRef.detectChanges();
-      this._entradaCorrespondenciaModel.pdfDocumento = "";
+  /*****************************************************
+  * Funcion: FND-00003
+  * Fecha: 29-07-2017
+  * Descripcion: Carga la Imagen de usuario desde el File
+  * Objetivo: Obtener la imagen que se carga desde el
+  * control File de HTML
+  * (fileChangeEvent).
+  ******************************************************/
+  public filesToUpload: Array<File>;
+  public resultUpload;
 
-      console.log(codDocumentoIn + ' ---- ' + extDocumentoIn);
+  fileChangeEvent(fileInput: any){
+    //console.log('Evento Chge Lanzado'); , codDocumentoIn:string
+    this.filesToUpload = <Array<File>>fileInput.target.files;
 
-      // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
-      // Indicador = 1; ya que lleva la Externcion del Documento
-      this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn, 1);
-      console.log(this.JsonOutgetListaDocumentosNew);
-    } // FIN | FND-00018
+    // Direccion del Metodo de la API
+    let url = this.urlConfigLocal + "/comunes-unidad-correspondencia/documentos-upload-options";
 
+    // Variables del Metodo
+    let  error:string;
+    let  status:string;
+    let  codigoSec:string;
 
-    /*****************************************************
-    * Funcion: FND-00019
-    * Fecha: 15-02-2018
-    * Descripcion: Metodo para Borrar Documento desde el
-    * Servidor
-    * metodo ( borrar-documento-server ).
-    ******************************************************/
-    borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string, indicadorExt:number) {
-      //Llamar al metodo, de Login para Obtener la Identidad
-      // Agrega Items al Json
-      this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
-      console.log('borrarDocumentoServer ++++  ' + this.JsonOutgetListaDocumentosDelete.codDocument);
-      // Cambiamos la Extencion si es jpg
-      if( extDocumentoIn == "jpg" || extDocumentoIn == "JPG" ){
-        extDocumentoIn = "jpeg";
-      }else if ( extDocumentoIn == "PNG" ){
-        extDocumentoIn = "png";
+    // Tamaño
+    let sizeByte:number = this.filesToUpload[0].size;
+    let siezekiloByte:number =  Math.round( sizeByte / 1024 );
+
+    this.seziDocumento = ( siezekiloByte / 1024 );
+
+    let type = this.filesToUpload[0].type;
+    let nameDoc = this.filesToUpload[0].name;
+
+    // incluir - 2018-02-27
+    this.nombreDoc = nameDoc;
+
+    var filename = $("#pdfDocumento").val();
+
+    // Use a regular expression to trim everything before final dot
+    this.extencionDocumento = filename.replace(/^.*\./, '');
+
+    //alert('Ext Doc ' + this.extencionDocumento);
+
+    //Modificacion; Cuando la extencion es PDF => pdf
+      if( this.extencionDocumento == "PDF" ){
+        this.extencionDocumento = "pdf";
+      }else if( this.extencionDocumento == "jpg" || this.extencionDocumento == "JPG" ) {
+        this.extencionDocumento = "jpeg";
       }
 
-      this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
-      this.JsonOutgetListaDocumentosDelete.indicadorExt = indicadorExt;
+    // Seteamos el valore del Nombre del Documento
+    let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
+    // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
+    // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
+    codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
 
-      //Ejecucion del Servicio de Borrar Documento del Servidor
-      this._uploadService.borrarDocumentoUC( this.JsonOutgetListaDocumentosDelete ).subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.addToast(4,"Error: ",response.msg);
-            }
-          });
-    } // FIN : FND-00019
+    // this.codigoSec = nameDoc + '-' + this.nextDocumento;
+    this.codigoSec = nameDoc;
+    this.nextDocumento = this.nextDocumento + 1;
 
+    // Parametro para documento Seleccionado
+    this._entradaCorrespondenciaModel.pdfDocumento = this.codigoSec;
 
-    /*****************************************************
-    * Funcion: FND-00007
-    * Fecha: 31-08-2017
-    * Descripcion: Carga la Lista de las Direcciones de
-    * SRECI
-    * Objetivo: Obtener la lista de las Direcciones SRECI
-    * de la BD, Llamando a la API, por su metodo
-    * (dir-sreci-list).
-    ******************************************************/
-    getlistaDireccionesSRECI() {
-      //Llamar al metodo, de Login para Obtener la Identidad
-      this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              // alert(response.msg);
-              this.addToast(4,"Error", response.msg);
-            }else{
-              //this.data = JSON.stringify(response.data);
-              this.JsonOutgetlistaDireccionSRECI = response.data;
-            }
-          });
-    } // FIN : FND-00007
+    this._uploadService.makeFileRequestNoToken( url, [ 'name_pdf', this.codigoSec], this.filesToUpload ).then(
+        ( result ) => {
+          this.resultUpload = result;
+          status = this.resultUpload.status;
+          // console.log(this.resultUpload);
+          if(status === "error"){
+            console.log(this.resultUpload);
+            alert(this.resultUpload.msg);
+          }
+          // this.finalizarOficios.pdfDocumento = this.resultUpload.data;
+          // Añadimos a la Tabla Temporal los Items Subidos
+          this.createNewFileInput( codigoSec );
+        },
+        ( error ) => {
+          alert(error);
+          console.log(error);
+        });
+  } // FIN : FND-00003
 
 
+  /*****************************************************
+  * Funcion: FND-00018
+  * Fecha: 15-02-2018
+  * Descripcion: Delete de nuevo File input, en Tabla
+  * ( deleteRowHomeForm ).
+  ******************************************************/
+  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+    // Borra el Elemento al Json
+    this.JsonOutgetListaDocumentosNew.splice(homeFormIndex,1);
+    this.changeDetectorRef.detectChanges();
+    this._entradaCorrespondenciaModel.pdfDocumento = "";
 
-    /*****************************************************
-    * Funcion: FND-00008
-    * Fecha: 25-09-2017
-    * Descripcion: Carga la Lista de los Tipos de Documentos
-    * Objetivo: Obtener la lista de los Tipos de usuarios
-    * de la BD, Llamando a la API, por su metodo
-    * ( tipo-documento-list ).
-    ******************************************************/
-      getlistaTipoDocumentos() {
-        this._listasComunes.listasComunes( 2 ,"tipo-documento-list?activo=2").subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.JsonOutgetlistaTiposDocumentos = response.data;
-              // alert(response.msg);
-              this.addToast(4,"Error",response.msg);
-            }else{
-              this.JsonOutgetlistaTiposDocumentos = response.data;
-              // console.log( this.JsonOutgetlistaTiposDocumentos );
-            }
-          });
-    } // FIN : FND-00008
+    console.log(codDocumentoIn + ' ---- ' + extDocumentoIn);
+
+    // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
+    // Indicador = 1; ya que lleva la Externcion del Documento
+    this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn, 1);
+    console.log(this.JsonOutgetListaDocumentosNew);
+  } // FIN | FND-00018
 
 
-    /*****************************************************
-    * Funcion: FND-00009
-    * Fecha: 11-09-2017
-    * Descripcion: Carga de los Oficios que se han ingresado
-    * a la Tabla tbl_comunicacion_enc
-    * Objetivo: Obtener la lista de los Oficios Ingresados
-    * de la BD, Llamando a la API, por su metodo
-    * (com-ingresada-list).
-    ******************************************************/
-    getlistaOficosIngresados() {
-      //Llamar al metodo, de Contador de Comunicaciones Pendientes
-      this.paramsIdTipoComSend.idTipoCom = 2;
-      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
-      this.paramsIdTipoComSend.idTipoDoc = 1;
+  /*****************************************************
+  * Funcion: FND-00019
+  * Fecha: 15-02-2018
+  * Descripcion: Metodo para Borrar Documento desde el
+  * Servidor
+  * metodo ( borrar-documento-server ).
+  ******************************************************/
+  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string, indicadorExt:number) {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    // Agrega Items al Json
+    this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
+    console.log('borrarDocumentoServer ++++  ' + this.JsonOutgetListaDocumentosDelete.codDocument);
+    // Cambiamos la Extencion si es jpg
+    if( extDocumentoIn == "jpg" || extDocumentoIn == "JPG" ){
+      extDocumentoIn = "jpeg";
+    }else if ( extDocumentoIn == "PNG" ){
+      extDocumentoIn = "png";
+    }
 
-      this._EntradaCorrespondenciaService.documentosIngresados( this.paramsIdTipoComSend ).subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaOficiosIngresados = response.data;
-              this.countOficiosIngresados = "0";
-              //alert(response.msg);
-            }else{
-              //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaOficiosIngresados = response.data;
-              this.countOficiosIngresados = this.JsonOutgetListaOficiosIngresados;
-              //alert(this.countOficios);
-            }
-          });
-    } // FIN : FND-00009
+    this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
+    this.JsonOutgetListaDocumentosDelete.indicadorExt = indicadorExt;
 
-
-    /*****************************************************
-    * Funcion: FND-00009.1
-    * Fecha: 11-09-2017
-    * Descripcion: Carga de los Oficios que se han ingresado
-    * a la Tabla tbl_comunicacion_enc
-    * Objetivo: Obtener la lista de los Oficios Ingresados
-    * de la BD, Llamando a la API, por su metodo
-    * (com-ingresada-list).
-    ******************************************************/
-    getlistaNotasIngresados() {
-      //Llamar al metodo, de Contador de Comunicaciones Pendientes
-      this.paramsIdTipoComSend.idTipoCom = 2;
-      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
-      this.paramsIdTipoComSend.idTipoDoc = 3;
-
-      this._EntradaCorrespondenciaService.documentosIngresados( this.paramsIdTipoComSend ).subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaNotasIngresados = response.data;
-              this.countNotasIngresados = "0";
-              //alert(response.msg);
-            }else{
-              //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaNotasIngresados = response.data;
-              this.countNotasIngresados = this.JsonOutgetListaNotasIngresados;
-              //alert(this.countOficios);
-            }
-          });
-    } // FIN : FND-00009.1
+    //Ejecucion del Servicio de Borrar Documento del Servidor
+    this._uploadService.borrarDocumentoUC( this.JsonOutgetListaDocumentosDelete ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.addToast(4,"Error: ",response.msg);
+          }
+        });
+  } // FIN : FND-00019
 
 
-    /*****************************************************
-    * Funcion: FND-000010
-    * Fecha: 11-09-2017
-    * Descripcion: Carga de los Oficios que se han ingresado
-    * a la Tabla tbl_comunicacion_enc
-    * Objetivo: Obtener la lista de los Oficios Ingresados
-    * de la BD, Llamando a la API, por su metodo
-    * (com-ingresada-list).
-    ******************************************************/
-    getlistaOficosRecibidos() {
-      //Llamar al metodo, de Contador de Comunicaciones Pendientes
-      this.paramsIdTipoComSend.idTipoCom = 2;
-      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
-      this.paramsIdTipoComSend.idTipoDoc = 1;
-
-      this._EntradaCorrespondenciaService.documentosRecibidos( this.paramsIdTipoComSend ).subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaOficiosPendientes = response.data;
-              this.countOficiosPendientes = "0";
-              //alert(response.msg);
-            }else{
-              //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaOficiosPendientes = response.data;
-              this.countOficiosPendientes = this.JsonOutgetListaOficiosPendientes;
-              //alert(this.countOficios);
-            }
-          });
-    } // FIN : FND-000010
+  /*****************************************************
+  * Funcion: FND-00007
+  * Fecha: 31-08-2017
+  * Descripcion: Carga la Lista de las Direcciones de
+  * SRECI
+  * Objetivo: Obtener la lista de las Direcciones SRECI
+  * de la BD, Llamando a la API, por su metodo
+  * (dir-sreci-list).
+  ******************************************************/
+  getlistaDireccionesSRECI() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            // alert(response.msg);
+            this.addToast(4,"Error", response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaDireccionSRECI = response.data;
+          }
+        });
+  } // FIN : FND-00007
 
 
-    /*****************************************************
-    * Funcion: FND-000010.1
-    * Fecha: 11-09-2017
-    * Descripcion: Carga de los Oficios que se han ingresado
-    * a la Tabla tbl_comunicacion_enc
-    * Objetivo: Obtener la lista de los Oficios Ingresados
-    * de la BD, Llamando a la API, por su metodo
-    * (com-ingresada-list).
-    ******************************************************/
-    getlistaNotasRecibidos() {
-      //Llamar al metodo, de Contador de Comunicaciones Pendientes
-      this.paramsIdTipoComSend.idTipoCom = 2;
-      this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
-      this.paramsIdTipoComSend.idTipoDoc = 3;
 
-      this._EntradaCorrespondenciaService.documentosRecibidos( this.paramsIdTipoComSend ).subscribe(
-          response => {
-            // login successful so redirect to return url
-            if(response.status == "error"){
-              //Mensaje de alerta del error en cuestion
-              this.JsonOutgetListaNotasFinalizados = response.data;
-              this.countNotasIngresados = "0";
-              //alert(response.msg);
-            }else{
-              //this.data = JSON.stringify(response.data);
-              this.JsonOutgetListaNotasFinalizados = response.data;
-              this.countNotasIngresados = this.JsonOutgetListaNotasFinalizados;
-              //alert(this.countOficios);
-            }
-          });
-    } // FIN : FND-000010.1
+  /*****************************************************
+  * Funcion: FND-00008
+  * Fecha: 25-09-2017
+  * Descripcion: Carga la Lista de los Tipos de Documentos
+  * Objetivo: Obtener la lista de los Tipos de usuarios
+  * de la BD, Llamando a la API, por su metodo
+  * ( tipo-documento-list ).
+  ******************************************************/
+    getlistaTipoDocumentos() {
+      this._listasComunes.listasComunes( 2 ,"tipo-documento-list?activo=2").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaTiposDocumentos = response.data;
+            // alert(response.msg);
+            this.addToast(4,"Error",response.msg);
+          }else{
+            this.JsonOutgetlistaTiposDocumentos = response.data;
+            // console.log( this.JsonOutgetlistaTiposDocumentos );
+          }
+        });
+  } // FIN : FND-00008
+
+
+  /*****************************************************
+  * Funcion: FND-00009
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaOficosIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._EntradaCorrespondenciaService.documentosIngresados( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            this.countOficiosIngresados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosIngresados = response.data;
+            this.countOficiosIngresados = this.JsonOutgetListaOficiosIngresados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00009
+
+
+  /*****************************************************
+  * Funcion: FND-00009.1
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaNotasIngresados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 3;
+
+    this._EntradaCorrespondenciaService.documentosIngresados( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaNotasIngresados = response.data;
+            this.countNotasIngresados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaNotasIngresados = response.data;
+            this.countNotasIngresados = this.JsonOutgetListaNotasIngresados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00009.1
+
+
+  /*****************************************************
+  * Funcion: FND-000010
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaOficosRecibidos() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 1;
+
+    this._EntradaCorrespondenciaService.documentosRecibidos( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaOficiosPendientes = response.data;
+            this.countOficiosPendientes = this.JsonOutgetListaOficiosPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-000010
+
+
+  /*****************************************************
+  * Funcion: FND-000010.1
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Oficios que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Oficios Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaNotasRecibidos() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 3;
+
+    this._EntradaCorrespondenciaService.documentosRecibidos( this.paramsIdTipoComSend ).subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaNotasFinalizados = response.data;
+            this.countNotasIngresados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaNotasFinalizados = response.data;
+            this.countNotasIngresados = this.JsonOutgetListaNotasFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-000010.1
 
 
 

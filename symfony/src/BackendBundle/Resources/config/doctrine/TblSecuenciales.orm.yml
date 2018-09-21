@@ -2,9 +2,6 @@ BackendBundle\Entity\TblSecuenciales:
     type: entity
     table: tbl_secuenciales
     indexes:
-        fki_id_depto_funcional_secuencias:
-            columns:
-                - id_depto_funcional
         idx_cod_secuencia:
             columns:
                 - cod_secuencial
@@ -17,6 +14,9 @@ BackendBundle\Entity\TblSecuenciales:
         fki_secuncia_doc:
             columns:
                 - id_tipo_documento
+        fki_id_depto_funcional_secuencias:
+            columns:
+                - id_depto_funcional
     uniqueConstraints:
         FK_uni_secuencia:
             columns:

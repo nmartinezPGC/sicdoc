@@ -68,6 +68,20 @@
 
             </div>
 
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                <small class="form-text text-muted">
+                    Tema de Correspondencia
+                </small>
+                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control"
+                        placeholder="Tema de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
+                         value="" [(ngModel)]="_SalidaCorrespondenciaModel.temaCorrespondencia" >
+                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Debes ingresar El Tema de la Correspondencia</small>
+                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >
+                        Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
+                </div>
+            </div>
+
             <hr class="hr-new">
             <!-- Tema y Descripcion de la Comunicacion -->
             <div class="row">
@@ -75,12 +89,12 @@
                 <small class="form-text text-muted">
                     Nombre de destinatario de Correspondencia
                 </small>
-                  <input #temaCorrespondencia="ngModel" type="text" name="temaCorrespondencia" id="temaCorrespondencia" class="form-control"
-                        placeholder="Nombre de destinatario de la Correspondencia" ngControl="temaCorrespondencia" required minlength="5" tabindex="3"
-                         value="" [(ngModel)]="_SalidaCorrespondenciaModel.temaCorrespondencia" >
-                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.required" >Debes ingresar El Tema de la Correspondencia</small>
-                    <small class="form-text text-muted" *ngIf="temaCorrespondencia.errors?.minlength" >
-                        Se nesesita por lo menos {{ temaCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
+                  <input #nombreDestinatario="ngModel" type="text" name="nombreDestinatario" id="nombreDestinatario" class="form-control"
+                        placeholder="Nombre de destinatario de la Correspondencia" ngControl="nombreDestinatario" required minlength="5" tabindex="3"
+                         value="" [(ngModel)]="_SalidaCorrespondenciaModel.nombreDestinatario" >
+                    <small class="form-text text-muted" *ngIf="nombreDestinatario.errors?.required" >Debes ingresar El Nombre del destinatario</small>
+                    <small class="form-text text-muted" *ngIf="nombreDestinatario.errors?.minlength" >
+                        Se nesesita por lo menos {{ nombreDestinatario.errors.minlength.requiredLength }} caracteres, para continuar</small>
                 </div>
             </div>
 
@@ -91,17 +105,17 @@
                   <small class="form-text text-muted">
                       Dirección de destinatario de la Correspondencia
                   </small>
-                  <textarea #descCorrespondencia="ngModel" class="form-control" id="descCorrespondencia" name="descCorrespondencia" rows="4"
-                              placeholder="Direccioón de destinatario de la Correspondencia" type="text" required tabindex="4"
-                              [(ngModel)]="_SalidaCorrespondenciaModel.descCorrespondencia" ngControl="descCorrespondencia"
+                  <textarea #dirDestinatario="ngModel" class="form-control" id="dirDestinatario" name="dirDestinatario" rows="4"
+                              placeholder="Dirección de destinatario de la Correspondencia" type="text" required tabindex="4"
+                              [(ngModel)]="_SalidaCorrespondenciaModel.dirDestinatario" ngControl="dirDestinatario"
                               minlength="15"  >
                   </textarea>
-                  <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.required" >Debes ingresar El Contenido de la Correspondencia</small>
-                  <small class="form-text text-muted" *ngIf="descCorrespondencia.errors?.minlength" >
-                      Se nesesita por lo menos {{ descCorrespondencia.errors.minlength.requiredLength }} caracteres, para continuar</small>
+                  <small class="form-text text-muted" *ngIf="dirDestinatario.errors?.required" >Debes ingresar la Direccion del destinatario</small>
+                  <small class="form-text text-muted" *ngIf="dirDestinatario.errors?.minlength" >
+                      Se nesesita por lo menos {{ dirDestinatario.errors.minlength.requiredLength }} caracteres, para continuar</small>
                     <!-- <hr class="hr-new"> -->
               </div>
-            </div>            
+            </div>
 
             <hr class="hr-new">
 
@@ -114,13 +128,31 @@
                         Área Responsable de Correspondencia
                     </small>
                     <select #idDireccionSreci="ngModel" class="form-control" name="idDireccionSreci" id="idDireccionSreci" required
-                          ngControl="idDireccionSreci" [(ngModel)]="_SalidaCorrespondenciaModel.idDireccionSreci" tabindex="6"  >
+                          ngControl="idDireccionSreci" [(ngModel)]="_SalidaCorrespondenciaModel.idDireccionSreci"
+                          (change)="getlistaSubDireccionesSRECI()"  tabindex="6"  >
                         <option value="0">Área Responsable </option>
                         <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
                     </select>
                     <small class="form-text text-muted" *ngIf="idDireccionSreci.value == 0 || idDireccionSreci.value == null " >Debes Seleccionar una Sub Secretaría responsable</small>
                     <small class="form-text text-muted" *ngIf="idDireccionSreci.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small>
                   </div>
+               </div>
+
+               <!-- SubDireccion Encargada del tema de la Comunicacion -->
+               <div class="col-xs-12 col-sm-6 col-md-6">
+                 <div class="form-group">
+                   <small class="form-text text-muted">
+                       Departamento de Correspondencia
+                   </small>
+                   <select #idDeptoFuncional="ngModel" class="form-control" name="idDeptoFuncional" id="idDeptoFuncional"
+                         ngControl="idDeptoFuncional" [(ngModel)]="_SalidaCorrespondenciaModel.idDeptoFuncional" tabindex="9" required >
+                       <option value="0">Dirección Responsable</option>
+                       <option *ngFor="let list of JsonOutgetlistaSubDireccionesSrec" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                   </select>
+                   <small class="form-text text-muted" *ngIf="idDeptoFuncional.value == 0 || idDeptoFuncional.value == null " >
+                     Debes Seleccionar una Dirección vinculante</small>
+                   <!-- <small class="form-text text-muted" *ngIf="idDeptoFuncional.errors?.required" >Debes Seleccionar una Dirección responsable</small> -->
+                 </div>
                </div>
 
              </div>
@@ -233,9 +265,9 @@
                                <td class="text-center" >{{ suchnewrow.extDoc }}</td>
                                <td class="text-center">{{ suchnewrow.pesoDoc }}</td>
                                <td class="text-center"> <a title="Has Clic sobre la Imagen para ver con detalle el contenido..."
-                                       href="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}" target="_blank" >
+                                       href="{{ urlComplete + suchnewrow.nameDoc }}" target="_blank" >
                                  <img style="width:60px; height:60px; box-shadow:8px 10px 5px 0px #888888"
-                                   src="{{ urlComplete + suchnewrow.nameDoc + '.' + suchnewrow.extDoc }}"
+                                   src="{{ urlComplete + suchnewrow.nameDoc }}"
                                    onerror="this.src='assets/icons/media/question-class-note-symbol-128x128.png'"
                                    alt="Cargando Imagen ..." ></a>
                                </td>

@@ -225,4 +225,33 @@ class TblDocumentosUnidadCorrespondencia
     {
         return $this->codDocumento;
     }
+    /**
+     * @var \BackendBundle\Entity\TblCorrespondenciaSalida
+     */
+    private $idCorrespondenciaSalida;
+
+
+    /**
+     * Set idCorrespondenciaSalida
+     *
+     * @param \BackendBundle\Entity\TblCorrespondenciaSalida $idCorrespondenciaSalida
+     *
+     * @return TblDocumentosUnidadCorrespondencia
+     */
+    public function setIdCorrespondenciaSalida(\BackendBundle\Entity\TblCorrespondenciaSalida $idCorrespondenciaSalida = null)
+    {
+        $this->idCorrespondenciaSalida = $idCorrespondenciaSalida;
+
+        return $this;
+    }
+
+    /**
+     * Get idCorrespondenciaSalida
+     *
+     * @return \BackendBundle\Entity\TblCorrespondenciaSalida
+     */
+    public function getIdCorrespondenciaSalida()
+    {
+        return $this->idCorrespondenciaSalida;
+    }
 }

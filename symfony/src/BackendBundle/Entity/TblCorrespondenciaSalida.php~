@@ -399,4 +399,62 @@ class TblCorrespondenciaSalida
     {
         return $this->direccionDestinatario;
     }
+    /**
+     * @var \BackendBundle\Entity\TblUsuarios
+     */
+    private $idUsuario;
+
+
+    /**
+     * Set idUsuario
+     *
+     * @param \BackendBundle\Entity\TblUsuarios $idUsuario
+     *
+     * @return TblCorrespondenciaSalida
+     */
+    public function setIdUsuario(\BackendBundle\Entity\TblUsuarios $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \BackendBundle\Entity\TblUsuarios
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+    /**
+     * @var \BackendBundle\Entity\TblEstados
+     */
+    private $idEstado;
+
+
+    /**
+     * Set idEstado
+     *
+     * @param \BackendBundle\Entity\TblEstados $idEstado
+     *
+     * @return TblCorrespondenciaSalida
+     */
+    public function setIdEstado(\BackendBundle\Entity\TblEstados $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \BackendBundle\Entity\TblEstados
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
 }

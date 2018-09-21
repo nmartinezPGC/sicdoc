@@ -539,7 +539,8 @@ class ComunesUnidadCorrespondenciaController extends Controller {
                     
                     
                     //$file_name = time().".".$ext;
-                    $file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
+                    //$file_name = $file_nameIn . "-" . date('Y-m-d'). "." .$ext; 
+                    $file_name = $file_nameIn; 
                     //Movemos el Fichero
                     $path_of_file = "uploads/unidad-correspondencia/";
                     $file->move($path_of_file, $file_name);                    

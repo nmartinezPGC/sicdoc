@@ -508,10 +508,13 @@ class DocumentosUnidadCorrespondenciaController extends Controller{
                 // Si es = 2 viene toda la Url
                 if( $indicador_borrado == 1 ){
                     // Seteo del Patht y la Informacion del Documento
-                    $path = pathinfo( $cod_correspondencia.".".$ext_documento );
-                    $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia.".".$ext_documento );
+                    // $path = pathinfo( $cod_correspondencia.".".$ext_documento );
+                    $path = pathinfo( $cod_correspondencia );
+                    // $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia.".".$ext_documento );
+                    $nombre_de_archivo_anterior = pathinfo( $cod_correspondencia );
 
-                    $path_of_file = $ruta.$cod_correspondencia.".".$ext_documento;                    
+                    //$path_of_file = $ruta.$cod_correspondencia.".".$ext_documento;                    
+                    $path_of_file = $ruta.$cod_correspondencia;                    
                 }else if ( $indicador_borrado == 2 ){
                     // Seteo del Path del Documento
                     $path = pathinfo( $ext_documento );

@@ -17,6 +17,7 @@ export class SalidaCorrespondenciaModel{
       public idUsuario:string, // Tipo de Dato String, porque no se selecciona
       public idEstado:string, // Tipo de Dato String, porque no se selecciona
       public idDireccionSreci:number,
+      public idDeptoFuncional:number,
       public idTipoDocumento:string, // Tipo de Dato String, porque no se selecciona
 
       // Observaciones Iniciales
@@ -24,6 +25,10 @@ export class SalidaCorrespondenciaModel{
 
       // Documentos
       public pdfDocumento,
+
+      // Destinatarios
+      public nombreDestinatario,
+      public dirDestinatario,
 
     ){}
 

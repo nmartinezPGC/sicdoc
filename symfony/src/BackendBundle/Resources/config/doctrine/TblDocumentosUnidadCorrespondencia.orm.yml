@@ -2,10 +2,13 @@ BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
     type: entity
     table: tbl_documentos_unidad_correspondencia
     indexes:
-        fki_corr_unid:
+        fki_correspondencia_salida:
+            columns:
+                - id_correspondencia_salida
+        IDX_3D25499DBE938C6B:
             columns:
                 - id_correspondencia_entrante
-        fki_user_doc:
+        IDX_3D25499DFCF8192D:
             columns:
                 - id_usuario
     id:
@@ -49,6 +52,16 @@ BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
                 fixed: false
             column: cod_documento
     manyToOne:
+        idCorrespondenciaEntrante:
+            targetEntity: TblCorrespondenciaEntrante
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_correspondencia_entrante:
+                    referencedColumnName: id_correspondencia_entrante
+            orphanRemoval: false
         idUsuario:
             targetEntity: TblUsuarios
             cascade: {  }
@@ -59,14 +72,14 @@ BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
                 id_usuario:
                     referencedColumnName: id_usuario
             orphanRemoval: false
-        idCorrespondenciaEntrante:
-            targetEntity: TblCorrespondenciaEntrante
+        idCorrespondenciaSalida:
+            targetEntity: TblCorrespondenciaSalida
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                id_correspondencia_entrante:
-                    referencedColumnName: id_correspondencia_entrante
+                id_correspondencia_salida:
+                    referencedColumnName: id_correspondencia_salida
             orphanRemoval: false
     lifecycleCallbacks: {  }

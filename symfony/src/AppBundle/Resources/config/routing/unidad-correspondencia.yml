@@ -5,3 +5,7 @@ unidadCorrespondencia_entradaCorrespondencia:
     path: /entrada-correspondencia
     defaults: { _controller: "AppBundle:UnidadCorrespondencia:entradaCorrespondencia" }
     methods: POST
+unidadCorrespondencia_salidaCorrespondencia:
+    path: /salida-correspondencia
+    defaults: { _controller: "AppBundle:UnidadCorrespondencia:salidaCorrespondencia" }
+    methods: POST

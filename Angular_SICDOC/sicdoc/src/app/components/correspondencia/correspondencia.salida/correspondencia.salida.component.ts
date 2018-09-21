@@ -48,6 +48,7 @@ export class CorrespondenciaSalidaComponent implements OnInit {
   public token;
 
   private params;
+  private paramsSubDirAcom;
 
   // Loader
   public loading = "hide";
@@ -77,6 +78,7 @@ export class CorrespondenciaSalidaComponent implements OnInit {
   public JsonOutgetlistaDocumentosNew:any[];
 
   public JsonOutgetlistaDireccionSRECI:any[];
+  public JsonOutgetlistaSubDireccionesSrec:any[];
 
   public JsonOutgetlistaTiposDocumentos:any[];
 
@@ -176,8 +178,9 @@ export class CorrespondenciaSalidaComponent implements OnInit {
     this._SalidaCorrespondenciaModel = new SalidaCorrespondenciaModel(1,
           "", "", "", "",
           0, 0, 0,
-          this.identity.sub, "7", 0, "0",
-          "", null);
+          this.identity.sub, "7", 0, 0, "0",
+          "", null,
+           null, null);
 
     // Json de Documento a Borrar
     this.JsonOutgetListaDocumentosDelete = {
@@ -233,6 +236,11 @@ export class CorrespondenciaSalidaComponent implements OnInit {
      "idTipoDoc" : "",
    }
 
+   // Iniciamos los Parametros de Sub Direcciones Acompañantes
+   this.paramsSubDirAcom = {
+     "idDireccionSreci"  : ""
+   };
+
    // Lista de Direcciones
    // Llamado a la Opcion de llenado de las Sub Direcciones
    this.getlistaDireccionesSRECI();
@@ -262,7 +270,7 @@ export class CorrespondenciaSalidaComponent implements OnInit {
     // Envio de los Datos, a la API, con el fin de registrarlo en la BD
     this.loading = "show";
 
-    this._salidaCorrespondenciaService.registerNuevaCorrespondencia( this._SalidaCorrespondenciaModel ).subscribe(
+    this._salidaCorrespondenciaService.registerSalidaCorrespondencia( this._SalidaCorrespondenciaModel ).subscribe(
       response => {
           // Obtenemos el Status de la Peticion
           this.status = response.status;
@@ -486,7 +494,8 @@ export class CorrespondenciaSalidaComponent implements OnInit {
        final_day = "0" + final_day;
      }
 
-     let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+     // let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+     let newSecAct = this.codigoSec;
 
      this.JsonOutgetListaDocumentosNew.push({
        "nameDoc": newSecAct,
@@ -553,9 +562,11 @@ export class CorrespondenciaSalidaComponent implements OnInit {
       // Seteamos el valore del Nombre del Documento
       let secComunicacion = this.JsonOutgetCodigoSecuenciaActividadAgregar.valor2;
       // codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar[0].codSecuencial + '-' + secComunicacion;
-      codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
+      //codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial + '-' + secComunicacion;
+      codigoSec = this.JsonOutgetCodigoSecuenciaActividadAgregar.codSecuencial;
 
-      this.codigoSec = nameDoc + '-' + this.nextDocumento;
+      //this.codigoSec = nameDoc + '-' + this.nextDocumento;
+      this.codigoSec = nameDoc;
       this.nextDocumento = this.nextDocumento + 1;
 
       // Parametro para documento Seleccionado
@@ -661,6 +672,35 @@ export class CorrespondenciaSalidaComponent implements OnInit {
           });
     } // FIN : FND-00007
 
+
+    /*****************************************************
+    * Funcion: FND-00007.1
+    * Fecha: 25-09-2017
+    * Descripcion: Carga la Lista de las Sub Direcciones de
+    * SRECI Acompañantes
+    * Objetivo: Obtener la lista de las Direcciones SRECI
+    * de la BD, Llamando a la API, por su metodo
+    * (subdir-sreci-list).
+    ******************************************************/
+    getlistaSubDireccionesSRECI() {
+      //Llamar al metodo, de Login para Obtener la Identidad
+      this.paramsSubDirAcom.idDireccionSreci = this._SalidaCorrespondenciaModel.idDireccionSreci;
+
+      this._listasComunes.listasComunes( this.paramsSubDirAcom,"subdir-sreci-list").subscribe(
+          response => {
+            // login successful so redirect to return url
+            if(response.status == "error"){
+              //Mensaje de alerta del error en cuestion
+              this.JsonOutgetlistaSubDireccionesSrec = response.data;
+              // alert(response.msg);
+              this.addToast(4,"Error",response.msg);
+            }else{
+              //this.data = JSON.stringify(response.data);
+              this.JsonOutgetlistaSubDireccionesSrec = response.data;
+              // console.log(this.JsonOutgetlistaSubDireccionSRECIAcom);
+            }
+          });
+    } // FIN : FND-00007.1
 
 
     /*****************************************************
