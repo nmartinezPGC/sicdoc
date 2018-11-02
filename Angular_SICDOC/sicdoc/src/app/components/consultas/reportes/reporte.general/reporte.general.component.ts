@@ -130,6 +130,33 @@ export class ReporteGeneralComponent implements OnInit {
   public idIngreso:number = 1;
   public idSalida:number = 2;
 
+  // Campos del Modal PopUp
+  private codOficioIntModal:string;
+  private codOficioRefModal:string;
+  private idDeptoFuncionalModal:number;
+  private temaOficioModal:string;
+  private institucionOficioModal:string;
+  private nombre1FuncModal:string;
+  private nombre2FuncModal:string;
+  private apellido1FuncModal:string;
+  private apellido2FuncModal:string;
+  private idFuncModal:number;
+  private idEstadoModal:number;
+  private descEstadoModal:string = "Asignar";
+
+  //Parametros de documentos subidos anteriores
+  public JsonOutgetlistaDocumentosUpload:any[];
+  public JsonOutgetlistaDocumentosDowload:any[];
+  public paramsDocumentos;
+  public paramsDocumentosSend;
+
+  // Campos de la tabla
+  private tableAgregarActividad;
+
+  // Url de los Recursos
+  public url:string;
+  public urlComplete:string;
+
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
                private _reporteGeneralService: ReporteGeneralService,
@@ -140,6 +167,9 @@ export class ReporteGeneralComponent implements OnInit {
                private completerService: CompleterService ){
      // Llenado de la Tabla de Encabezado
     //  this.fillDataTable();
+    //this.otraFill();
+    this.url = this._reporteGeneralService.urlResourses;
+    this.urlComplete = this.url + "uploads/correspondencia/";
   } // Fin | Definicion del Constructor
 
 
@@ -244,7 +274,7 @@ export class ReporteGeneralComponent implements OnInit {
             // Ocultar Columnas
             "columnDefs": [
                   { // Columna de Ingreso / Salida
-                      "targets": [ 0 ],
+                      "targets": [ 1 ],
                       "visible": false,
                       "searchable": true
                   },
@@ -345,6 +375,26 @@ export class ReporteGeneralComponent implements OnInit {
   * Descripcion: Metodo inicial del Programa
   ******************************************************/
   ngOnInit() {
+    // Iniciamos los Parametros de Asignar Actividad
+    this.tableAgregarActividad = {
+      "codOficioInt":"",
+      "codOficioRef":"",
+      "idDeptoFunc":"",
+      "nombreFuncAsig":"",
+      "apellidoFuncAsig":"",
+      "idFuncionarioModal":"",
+      "idTipoFuncionarioModal":""
+    };
+
+    //Iniciamos los Parametros de Json de Documentos
+    this.paramsDocumentos = {
+      "searchValueSend" : ""
+    };
+
+    this.paramsDocumentosSend = {
+      "searchValueSend" : ""
+    };
+
     // Hacemos que la variable del Local Storge este en la API
     this.identity = JSON.parse(localStorage.getItem('identity'));
     // Seteamos los valores de busqueda del Search
@@ -696,5 +746,153 @@ export class ReporteGeneralComponent implements OnInit {
         });
   } // FIN : FND-00007
 
+  /****************************************************
+  * Funcion: FND-00008
+  * Fecha: 29-10-2018
+  * Descripcion: Funcion que Obtiene los Datos del Oficio
+  * Utilizando parametros del Json de la tabla
+  * Objetivo: Obtener los Datos del Oficio seleccionado
+  *****************************************************/
+  datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
+             nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
+             nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
+             idFuncionarioIn:number, idEstadoAsign:number  ){
+   // Previa validacion de los Datos por el Estado del Oficio
+   this.idEstadoModal = idEstadoAsign;
+   /*if( idEstadoAsign == 5 ){ // Oficio esta Finalizado
+     alert('La Comunicación no puede ser Asignado; ya que esta en un estado Finalizado.');
+     this.descEstadoModal = "Finalizado";
+     return;
+   }else if( idEstadoAsign == 3 ){
+       this.descEstadoModal = "Asignado";
+   }*/
+
+   // Seteo de las varibles de la Funcion
+    this.codOficioIntModal = codOficioIntIn;
+    this.codOficioRefModal = codOficioRefIn;
+    this.idDeptoFuncionalModal = idDeptoIn;
+    this.nombre1FuncModal = nombre1funcionarioAsignadoIn;
+    this.nombre2FuncModal = nombre2funcionarioAsignadoIn;
+    this.apellido1FuncModal = apellido1funcionarioAsignadoIn;
+    this.apellido2FuncModal = apellido2funcionarioAsignadoIn;
+    this.idFuncModal = idFuncionarioIn;
+
+
+   // Asigna los Valores al Json de Modal
+    this.tableAgregarActividad.codOficioInt = codOficioIntIn;
+    this.tableAgregarActividad.codOficioRef = codOficioRefIn;
+    this.tableAgregarActividad.idDeptoFunc = idDeptoIn;
+    this.tableAgregarActividad.nombreFuncAsig = nombre1funcionarioAsignadoIn;
+    this.tableAgregarActividad.nombreFuncAsig = nombre2funcionarioAsignadoIn;
+    this.tableAgregarActividad.apellidoFuncAsig = apellido1funcionarioAsignadoIn;
+    this.tableAgregarActividad.apellidoFuncAsig = apellido2funcionarioAsignadoIn;
+    this.tableAgregarActividad.idFuncAsig = idFuncionarioIn;
+
+ } // FIN : FND-00008
+
+ /*****************************************************
+ * Funcion: FND-00009
+ * Fecha: 29-10-2018
+ * Descripcion: Carga la Lista de los Documentos de la
+ * Comunicacion de la BD que pertenecen al usaurio
+ * Logeado, en el Detalle
+ * Objetivo: Obtener la lista de los Documentos de las
+ * Comunicaciones de la BD, Llamando a la API, por su
+ * metodo ( documentos/listar-documentos ).
+ ******************************************************/
+ getlistaDocumentosTable() {
+   // Laoding
+   this.loading_table = 'show';
+   this.loadTabla2 = false;
+   console.log(this.codOficioIntModal);
+   this.paramsDocumentos.searchValueSend =  this.codOficioIntModal;
+   console.log( "Entra en getlistaDocumentosTable " + this.paramsDocumentos);
+   // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+   this._listasComunes.listasDocumentosToken( this.paramsDocumentos, "listar-documentos" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+          this.JsonOutgetlistaDocumentosUpload = response.data;
+           // Oculta los Loaders
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           alert(response.msg);
+         }else{
+           this.JsonOutgetlistaDocumentosUpload = response.data;
+           //this.valoresdataDetJson ( response.data );
+           this.loading_table = 'hide';
+           this.loadTabla2 = true;
+           console.log( this.JsonOutgetlistaDocumentosUpload );
+         }
+       });
+ } // FIN | FND-00009
+
+
+ /*****************************************************
+ * Funcion: FND-00010
+ * Fecha: 29-10-2018
+ * Descripcion: Descarga todos los Documentos de la tabla
+ * Objetivo: descargar los documentos de la tabla por
+ * medio de la lsita consultada.
+ ******************************************************/
+ dowloadDocs(){
+   let condfirm = confirm('Estas seguro de descargar un total de ' + this.JsonOutgetReporteComunicaion.length + ' documentos?');
+
+   if(condfirm == true){
+     // Recorrer los items de Documentos
+     for ( let i = 0; i < this.JsonOutgetReporteComunicaion.length; i++ ) {
+         // alert( 'Codigo del Documento ******  ' + this.JsonOutgetReporteComunicaion[i].codCorrespondenciaEnc );
+         // alert( 'ID del Documento ******  ' + this.JsonOutgetReporteComunicaion[i].idCorrespondenciaEnc );
+         // Llamamos al Metodo de cargar lista de Documentos
+         this.getlistaDocumentosDowload(this.JsonOutgetReporteComunicaion[i].codCorrespondenciaEnc);
+     }
+   }else {
+     // nada
+   }
+
+ } // FIN | FND-00009
+
+ /*****************************************************
+ * Funcion: FND-00011
+ * Fecha: 29-10-2018
+ * Descripcion: Carga la Lista de los Documentos de la
+ * Comunicacion de la BD que pertenecen al usaurio
+ * Logeado, en el Detalle
+ * Objetivo: Obtener la lista de los Documentos de las
+ * Comunicaciones de la BD, Llamando a la API, por su
+ * metodo ( documentos/listar-documentos ).
+ ******************************************************/
+ getlistaDocumentosDowload( codCorrespondenciaEncIn: string ) {
+   // Laoding
+   // this.loading_table = 'show';
+   // this.loadTabla2 = false;
+   this.paramsDocumentosSend.searchValueSend =  codCorrespondenciaEncIn;
+   console.log( "Entra en getlistaDocumentosTable " + this.paramsDocumentosSend);
+
+   // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
+   this._listasComunes.listasDocumentosToken( this.paramsDocumentosSend, "listar-documentos" ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+          this.JsonOutgetlistaDocumentosDowload = response.data;
+           // Oculta los Loaders
+           // this.loading_table = 'hide';
+           // this.loadTabla2 = true;
+           alert(response.msg + ' Comunicacion ' + codCorrespondenciaEncIn);
+         }else{
+           this.JsonOutgetlistaDocumentosDowload = response.data;
+           //this.valoresdataDetJson ( response.data );
+           // this.loading_table = 'hide';
+           // this.loadTabla2 = true;
+           console.log( this.JsonOutgetlistaDocumentosDowload[0].urlDocumento );
+           let urlDowload = this.JsonOutgetlistaDocumentosDowload[0].urlDocumento;
+
+           // Abre para descargar
+           window.open(this.urlComplete + urlDowload , 'download');
+         }
+       });
+ } // FIN | FND-00011
 
 }

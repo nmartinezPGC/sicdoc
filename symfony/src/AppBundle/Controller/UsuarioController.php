@@ -174,6 +174,13 @@ class UsuarioController extends Controller{
                     $funcionario->setIdTipoFuncionario($tipoFuncionario);
                     $funcionario->setIdDeptoFuncional($deptoFuncional);
                     
+                    //Instancia a la Tabla: TblEstados ************************                    
+                    $estados_func = $em->getRepository("BackendBundle:TblEstados")->findOneBy(
+                            array(
+                                "idEstado" => 1
+                            )) ;
+                    $funcionario->setIdEstado($estados_func);
+                    
                     //Instancia a la Tabla: TblUsuarios ************************                
                     $id_user = $em->getRepository("BackendBundle:TblUsuarios")->findOneBy(
                         array(

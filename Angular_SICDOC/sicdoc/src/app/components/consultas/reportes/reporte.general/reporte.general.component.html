@@ -267,9 +267,14 @@
         <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" style="width:30%"> -->
         <img src="assets/images/832.gif" alt="Cargando Tareas">
       </div>
+      <!-- Boton para descargar todos los documentos de la Tabla -->
+      <button type="button" name="dowloadDocs" id="dowloadDocs" class="btn btn-success"
+          (click)="dowloadDocs()">Descargar Documentos</button>
+      <br><br>
       <table class="table table-striped table-hover table-responsive" cellspacing="0" id="example" *ngIf="loading_tableIn == 'hide'">
         <thead>
           <tr>
+            <th >No</th>
             <th>Ingreso / Salida</th>
             <th>Tipo / Comunicación</th>
             <th>Código / Comunicación</th>
@@ -282,10 +287,12 @@
             <th>Tema / Asunto</th>
             <th>Descripción / Comunicación</th>
             <th>Estado</th>
+            <th >Ver</th>
           </tr>
         </thead>
         <tbody id="newTable" >
-          <tr *ngFor="let item of JsonOutgetReporteComunicaion">
+          <tr *ngFor="let item of JsonOutgetReporteComunicaion; let i = index">
+            <th >{{ i + 1 }}</th>
             <th scope="row">{{ item.descTipoComunicacion }}</th>
             <th scope="row">{{ item.descTipoDocumento }}</th>
             <td title="{{ item.codCorrespondenciaEnc }}">{{ item.codReferenciaSreci }}</td>
@@ -296,7 +303,7 @@
             <td>{{ item.fechaFinalizacion | date :'dd-MM-yyyy' }}</td>
             <td style="cursor:help" title="Nombre: {{ item.perfilInstitucion }}" >{{ item.descInstitucion }}</td>
             <td style="cursor:help" title="Descripción: {{ item.descCorrespondenciaEnc }}">{{ item.temaComunicacion }}</td>
-            <td>{{ item.descCorrespondenciaEnc }}</td>
+            <td style="cursor:help" title="Tema: {{ item.temaComunicacion }}">{{ item.descCorrespondenciaEnc }}</td>
             <td>
               <span [ngClass]="{ 'text-warning': item.idEstado == 3,
                               'text-primary': item.idEstado == 5,
@@ -305,11 +312,100 @@
                 data-toggle="tooltip" data-placement="top" title="Estados de Comunicacion" >
                 {{ item.descripcionEstado }} </span>
             </td>
+            <td >
+              <!-- Boton de Documentos -->
+              <a href="/#" (click)="datoOficio( item.codCorrespondenciaEnc, item.codReferenciaSreci,
+                                                     item.idDeptoFuncional,
+                                                     item.nombre1Funcionario, item.apellido1Funcionario,
+                                                     item.nombre2Funcionario, item.apellido2Funcionario,
+                                                     item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
+                                                     item.idTipoDocumento, item.idTipoComunicacion,
+                                                     item.temaComunicacion, item.descInstitucion, item.perfilInstitucion ); getlistaDocumentosTable();"
+                           data-toggle="modal" data-target="#t_and_c_m5" >
+
+                <img src="/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png" class="d-inline-block align-top" alt="" title="Ver Documento de soporte">
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
 
       <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#reportModal">Launch demo modal</button> -->
+      <!-- Modal de Ver Documento de soporte de la Comunicacion-->
+      <!-- *ngIf="idEstadoModal != 5 " -->
+      <div class="modal fade" id="t_and_c_m5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+            data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" > <i class="material-icons">close</i> </button>
+              <h4 class="modal-title" id="myModalLabel">Comunicación No. {{ codOficioIntModal }} | Referencia ( {{ codOficioRefModal }} )</h4>
+              <!-- Loader de Carga de los Datos -->
+              <div id="loader-2" *ngIf="loading_table == 'show'" >
+                <img src="assets/images/loading_2.gif" alt="Cargando Tareas" style="width:25px;">
+              </div>
+            </div>
+
+            <div class="modal-body">
+              <!-- Formulario del Oficio Asignado -->
+                <form #AnularComForm="ngForm" (ngSubmit)="onSubmit(agregarActividadResp, 4)" name="AnularComForm" role="form">
+                  <!-- fila 1 del Formulario -->
+                  <h4>Documento(s) de la Comunicación | {{ codOficioRefModal }}</h4>
+                  <hr class="colorgraph">
+                  <!-- fila 2 del Formulario -->
+                  <div class="row">
+                    <div class="col-md-12 mb-4">
+                      <!-- Tabla de Funcionarios disponibles para asignar -->
+                      <div class="table table-striped table-bordered" id="demo2" style="height: 300px; overflow: auto">
+                        <!-- Loader de Carga de los Datos -->
+                        <div id="loader-2" *ngIf="loading_table == 'show'" >
+                          <p style="margin-left:35%; margin-top:7%; margin-bottom:2%;">Buscando información de Documentos ...</p>
+                          <img src="assets/images/832.gif" alt="Cargando Tareas" style="margin-left:45%;" >
+                        </div>
+
+                        <table class="table table-striped" cellspacing="0" width="100%"
+                            *ngIf="loadTabla2 == true">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Código Documento</th>
+                              <th>Fecha Creacion</th>
+                              <th>Documento</th>
+                              <th>Descargar</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of JsonOutgetlistaDocumentosUpload; let i = index">
+                              <th scope="row">{{ i + 1 }}</th>
+                              <td>{{ item.codDocumento }}</td>
+                              <td>{{ item.fechaIngreso | date :'dd-MM-yyyy' }}</td>
+                              <td>{{ item.descDocumento }}</td>
+                              <td>
+                                <a *ngIf="item.urlDocumento != null && item.urlDocumento.length > 5" title="Ver Documento de soporte"
+                                  href="{{ urlComplete + item.urlDocumento }}" target="_blank">
+                                    <i class="material-icons">photo</i>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr class="colorgraph">
+                  <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+                  <!-- <button type="button" class="btn btn-primary">Limpiar</button> -->
+                  <!-- <button class="btn btn-success" type="submit" [disabled]="!AnularComForm.valid" style="cursor: pointer">Guardar</button> -->
+                  <button type="button" id="closeModalAnulaCom" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
+              </form>
+          </div>
+            <div class="modal-footer">
+
+            </div>
+      </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+      </div><!-- /.Modal de Ver Documento de soporte de la Comunicacion -->
 
       <div id="reportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
