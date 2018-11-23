@@ -2,12 +2,12 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
     type: entity
     table: tbl_correspondencia_salida
     indexes:
-        fki_user_corr_saslida:
-            columns:
-                - id_usuario
         fki_estado_corr_salida:
             columns:
                 - id_estado
+        fki_user_corr_salida:
+            columns:
+                - id_usuario
         fki_correspondencia_salida_doc:
             columns:
                 - id_tipo_documento
@@ -74,6 +74,16 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
                 default: false
             column: acuse_de_entrega
     manyToOne:
+        idTipoDocumento:
+            targetEntity: TblTipoDocumento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_documento:
+                    referencedColumnName: id_tipo_documento
+            orphanRemoval: false
         idDeptoFuncional:
             targetEntity: TblDepartamentosFuncionales
             cascade: {  }
@@ -93,6 +103,16 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
             joinColumns:
                 id_direccion_sreci:
                     referencedColumnName: id_direccion_sreci
+            orphanRemoval: false
+        idEstado:
+            targetEntity: TblEstados
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estado:
+                    referencedColumnName: id_estado
             orphanRemoval: false
         idFuncionarioAsignado:
             targetEntity: TblFuncionarios
@@ -133,25 +153,5 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
             joinColumns:
                 id_usuario:
                     referencedColumnName: id_usuario
-            orphanRemoval: false
-        idEstado:
-            targetEntity: TblEstados
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_estado:
-                    referencedColumnName: id_estado
-            orphanRemoval: false
-        idTipoDocumento:
-            targetEntity: TblTipoDocumento
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_tipo_documento:
-                    referencedColumnName: id_tipo_documento
             orphanRemoval: false
     lifecycleCallbacks: {  }

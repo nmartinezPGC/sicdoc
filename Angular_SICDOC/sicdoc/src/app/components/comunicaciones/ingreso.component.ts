@@ -1100,7 +1100,7 @@ export class IngresoComunicacionComponent implements OnInit{
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "30";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
@@ -1111,7 +1111,7 @@ export class IngresoComunicacionComponent implements OnInit{
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "30";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
@@ -1131,7 +1131,7 @@ export class IngresoComunicacionComponent implements OnInit{
        // Disable codReferenciaSreci
       //  $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "30";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
@@ -1142,7 +1142,7 @@ export class IngresoComunicacionComponent implements OnInit{
        this.comunicacion.codReferenciaSreci = "";
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "30";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "5";
        this.pattern ="";
 
@@ -1162,7 +1162,7 @@ export class IngresoComunicacionComponent implements OnInit{
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
        // Seteo de variable de validaciones | Correo
-       this.maxlengthCodReferencia = "38";
+       this.maxlengthCodReferencia = "45";
        this.minlengthCodReferencia = "10";
       //  this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
        this.pattern ="^[^@]+@[^@]+\.[a-zA-Z]{2,}$";
@@ -1187,7 +1187,7 @@ export class IngresoComunicacionComponent implements OnInit{
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "38";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "15";
        this.pattern ="";
 
@@ -1199,7 +1199,7 @@ export class IngresoComunicacionComponent implements OnInit{
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "38";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "15";
        this.pattern ="";
 
@@ -1211,7 +1211,7 @@ export class IngresoComunicacionComponent implements OnInit{
        // Disable codReferenciaSreci
        $( "#codReferenciaSreci" ).prop( "disabled", false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "38";
+       this.maxlengthCodReferencia = "40";
        this.minlengthCodReferencia = "15";
        this.pattern ="";
      }// Fin de Condicion

@@ -284,17 +284,17 @@ export class ReporteGeneralComponent implements OnInit {
                       "searchable": true
                   },*/
                   {//fECHAS
-                    "targets": [ 6 ],
-                    "visible": false,
-                    "searchable": true
-                  },
-                  {
                     "targets": [ 7 ],
                     "visible": false,
                     "searchable": true
                   },
+                  {
+                    "targets": [ 8 ],
+                    "visible": false,
+                    "searchable": true
+                  },
                   { // Columna de Descripcion
-                      "targets": [ 10 ],
+                      "targets": [ 12 ],
                       "visible": false,
                       "searchable": true
                   },

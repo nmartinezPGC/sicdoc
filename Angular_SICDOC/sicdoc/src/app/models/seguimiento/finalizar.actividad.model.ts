@@ -42,6 +42,12 @@ export class FinalizarActividad{
 
       public direccionCorrespondencia:string,
 
+      // Modal
+      public idDireccionSreciComVinc:number,
+      public idDeptoFuncionalComVinc:number,
+      public idTipoDocumentoComVinc:number,
+
+      public comunicacionesVinculantes,
 
     ){}
 

@@ -17,6 +17,8 @@ import { UploadService } from '../../services/shared/upload.service'; //Servico 
 import { FinalizarActividadService } from '../../services/seguimiento/finalizar.actividad.service'; //Servicio de la Clase Finalizar
 import { CaseSecuencesService } from '../../services/shared/caseSecuences.service'; //Servico caseSecuence
 
+import { VinculacionComunicacionService } from '../../services/comunicaciones/vinculacion.service'; //Servico Vinculacion de Comunicacion
+
 // Importamos los Pipes de la Forma
 import { GenerateDatePipe } from '../../pipes/common/generate.date.pipe';
 import { SearchFilterPipe } from '../../pipes/common/generate.search.pipe';
@@ -36,7 +38,8 @@ declare var $:any;
   selector: 'finalizar-actividad',
   templateUrl: '../../views/seguimiento/finalizar.actividad.component.html',
   styleUrls: ['../../views/seguimiento/finalizar.actividad.component.css'],
-  providers: [ FinalizarActividadService, ListasComunesService, UploadService, CaseSecuencesService ]
+  providers: [ FinalizarActividadService, ListasComunesService, UploadService, CaseSecuencesService,
+  VinculacionComunicacionService ]
 })
 export class FinalizarActividadComponent implements OnInit {
   public titulo:string = "Agregar / Finalizar / Anular Comunicación";
@@ -106,6 +109,8 @@ export class FinalizarActividadComponent implements OnInit {
 
   // Variables Modales
   public codOficioIntModal;
+  public comunicacionVinculante;
+  public viewcomunicacionVinculante: boolean = false;
   public codOficioActModal;
   public codOficioRefModal;
   public idDeptoFuncionalModal;
@@ -123,6 +128,19 @@ export class FinalizarActividadComponent implements OnInit {
   public institucionComunicaiconModal;
   public descinstitucionComunicaiconModal;
 
+  // Modal Vinculante
+  private paramsSubDirComVinculante;
+  public JsonOutgetlistaSubDireccionSRECIComVinculantes:any[]; // Uso para las Comunicaciones viculantes | 2018-02-20
+  public JsonOutgetlistaDireccionSRECI:any[];
+  public JsonOutgetlistaTiposDocumentos:any[];
+
+  public paramsComVinculante; // Parametros para las Comunicacion Vinculantes
+  public JsonOutgetlistaComunicacionVinculante:any[];  // Json para las Comunciacnon Vinculantes
+
+  // Select de Vinculacion de Comunicacion
+  itemComunicacionVincList = [];
+  selectedComunicacionVincItems = [];
+  settingsComunicacionVinc = {};
 
   // Instacia del Modelo
   public finalizarOficios: FinalizarActividad;
@@ -157,6 +175,7 @@ export class FinalizarActividadComponent implements OnInit {
                private _router: Router,
                private _route: ActivatedRoute,
                private _appComponent: AppComponent,
+               private _vinculacionComunicacionService: VinculacionComunicacionService,
                private changeDetectorRef: ChangeDetectorRef,
                private _http: Http ) {
     // Seteo de la Ruta de la Url Config
@@ -242,11 +261,14 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios = new FinalizarActividad(null, null, null, null,null, null, null,
                                null, null, null,  null,  null, null, 5,  null, null, null,
                                null, null, null, null, null, null, null, null,
-                               null);
+                               null,
+                               0, 0, 0, null);
 
     // Inicializamos el Llenado de las Tablas
     this.getlistaFinalizarOficiosTable();
-
+    this.getlistaDireccionesSRECI();
+    // Lsita de Tipo de Documentos
+    this.getlistaTipoDocumentos();
 
     // Array de los Documentos enviados
     this.JsonOutgetListaDocumentos = [];
@@ -260,6 +282,17 @@ export class FinalizarActividadComponent implements OnInit {
     //Iniciamos los Parametros de Json de Documentos
     this.paramsDocumentos = {
       "searchValueSend" : ""
+    };
+
+    // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
+    this.paramsSubDirComVinculante = {
+      "idDireccionSreciComVinc"  : ""
+    };
+
+    this.paramsComVinculante = {
+      "idDeptoFuncional"  : "",
+      "idTipoDocumento"  : "",
+      "idTipoComunicacion"  : ""
     };
 
     // Generar la Lista de Secuenciales
@@ -353,6 +386,8 @@ export class FinalizarActividadComponent implements OnInit {
     this.finalizarOficios.nombre2FuncionarioAsigmado = this.nombre2FuncModal;
     this.finalizarOficios.apellido1FuncionarioAsigmado = this.apellido1FuncModal;
     this.finalizarOficios.apellido2FuncionarioAsigmado = this.apellido2FuncModal;
+    this.finalizarOficios.codOficioRespuesta = this.idCorrepEncModal;
+
     this.finalizarOficios.codOficioRespuesta = this.idCorrepEncModal;
 
     // Asignamos el valor al tipo de Documento
@@ -755,7 +790,8 @@ export class FinalizarActividadComponent implements OnInit {
              nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
              idFuncionarioIn:number, idEstadoAsign:number, idOficioEnc:number,
              idTipoDocumento:number, idTipoComunicacion:number,
-             temaComunicacion:string, institucionComunicacion:string, descinstitucionComunicacion:string ){
+             temaComunicacion:string, institucionComunicacion:string, descinstitucionComunicacion:string,
+              comunicacionVinculante:string ){
 
     // Seteo de las varibles de la Funcion
     this.codOficioIntModal = codOficioIntIn;
@@ -771,6 +807,14 @@ export class FinalizarActividadComponent implements OnInit {
     this.institucionComunicaiconModal     = institucionComunicacion;
     this.descinstitucionComunicaiconModal = descinstitucionComunicacion;
 
+    this.comunicacionVinculante = comunicacionVinculante;
+
+    // evalua que la comunicacion no tenga previa vinculante
+    if (this.comunicacionVinculante == null || this.comunicacionVinculante === '' ){
+      this.viewcomunicacionVinculante = true;
+    }else if(this.comunicacionVinculante != null || this.comunicacionVinculante !== '') {
+      this.viewcomunicacionVinculante = false;      
+    }
     // Limpia los Campos de las Descripciones
     this.finalizarOficios.descripcionOficio = "";
     this.finalizarOficios.actividadOficio = "";
@@ -1390,5 +1434,197 @@ export class FinalizarActividadComponent implements OnInit {
      // alert('DesSelecciona');
    }
  } // FIN | FND-000015
+
+
+ /*****************************************************
+ * Funcion: FND-00007.1.1
+ * Fecha: 20-02-2018
+ * Descripcion: Carga la Lista de las Sub Direcciones de
+ * SRECI
+ * Objetivo: Obtener la lista de las Direcciones SRECI
+ * de la BD, Llamando a la API, por su metodo
+ * ( subdir-sreci-list ).
+ ******************************************************/
+ getlistaSubDireccionesSRECIComVinculante() {
+   //Llamar al metodo, de Login para Obtener la Identidad
+   this.paramsSubDirComVinculante.idDireccionSreciComVinc = this.finalizarOficios.idDireccionSreciComVinc;
+
+   console.log(this.paramsSubDirComVinculante);
+
+   this._listasComunes.listasComunes( this.paramsSubDirComVinculante,"com-vinculantes-subdir-sreci-list").subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+           alert(response.msg);
+           // this.addToast(4,"Error", response.msg);
+         }else{
+           //this.data = JSON.stringify(response.data);
+           this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
+         }
+       });
+ } // FIN : FND-00007.1.1
+
+
+ /*****************************************************
+ * Funcion: FND-00007
+ * Fecha: 31-08-2017
+ * Descripcion: Carga la Lista de las Direcciones de
+ * SRECI
+ * Objetivo: Obtener la lista de las Direcciones SRECI
+ * de la BD, Llamando a la API, por su metodo
+ * (dir-sreci-list).
+ ******************************************************/
+ getlistaDireccionesSRECI() {
+   //Llamar al metodo, de Login para Obtener la Identidad
+   this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           alert(response.msg);
+           // this.addToast(4,"Error", response.msg);
+         }else{
+           //this.data = JSON.stringify(response.data);
+           this.JsonOutgetlistaDireccionSRECI = response.data;
+         }
+       });
+ } // FIN : FND-00007
+
+ /*****************************************************
+ * Funcion: FND-00004.2
+ * Fecha: 25-09-2017
+ * Descripcion: Carga la Lista de los Tipos de Documentos
+ * Objetivo: Obtener la lista de los Tipos de usuarios
+ * de la BD, Llamando a la API, por su metodo
+ * ( tipo-documento-list ).
+ ******************************************************/
+ getlistaTipoDocumentos() {
+     this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+       response => {
+         // successful so redirect to return url
+         this.mensajes = response.msg;
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           this.JsonOutgetlistaTiposDocumentos = response.data;
+            alert(response.msg);
+           // this.addToast(4,"Error",this.mensajes);
+         }else{
+           this.JsonOutgetlistaTiposDocumentos = response.data;
+           //console.log(response.data);
+         }
+       });
+ } // FIN : FND-00004.2
+
+ /********************************************************
+ * Funcion: FND-0000020
+ * Fecha: 16-02-2018
+ * Descripcion: Carga la Lista de Todas las Comunicación
+ * que tiene el Departamento Funcional del Usuario
+ * Objetivo: Obtener la lista de Todas las Comunicaciones
+ * de la BD, Llamando a la API, por su metodo
+ * Params: idDeptoFuncional, idTipoDocumento, idTipoComunicacion
+ * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
+ **********************************************************/
+ getlistaComunicacionVinculanteAll(idOpcion:number) {
+   // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
+   // Condicionamos la Busqueda
+   if( idOpcion == 1 ){
+     this.paramsComVinculante.idDeptoFuncional = this.finalizarOficios.idDeptoFuncionalComVinc;
+     this.paramsComVinculante.idTipoDocumento  = this.finalizarOficios.idTipoDocumentoComVinc;
+     this.paramsComVinculante.idTipoComunicacion = [1];
+     //console.log('Caso #1 Ingreso');
+   }else if ( idOpcion == 2 ){
+     this.paramsComVinculante.idDeptoFuncional = this.finalizarOficios.idDeptoFuncionalComVinc;
+     this.paramsComVinculante.idTipoDocumento  = this.finalizarOficios.idTipoDocumentoComVinc;
+     this.paramsComVinculante.idTipoComunicacion = [2];
+     //console.log('Caso #2 Salidas');
+   }else if ( idOpcion == 3 ){
+     this.paramsComVinculante.idDeptoFuncional = this.finalizarOficios.idDeptoFuncionalComVinc;
+     this.paramsComVinculante.idTipoDocumento  = this.finalizarOficios.idTipoDocumentoComVinc;
+     this.paramsComVinculante.idTipoComunicacion = [1,2];
+     //console.log('Caso #3 Ambas');
+   }
+
+   //console.log(this.paramsComVinculante);
+   this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
+       response => {
+         // login successful so redirect to return url
+         if(response.status == "error"){
+           //Mensaje de alerta del error en cuestion
+           this.JsonOutgetlistaComunicacionVinculante = response.data;
+           this.itemComunicacionVincList = [];
+           alert(response.msg);
+           // this.addToast(4,"Error", response.msg);
+         }else{
+           this.JsonOutgetlistaComunicacionVinculante = response.data;
+
+           this.itemComunicacionVincList = this.JsonOutgetlistaComunicacionVinculante;
+           //console.log( this.JsonOutgetlistaComunicacionVinculante );
+         }
+       });
+ } // FIN : FND-0000020
+
+
+ /*****************************************************
+ * Funcion: FND-00011.2
+ * Fecha: 20-01-2018
+ * Descripcion: Limpia el Arreglo de Contactos
+ * ( cleanComunicacionVinculante ).
+ ******************************************************/
+ cleanComunicacionVinculante(){
+   //Borra el Contenido del Arreglo de Comunicacones Vinculante
+   this.paramsComVinculante = {
+     "idDeptoFuncional"  : "",
+     "idTipoDocumento"  : "",
+     "idTipoComunicacion"  : ""
+   };
+
+   // Limpia los radio Buttons que este Chequedo
+   $(".fakeRadio").attr('checked', false);
+
+   // Inicializa el itemList de las Comunicaciones Viculantes
+   this.itemComunicacionVincList = [];
+
+   this.finalizarOficios.idTipoDocumentoComVinc = 0;
+   this.finalizarOficios.idDeptoFuncionalComVinc = 0;
+   this.finalizarOficios.idDireccionSreciComVinc = 0;
+ } // FIN : FND-00011.2
+
+
+ /******************************************************
+  * Funiones de Seleccion en Nuevo Control del Listas
+  * Metodologia: ng-selectec2
+  * Fecha: 2018-01-19
+  * Casos de uso: Lista de las Comunicacones viculantes
+ *******************************************************/
+ onItemComVinculanteSelect(item: any) {
+   console.log(item);
+   this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+   this.finalizarOficios.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+   console.log( this.finalizarOficios.comunicacionesVinculantes );
+ }
+
+ OnItemComVinculanteDeSelect(item: any) {
+   console.log(item);
+   this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+   this.finalizarOficios.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+   console.log( this.finalizarOficios.comunicacionesVinculantes );
+ }
+
+ onSelectComVinculanteAll(items: any) {
+   console.log(items);
+   this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+   this.finalizarOficios.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+   console.log( this.finalizarOficios.comunicacionesVinculantes );
+ }
+
+ onComVinculanteDeSelectAll(items: any) {
+   console.log(items);
+   this.JsonOutgetlistaComunicacionVinculante = this.selectedComunicacionVincItems ;
+   this.finalizarOficios.comunicacionesVinculantes = this.JsonOutgetlistaComunicacionVinculante;
+   console.log( this.finalizarOficios.comunicacionesVinculantes );
+ }
 
 }

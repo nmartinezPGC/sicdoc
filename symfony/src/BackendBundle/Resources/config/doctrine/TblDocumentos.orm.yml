@@ -2,18 +2,18 @@ BackendBundle\Entity\TblDocumentos:
     type: entity
     table: tbl_documentos
     indexes:
-        fki_doc_user:
-            columns:
-                - id_usuario
         fki_co_det_docum:
             columns:
                 - id_correspondencia_det
-        tbl_documentos_cod_documento_idx:
+        fki_doc_user:
             columns:
-                - cod_documento
+                - id_usuario
         fki_enc_doc:
             columns:
                 - id_correspondencia_enc
+        tbl_documentos_cod_documento_idx:
+            columns:
+                - cod_documento
     uniqueConstraints:
         tbl_documentos_cod_documento_key:
             columns:

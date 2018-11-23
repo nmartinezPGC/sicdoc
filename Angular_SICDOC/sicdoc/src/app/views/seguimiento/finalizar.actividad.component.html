@@ -86,7 +86,7 @@
                                                          item.nombre2Funcionario, item.apellido2Funcionario,
                                                          item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
                                                          item.idTipoDocumento, item.idTipoComunicacion,
-                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion);
+                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion, item.comunicacionVinculante);
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m3" >
                     <img src="/assets/icons/comunicacion/written-page_brow_24x24.png" class="d-inline-block align-top" alt="" title="Agregar Actividad a Comunicación (Correo Electronico, Llamada, visita etc.)">
@@ -99,7 +99,7 @@
                                                          item.nombre2Funcionario, item.apellido2Funcionario,
                                                          item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
                                                          item.idTipoDocumento, item.idTipoComunicacion,
-                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion );
+                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion, item.comunicacionVinculante );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m" >
                       <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Finalizar Comunicacion" >assignment_turned_in</i> -->
@@ -113,7 +113,7 @@
                                                          item.nombre2Funcionario, item.apellido2Funcionario,
                                                          item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
                                                          item.idTipoDocumento, item.idTipoComunicacion,
-                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion );
+                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion, item.comunicacionVinculante );
                                                          listarCodigoCorrespondenciaAgregarActividad(item.idTipoDocumento, item.idTipoComunicacion);"
                           data-toggle="modal" data-target="#t_and_c_m4" >
                       <!-- <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Anular Comunicacion" >assignment_turned_in</i> -->
@@ -127,7 +127,8 @@
                                                          item.nombre2Funcionario, item.apellido2Funcionario,
                                                          item.idFuncionario, item.idEstado, item.idCorrespondenciaEnc,
                                                          item.idTipoDocumento, item.idTipoComunicacion,
-                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion ); getlistaDocumentosTable();"
+                                                         item.temaComunicacion, item.descInstitucion, item.perfilInstitucion, item.comunicacionVinculante );
+                                                         getlistaDocumentosTable();"
                                data-toggle="modal" data-target="#t_and_c_m5" >
 
                     <img src="/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png" class="d-inline-block align-top" alt="" title="Ver Documento de soporte">
@@ -158,7 +159,7 @@
         <!-- Formulario del Oficio Asignado -->
           <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(finalizarOficioAsignado, 1)" name="finalizarOficioForm" role="form">
             <!-- fila 1 del Formulario -->
-            <h4>Finalización de Comunicación | {{ codOficioRefModal }}</h4>
+            <h4>Finalización de Comunicación | {{ codOficioRefModal }} | COM VINC {{ comunicacionVinculante }} </h4>
             <hr class="colorgraph">
             <!-- <div class="row">
               <div class="col-md-6 mb-3">
@@ -173,9 +174,9 @@
             <div class="row">
               <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio"
                         ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
-                        class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                        class="form-control" placeholder="Descripción de la Comunicacion" rows="3">
                 </textarea>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripción es obligatoria</small>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
@@ -189,6 +190,107 @@
                     placeholder="Actividad realizada" required value="">
                   <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Actividad es obligatoria</small>
               </div>
+            </div>
+
+          <hr class="hr-new" *ngIf="viewcomunicacionVinculante == true">
+            <div class="row" *ngIf="viewcomunicacionVinculante == true">
+              <!-- Direccion Encargada del tema de la Comunicacion -->
+              <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <select #idDireccionSreciComVinc="ngModel" class="form-control" name="idDireccionSreciComVinc" id="idDireccionSreciComVinc"
+                        ngControl="idDireccionSreciComVinc" [(ngModel)]="finalizarOficios.idDireccionSreciComVinc" tabindex="8"
+                           (change)="getlistaSubDireccionesSRECIComVinculante()" >
+                      <option value="0">Sub Secretaría Responsable </option>
+                      <option *ngFor="let list of JsonOutgetlistaDireccionSRECI" value="{{ list.idDireccionSreci }}">{{ list.descDireccionSreci }}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="idDireccionSreciComVinc.value == 0 || idDireccionSreciComVinc.value == null " >
+                    Debes Seleccionar una Sub Secretaría vinculante</small>
+                  <!-- <small class="form-text text-muted" *ngIf="idDireccionSreciComVinc.errors?.required" >Debes Seleccionar una Sub Secretaría responsable</small> -->
+                </div>
+             </div>
+
+             <!-- SubDireccion Encargada del tema de la Comunicacion -->
+             <div class="col-xs-12 col-sm-6 col-md-6">
+               <div class="form-group">
+                 <select #idDeptoFuncionalComVinc="ngModel" class="form-control" name="idDeptoFuncionalComVinc" id="idDeptoFuncionalComVinc"
+                       ngControl="idDeptoFuncionalComVinc" [(ngModel)]="finalizarOficios.idDeptoFuncionalComVinc" tabindex="9" >
+                     <option value="0">Dirección Responsable</option>
+                     <option *ngFor="let list of JsonOutgetlistaSubDireccionSRECIComVinculantes" value="{{ list.idDeptoFuncional }}">{{ list.descDeptoFuncional }}</option>
+                 </select>
+                 <small class="form-text text-muted" *ngIf="idDeptoFuncionalComVinc.value == 0 || idDeptoFuncionalComVinc.value == null " >
+                   Debes Seleccionar una Dirección vinculante</small>
+                 <!-- <small class="form-text text-muted" *ngIf="idDeptoFuncional.errors?.required" >Debes Seleccionar una Dirección responsable</small> -->
+               </div>
+             </div>
+
+            </div>
+
+            <!-- Fila de Tipo de Comunicaciones -->
+            <div class="row" *ngIf="viewcomunicacionVinculante == true">
+                <!-- Tipo de Comunicacion -->
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <select #idTipoDocumentoComVinc="ngModel" class="form-control" name="idTipoDocumentoComVinc"
+                          ngControl="idTipoDocumentoComVinc" [(ngModel)]="finalizarOficios.idTipoDocumentoComVinc"  >
+                        <option value="0">Tipo de Comunicación</option>
+                        <option *ngFor="let list of JsonOutgetlistaTiposDocumentos" value="{{ list.idTipoDocumento }}" > {{ list.descTipoDocumento }}</option>
+                    </select>
+                    <small class="form-text text-muted" *ngIf="idTipoDocumentoComVinc.value == 0 || idTipoDocumentoComVinc.value == null " >Debes Seleccionar un Tipo de Comunicacion</small>
+                    <!-- <small class="form-text text-muted" *ngIf="idTipoDocumento.errors?.required" >Debes Seleccionar un Tipo de Comunicacion</small> -->
+                  </div>
+               </div>
+
+
+               <div class="col-xs-12 col-sm-6 col-md-6">
+                   <div class="panel panel-primary">
+                      <div class="panel-body text-center">
+                        <h6 title="Selecciona un Tipo de Comunicación, para Filtrar la Información a Seleccionar" class="text-on-pannel text-primary">
+                          <!-- Seleccion de COmunicacion de Ingreso -->
+                          <!-- Comunicacion de Ingreso -->
+                          <label class="custom-control custom-radio">
+                             <input id="radio1" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(1)">
+                             <span class="custom-control-indicator"></span>
+                             <span class="custom-control-description">Ingreso Com.</span>
+                          </label>
+
+                          <!-- Comunicacion de Salida -->
+                          <label class="custom-control custom-radio">
+                             <input id="radio2" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(2)">
+                             <span class="custom-control-indicator"></span>
+                             <span class="custom-control-description">Salida Com.</span>
+                          </label>
+
+                          <!-- Ambas opciones -->
+                          <!-- <label class="custom-control custom-radio">
+                             <input id="radio3" name="radio" type="radio" class="custom-control-input fakeRadio" (change)="getlistaComunicacionVinculanteAll(3)">
+                             <span class="custom-control-indicator"></span>
+                             <span class="custom-control-description">Ambas Com.</span>
+                          </label> -->
+                        </h6>
+                      </div>
+                  </div>
+                  <button type="button" (click)="cleanComunicacionVinculante()" class="btn btn-primary btn-sm">Limpiar Filtro</button>
+                </div>
+            </div>
+
+            <hr class="hr-new" *ngIf="viewcomunicacionVinculante == true">
+
+            <!-- Fila para Seleccionar la(s) Comunicaciones Segun el Tipo -->
+            <div class="row" *ngIf="viewcomunicacionVinculante == true">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+      					<div class="form-group" >
+                    <angular2-multiselect [data]="itemComunicacionVincList" name="selectComVinc"
+                        [settings]="settingsComunicacionVinc"
+                        [(ngModel)]="selectedComunicacionVincItems"
+                        (onSelect)="onItemComVinculanteSelect($event)"
+                        (onDeSelect)="OnItemComVinculanteDeSelect($event)"
+                        (onSelectAll)="onSelectComVinculanteAll($event)"
+                        (onDeSelectAll)="onComVinculanteDeSelectAll($event)">
+                    </angular2-multiselect>
+                    <small class="form-text text-muted" >Selecciona la(s) Comunicaciones Vinculantes con la Actual</small>
+      					</div>
+      				</div>
+
             </div>
 
             <!-- Fila de Documentos y Unidad de Correspondencia -->
@@ -340,19 +442,19 @@
                 <div class="row">
                   <div class="col-md-4 mb-3">
                     <label for="validationDefault01">Funcionario Asignado</label>
-                    <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                    <input type="text" class="form-control"
                            value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
                   </div>
 
                   <div class="col-md-6 mb-3">
                     <label for="validationDefault01">Temática</label>
-                    <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                    <input type="text" class="form-control"
                            value="{{ temaComunicacionModal }}" disabled>
                   </div>
 
                   <div class="col-md-2 mb-3">
                     <label for="validationDefault01">Institución</label>
-                    <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                    <input type="text" class="form-control"
                           title="{{ descinstitucionComunicaiconModal }}" value="{{ institucionComunicaiconModal }} " disabled>
                   </div>
 
@@ -362,9 +464,9 @@
                 <div class="row">
                   <div class="col-md-12 mb-4">
                     <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                    <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                    <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio"
                             ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
-                            class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicación" rows="3">
+                            class="form-control"  placeholder="Descripción de la Comunicación" rows="3">
                     </textarea>
                     <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripción es obligatoria</small>
                     <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
@@ -410,19 +512,19 @@
             <div class="row">
               <div class="col-md-4 mb-3">
                 <label for="validationDefault01">Funcionario Asignado</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                        value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
               </div>
 
               <div class="col-md-6 mb-3">
                 <label for="validationDefault01">Temática</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                        value="{{ temaComunicacionModal }}" disabled>
               </div>
 
               <div class="col-md-2 mb-3">
                 <label for="validationDefault01">Institución</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                       title="{{ descinstitucionComunicaiconModal }}" value="{{ institucionComunicaiconModal }} " disabled>
               </div>
 
@@ -432,9 +534,9 @@
             <div class="row">
               <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio"
                         ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
-                        class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                        class="form-control" placeholder="Descripción de la Comunicacion" rows="3">
                 </textarea>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripción es obligatoria</small>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
@@ -480,19 +582,19 @@
             <div class="row">
               <div class="col-md-4 mb-3">
                 <label for="validationDefault01">Funcionario Asignado</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                        value="{{ nombre1FuncModal }} {{ nombre2FuncModal }} {{ apellido1FuncModal }} {{ apellido2FuncModal }} " disabled>
               </div>
 
               <div class="col-md-6 mb-3">
                 <label for="validationDefault01">Temática</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                        value="{{ temaComunicacionModal }}" disabled>
               </div>
 
               <div class="col-md-2 mb-3">
                 <label for="validationDefault01">Institución</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name"
+                <input type="text" class="form-control"
                       title="{{ descinstitucionComunicaiconModal }}" value="{{ institucionComunicaiconModal }} " disabled>
               </div>
 
@@ -502,9 +604,9 @@
             <div class="row">
               <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
-                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio" id="descripcionOficio"
+                <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio"
                         ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
-                        class="form-control" id="exampleFormControlTextarea1" placeholder="Descripción de la Comunicacion" rows="3">
+                        class="form-control" placeholder="Descripción de la Comunicacion" rows="3">
                 </textarea>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripción es obligatoria</small>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.minlength" >Se nesesita por lo menos {{ descripcionOficio.errors.minlength.requiredLength }} caracteres</small>
@@ -516,7 +618,7 @@
             <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
             <!-- <button type="button" class="btn btn-primary">Limpiar</button> -->
             <button class="btn btn-success" type="submit" [disabled]="!AnularComForm.valid" style="cursor: pointer">Guardar</button>
-            <button type="button" id="closeModalAnulaCom" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
+            <button type="button" id="closeModalAnulaCom2" class="btn btn-danger" data-dismiss="modal" style="cursor: pointer">Cerrar</button>
         </form>
     </div>
       <div class="modal-footer">

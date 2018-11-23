@@ -62,16 +62,6 @@ BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
                 id_correspondencia_entrante:
                     referencedColumnName: id_correspondencia_entrante
             orphanRemoval: false
-        idUsuario:
-            targetEntity: TblUsuarios
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                id_usuario:
-                    referencedColumnName: id_usuario
-            orphanRemoval: false
         idCorrespondenciaSalida:
             targetEntity: TblCorrespondenciaSalida
             cascade: {  }
@@ -81,5 +71,15 @@ BackendBundle\Entity\TblDocumentosUnidadCorrespondencia:
             joinColumns:
                 id_correspondencia_salida:
                     referencedColumnName: id_correspondencia_salida
+            orphanRemoval: false
+        idUsuario:
+            targetEntity: TblUsuarios
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_usuario:
+                    referencedColumnName: id_usuario
             orphanRemoval: false
     lifecycleCallbacks: {  }

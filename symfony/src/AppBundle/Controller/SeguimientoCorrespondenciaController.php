@@ -435,6 +435,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                 // Ruta del Pdf a Subir
                 $pdf_send  = ($params->pdfDocumento != null) ? $params->pdfDocumento : null ;
                 
+                // 2018-02-19 | Comunicaciones Vinculantes al Tema
+                $comVinculante_send = ($params->comunicacionesVinculantes != null) ? $params->comunicacionesVinculantes : null ;
+                
                 // Envio por Json el Codigo de Usuario | Buscar en la Tabla: TblUsuarios
                 $cod_usuario          = $identity->sub;
                 
@@ -562,6 +565,34 @@ class SeguimientoCorrespondenciaController extends Controller {
                         
                         $correspondenciaDetAsigna->setIdEstado( $estadoAsigna ); //Set de Estado de Correspondencia | Id = 5 ( Finalizado )
                         //$correspondenciaDetAsigna->setCodOficioRespuesta( $codgio_oficio_respuesta ); //Set de Oficio Respuesta
+                        
+                         /* 2018-02-19
+                        * Campo de las Sub Comunicaciones Vinculantes
+                        * MEJ-000002
+                        */
+                        // *****************************************************
+                        if( $comVinculante_send != null ){
+                            // Se convierte el Array en String
+                            $ComVinc_array_convert   = json_encode($comVinculante_send);
+                            $ComVinc_array_convert2  = json_decode($ComVinc_array_convert);
+
+                            // Recorreros los Items del Array
+                            $codigoComunicacionAcum = "";
+                            
+                            foreach ( $ComVinc_array_convert2 as $arr ){                                
+                                $idComunicacionVinculante     = $arr->id;
+                                $codigoComunicacionVinculante = $arr->itemName;
+                                
+                                if( $codigoComunicacionAcum != "" ){
+                                    $codigoComunicacionAcum = $codigoComunicacionAcum . ', ' . $codigoComunicacionVinculante;
+                                }else {
+                                    $codigoComunicacionAcum = $codigoComunicacionVinculante;
+                                }
+                                // Asignamos las Sub Direcciones al Listado
+                                $correspondenciaAsigna->setcomunicacionVinculante( $codigoComunicacionAcum );
+                            }
+                        }
+                        // FIN | MEJ-000002
                         
                         //Realizar la Persistencia de los Datos y enviar a la BD
                         // Detalle de la Comunicacion Principal

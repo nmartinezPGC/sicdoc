@@ -122,7 +122,7 @@ class ReportesController extends Controller{
                          * Sub Direccion                                       * 
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
-                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     . "DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
                                     . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
@@ -164,14 +164,14 @@ class ReportesController extends Controller{
                         
                     } else if ( $id_sub_direccion != 0 && $id_funcionario_asignado == 0 ) {                        
                         //Todos Los Parametros de la Consulta
-                        $opt = "222";
+                        $opt = "2";
                         
                         /***** Nuevo Metodo de Consulta a BD | Opcion #2 *******
                          *Consulta de Registros con Fechas, Arrays y Funcion. y*
                          * Sub Direccion                                       * 
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
-                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
                                     . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
@@ -215,7 +215,7 @@ class ReportesController extends Controller{
                          *Consulta de Registros con Fechas, Arrays y Funcion.  * 
                          *Params: Fechas, Arrays(Estados, Tipos), Funcionario  *           
                          ******************************************************/
-                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
                                     . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '
@@ -260,7 +260,7 @@ class ReportesController extends Controller{
                          *Consulta de Registros con Fechas y Arrays            * 
                          *Params: Fechas, Arrays(Estados, Tipos)               *           
                          ******************************************************/
-                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, '
+                        $query = $em->createQuery('SELECT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaFinalizacion, 0, 'DAY') AS fechaFinalizacion, "
                                     . "DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
                                     . 'tcom.descTipoComunicacion, tcom.idTipoComunicacion, tdoc.descTipoDocumento, tdoc.idTipoDocumento, '

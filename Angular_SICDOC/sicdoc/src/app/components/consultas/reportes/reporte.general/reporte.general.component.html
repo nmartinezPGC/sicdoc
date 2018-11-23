@@ -278,6 +278,7 @@
             <th>Ingreso / Salida</th>
             <th>Tipo / Comunicación</th>
             <th>Código / Comunicación</th>
+            <th>COM. / Vinculante</th>
             <th>Direccion Responsable</th>
             <th>Funcionario Responsable</th>
             <th>Fecha Creación</th>
@@ -296,6 +297,7 @@
             <th scope="row">{{ item.descTipoComunicacion }}</th>
             <th scope="row">{{ item.descTipoDocumento }}</th>
             <td title="{{ item.codCorrespondenciaEnc }}">{{ item.codReferenciaSreci }}</td>
+            <td>{{ (item.comunicacionVinculante  !== null) ? ( item.comunicacionVinculante ) : "No tiene Vinculación" }} </td>
             <td style="cursor:help" title="Nombre: {{ item.descDeptoFuncional }}">{{ item.inicialesDeptoFuncional }}</td>
             <td>{{ item.nombre1Funcionario }} - {{ item.apellido1Funcionario }}</td>
             <td>{{ item.fechaIngreso | date :'dd-MM-yyyy' }}</td>
