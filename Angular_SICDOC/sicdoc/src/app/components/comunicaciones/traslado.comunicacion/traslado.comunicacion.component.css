@@ -13,6 +13,9 @@
 .container {
   font-family: -system-ui
 }
+.container-fluid {
+  font-family: -system-ui
+}
 
 /* Validaciones de los Campos */
 .ng-valid[required] {

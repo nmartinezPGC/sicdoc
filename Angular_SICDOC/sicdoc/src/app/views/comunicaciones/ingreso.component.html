@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container-fluid">
 <!-- Datos Generales de los Usuarios -->
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-offset-2 col-md-offset-3">
@@ -505,15 +505,14 @@
 			<div class="row">
 				<div class="col-xs-12 col-md-4">
             <!-- <input type="submit" value="Guardar Comunicación"  class="btn btn-primary btn-block btn-lg botoncontacto" tabindex="17" [disabled]="!ingresoComunicacionForm.valid" > -->
-            <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="17"
+            <button type="submit" class="btn btn-primary " tabindex="17"
                   [disabled]="!ingresoComunicacionForm.valid" style="cursor:pointer" >
               <img src="assets/icons/comunicacion/diskette_24x24.png" alt="Cargando Imagen">
               Guardar Comunicación
             </button>
-        </div>
-				<div class="col-xs-12 col-md-3">
 
-            <a [routerLink]="['/comunicacion/ingreso-de-comunicacion']" style="cursor:pointer" class="btn btn-success btn-block btn-lg"
+
+            <a [routerLink]="['/comunicacion/ingreso-de-comunicacion']" style="cursor:pointer" class="btn btn-success"
                (click)="resetForm()" >
                <img src="assets/icons/comunicacion/eraser-hand-drawn-tool.png" alt="Cargando Imagen">
                Limpiar
@@ -527,33 +526,38 @@
 
   <!-- Columna para mostrar los Datos relalevantes de los Ingresos de Comunicaciones -->
   <div class="col-2">
-    <div class="card" style="width: 16rem; margin-top:5px">
+    <div class="card" style="width: 22rem; margin-top:5px">
       <!-- <img class="card-img-top" src="" alt="Card image cap"> -->
       <div class="card-block" style="margin-left:8px">
         <h4 class="card-title">Resumen</h4>
-        <p class="card-text">Resumen de la información registrada de las Comunicaciones.</p>
+        <p class="card-text">Resumen de la información registrada de las Comunicaciones de Ingreso.</p>
       </div>
       <ul class="list-group list-group-flush">
 
         <!-- Oficios -->
         <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
-        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countOficiosFinalizados }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Oficios Pendientes  ------------------- | <span class="badge badge-pill badge-warning"> {{ countOficiosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Oficios Finalizados ------------------- | <span class="badge badge-pill badge-primary"> {{ countOficiosFinalizados }} </span> </li>
+
+        <!-- Notas Verbales -->
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Notas Pendientes ------------------- | <span class="badge badge-pill badge-warning"> {{ countNotasPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Notas Finalizados ------------------- | <span class="badge badge-pill badge-primary"> {{ countNotasFinalizados }} </span> </li>
 
         <!-- Memoramdums -->
         <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Memos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
-        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Memos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_late</i> Memos Pendientes ------------------- | <span class="badge badge-pill badge-warning"> {{ countMemosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">assignment_turned_in</i> Memos Finalizados ------------------- | <span class="badge badge-pill badge-primary"> {{ countMemosFinalizados }} </span> </li>
+
 
         <!-- Correos -->
         <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-        <li class="list-group-item"> <i class="material-icons">markunread_mailbox</i> Correos Pendientes --- | <span class="badge badge-pill badge-warning"> {{ countCorreosPendientes }} </span> </li>
-        <li class="list-group-item"> <i class="material-icons">contact_mail</i> Correos Finalizados -- | <span class="badge badge-pill badge-primary"> {{ countCorreosFinalizados }} </span> </li>
+        <!-- <li class="list-group-item"> <i class="material-icons">markunread_mailbox</i> Correos Pendientes ---------------------------------- | <span class="badge badge-pill badge-warning"> {{ countCorreosPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">contact_mail</i> Correos Finalizados --------------------------------- | <span class="badge badge-pill badge-primary"> {{ countCorreosFinalizados }} </span> </li> -->
 
         <!-- Llamadas -->
         <!-- <li class="list-group-item"> <i class="material-icons">assignment</i> Oficios Ingresados -- <span class="badge badge-pill badge-primary"> {{ countOficiosIngresados }}  </span> </li> -->
-        <li class="list-group-item"> <i class="material-icons">call</i> Llamadas Pendientes -- | <span class="badge badge-pill badge-warning"> {{ countLlamadasPendientes }} </span> </li>
-        <li class="list-group-item"> <i class="material-icons">call_end</i> Llamadas Finalizadas -- | <span class="badge badge-pill badge-primary"> {{ countLlamadasFinalizados }} </span> </li>
+        <!-- <li class="list-group-item"> <i class="material-icons">call</i> Llamadas Pendientes ---------------------------------- | <span class="badge badge-pill badge-warning"> {{ countLlamadasPendientes }} </span> </li>
+        <li class="list-group-item"> <i class="material-icons">call_end</i> Llamadas Finalizadas --------------------------------- | <span class="badge badge-pill badge-primary"> {{ countLlamadasFinalizados }} </span> </li> -->
 
 
       </ul>

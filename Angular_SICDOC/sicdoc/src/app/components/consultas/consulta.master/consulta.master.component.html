@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <!-- Titulo y Barra separadora -->
   <h2> {{ titulo }} <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
@@ -40,17 +40,18 @@
               <thead>
                   <tr style="cursor: pointer">
                       <th >No</th>
-                      <th>Código Interno</th>
-                      <th >Código Referencia</th>
-                      <th>Tipo Com.</th>
+                      <th title="Código que se Utiliza para busquedas, generado Automaticamente">Código Interno (SICDOC)</th>
+                      <th title="Código que se Autogenera o se Ingresa">Código Referencia / Ingresado</th>
+                      <th>Ingreso / Salida</th>
+                      <th>Tipo Comunicación</th>
                       <th>Dirección / SRECI</th>
                       <th>Fecha / Creación</th>
-                      <th>Fecha / Entrega</th>
-                      <th>Institución / Com.</th>
+                      <th>Fecha / Entrega.</th>
+                      <th>Institución de Comunicación</th>
                       <!-- <th>Descripción / Comunicación</th> -->
                       <th>Tema / Comunicación</th>
                       <th>Funcionario Asignado</th>
-                      <th>Com / Vinculante</th>
+                      <th>Comunicación / Vinculante</th>
                       <th>Estado</th>
                       <th>Ver</th>
                   </tr>
@@ -58,8 +59,9 @@
               <tbody>
                 <tr *ngFor="let item of JsonOutgetlistaComunicacionEnc; let i = index">
                   <td >{{ i + 1 }}</td>
-                  <td style="cursor: pointer" title="{{ item.idCorrespondenciaEnc }}" >{{ item.codCorrespondenciaEnc }}</td>
+                  <td style="cursor: pointer; width: 100px" title="{{ item.idCorrespondenciaEnc }}" >{{ item.codCorrespondenciaEnc }}</td>
                   <td >{{ item.codReferenciaSreci }}</td>
+                  <td >{{ item.descTipoComunicacion }}</td>
                   <td >{{ item.descTipoDocumento }}</td>
                   <td style="cursor: help" title="{{ item.descDeptoFuncional }} ">
                     {{ item.inicialesDeptoFuncional }}
@@ -156,7 +158,7 @@
                                   <a data-toggle="collapse" href="#demo1">Accciones de Seguimiento</a>
                                 </h4>
                                 <!-- Tabla de Funcionarios disponibles para asignar -->
-                                <div class="table table-striped table-bordered" id="demo1" style="height: 300px; overflow: auto">
+                                <div class="table table-striped table-bordered" id="demo1" style="overflow: auto">
                                     <!-- Loader de Carga de los Datos -->
                                     <div id="loader-2" *ngIf="loading_table == 'show'" style="margin-left:45%; margin-top:5%; margin-bottom:5%;" >
                                       <!-- <img src="assets/images/30.gif" alt="Cargando Tareas" > -->
@@ -175,8 +177,8 @@
                                       </thead>
                                       <tbody>
                                         <tr *ngFor="let item of JsonOutgetlistaComunicacionDet | searchfilter:'codCorrespondenciaDet':search2 ">
-                                          <td style="width:80px"> {{ item.codCorrespondenciaDet }}  </td>
-                                          <td style="width:80px"> {{ item.codReferenciaSreci }} </td>
+                                          <td > {{ item.codCorrespondenciaDet }}  </td>
+                                          <td > {{ item.codReferenciaSreci }} </td>
                                           <td > {{ item.fechaIngreso | date :'dd-MM-yyyy' }} </td>
                                           <td> {{ item.actividadRealizar }} </td>
                                           <td> {{ item.descCorrespondenciaDet }} </td>

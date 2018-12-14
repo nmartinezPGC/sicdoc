@@ -14,6 +14,10 @@
   font-family: -system-ui
 }
 
+.container-fluid {
+  font-family: -system-ui
+}
+
 /* Validaciones de los Campos */
 .ng-valid[required] {
   border-left: 5px solid #42A948; /* green */
@@ -90,5 +94,5 @@
  background-repeat: no-repeat;
  width: 50px;
  height: 50px;
- border-width: 0; 
+ border-width: 0;
 }

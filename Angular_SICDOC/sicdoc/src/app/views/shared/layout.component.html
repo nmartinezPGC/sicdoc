@@ -15,7 +15,7 @@
           <div  class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
             <ul *ngIf="identity && identity != null" class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <img src="/assets/icons/home_64x64.png" width="40" height="40" class="d-inline-block align-top" alt="" style="margin-left:-5%; padding: 5px">
+              <img src="/assets/icons/home_64x64.png" width="50" height="50" class="d-inline-block align-top" alt="" style="margin-left:-5%; padding: 5px">
               <a class="navbar-brand" [routerLink]="['index']" > Dashboard</a>
               <!-- Menu de Ingreso y Mantenimiento de Comunicacion | Oficios -->
               <li class="nav-item dropdown" *ngIf="identity.idTipoFunc == 3 || identity.idTipoFunc == 1">
@@ -286,5 +286,5 @@
 <router-outlet></router-outlet>
 
 <br>
-<p style="margin-left:35% ">Sistema de Control de Documentación | SICDOC </p>
-<small style="margin-left:26% " >Copyright &#169; 2018 Secretaría de Relaciones Exteriores y Cooperación Internacional | SRECI </small>
+<p style="margin-left:40% ">Sistema de Control de Documentación | SICDOC </p>
+<small style="margin-left:35% " title="Elaborado por: Nahúm Martínez | Email: nmartinez.salgado@yahoo.com | Cel: 95768143" >Copyright &#169; 2018 Secretaría de Relaciones Exteriores y Cooperación Internacional | SRECI </small>

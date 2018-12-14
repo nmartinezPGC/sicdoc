@@ -264,7 +264,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Asignación de Comunicacion | SICDOC')
+                               ->setSubject('Notificación de Asignación de Comunicacion | SICDOC')
                                //->setFrom(array($mailSend => $nombreSend . " " .  $apellidoSend ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setFrom(array("correspondenciascpi@sreci.gob.hn" => "Administrador SICDOC " ))
@@ -571,6 +571,9 @@ class SeguimientoCorrespondenciaController extends Controller {
                         * MEJ-000002
                         */
                         // *****************************************************
+                        // Variable que ira en el Correo
+                        $sendMailComVinculantte = null;
+                        
                         if( $comVinculante_send != null ){
                             // Se convierte el Array en String
                             $ComVinc_array_convert   = json_encode($comVinculante_send);
@@ -589,6 +592,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                     $codigoComunicacionAcum = $codigoComunicacionVinculante;
                                 }
                                 // Asignamos las Sub Direcciones al Listado
+                                $sendMailComVinculantte = $codigoComunicacionAcum;
                                 $correspondenciaAsigna->setcomunicacionVinculante( $codigoComunicacionAcum );
                             }
                         }
@@ -739,9 +743,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                 'verify_peer_name' => false
                                                 )
                                             )
-                                         )
-                               //->setUsername( "nahum.sreci@gmail.com" )                                                                  
-                               //->setPassword('1897Juve');
+                                         )                               
                                ->setUsername( "correspondenciascpi@sreci.gob.hn" )                               
                                ->setPassword('Despachomcns')
                                ->setTimeout(180);                               
@@ -751,7 +753,7 @@ class SeguimientoCorrespondenciaController extends Controller {
                            
                            //Creamos el mensaje
                            $mail = \Swift_Message::newInstance()
-                               ->setSubject('Finalización de Comunicacion | SICDOC')
+                               ->setSubject('Notificación de Finalización de Comunicacion | SICDOC')
                                ->setFrom(array("correspondenciascpi@sreci.gob.hn"  => "Administrador SICDOC " ))
                                //->setFrom(array("nahum.sreci@gmail.com" => "Administrador SICDOC" ))
                                ->setTo($mailSend)                               
@@ -763,7 +765,8 @@ class SeguimientoCorrespondenciaController extends Controller {
                                                'oficioExtNo' => $codgio_oficio_externo, 'oficioInNo' => $codgio_oficio_interno,
                                                'temaOficio' => $tema_correspondencia, 'descOficio' => $desc_correspondencia,
                                                'fechaIngresoOfi' => strval($fecha_creacion_convert), 
-                                               'fechaMaxOfi' => strval($fecha_maxima_entrega_convert), 'actividadCom' => $actividad_oficio )
+                                               'fechaMaxOfi' => strval($fecha_maxima_entrega_convert), 'actividadCom' => $actividad_oficio,
+                                                'comVinculante' => $sendMailComVinculantte, 'descComFin' => $descripcion_oficio )
                                     ), 'text/html' );   
                                                 
                            

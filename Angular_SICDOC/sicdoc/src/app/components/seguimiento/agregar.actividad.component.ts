@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
@@ -153,7 +153,8 @@ export class IngresoActividadComponent implements OnInit{
               private _router: Router,
               private _route: ActivatedRoute,
               private _appComponent: AppComponent,
-              private _http: Http){
+              private _http: Http,
+              private changeDetectorRef: ChangeDetectorRef,){
     // Seteo de la Ruta de la Url Config
     this.urlConfigLocal = this._asignaOficio.url;
     this.urlResourseLocal = this._asignaOficio.urlResourses;
@@ -201,7 +202,8 @@ export class IngresoActividadComponent implements OnInit{
     //this.getlistaAsinarOficios();
 
     // Definicion de la Insercion de los Datos de Oficio Asignado
-    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,  "Asignación de Comunicación, favor dar seguimiento", null, 3, null);
+    this.asignarOficios = new AgregarActividad(null, null, 0, null, null, null, null,
+      "Estimad@, favor dar Seguimiento a la Comunicación", null, 3, null);
 
     // Lista de la tabla de Funcionarios
     this.deptoFuncional();
@@ -483,9 +485,9 @@ export class IngresoActividadComponent implements OnInit{
    * cionado
    *****************************************************/
    confirmUser(codOficioIntModalAsignacionIn, codOficioRefModalAsignacionIn, idFuncModalAsignacionIn,
-              nombre1FuncModalAsignacionIn, apellido1FuncModalAsignacionIn, nombre2FuncModalAsignacionIn, apellido2FuncModalAsignacion){
+              nombre1FuncModalAsignacionIn, apellido1FuncModalAsignacionIn, nombre2FuncModalAsignacionIn, apellido2FuncModalAsignacion,
+              flagEvent){
      //this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncModalAsignacionIn + ' ' + apellido1FuncModalAsignacionIn + ' ?');
-
      //if(this.confirma == true){
      if(codOficioIntModalAsignacionIn != null){
        //Asignamos las variables del Modal | usuario seleccionado
@@ -497,7 +499,13 @@ export class IngresoActividadComponent implements OnInit{
        this.nombre2FuncModalAsignacion = nombre2FuncModalAsignacionIn;
        this.apellido2FuncModalAsignacion = apellido2FuncModalAsignacion;
 
-       this.asignarOficios.buscadorOficio = "Estimad@, " + nombre1FuncModalAsignacionIn + " " + apellido1FuncModalAsignacionIn + ", " + "favor dar Siguimiento a la Comunicación";
+       // Condicionamos que el evento sea Commit, de lo contrario solo es una consulta
+       if (flagEvent == 1) {
+         this.asignarOficios.buscadorOficio = "Estimad@, " + nombre1FuncModalAsignacionIn + " " + apellido1FuncModalAsignacionIn + ", " + "favor dar Seguimiento a la Comunicación";
+       } else if (flagEvent == 2) {
+         this.asignarOficios.buscadorOficio;
+       }
+       // this.changeDetectorRef.detectChanges();
 
        return true;
      }else{
@@ -522,7 +530,7 @@ export class IngresoActividadComponent implements OnInit{
    // Recolectamos los Parametros de la Pagina que envia la Funcion
    // 1 ) Preguntamos por si esta escogiendo el Mismo Funionario
    if( this.idFuncModal == idFuncionarioAsignIn ){
-     alert('No puedes asignar esta Comunicación a ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', porque ya lo tiene asignado.');
+     alert('No puedes asignar esta Comunicación al Funcionario: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ', porque ya lo tiene asignado.');
      return;
    }
    // 2 ) Si la Condicion retorna verdadero, Obtenmos los valores de la Funcion
@@ -535,16 +543,19 @@ export class IngresoActividadComponent implements OnInit{
    this.asignarOficios.apellido2FuncionarioAsigmado  = apellido2FuncionarioAsign;
 
    // 3 ) Confirmamos que el Usuario acepte el Cambio
-   this.confirma = confirm('Esta seguro de Asignar este Oficio a: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ' ?');
+   this.confirma = confirm('Esta seguro de Asignar esta Comunicación al Funcionario: ' + nombre1FuncionarioAsign + ' ' + apellido1FuncionarioAsign + ' ?');
+
+   // 3.1 ) Detectamos los Cambios del Formulario y Indicamos que el evento es Commit
 
    if( this.confirma == true && this.confirmUser(this.asignarOficios.codOficioInterno, this.asignarOficios.codOficioExterno, this.asignarOficios.idFuncionarioAsigmado,
                         this.asignarOficios.nombre1FuncionarioAsigmado, this.asignarOficios.apellido1FuncionarioAsigmado,
-                        this.asignarOficios.nombre2FuncionarioAsigmado, this.asignarOficios.apellido2FuncionarioAsigmado  ) == true){
+                        this.asignarOficios.nombre2FuncionarioAsigmado, this.asignarOficios.apellido2FuncionarioAsigmado, 2  ) == true){
    // 4 ) Ejecutamos el llamado al Metodo de la API ( /seguimiento/asignar-oficio )
       let token1 = this._asignaOficio.getToken();
       this.loading_table = 'show';
-      console.log(this.asignarOficios);
-      this._asignaOficio.asignarOficio( token1, this.asignarOficios ).subscribe(
+      // console.log(this.asignarOficios);
+
+    this._asignaOficio.asignarOficio( token1, this.asignarOficios ).subscribe(
         response => {
             // Obtenemos el Status de la Peticion
             this.status = response.status;
@@ -595,7 +606,7 @@ export class IngresoActividadComponent implements OnInit{
               }
 
             }
-        });// FIN de Llamado Ajax | Peticion a la API
+        }); // FIN de Llamado Ajax | Peticion a la API
    }else{
     //  alert( 'No has Aceptado el Cambio ' );
      this.checkWork = 0;

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 
   <h2> {{ titulo }} <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
@@ -35,13 +35,13 @@
         <thead >
             <tr>
               <th>No</th>
-              <th>Código Interno</th>
-              <th>Código Ingresado</th>
-              <th>Institución Remitente</th>
+              <th title="Código que se Utiliza para busquedas, generado Automaticamente">Código Interno (SICDOC)</th>
+              <th title="Código que se Autogenera o se Ingresa">Código Referencia / Ingresado</th>
+              <th>Institución de Comunicación</th>
               <th>Tema de Comunicación</th>
               <th>Fecha Creación</th>
               <th>Fecha Entrega.</th>
-              <th>Com/Vinculante</th>
+              <th>Com. / Vinculante</th>
               <th>Estado</th>
               <th style="width:95px">Accion</th>
             </tr>
@@ -159,7 +159,7 @@
         <!-- Formulario del Oficio Asignado -->
           <form #finalizarOficioForm="ngForm" (ngSubmit)="onSubmit(finalizarOficioAsignado, 1)" name="finalizarOficioForm" role="form">
             <!-- fila 1 del Formulario -->
-            <h4>Finalización de Comunicación | {{ codOficioRefModal }} | COM VINC {{ comunicacionVinculante }} </h4>
+            <h4>Finalización de Comunicación | {{ codOficioRefModal }} | COM VINC: {{ comunicacionVinculante }} </h4>
             <hr class="colorgraph">
             <!-- <div class="row">
               <div class="col-md-6 mb-3">
@@ -175,7 +175,7 @@
               <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault01">Descripción del Oficio</label> -->
                 <textarea #descripcionOficio="ngModel" type="text" name="descripcionOficio"
-                        ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="1400" minlength="15"
+                        ngControl="descripcionOficio" [(ngModel)]="finalizarOficios.descripcionOficio" required maxlength="800" minlength="15"
                         class="form-control" placeholder="Descripción de la Comunicacion" rows="3">
                 </textarea>
                 <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Descripción es obligatoria</small>
@@ -187,7 +187,7 @@
               <div class="col-md-12 mb-4">
                 <!-- <label for="validationDefault02">Actividad realizada</label> -->
                 <input type="text" class="form-control" [(ngModel)]="finalizarOficios.actividadOficio" name="actividadOficio" id="actividadOficio"
-                    placeholder="Actividad realizada" required value="">
+                    placeholder="Actividad realizada" maxlength="180" required value="">
                   <small class="form-text text-muted" *ngIf="descripcionOficio.errors?.required" >La Actividad es obligatoria</small>
               </div>
             </div>

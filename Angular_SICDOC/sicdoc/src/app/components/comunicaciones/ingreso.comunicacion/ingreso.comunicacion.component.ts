@@ -137,6 +137,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public JsonOutgetListaMemosPendientes:any[];
   public JsonOutgetListaMemosFinalizados:any[];
 
+  // Notas Verbales
+  public JsonOutgetListaNotasIngresados:any[];
+  public JsonOutgetListaNotasPendientes:any[];
+  public JsonOutgetListaNotasFinalizados:any[];
+
   // Correos
   public JsonOutgetListaCorreosIngresados:any[];
   public JsonOutgetListaCorreosPendientes:any[];
@@ -153,6 +158,11 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
   public countOficiosIngresados;
   public countOficiosPendientes;
   public countOficiosFinalizados;
+
+  // Notas Verbales
+  public countNotasIngresados;
+  public countNotasPendientes;
+  public countNotasFinalizados;
 
   // Memoramdums
   public countMemosIngresados;
@@ -497,6 +507,10 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
     // Llamadas
     this.getlistaLlamadasPendientes();
     this.getlistaLlamadasFinalizados();
+
+    // Notas
+    this.getlistaNotasPendientes();
+    this.getlistaNotasFinalizados();
 
     // FIN de Ejecucuon de Encabezados
 
@@ -2045,6 +2059,73 @@ export class IngresoComunicacionPorTipoComponent implements OnInit {
           }
         });
   } // FIN : FND-000022
+
+  /*****************************************************
+  * Funcion: FND-00008.1
+  * Fecha: 11-09-2017
+  * Descripcion: Carga de los Notas Verbales que se han ingresado
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Notas Verbales Ingresados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-ingresada-list).
+  ******************************************************/
+  getlistaNotasPendientes() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 3;
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaNotasPendientes = response.data;
+            this.countNotasPendientes = "0";
+            //alert(response.msg);
+            // this.addToast(4,"Error", response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaNotasPendientes = response.data;
+            this.countNotasPendientes = this.JsonOutgetListaNotasPendientes;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00008.1
+
+
+  /*****************************************************
+  * Funcion: FND-00010.1
+  * Fecha: 12-09-2017
+  * Descripcion: Carga de los Notas Verbales que se estan Final.
+  * a la Tabla tbl_comunicacion_enc
+  * Objetivo: Obtener la lista de los Notas Verbales Finalizados
+  * de la BD, Llamando a la API, por su metodo
+  * (com-finalizados-list).
+  ******************************************************/
+  getlistaNotasFinalizados() {
+    //Llamar al metodo, de Contador de Comunicaciones Pendientes
+    this.paramsIdTipoComSend.idTipoCom = 2;
+    this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
+    this.paramsIdTipoComSend.idTipoDoc = 3;
+
+
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetListaNotasFinalizados = response.data;
+            this.countNotasFinalizados = "0";
+            //alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetListaNotasFinalizados = response.data;
+            this.countNotasFinalizados = this.JsonOutgetListaNotasFinalizados;
+            //alert(this.countOficios);
+          }
+        });
+  } // FIN : FND-00010.1
 
 
   /*****************************************************

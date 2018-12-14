@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <h2>Mantenimiento de Instituciones <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
 
@@ -195,6 +195,7 @@
               <thead >
                   <tr>
                     <th>Id</th>
+                    <th>Iniciales Institución</th>
                     <th>Nombre Institución</th>
                     <th>Descripción Institución</th>
                     <th>Tipo Institución</th>
@@ -211,6 +212,7 @@
                   <tr *ngFor="let item of JsonOutgetlistaInstitucion ">
                     <td> {{ item.codInstitucion }} </td>
                     <td style="cursor: help" title="Descripcion: {{ item.perfilInstitucion }}"> {{ item.descInstitucion }} </td>
+                    <td > {{ item.perfilInstitucion }} </td>
                     <td> {{ item.perfilInstitucion  }} </td>
                     <td> {{ item.descTipoInstitucion  }} </td>
                     <td> {{ item.descPais  }} </td>

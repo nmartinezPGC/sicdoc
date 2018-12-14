@@ -220,7 +220,7 @@ export class ChartHomeComponent implements OnInit {
     let barNotas = JSON.parse(JSON.stringify(this.JsonOutgetListaNotasIngresados));
     let barCircular = JSON.parse(JSON.stringify(this.JsonOutgetListaCicularesIngresados));
 
-    console.log('Imprime bar Oficio *********** ');
+    /*console.log('Imprime bar Oficio *********** ');
     console.log(barOficio[0]);
 
     console.log('Imprime bar Memo *********** ');
@@ -232,12 +232,12 @@ export class ChartHomeComponent implements OnInit {
     console.log('Imprime bar Circular *********** ');
     console.log(barCircular[0]);
 
-    console.log('Suma de totales');
+    console.log('Suma de totales');*/
     this._totalOficios = Number(barOficio[0].PENDIENTE) + Number(barOficio[0].RESUELTO) + Number(barOficio[0].ANULADO);
     this._totalMemos   = Number(barMemo[0].PENDIENTE) + Number(barMemo[0].RESUELTO) + Number(barMemo[0].ANULADO);
     this._totalNotas   = Number(barNotas[0].PENDIENTE) + Number(barNotas[0].RESUELTO) + Number(barNotas[0].ANULADO);
     this._totalCirculares = Number(barCircular[0].PENDIENTE) + Number(barCircular[0].RESUELTO) + Number(barCircular[0].ANULADO);
-    console.log( this._totalOficios );
+    // console.log( this._totalOficios );
 
     //Data de Totales
     this._arrayTotales          = [ this._totalOficios, this._totalMemos, this._totalNotas, this._totalCirculares];

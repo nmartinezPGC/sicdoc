@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 
   <h2> {{ titulo }} <small> | SICDOC.</small></h2>
   <hr class="colorgraph">
@@ -36,13 +36,13 @@
   <hr>
 
   <div class="col-xs-12 col-md-12 col-lg-12" *ngIf=" loadTabla1 == true">
-    <table  class="table table-striped table-hover table-bordered" cellspacing="0"  >
+    <table class="table table-striped table-hover table-responsive" cellspacing="0"  >
         <thead >
             <tr>
               <th>No.</th>
               <th>Estado</th>
-              <th>No. Interno</th>
-              <th>No. Ingresado</th>
+              <th title="Código que se Utiliza para busquedas, generado Automaticamente" >Código Interno (SICDOC)</th>
+              <th title="Código que se Autogenera o se Ingresa">Código Referencia / Ingresado</th>
               <th>Nombre Institución</th>
               <th>Tema Comunicación</th>
               <th>Fecha Creación</th>
@@ -54,13 +54,13 @@
         <tbody >
             <tr *ngFor="let item of JsonOutgetlistaOficiosAll | searchfilter:codCorr:search; let i = index ">
               <td >{{ i + 1 }}</td>
-              <td [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-danger' : item.idEstado == 6,
+              <td style="cursor: pointer" [ngClass]="{ 'text-warning': item.idEstado == 3, 'text-danger' : item.idEstado == 6,
                                 'text-primary' : item.idEstado == 7, 'text-success' : item.idEstado == 5 }" >
                 <!-- <p class="alert alert-primary"> -->
                   {{ item.descripcionEstado }}
                 <!-- </p> -->
               </td>
-              <td> {{ item.codCorrespondenciaEnc }} </td>
+              <td > {{ item.codCorrespondenciaEnc }} </td>
               <td> {{ item.codReferenciaSreci }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.perfilInstitucion }}"> {{ item.descInstitucion }} </td>
               <td style="cursor: help" title="Descripcion: {{ item.descCorrespondenciaEnc }}"> {{ item.temaComunicacion }} </td>
@@ -176,7 +176,7 @@
                   <td *ngIf="loading_tr == 'hide'" > <a style="cursor: pointer;" class="nav-link"
                           (click)="confirmUser( codOficioIntModal, codOficioRefModal, item.idFuncionario,
                                 item.nombre1Funcionario, item.apellido1Funcionario,
-                                item.nombre2Funcionario, item.apellido2Funcionario )"
+                                item.nombre2Funcionario, item.apellido2Funcionario, 1 )"
                             data-toggle="modal" data-target="#myModalInstruccion">
                     <span [ngClass]="{ 'badge badge-pill badge-warning': item.nombre1Funcionario == nombre1FuncModal,
                                         'badge badge-pill badge-primary': item.nombre1Funcionario != nombre1FuncModal}"
@@ -216,7 +216,7 @@
               <!-- <input type="text" class="form-control" id="validationDefault01" placeholder="Detalle de la Instruccion"
                      value="" > -->
                  <textarea #buscadorOficio="ngModel" type="text" name="buscadorOficio" id="buscadorOficio"
-                         ngControl="buscadorOficio" [(ngModel)]="asignarOficios.buscadorOficio" required maxlength="1400" minlength="15"
+                         ngControl="buscadorOficio" [(ngModel)]="asignarOficios.buscadorOficio" required maxlength="1000" minlength="15"
                          class="form-control" id="buscadorOficio" required placeholder="Instrucción de la Comunicacion" rows="5">
                  </textarea>
                  <small class="form-text text-muted" *ngIf="buscadorOficio.errors?.required" >La Instruccion es obligatoria</small>

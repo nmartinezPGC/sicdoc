@@ -283,11 +283,11 @@ export class ReporteGeneralComponent implements OnInit {
                       "visible": false,
                       "searchable": true
                   },*/
-                  {//fECHAS
-                    "targets": [ 7 ],
-                    "visible": false,
-                    "searchable": true
-                  },
+                  // {//fECHAS
+                  //   "targets": [ 7 ],
+                  //   "visible": false,
+                  //   "searchable": true
+                  // },
                   {
                     "targets": [ 8 ],
                     "visible": false,
@@ -360,7 +360,8 @@ export class ReporteGeneralComponent implements OnInit {
                   }
               }*/
             ],
-            //select: true
+            //Selecciona las Filas
+            select: true
         } );
         this.loading_tableIn = 'show';
       });

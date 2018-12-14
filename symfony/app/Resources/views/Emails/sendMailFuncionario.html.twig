@@ -8,7 +8,7 @@
             font-family: Verdana, Arial, Helvetica, sans-serif;
             font-size:12px;
             text-align: left;
-            width: 600px;
+            width: 900px;
         }
 
         .tabla th {
@@ -76,30 +76,30 @@
         <div class="jumbotron">
             <h1 class="display-3">Estimado(a): </h1>
             <h2 class="display-3">{{ name }}  {{ apellidoOficio }} </h2>
-            <p class="lead">Se ha finalizado una Comunicacion, con la siguiente informacion: </p>
+            <p class="lead">Se ha finalizado una Comunicación, con la siguiente Información: </p>
             <hr class="my-4">
             <br>
             <table class="tabla" border="0" cellpadding="0" cellspacing="0">
                 
                   <tr>
                     <th>
-                      <th colspan="3">Informacion de la Comunicacion</th>
+                      <th colspan="3">Información de la Comunicación</th>
                     </th>
                   </tr>
                   <tr>
                     <th>#</th>
-                    <th>Item</th>
-                    <th>Descripcion</th>                    
+                    <th style="width: 200px;">Item</th>
+                    <th>Descripción</th>                    
                   </tr>                
                 
                   <tr class="modo1">
                     <th scope="row">1</th>
-                    <td>Codigo Externo</td>
+                    <td>Código Externo</td>
                     <td>{{ oficioExtNo }}</td>                    
                   </tr>
                   <tr class="modo1">
                     <th scope="row">2</th>
-                    <td>Codigo Interno</td>
+                    <td>Código Interno</td>
                     <td>{{ oficioInNo }}</td>                    
                   </tr>
                   <tr class="modo1">
@@ -119,13 +119,23 @@
                   </tr>
                   <tr class="modo1">
                     <th scope="row">6</th>
-                    <td>Fecha Creacion</td>
+                    <td>Fecha Creación</td>
                     <td>{{ fechaMaxOfi }}</td>                    
                   </tr>
                   <tr class="modo1">
                     <th scope="row">7</th>
-                    <td>Activiad</td>
+                    <td>Descripción de Finalización</td>
+                    <td>{{ descComFin }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">7</th>
+                    <td>Actividad Realizada</td>
                     <td>{{ actividadCom }}</td>                    
+                  </tr>
+                  <tr class="modo1">
+                    <th scope="row">7</th>
+                    <td>Comunicación Vinculante</td>
+                    <td>{{ comVinculante }}</td>                    
                   </tr>
                 
             </table>
@@ -133,19 +143,21 @@
             <br>
             <h4> 
                 Saludos Cordiales.
-            </h4>    
+            </h4> 
+
+            <hr class="my-4">
                 
              <p>
-                Nahúm Aaron Martínez Salgado
+                Para mayor Información contactar con: Nahúm Martínez
              </p>
              <p>
-                Administrador de la Plataforma de Gestión de la Cooperación (PGC)
+                Administrador del Sistema de Control de Documentación | SICDOC
              </p>
              <p>
                 Dirección de Cooperación Privada al Desarrollo | DCPD            
             </p>
             <p>
-                Secretaria de relaciones Exteriores de Honduras y Cooperación Internacional
+                Secretaría de relaciones Exteriores de Honduras y Cooperación Internacional
             </p>
 
             <img src="secretaria_exterior.png" alt="SRECI" height="142" width="142">

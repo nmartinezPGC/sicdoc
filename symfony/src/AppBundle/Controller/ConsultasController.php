@@ -110,12 +110,13 @@ class ConsultasController extends Controller{
                             // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento                       
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
-                                    . 'tdoc.descTipoDocumento, '
+                                    . 'tdoc.descTipoDocumento, tcom.descTipoComunicacion, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
-                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '                                    
+                                    . 'FROM BackendBundle:TblCorrespondenciaEnc c '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH  tcom.idTipoComunicacion = c.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
@@ -133,13 +134,14 @@ class ConsultasController extends Controller{
                             $opt = 2;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
-                                    . 'tdoc.descTipoDocumento, '
+                                    . 'tdoc.descTipoDocumento, tcom.descTipoComunicacion, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH  tcom.idTipoComunicacion = c.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
@@ -162,13 +164,14 @@ class ConsultasController extends Controller{
                             $opt = 3;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
-                                    . 'tdoc.descTipoDocumento, '
+                                    . 'tdoc.descTipoDocumento, tcom.descTipoComunicacion, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH  tcom.idTipoComunicacion = c.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
@@ -193,13 +196,14 @@ class ConsultasController extends Controller{
                             $opt = 4;
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "
-                                    . 'tdoc.descTipoDocumento, '
+                                    . 'tdoc.descTipoDocumento,  tcom.descTipoComunicacion, '
                                     . 'dfunc.idDeptoFuncional, dfunc.descDeptoFuncional, dfunc.inicialesDeptoFuncional, p.idUsuario,'
                                     . 'c.descCorrespondenciaEnc, c.temaComunicacion, est.idEstado, est.descripcionEstado, fasig.idFuncionario, '
                                     . 'fasig.nombre1Funcionario, fasig.nombre2Funcionario, fasig.apellido1Funcionario, fasig.apellido2Funcionario, '
                                     . 'inst.descInstitucion, inst.perfilInstitucion, c.comunicacionVinculante '
                                     . 'FROM BackendBundle:TblCorrespondenciaEnc c '
                                     . 'INNER JOIN BackendBundle:TblTipoDocumento tdoc WITH  tdoc.idTipoDocumento = c.idTipoDocumento '
+                                    . 'INNER JOIN BackendBundle:TblTipoComunicacion tcom WITH  tcom.idTipoComunicacion = c.idTipoComunicacion '
                                     . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales dfunc WITH  dfunc.idDeptoFuncional = c.idDeptoFuncional '
                                     . 'INNER JOIN BackendBundle:TblEstados est WITH  est.idEstado = c.idEstado '
                                     . 'INNER JOIN BackendBundle:TblUsuarios p WITH  p.idUsuario = c.idUsuario '
