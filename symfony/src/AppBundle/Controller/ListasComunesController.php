@@ -1487,11 +1487,20 @@ class ListasComunesController extends Controller {
             $id_depto_funcional = (isset($params->idDeptoFuncional)) ? $params->idDeptoFuncional : null;
 
             // Query para Obtener el Dato del Funcionario de la Tabla: TblFuncionarios
-            $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
-                    array(
-                        "idDeptoFuncional" => $id_depto_funcional,
-                        "idTipoFuncionario" => 6
-            ));
+            if ($id_depto_funcional == 1) {                
+                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                        array(
+                            "idDeptoFuncional" => $id_depto_funcional,
+                            "idTipoFuncionario" => 1
+                ));
+            } else {                
+                $usuario_asignado = $em->getRepository("BackendBundle:TblFuncionarios")->findBy(
+                        array(
+                            "idDeptoFuncional" => $id_depto_funcional,
+                            "idTipoFuncionario" => 6
+                ));
+            }
+
 
             // Condicion de la Busqueda
             if (count($usuario_asignado) >= 1) {
