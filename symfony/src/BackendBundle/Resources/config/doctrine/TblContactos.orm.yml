@@ -5,15 +5,15 @@ BackendBundle\Entity\TblContactos:
         fki_contact_user_modif:
             columns:
                 - id_usuario_modifica
+        fki_institucion_contacto:
+            columns:
+                - id_institucion
         fki_func_contacto:
             columns:
                 - id_funcionario
         tbl_contactos_cod_contacto_idx:
             columns:
                 - cod_contacto
-        fki_institucion_contacto:
-            columns:
-                - id_institucion
     id:
         idContacto:
             type: integer

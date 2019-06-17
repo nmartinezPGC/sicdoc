@@ -41,13 +41,13 @@
                   <td >{{ item.apellido1Contacto }} - {{ item.apellido2Contacto }}</td>
                   <td >{{ item.celular1Contacto }} - {{ item.telefono1Contacto }}</td>
                   <td >{{ item.email1Contacto }} - {{ item.email2Contacto }}</td>
-                  <td style="cursor: help" title="{{ item.idInstitucion.perfilInstitucion }}">{{ item.idInstitucion.descInstitucion }}</td>
-                  <td >{{ item.idInstitucion.idTipoInstitucion.descTipoInstitucion }}</td>
+                  <td style="cursor: help" title="{{ item.perfilInstitucion }}">{{ item.descInstitucion }}</td>
+                  <td >{{ item.descTipoInstitucion }}</td>
                   <td >{{ item.cargoFuncional }}</td>
-                  <td >{{ item.idFuncionario.nombre1Funcionario }}
-                       {{ item.idFuncionario.apellido1Funcionario }}</td>
-                  <td style="cursor: help" title="{{ item.idFuncionario.idDeptoFuncional.descDeptoFuncional }}" >
-                    {{ item.idFuncionario.idDeptoFuncional.inicialesDeptoFuncional }}
+                  <td >{{ item.nombre1Funcionario }}
+                       {{ item.apellido1Funcionario }}</td>
+                  <td style="cursor: help" title="{{ item.descDeptoFuncional }}" >
+                    {{ item.inicialesDeptoFuncional }}
                   </td>
                   <!-- <td> <a *ngIf="item.perfilContacto != null && item.perfilContacto.length > 5"
                     href="{{ urlComplete + item.perfilContacto }}" target="_blank">
@@ -139,6 +139,9 @@
                                 <option value="Abogado(a)">Abogado(a)</option>
                                 <option value="Director(a)">Director(a)</option>
                                 <option value="Ministro(a)">Ministro(a)</option>
+                                <option value="Viceministro(a)">Viceministro(a)</option>
+                                <option value="Encargado(a)">Encargado(a)</option>
+                                <option value="Consultor(a)">Consultor(a)</option>
                                 <option value="Asesor(a)">Asesor(a)</option>
                                 <option value="Jefe(a)">Jefe(a)</option>
                                 <option value="Master">Master</option>
@@ -181,12 +184,9 @@
                           <!-- Institucion de Contacto-->
                           <div class="col-xs-4 col-md-4 col-lg-4">
                             <label >Tipo de Contacto</label>
-                              <select #tipoContacto="ngModel" name="tipoContacto" id="tipoContacto" required
-                                  ngControl="tipoContacto" [(ngModel)]="consultaContactos.tipoContacto" class="form-control">
-                                <option value="REDECIH">REDECIH</option>
-                                <option value="REDECIP">REDECIP</option>
-                                <option value="GOBIERNO">GOBIERNO</option>
-                                <option value="PRIVADO">PRIVADO</option>
+                              <select #tipoContacto="ngModel" class="form-control" name="tipoContacto" id="tipoContacto" required
+                                    ngControl="idPais" [(ngModel)]="consultaContactos.tipoContacto">
+                                  <option *ngFor="let list of JsonOutgetlistaTipoContacto" value="{{ list.inicialesTipoContacto }}">{{ list.descTipoContacto }}</option>
                               </select>
                           </div>
 

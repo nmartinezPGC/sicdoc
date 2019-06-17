@@ -1,0 +1,34 @@
+BackendBundle\Entity\TblTipoContacto:
+    type: entity
+    table: tbl_tipo_contacto
+    id:
+        idTipoContacto:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_tipo_contacto
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descTipoContacto:
+            type: string
+            nullable: true
+            length: 120
+            options:
+                fixed: false
+            column: desc_tipo_contacto
+        inicialesTipoContacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: iniciales_tipo_contacto
+        activo:
+            type: boolean
+            nullable: true
+            options:
+                default: true
+    lifecycleCallbacks: {  }

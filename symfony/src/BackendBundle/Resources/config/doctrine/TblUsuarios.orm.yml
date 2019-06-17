@@ -8,12 +8,12 @@ BackendBundle\Entity\TblUsuarios:
         fki_depto_user:
             columns:
                 - id_depto_funcional
-        fki_funcionario_user:
-            columns:
-                - id_tipo_funcionario
         fki_tipo_user:
             columns:
                 - id_tipo_usuario
+        fki_funcionario_user:
+            columns:
+                - id_tipo_funcionario
         idx_cod_user:
             columns:
                 - cod_usuario

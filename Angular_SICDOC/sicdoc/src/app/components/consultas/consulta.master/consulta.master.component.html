@@ -34,6 +34,25 @@
           <img id="imgload" src="assets/images/745.gif" alt="Cargando Tareas">
         </div>
 
+        <!-- Tarjeta de Primer Criterio -->
+        <div class="row">
+          <div class="col-sm-2">
+                  Fecha de Inicio
+                  <input  type="date" class="form-control" name="dtFechaIni"
+                     [(ngModel)]="consultaMasterEnc.fechaInicial" required value="">
+          </div>
+          <div class="col-sm-2">
+            Fecha de Final
+            <input  type="date" class="form-control" name="dtFechaFin"
+               [(ngModel)]="consultaMasterEnc.fechaFinal" required value="">
+            </div>
+
+            <div class="col-sm-2">
+              <input type="button" (click)="getlistaComunicacionEncTableFind()" value="Generar Consulta" class="btn btn-primary">
+              </div>
+        </div>
+        <br>
+
 
             <table id="example" class="table table-striped table-hover table-responsive"
                 cellspacing="0" width="100%" style="font-size:15px;" *ngIf="loadTabla1 == true">

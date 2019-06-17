@@ -5,21 +5,21 @@ BackendBundle\Entity\TblCorrespondenciaDet:
         fki_det_enc:
             columns:
                 - id_correspondencia_enc
-        cod_oficio_respuesta:
+        fki_det_user:
             columns:
-                - cod_oficio_respuesta
+                - id_usuario
+        fki_fk-det_estado:
+            columns:
+                - id_estado
         fki_func_det_asignado:
             columns:
                 - id_funcionario_asignado
         tbl_correspondencia_det_cod_correspondencia_det_idx:
             columns:
                 - cod_correspondencia_det
-        fki_fk-det_estado:
+        cod_oficio_respuesta:
             columns:
-                - id_estado
-        fki_det_user:
-            columns:
-                - id_usuario
+                - cod_oficio_respuesta
     id:
         idCorrespondenciaDet:
             type: integer

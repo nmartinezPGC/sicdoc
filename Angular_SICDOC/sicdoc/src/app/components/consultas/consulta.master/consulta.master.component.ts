@@ -142,8 +142,13 @@ export class ConsultaMasterComponent implements OnInit {
 
     this.idEstadoArray = [3, 5, 7, 8 ];
     this.idTipoComunicacionArray = [1, 5, 7, 8 ];
+
+    // Actualiza el valor de la Secuencia
+    let mesAct = this.fechaHoy.getMonth() + 1;
+
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.consultaMasterEnc = new ConsultaMaster (null, null, null, null, this.userId, null, 1, this.idEstadoArray, this.idTipoComunicacionArray);
+    this.consultaMasterEnc = new ConsultaMaster (null, null, null, null, this.userId, null, 1,
+      this.idEstadoArray, this.idTipoComunicacionArray, this.fechaHoy, this.fechaHoy);
 
     // Carga la Tabla (Con el Model PreCargado)
     // this.otraFill( this.consultaMasterEnc, this.jwtUser );
@@ -174,6 +179,9 @@ export class ConsultaMasterComponent implements OnInit {
     // Laoding
     this.loading = 'show';
     this.loadTabla1 = false;
+
+    // Llamamos al Metodo de Reconstruccion de la Tabla
+    this.recargaTable();
     console.log( this.consultaMasterEnc );
     // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
     this._consultaMasterService.comunicacionFind( this.consultaMasterEnc ).subscribe(
@@ -202,6 +210,25 @@ export class ConsultaMasterComponent implements OnInit {
           }
         });
   } // FIN | FND-00001
+
+  /*****************************************************
+  * Funcion: FND-00001-1
+  * Fecha: 31-10-2017
+  * Descripcion: Reconstruir la Tabla, para nuevo uso
+  ******************************************************/
+  recargaTable(){
+    // Declaracion del Objeto de la Tabla
+    var table = $('#example').DataTable();
+
+    // Reiniciamos los vaores de la Tabla y la volvemos a Diseñar
+    table
+      .clear()
+      .draw();
+
+    // Destruimos la Instacia que fue Generada
+    $("#example").dataTable().fnDestroy();
+    // $('#example tbody > tr').remove();
+  } // FIN | FND-00001-1
 
 
   /*****************************************************

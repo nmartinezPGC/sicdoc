@@ -17,6 +17,9 @@ export class ConsultaMaster{
       public idEstado:any[],
       public idTipoComunicacion:any[],
 
+      // Fechas de Consulta
+      public fechaInicial:Date,
+      public fechaFinal:Date,
     ){}
 
 }

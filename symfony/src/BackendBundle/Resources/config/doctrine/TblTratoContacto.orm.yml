@@ -1,0 +1,34 @@
+BackendBundle\Entity\TblTratoContacto:
+    type: entity
+    table: tbl_trato_contacto
+    id:
+        idTratoContacto:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: id_trato_contacto
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descTratoContacto:
+            type: string
+            nullable: true
+            length: 120
+            options:
+                fixed: false
+            column: desc_trato_contacto
+        inicialesTratoContacto:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: iniciales_trato_contacto
+        activo:
+            type: boolean
+            nullable: true
+            options:
+                default: true
+    lifecycleCallbacks: {  }

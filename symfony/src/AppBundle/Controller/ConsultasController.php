@@ -40,7 +40,7 @@ class ConsultasController extends Controller{
     public function consultaGeneralEncListAction(Request $request )
     {
         //Seteo de variables Globales
-        ini_set('memory_limit', '512M');
+        // ini_set('memory_limit', '512M');
         date_default_timezone_set('America/Tegucigalpa');               
         
         //Instanciamos el Servicio Helpers
@@ -84,6 +84,9 @@ class ConsultasController extends Controller{
                 $id_estado = ($params->idEstado);
                 $fecha_modifcacion         = new \DateTime('now');
                 
+                $fecha_final        = ($params->fechaFinal != null) ? $params->fechaFinal : null;
+                $fecha_inicial      = ($params->fechaInicial != null) ? $params->fechaInicial : null;
+                
                 //Evaluamos que los Campos del Json  no sean Null ni 0. ********
                 if( $id_funcionario_asignado != 0 )
                 {
@@ -107,7 +110,8 @@ class ConsultasController extends Controller{
                             * Fecha : 2017-12-26 | 4:40 pm
                             * Reportada : Nahum Martinez | Admon. SICDOC
                             * INI | NMA | INC.00001 ***************************/
-                            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento                       
+                            // Cambiamos el llamada del findAll por findBy con un Array de Ordenamiento
+                            // var_dump($opt);
                             $query = $em->createQuery('SELECT DISTINCT c.idCorrespondenciaEnc, c.codCorrespondenciaEnc, c.codReferenciaSreci, c.comunicacionVinculante, '
                                     ."DATE_SUB(c.fechaIngreso, 0, 'DAY') AS fechaIngreso, DATE_SUB(c.fechaMaxEntrega, 0, 'DAY') AS fechaMaxEntrega, "                                    
                                     . 'tdoc.descTipoDocumento, tcom.descTipoComunicacion, '
@@ -124,7 +128,9 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND '
+                                    . "c.fechaIngreso >= '".$fecha_inicial."' AND "
+                                    . "c.fechaIngreso <= '".$fecha_final."' "
                                     . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                             
                             $correspondenciaFind = $query->getResult();
@@ -148,7 +154,9 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND '
+                                    . "c.fechaIngreso >= '".$fecha_inicial."' AND "
+                                    . "c.fechaIngreso <= '".$fecha_final."' "
                                     . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();                            
@@ -178,7 +186,9 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idDeptoFuncional = '. $id_depto_funcional .' AND '
+                                    . "c.fechaIngreso >= '".$fecha_inicial."' AND "
+                                    . "c.fechaIngreso <= '".$fecha_final."' "
                                     . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                    
                             $correspondenciaFind = $query->getResult();
@@ -210,7 +220,9 @@ class ConsultasController extends Controller{
                                     . 'INNER JOIN BackendBundle:TblFuncionarios fasig WITH  fasig.idFuncionario = c.idFuncionarioAsignado '
                                     . 'INNER JOIN BackendBundle:TblInstituciones inst WITH  inst.idInstitucion = c.idInstitucion '
                                     . 'INNER JOIN BackendBundle:TblCorrespondenciaDet d WITH d.idCorrespondenciaEnc = c.idCorrespondenciaEnc '
-                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' '
+                                    . 'WHERE c.idEstado IN (3,4,5,6,7,8) AND c.idFuncionarioAsignado = '. $id_funcionario_asignado .' AND '
+                                    . "c.fechaIngreso >= '".$fecha_inicial."' AND "
+                                    . "c.fechaIngreso <= '".$fecha_final."' "
                                     . 'ORDER BY c.idCorrespondenciaEnc, c.codCorrespondenciaEnc DESC' ) ;
                                     
                             $correspondenciaFind = $query->getResult();
@@ -247,7 +259,7 @@ class ConsultasController extends Controller{
                             "code"   => 504, 
                             "msg"   => "Error 504, No Existe Comunicaciones asignadas a: " 
                             . $name_funcionario_asignado . " - " . $apellido_funcionario_asignado . 
-                                       " por favor contacte al Administrador !!"
+                                       " en las fechas indicadas por favor verifica que los filtros sean adecuados !!"
                         );                       
                     } // Fin de Busqueda de la Comunicacion
                 } else{

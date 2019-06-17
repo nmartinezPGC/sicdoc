@@ -2,6 +2,9 @@ BackendBundle\Entity\TblCambioFechas:
     type: entity
     table: tbl_cambio_fechas
     indexes:
+        fki_user_solicitud:
+            columns:
+                - id_usuario_solicitud
         fki_estados_solictud:
             columns:
                 - id_estado_solicitud
@@ -11,9 +14,6 @@ BackendBundle\Entity\TblCambioFechas:
         idx_cod_cambio_fechas:
             columns:
                 - cod_correspondencia
-        fki_user_solicitud:
-            columns:
-                - id_usuario_solicitud
     id:
         idCambioFecha:
             type: integer

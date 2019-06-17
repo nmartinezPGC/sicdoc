@@ -1861,4 +1861,87 @@ class ListasComunesController extends Controller {
     }
 
 //FIN | FND00021
+    
+    
+    /**
+     * @Route("/tipo-contacto-list", name="tipo-contacto-list")
+     * Creacion del Controlador: Estados
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00022
+     */
+    public function tipoContactoListAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Query para Obtener todos los Tipo Contacto de la Tabla: TblTipoContacto
+        $tipoContacto = $em->getRepository("BackendBundle:TblTipoContacto")->findBy(
+                array(
+                    "activo" => true
+        ));
+
+        // Condicion de la Busqueda
+        if (count($tipoContacto) >= 1) {
+            $data = array(
+                "status" => "success",
+                "code" => 200,
+                "data" => $tipoContacto
+            );
+        } else {
+            $data = array(
+                "status" => "error",
+                "code" => 400,
+                "msg" => "No existe Datos en la Tabla de Tipo de Contactos!!"
+            );
+        }
+
+        return $helpers->parserJson($data);
+    }
+
+//FIN | FND00022
+    
+    
+    
+    /**
+     * @Route("/trato-contacto-list", name="trato-contacto-list")
+     * Creacion del Controlador: Estados
+     * @author Nahum Martinez <nmartinez.salgado@yahoo.com>
+     * @since 1.0
+     * Funcion: FND00023
+     */
+    public function tratoContactoListAction(Request $request) {
+        date_default_timezone_set('America/Tegucigalpa');
+        //Instanciamos el Servicio Helpers y Jwt
+        $helpers = $this->get("app.helpers");
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Query para Obtener todos los Trato Contacto de la Tabla: TblTratoContacto
+        $tipoContacto = $em->getRepository("BackendBundle:TblTratoContacto")->findBy(
+                array(
+                    "activo" => true
+        ));
+
+        // Condicion de la Busqueda
+        if (count($tipoContacto) >= 1) {
+            $data = array(
+                "status" => "success",
+                "code" => 200,
+                "data" => $tipoContacto
+            );
+        } else {
+            $data = array(
+                "status" => "error",
+                "code" => 400,
+                "msg" => "No existe Datos en la Tabla de Tipo de Contactos!!"
+            );
+        }
+
+        return $helpers->parserJson($data);
+    }
+
+//FIN | FND00023
 }

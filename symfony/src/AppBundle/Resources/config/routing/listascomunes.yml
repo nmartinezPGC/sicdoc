@@ -172,3 +172,16 @@ listascomunes_subDireccionesSreciList:
     defaults: { _controller: "AppBundle:ListasComunes:subDireccionesSreciList" }
     methods: POST
     
+  ## Listado de todos los Tipos de Contactos de la SRECI, para tipo de Contacto | Modulo Listas
+listascomunes_tipoContactoList:
+    path: /tipo-contacto-list
+    defaults: { _controller: "AppBundle:ListasComunes:tipoContactoList" }
+    methods: POST
+    
+    
+## Listado de todos los Tratos de Contactos de la SRECI, para trato de Contacto | Modulo Listas
+listascomunes_tratoContactoList:
+    path: /trato-contacto-list
+    defaults: { _controller: "AppBundle:ListasComunes:tratoContactoList" }
+    methods: POST
+    

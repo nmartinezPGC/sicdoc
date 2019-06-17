@@ -88,6 +88,9 @@ export class ContactosComponent implements OnInit {
   public JsonLimpio;
   public paramsDocs;
 
+  public JsonOutgetlistaTipoContacto:any[];
+  public JsonOutgetlistaTratoContacto:any[];
+
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
@@ -141,6 +144,11 @@ export class ContactosComponent implements OnInit {
     // Ejecucion de la Lista Funcionarios
     this.getlistaFuncionariosSreci();
 
+    // Tipo de Contacto
+    this.getlistaTipoContacto();
+
+    // Trato de COntacto
+    this.getlistaTratoContacto();
     // Ejecucion de la Lista de Contactoss
     // this.getlistaContactosTableFind();
 
@@ -284,7 +292,7 @@ export class ContactosComponent implements OnInit {
             this.JsonOutgetlistaInstitucion = response.data;
 
             this.dataService = this.completerService.local(this.JsonOutgetlistaInstitucion, 'descInstitucion,perfilInstitucion', 'descInstitucion,perfilInstitucion');
-            console.log(response.data);
+            // console.log(response.data);
           }
         });
   } // FIN : FND-00001.1
@@ -558,6 +566,57 @@ export class ContactosComponent implements OnInit {
      let url2 = "http://localhost/sicdoc/symfony/web/uploads/contactos/perfiles/";
       window.open( url + downloadUrl);
   } // FIN | FND-00005
+
+
+  /******************************************************
+  * Funcion: FND-00004
+  * Fecha: 25-09-2017
+  * Descripcion: Carga la Lista de los Tipo de Contacto.
+  * Objetivo: Obtener la lista de los Tipo de Contacto de la BD,
+  * Llamando a la API, por su metodo (tipo-contacto-list).
+  *******************************************************/
+  getlistaTipoContacto() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunes("","tipo-contacto-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaTipoContacto = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaTipoContacto = response.data;
+            // console.log(this.JsonOutgetlistaTipoContacto);
+          }
+        });
+  } // FIN : FND-00004
+
+
+
+  /******************************************************
+  * Funcion: FND-00004
+  * Fecha: 25-09-2017
+  * Descripcion: Carga la Lista de los Tipo de Contacto.
+  * Objetivo: Obtener la lista de los Tipo de Contacto de la BD,
+  * Llamando a la API, por su metodo (tipo-contacto-list).
+  *******************************************************/
+  getlistaTratoContacto() {
+    //Llamar al metodo, de Login para Obtener la Identidad
+    this._listasComunes.listasComunes("","trato-contacto-list").subscribe(
+        response => {
+          // login successful so redirect to return url
+          if(response.status == "error"){
+            //Mensaje de alerta del error en cuestion
+            this.JsonOutgetlistaTratoContacto = response.data;
+            alert(response.msg);
+          }else{
+            //this.data = JSON.stringify(response.data);
+            this.JsonOutgetlistaTratoContacto = response.data;
+            // console.log(this.JsonOutgetlistaTratoContacto);
+          }
+        });
+  } // FIN : FND-00004
 
 
 } // FIN | Clase
