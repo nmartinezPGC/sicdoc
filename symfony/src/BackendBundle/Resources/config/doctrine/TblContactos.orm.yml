@@ -5,12 +5,15 @@ BackendBundle\Entity\TblContactos:
         fki_contact_user_modif:
             columns:
                 - id_usuario_modifica
-        fki_institucion_contacto:
-            columns:
-                - id_institucion
         fki_func_contacto:
             columns:
                 - id_funcionario
+        fki_institucion_contacto:
+            columns:
+                - id_institucion
+        fki_pais_contacto:
+            columns:
+                - id_pais
         tbl_contactos_cod_contacto_idx:
             columns:
                 - cod_contacto
@@ -167,5 +170,15 @@ BackendBundle\Entity\TblContactos:
             joinColumns:
                 id_institucion:
                     referencedColumnName: id_institucion
+            orphanRemoval: false
+        idPais:
+            targetEntity: TblPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_pais:
+                    referencedColumnName: id_pais
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -44,7 +44,7 @@ class ContactosController extends Controller {
           "habilitado" => true
           )); */
 
-        /*         * *** Nuevo Metodo de Consulta a BD | Opcion #2 ********
+        /***** Nuevo Metodo de Consulta a BD | Opcion #2 ********
          * Consulta de Registros con Fechas, Arrays y Funcion. y* 
          * Params:   *           
          * ***************************************************** */
@@ -54,12 +54,14 @@ class ContactosController extends Controller {
                 . "c.celular1Contacto, c.telefono1Contacto, c.email2Contacto, c.email1Contacto, "
                 . "i.perfilInstitucion, i.descInstitucion, "
                 . "inst.descTipoInstitucion, d.descDeptoFuncional, d.inicialesDeptoFuncional,  "
-                . "f.nombre1Funcionario, f.apellido1Funcionario, c.cargoFuncional "
+                . "f.nombre1Funcionario, f.apellido1Funcionario, c.cargoFuncional, "
+                . "g.descPais "
                 . 'FROM BackendBundle:TblContactos c '
                 . 'INNER JOIN BackendBundle:TblInstituciones i WITH  i.idInstitucion = c.idInstitucion '
                 . 'INNER JOIN BackendBundle:TblTipoInstitucion inst WITH  inst.idTipoInstitucion = i.idTipoInstitucion '
                 . 'INNER JOIN BackendBundle:TblFuncionarios f WITH  f.idFuncionario = c.idFuncionario '
                 . 'INNER JOIN BackendBundle:TblDepartamentosFuncionales d WITH d.idDeptoFuncional = f.idFuncionario '
+                . 'LEFT OUTER JOIN BackendBundle:TblPais g WITH g.idPais = c.idPais '
                 . 'ORDER BY c.idContacto ASC');
 
         $contactosFind = $query->getResult();
@@ -142,6 +144,9 @@ class ContactosController extends Controller {
             $tipo_contacto = (isset($params->tipoContacto)) ? $params->tipoContacto : null;
 
             $trato_contacto = (isset($params->tratoContacto)) ? $params->tratoContacto : null;
+            
+            // 2019-09-19 | Agregar Pais de Contacto
+            $id_pais = (isset($params->idPais)) ? $params->idPais : 0;
 
             //Verificacion del Codigo y Email en la Tabla: TblContactos ********                
             $isset_contact_mail = $em->getRepository("BackendBundle:TblContactos")
@@ -202,6 +207,14 @@ class ContactosController extends Controller {
                                 "idFuncionario" => $id_funcionario
                     ));
                     $contactoNew->setIdFuncionario($funcionarios);
+                    
+                    //Instancia a la Tabla: TblPais *********************                
+                    $paisContacto = $em->getRepository("BackendBundle:TblPais")
+                            ->findOneBy(
+                            array(
+                                "idPais" => $id_pais
+                    ));
+                    $contactoNew->setIdPais($paisContacto);
 
 
                     // INI | Ingreso de Documento ******************************

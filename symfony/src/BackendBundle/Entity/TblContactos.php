@@ -81,6 +81,12 @@ class TblContactos
      * @var string
      */
     private $contactoSreci;
+    
+    
+    /**
+     * @var integer
+     */
+    private $idPais;
 
 
     /**
@@ -630,5 +636,29 @@ class TblContactos
     public function getTipoContacto()
     {
         return $this->tipoContacto;
+    }
+    
+    /**
+     * Set idPais
+     *
+     * @param string idPais
+     *
+     * @return TblContactos
+     */
+    public function setIdPais($idPais)
+    {
+        $this->idPais = $idPais;
+
+        return $this;
+    }
+
+    /**
+     * Get idPais
+     *
+     * @return string
+     */
+    public function getIdPais()
+    {
+        return $this->idPais;
     }
 }

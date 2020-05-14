@@ -2,15 +2,15 @@ BackendBundle\Entity\TblCorrespondenciaSalida:
     type: entity
     table: tbl_correspondencia_salida
     indexes:
-        fki_estado_corr_salida:
-            columns:
-                - id_estado
         fki_user_corr_salida:
             columns:
                 - id_usuario
         fki_correspondencia_salida_doc:
             columns:
                 - id_tipo_documento
+        fki_estado_corr_salida:
+            columns:
+                - id_estado
         IDX_5270D6E8FBD636DF:
             columns:
                 - id_depto_funcional

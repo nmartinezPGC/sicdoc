@@ -2,18 +2,18 @@ BackendBundle\Entity\TblUsuarios:
     type: entity
     table: tbl_usuarios
     indexes:
-        fki_estado_user:
+        fki_funcionario_user:
             columns:
-                - id_estado
+                - id_tipo_funcionario
         fki_depto_user:
             columns:
                 - id_depto_funcional
         fki_tipo_user:
             columns:
                 - id_tipo_usuario
-        fki_funcionario_user:
+        fki_estado_user:
             columns:
-                - id_tipo_funcionario
+                - id_estado
         idx_cod_user:
             columns:
                 - cod_usuario
