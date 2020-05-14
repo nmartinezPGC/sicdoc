@@ -33,8 +33,8 @@ import { ConsultaMasterService } from '../../../services/consultas/consulta.mast
 import { ConsultaMaster } from '../../../models/consultas/consulta.master.model'; // Modelo a Utilizar
 
 // Declaramos las variables para jQuery
-declare var jQuery:any;
-declare var $:any;
+declare var jQuery: any;
+declare var $: any;
 
 @Component({
   selector: 'consulta.master.component',
@@ -44,12 +44,12 @@ declare var $:any;
 })
 export class ConsultaMasterComponent implements OnInit {
 
-  public titulo = "Consulta de Comunicación";
+  public titulo = 'Consulta de Comunicación';
 
   minDate = Date.now();
   maxDate = new Date(2017, 12, 1);
 
-  public fechaHoy:Date = new Date();
+  public fechaHoy: Date = new Date();
 
   // variables del localStorage
   public identity;
@@ -63,8 +63,8 @@ export class ConsultaMasterComponent implements OnInit {
   public loading_tr  = 'hide';
   public loading_tableIn = 'hide';
 
-  public loadTabla1:boolean = false;
-  public loadTabla2:boolean = false;
+  public loadTabla1: boolean = false;
+  public loadTabla2: boolean = false;
 
   // Instacia del Objeto Model de la Clase
   public consultaMasterEnc: ConsultaMaster;
@@ -72,15 +72,15 @@ export class ConsultaMasterComponent implements OnInit {
   public paramsDocumentos;
 
   // Parametros de los Json de la Aplicacion
-  public JsonOutgetlistaComunicacionDet:any[];
-  public JsonOutgetlistaComunicacionEnc:any[];
-  public JsonOutgetlistaComunicacionEncNew:any[];
-  public JsonOutgetlistaDocumentos:any[];
+  public JsonOutgetlistaComunicacionDet: any[];
+  public JsonOutgetlistaComunicacionEnc: any[];
+  public JsonOutgetlistaComunicacionEncNew: any[];
+  public JsonOutgetlistaDocumentos: any[];
 
 
   // Variables de envio al Json del Modelo
-  public idEstadoArray:any[];
-  public idTipoComunicacionArray:any[];
+  public idEstadoArray: any[];
+  public idTipoComunicacionArray: any[];
 
   // Area de Fechas
   public tableConsultaFechas;
@@ -95,8 +95,8 @@ export class ConsultaMasterComponent implements OnInit {
   public apellido2FuncModal; // Primer Nombre Funcionario Asignado
 
   // Url de los Recursos
-  public url:string;
-  public urlComplete:string;
+  public url: string;
+  public urlComplete: string;
 
   // Ini | Definicion del Constructor
   constructor( private _listasComunes: ListasComunesService,
@@ -110,7 +110,7 @@ export class ConsultaMasterComponent implements OnInit {
 
      //this.otraFill();
      this.url = this._consultaMasterService.urlResourses;
-     this.urlComplete = this.url + "uploads/correspondencia/";
+     this.urlComplete = this.url + 'uploads/correspondencia/';
 
   } // Fin | Definicion del Constructor
 
@@ -131,13 +131,13 @@ export class ConsultaMasterComponent implements OnInit {
 
     //Iniciamos los Parametros de Fechas de la Consulta
     this.tableConsultaFechas = {
-      "fechaCreacion"    : "",
-      "fechaMaxEntrega"  : ""
+      'fechaCreacion'    : '',
+      'fechaMaxEntrega'  : ''
     };
 
     //Iniciamos los Parametros de Json de Documentos
     this.paramsDocumentos = {
-      "searchValueSend" : ""
+      'searchValueSend' : ''
     };
 
     this.idEstadoArray = [3, 5, 7, 8 ];
@@ -187,7 +187,7 @@ export class ConsultaMasterComponent implements OnInit {
     this._consultaMasterService.comunicacionFind( this.consultaMasterEnc ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaComunicacionEnc = response.data;
             this.JsonOutgetlistaComunicacionEncNew = response;
@@ -218,7 +218,7 @@ export class ConsultaMasterComponent implements OnInit {
   ******************************************************/
   recargaTable(){
     // Declaracion del Objeto de la Tabla
-    var table = $('#example').DataTable();
+    let table = $('#example').DataTable();
 
     // Reiniciamos los vaores de la Tabla y la volvemos a Diseñar
     table
@@ -226,7 +226,7 @@ export class ConsultaMasterComponent implements OnInit {
       .draw();
 
     // Destruimos la Instacia que fue Generada
-    $("#example").dataTable().fnDestroy();
+    $('#example').dataTable().fnDestroy();
     // $('#example tbody > tr').remove();
   } // FIN | FND-00001-1
 
@@ -242,7 +242,7 @@ export class ConsultaMasterComponent implements OnInit {
   * Params: Modelo de la Clase (idEstado[],
             tipoComunicacion[], fechaInici , fechaFin )
   ******************************************************/
-  getlistaComunicacionDetTableFind( idCorrespondenciaEncIn:number ) {
+  getlistaComunicacionDetTableFind( idCorrespondenciaEncIn: number ) {
     // Laoding
     this.loading_table = 'show';
     this.loadTabla2 = false;
@@ -252,7 +252,7 @@ export class ConsultaMasterComponent implements OnInit {
     this._consultaMasterService.comunicacionDetFind( this.consultaMasterEnc ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaComunicacionDet = response.data;
 
@@ -289,10 +289,10 @@ export class ConsultaMasterComponent implements OnInit {
     this.loading_table = 'show';
     this.loadTabla2 = false;
     // Llamar al metodo, de Service para Obtener los Datos de la Comunicacion
-    this._listasComunes.listasDocumentosToken( this.paramsDocumentos, "listar-documentos" ).subscribe(
+    this._listasComunes.listasDocumentosToken( this.paramsDocumentos, 'listar-documentos' ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaDocumentos = response.data;
             // Oculta los Loaders
@@ -321,8 +321,8 @@ export class ConsultaMasterComponent implements OnInit {
     // Condicion para Evaluar las Opciones Chekeadas
     let optChecked = optChk;
     // Opcion de Ingresado
-        if( this.idEstadoArray.includes(optChecked) ) {
-          var i = this.idEstadoArray.indexOf( optChecked );
+        if ( this.idEstadoArray.includes(optChecked) ) {
+          let i = this.idEstadoArray.indexOf( optChecked );
           // Comprobamos que no este dentro del Array
           if ( i !== -1 ) {
               this.idEstadoArray.splice( i, 1 );
@@ -347,8 +347,8 @@ export class ConsultaMasterComponent implements OnInit {
     // Condicion para Evaluar las Opciones Chekeadas
     let optChecked = optChk;
     // Opcion de Ingresado
-        if( this.idTipoComunicacionArray.includes(optChecked) ) {
-          var i = this.idTipoComunicacionArray.indexOf( optChecked );
+        if ( this.idTipoComunicacionArray.includes(optChecked) ) {
+          let i = this.idTipoComunicacionArray.indexOf( optChecked );
           // Comprobamos que no este dentro del Array
           if ( i !== -1 ) {
               this.idTipoComunicacionArray.splice( i, 1 );
@@ -371,72 +371,72 @@ export class ConsultaMasterComponent implements OnInit {
   ******************************************************/
   otraFill( modelClass, authorization ){
     $ (function () {
-    var table =  $('#example2').DataTable( {
-        "processing": true,
+    let table =  $('#example2').DataTable( {
+        'processing': true,
         //"serverSide": true,
-        "destroy": true,
-        "ajax": {
-            "type": "POST",
-            "dataType": "json",
+        'destroy': true,
+        'ajax': {
+            'type': 'POST',
+            'dataType': 'json',
             /* "data" :JSON.stringify(formData),
             * Preparacion de los Parametros del Json
             * Param 1 : Datos del Modelo de la Clase
             * Param 2 : Dato de la Autorizacion del Token */
-            "data" : { "json": JSON.stringify( modelClass ),
-                      "authorization":authorization } ,
+            'data' : { 'json': JSON.stringify( modelClass ),
+                      'authorization': authorization } ,
             //"contentType": "application/json",
-            "contentType": "application/x-www-form-urlencoded",
+            'contentType': 'application/x-www-form-urlencoded',
             //"url": "http://localhost/sicdoc/symfony/web/app_dev.php/listas/estados-comunicacion-list",
-            "url": "http://localhost/sicdoc/symfony/web/app_dev.php/consultas/consulta-general",
+            'url': 'http://localhost/sicdoc/symfony/web/app_dev.php/consultas/consulta-general',
         },
 
         // Tabla response
-        "responsive": true,
+        'responsive': true,
 
         // Seleccionable
-        "select": true,
+        'select': true,
 
         // Definicion de las Columnas de la Tabla
-        "columns" : [
-          { "data": "codCorrespondenciaEnc" },
-          { "data": "codReferenciaSreci" },
-          { "data": "idTipoDocumento.descTipoDocumento" },
-          { "data": "fechaIngreso.timestamp" },
-          { "data": "fechaMaxEntrega.timestamp" },
-          { "data": "idInstitucion.descInstitucion" },
-          { "data": "temaComunicacion" },
-          { "data": "idEstado.descripcionEstado" },
+        'columns' : [
+          { 'data': 'codCorrespondenciaEnc' },
+          { 'data': 'codReferenciaSreci' },
+          { 'data': 'idTipoDocumento.descTipoDocumento' },
+          { 'data': 'fechaIngreso.timestamp' },
+          { 'data': 'fechaMaxEntrega.timestamp' },
+          { 'data': 'idInstitucion.descInstitucion' },
+          { 'data': 'temaComunicacion' },
+          { 'data': 'idEstado.descripcionEstado' },
           {
-            "data": null,
-            "defaultContent": "<a href='/#' data-toggle='modal' data-target='#t_and_c_m'> "+
-            " <img src='/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png'  "+
-                  "class='d-inline-block align-top' title='Ver Detalle de Comunicación'> "+
-            "</a>"
+            'data': null,
+            'defaultContent': '<a href=\'/#\' data-toggle=\'modal\' data-target=\'#t_and_c_m\'> ' +
+            ' <img src=\'/assets/icons/comunicacion/zoom-interface-symbol-of-text-paper-with-a-magnifier-glass_blue_24x24.png\'  ' +
+                  'class=\'d-inline-block align-top\' title=\'Ver Detalle de Comunicación\'> ' +
+            '</a>'
           }
         ],
 
         // Tamaño de la Pagina
-        "pageLength": 5,
+        'pageLength': 5,
         // Cambiar las Propiedades de Lenguaje
-        "language":{
-            "lengthMenu": "Mostrar _MENU_ registros por pagina",
-            "info": "Mostrando pagina _PAGE_ de _PAGES_",
-                "infoEmpty": "No hay registros disponibles",
-                "infoFiltered": "(filtrada de _MAX_ registros)",
-                "loadingRecords": "Cargando...",
-                "processing":     "Procesando...",
-                "search": "Buscar:",
-                "zeroRecords":    "No se encontraron registros coincidentes",
-                "paginate": {
-                    "next":       "Siguiente",
-                    "previous":   "Anterior"
+        'language': {
+            'lengthMenu': 'Mostrar _MENU_ registros por pagina',
+            'info': 'Mostrando pagina _PAGE_ de _PAGES_',
+                'infoEmpty': 'No hay registros disponibles',
+                'infoFiltered': '(filtrada de _MAX_ registros)',
+                'loadingRecords': 'Cargando...',
+                'processing':     'Procesando...',
+                'search': 'Buscar:',
+                'zeroRecords':    'No se encontraron registros coincidentes',
+                'paginate': {
+                    'next':       'Siguiente',
+                    'previous':   'Anterior'
                 },
         },
       } );
 
 
       $('#example2 tr').on('click', function(){
-        var dato = $(this).find('td:first').html();
+        let dato = $(this).find('td:first').html();
         alert(dato);
       });
 
@@ -458,19 +458,19 @@ export class ConsultaMasterComponent implements OnInit {
 
     // Mes Actual *************************
     let final_month = mesAct.toString();
-    if( mesAct <= 9 ){
-      final_month = "0" + final_month;
+    if ( mesAct <= 9 ){
+      final_month = '0' + final_month;
     }
 
     // Dia del Mes *************************
     let day = this.fechaHoy.getDate(); // Dia
     let final_day = day.toString();
-    if( day <= 9 ){
-      final_day = "0" + final_day;
+    if ( day <= 9 ){
+      final_day = '0' + final_day;
     }
 
     // Seteo de la Fecha Final
-    let newFecha = this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+    let newFecha = this.fechaHoy.getFullYear() +  '-' + final_month + '-' + final_day;
 
     setTimeout(function () {
       $ (function () {
@@ -479,31 +479,31 @@ export class ConsultaMasterComponent implements OnInit {
             destroy: true,
             retrieve: true,
             // Barra Vertical de la Tabla
-            scrollY:       "450px",
+            scrollY:       '450px',
             scrollX:        true,
             scrollCollapse: true,
 
             /*"fixedHeader": true,
             "autoWidth": false,*/
             // Tamaño de la Pagina
-            "pageLength": 5,
+            'pageLength': 5,
             // Cambiar las Propiedades de Lenguaje
-            "language":{
-                "lengthMenu": "Mostrar _MENU_ registros por pagina",
-                "info": "Mostrando pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrada de _MAX_ registros)",
-                    "loadingRecords": "Cargando...",
-                    "processing":     "Procesando...",
-                    "search": "Buscar:",
-                    "zeroRecords":    "No se encontraron registros coincidentes",
-                    "paginate": {
-                        "next":       "Siguiente",
-                        "previous":   "Anterior"
+            'language': {
+                'lengthMenu': 'Mostrar _MENU_ registros por pagina',
+                'info': 'Mostrando pagina _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrada de _MAX_ registros)',
+                    'loadingRecords': 'Cargando...',
+                    'processing':     'Procesando...',
+                    'search': 'Buscar:',
+                    'zeroRecords':    'No se encontraron registros coincidentes',
+                    'paginate': {
+                        'next':       'Siguiente',
+                        'previous':   'Anterior'
                     },
             },
             // Ocultar Columnas
-            "columnDefs": [
+            'columnDefs': [
                   /*{ // Columna de Ingreso / Salida
                       "targets": [ 7 ],
                       "visible": false,
@@ -537,7 +537,7 @@ export class ConsultaMasterComponent implements OnInit {
                     title: 'Informe de Comunicaciones' + ' / ' + newFecha,
                       text: 'Exportar en Excel',
                       customize: function( xlsx ) {
-                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
                         $('row:first c', sheet).attr( 's', '42' );
                       },
                 },
@@ -556,9 +556,9 @@ export class ConsultaMasterComponent implements OnInit {
                     customize: function (win) {
                       $(win.document.body).find('table').addClass('display').css('font-size', '10px');
                       $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
-                          $(this).css('background-color','#D0D0D0');
+                          $(this).css('background-color', '#D0D0D0');
                       });
-                      $(win.document.body).find('h1').css('text-align','center');
+                      $(win.document.body).find('h1').css('text-align', 'center');
                   },
                   text: 'Imprimir Todos',
                   message: 'Listado de Comunicaciones',
@@ -601,10 +601,10 @@ export class ConsultaMasterComponent implements OnInit {
   * Utilizando parametros del Json de la tabla
   * Objetivo: Obtener los Datos del Oficio seleccionado
   *****************************************************/
-  datoOficio( codOficioIntIn:string, codOficioRefIn:string, idDeptoIn:number,
-             nombre1funcionarioAsignadoIn:string, apellido1funcionarioAsignadoIn:string,
-             nombre2funcionarioAsignadoIn:string, apellido2funcionarioAsignadoIn:string,
-             idFuncionarioIn:number, idEstadoAsign:number, idOficioEnc:number ){
+  datoOficio( codOficioIntIn: string, codOficioRefIn: string, idDeptoIn: number,
+             nombre1funcionarioAsignadoIn: string, apellido1funcionarioAsignadoIn: string,
+             nombre2funcionarioAsignadoIn: string, apellido2funcionarioAsignadoIn: string,
+             idFuncionarioIn: number, idEstadoAsign: number, idOficioEnc: number ){
    // Seteo de las varibles de la Funcion
     this.codOficioIntModal = codOficioIntIn;
     this.codOficioRefModal = codOficioRefIn;
@@ -629,7 +629,7 @@ export class ConsultaMasterComponent implements OnInit {
  } // FIN : FND-00004
 
 
-  public datoEnc:DatosEnc[] = this.JsonOutgetlistaComunicacionEnc;
+  public datoEnc: DatosEnc[] = this.JsonOutgetlistaComunicacionEnc;
 
 
 } // FIN de Clase | Consulta Master

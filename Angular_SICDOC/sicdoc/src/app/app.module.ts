@@ -75,7 +75,7 @@ import { Ng2CompleterModule } from "ng2-completer";
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 // Imports de Pluguin de Subir Imagenes
-import { ImageUploadModule } from "angular2-image-upload";
+// import { ImageUploadModule } from "angular2-image-upload";
 import { ReporteGeneralComponent } from './components/consultas/reportes/reporte.general/reporte.general.component';
 
 // Imports de la Clase de Properties del System
@@ -144,7 +144,7 @@ import { ModificaUsuarioComponent } from './components/login/modifica.usuario/mo
     MdGridListModule, MdExpansionModule, MdDatepickerModule, MdInputModule,
     MdCheckboxModule, MdNativeDateModule, MdTableModule*/
     Ng2CompleterModule,
-    ImageUploadModule.forRoot(),
+    // ImageUploadModule.forRoot(),
     //Seccion de AngularMultiSelectModule
     AngularMultiSelectModule,
     ToastyModule.forRoot(),

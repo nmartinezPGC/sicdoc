@@ -11,7 +11,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
 // Libreria para Crear el PDF
-import * as jsPDF from "jspdf";
+import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 //Importamos los Servicios
@@ -27,7 +27,7 @@ import { ContactosService } from '../../services/contactos/contacto.service'; //
 
 import { AppComponent } from '../../app.component'; //Servico del Login
 
-import { NgForm }    from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 // Importamos la CLase Usuarios del Modelo
 import { Usuarios } from '../../models/usuarios/usuarios.model'; // Servico del Login
@@ -44,27 +44,27 @@ import { stringify } from '@angular/core/src/util';
 import {ToastyService, ToastyConfig, ToastyComponent, ToastOptions, ToastData} from 'ng2-toasty';
 
 // Declaramos las variables para jQuery
-declare var jQuery:any;
-declare var $:any;
+declare var jQuery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-ingreso-comunicacion',
   templateUrl: '../../views/comunicaciones/ingreso.component.html',
   styleUrls: ['../../views/comunicaciones/style.component.css'],
-  providers: [ IngresoComunicacionService ,LoginService, ListasComunesService, UploadService,
+  providers: [ IngresoComunicacionService , LoginService, ListasComunesService, UploadService,
               ContactosService, VinculacionComunicacionService, CaseSecuencesService]
 })
 
 
 export class IngresoComunicacionComponent implements OnInit{
   // Datos Generales de la Clase
-  public titulo:string = "Ingreso de Comunicación";
-  public fechaHoy:Date = new Date();
-  public fechafin:string;
+  public titulo: string = 'Ingreso de Comunicación';
+  public fechaHoy: Date = new Date();
+  public fechafin: string;
 
-  public urlConfigLocal:string;
-  public urlResourseLocal:string;
-  public urlComplete:string;
+  public urlConfigLocal: string;
+  public urlResourseLocal: string;
+  public urlComplete: string;
 
   //variables del AtuoComplete
 
@@ -76,7 +76,7 @@ export class IngresoComunicacionComponent implements OnInit{
   private paramsSubDirComVinculante;
   private paramsTipoFuncionario; // Parametros para el Filtro de Funcionario
 
-  private paramsSecuenciaActividadAgregar;// Parametro para seleccionar el Secuencial
+  private paramsSecuenciaActividadAgregar; // Parametro para seleccionar el Secuencial
 
   private paramsDocumentosSend; // Parametros para los Documentos enviados
 
@@ -92,9 +92,9 @@ export class IngresoComunicacionComponent implements OnInit{
   // AutoComplete
   protected searchStrFunc: string;
   protected dataServiceFunc: CompleterData;
-  protected selectedFuncionario: string = "" ;
-  protected selectedFuncionarioAll: string = "";
-  protected selectedFuncionarioAllSend:any[] = [];
+  protected selectedFuncionario: string = '' ;
+  protected selectedFuncionarioAll: string = '';
+  protected selectedFuncionarioAllSend: any[] = [];
 
   // Propiedades de los Resumenes
   // Oficios
@@ -126,14 +126,14 @@ export class IngresoComunicacionComponent implements OnInit{
   // FIN de Encabezados ****************************
 
   // Instacia de la variable del Modelo | Json de Parametros
-  public user:Usuarios;
+  public user: Usuarios;
   public comunicacion: Comunicaciones;
 
   // Instacia del Objeto Model de la Clase
   public consultaContactos: Contactos;
 //
   // Objeto que Controlara la Forma
-  forma:FormGroup;
+  forma: FormGroup;
 
  // Variables de Mensajeria y Informaicon
   public data;
@@ -162,21 +162,21 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // Variables de Generacion de las Listas de los Dropdow
   // Llenamos las Lista del HTML
-  public JsonOutgetlistaEstados:any[];
-  public JsonOutgetlistaTipoUsuario:any[];
-  public JsonOutgetlistaPaises:any[];
-  public JsonOutgetlistaTipoInstitucion:any[];
-  public JsonOutgetlistaInstitucion:any[];
-  public JsonOutgetlistaDireccionSRECI:any[];
-  public JsonOutgetlistaDireccionSRECIAcom:any[];
-  public JsonOutgetlistaSubDireccionSRECI:any[];
-  public JsonOutgetlistaSubDireccionSRECIComVinculantes:any[]; // Uso para las Comunicaciones viculantes | 2018-02-20
-  public JsonOutgetlistaSubDireccionSRECIAcom:any[];
+  public JsonOutgetlistaEstados: any[];
+  public JsonOutgetlistaTipoUsuario: any[];
+  public JsonOutgetlistaPaises: any[];
+  public JsonOutgetlistaTipoInstitucion: any[];
+  public JsonOutgetlistaInstitucion: any[];
+  public JsonOutgetlistaDireccionSRECI: any[];
+  public JsonOutgetlistaDireccionSRECIAcom: any[];
+  public JsonOutgetlistaSubDireccionSRECI: any[];
+  public JsonOutgetlistaSubDireccionSRECIComVinculantes: any[]; // Uso para las Comunicaciones viculantes | 2018-02-20
+  public JsonOutgetlistaSubDireccionSRECIAcom: any[];
 
-  public JsonOutgetlistaTipoFuncionariosSRECI:any[];
-  public JsonOutgetlistaFuncionariosSRECI:any[];
-  public JsonOutgetlistaFuncionariosDirectoresSRECI:any[];
-  public JsonOutgetlistaTiposDocumentos:any[];
+  public JsonOutgetlistaTipoFuncionariosSRECI: any[];
+  public JsonOutgetlistaFuncionariosSRECI: any[];
+  public JsonOutgetlistaFuncionariosDirectoresSRECI: any[];
+  public JsonOutgetlistaTiposDocumentos: any[];
 
   // public JsonOutgetCodigoSecuenciaNew:any[];
   public JsonOutgetCodigoSecuenciaNew;
@@ -185,36 +185,36 @@ export class IngresoComunicacionComponent implements OnInit{
 
   // Json del Recuento de Datos
   // Oficios
-  public JsonOutgetListaOficiosIngresados:any[];
-  public JsonOutgetListaOficiosPendientes:any[];
-  public JsonOutgetListaOficiosFinalizados:any[];
+  public JsonOutgetListaOficiosIngresados: any[];
+  public JsonOutgetListaOficiosPendientes: any[];
+  public JsonOutgetListaOficiosFinalizados: any[];
 
   // Memoramdums
-  public JsonOutgetListaMemosIngresados:any[];
-  public JsonOutgetListaMemosPendientes:any[];
-  public JsonOutgetListaMemosFinalizados:any[];
+  public JsonOutgetListaMemosIngresados: any[];
+  public JsonOutgetListaMemosPendientes: any[];
+  public JsonOutgetListaMemosFinalizados: any[];
 
   // Notas Verbales
-  public JsonOutgetListaNotasIngresados:any[];
-  public JsonOutgetListaNotasPendientes:any[];
-  public JsonOutgetListaNotasFinalizados:any[];
+  public JsonOutgetListaNotasIngresados: any[];
+  public JsonOutgetListaNotasPendientes: any[];
+  public JsonOutgetListaNotasFinalizados: any[];
 
   // Correos
-  public JsonOutgetListaCorreosIngresados:any[];
-  public JsonOutgetListaCorreosPendientes:any[];
-  public JsonOutgetListaCorreosFinalizados:any[];
+  public JsonOutgetListaCorreosIngresados: any[];
+  public JsonOutgetListaCorreosPendientes: any[];
+  public JsonOutgetListaCorreosFinalizados: any[];
 
   // Llamadas
-  public JsonOutgetListaLlamadasIngresados:any[];
-  public JsonOutgetListaLlamadasPendientes:any[];
-  public JsonOutgetListaLlamadasFinalizados:any[];
+  public JsonOutgetListaLlamadasIngresados: any[];
+  public JsonOutgetListaLlamadasPendientes: any[];
+  public JsonOutgetListaLlamadasFinalizados: any[];
 
   // FIN de Encabezados **********************
 
   // Json de AutoCompleter Funcionarios
-  public JsonOutgetlistaFuncionarios:any[];
-  public JsonOutgetlistaSubDireccionesSrec:any[];
-  public JsonOutgetlistaComunicacionVinculante:any[];  // Json para las Comunciacnon Vinculantes
+  public JsonOutgetlistaFuncionarios: any[];
+  public JsonOutgetlistaSubDireccionesSrec: any[];
+  public JsonOutgetlistaComunicacionVinculante: any[];  // Json para las Comunciacnon Vinculantes
 
   // Array de Documentos de Comunicacion
   public JsonOutgetListaDocumentos = [];
@@ -223,22 +223,22 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   // Variabls para validaciones de Seleccionado
-  public maxlengthCodReferencia = "38"; // Defaul Correo
-  public minlengthCodReferencia = "5"; // Defaul Correo
+  public maxlengthCodReferencia = '38'; // Defaul Correo
+  public minlengthCodReferencia = '5'; // Defaul Correo
   // public pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"; // Defaul Correo
-  public pattern ="^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$"; // Defaul Correo
+  public pattern = '^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$'; // Defaul Correo
 
 
   // Variables para la Persistencia de los Datos en los Documentos
-  public nextDocumento:number = 1;
-  public extencionDocumento:string;
-  public seziDocumento:number;
-  public nombreDoc:string;
+  public nextDocumento: number = 1;
+  public extencionDocumento: string;
+  public seziDocumento: number;
+  public nombreDoc: string;
 
   // Variables del Metodo
-  public  error:string;
+  public  error: string;
   // public  status:string;
-  public  codigoSec:string;
+  public  codigoSec: string;
 
   // Variables para ng-selecter2
   // Select de Sub Direcciones
@@ -260,19 +260,20 @@ export class IngresoComunicacionComponent implements OnInit{
 
    // 218-02-12
   // Variable de Comunicacion Sin Seguimiento
-  public comunicacionSinSeguimiento:number = 0;
-  public comunicacionSinSeguimientoNew:number = 0;
+  public comunicacionSinSeguimiento: number = 0;
+  public comunicacionSinSeguimientoNew: number = 0;
 
   // Propiedades de Toasty
-  getTitle(title:string, num: number): string {
+  getTitle(title: string, num: number): string {
         return title + ' se cerrara en ' +  num + ' segundos ';
   }
 
-  getMessage(msg:string, num: number): string {
+  getMessage(msg: string, num: number): string {
       // return msg + ' ' + num;
       return msg;
   }
 
+   // tslint:disable-next-line: member-ordering
    userForm: FormGroup;
 
   // Ini | Definicion del Constructor
@@ -289,14 +290,14 @@ export class IngresoComunicacionComponent implements OnInit{
                private completerService: CompleterService,
                private changeDetectorRef: ChangeDetectorRef,
                private _vinculacionComunicacionService: VinculacionComunicacionService,
-               private toastyService:ToastyService){
+               private toastyService: ToastyService){
      // Llamado al Servicio de lista de Los Funcionarios SRECI
      this.getlistaFuncionariosSreci();
 
      // Configuracion del Select Dinamico
      this.settings = {
        singleSelection: false,
-       text: "Selecciona las Direcciones acompañantes ... ",
+       text: 'Selecciona las Direcciones acompañantes ... ',
        selectAllText: 'Selecciona Todos',
        unSelectAllText: 'Deselecciona Todos',
        searchPlaceholderText: 'Selecciona la Dirección que Acompaña el Tema',
@@ -309,13 +310,13 @@ export class IngresoComunicacionComponent implements OnInit{
      // Configuracion del Select Dinamico
      this.settingsComunicacionVinc = {
       singleSelection: false,
-      text: "Selecciona las Comunicaciones Vinculantes ... ",
+      text: 'Selecciona las Comunicaciones Vinculantes ... ',
       selectAllText: 'Selecciona Todas',
       enableCheckAll: false,
       unSelectAllText: 'Deselecciona Todas',
       searchPlaceholderText: 'Selecciona la Comunicación que relaciona el tema ...',
       enableSearchFilter: true,
-      limitSelection:7,
+      limitSelection: 7,
       badgeShowLimit: 7,
       maxHeight: 170,
       //limitSelection:6
@@ -324,7 +325,7 @@ export class IngresoComunicacionComponent implements OnInit{
      // Seteo de la Ruta de la Url Config
      this.urlConfigLocal = this._ingresoComunicacion.url;
      this.urlResourseLocal = this._ingresoComunicacion.urlResourses;
-     this.urlComplete = this.urlResourseLocal + "uploads/correspondencia/";
+     this.urlComplete = this.urlResourseLocal + 'uploads/correspondencia/';
 
   } // Fin | Definicion del Constructor
 
@@ -336,9 +337,9 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   generatePDF() {
     //var imgData = 'data:image/jpeg;base64,'+ Base64.encode('Koala.jpeg');
-    var img = new Image();
+    let img = new Image();
     img.src = 'assets/images/sreci.png';
-    var doc = new jsPDF("p", "mm", "a4");
+    let doc = new jsPDF('p', 'mm', 'a4');
     // var doc = new jsPDF();
 
    doc.addImage(img, 'png', 130, 5, 70, 25 );
@@ -348,9 +349,9 @@ export class IngresoComunicacionComponent implements OnInit{
 
    // Datos Generales
    doc.text(10, 60, 'Sr(a) ');
-   doc.setFontType("bold");
+   doc.setFontType('bold');
    doc.text(10, 70, 'Nombre de Persona de Destino');
-   doc.setFontType("normal");
+   doc.setFontType('normal');
    doc.text(10, 80, 'Cargo de Persona');
    doc.text(10, 90, 'Institucion');
    //doc.setFont("times");
@@ -360,7 +361,7 @@ export class IngresoComunicacionComponent implements OnInit{
    doc.text(10, 100, 'Tema de Comunicacion ' + this.comunicacion.temaCorrespondencia); //append email id in pdf
    // doc.setFontType("bold");
    doc.setTextColor(255, 0, 0); //set font color to red
-   var lines = doc.splitTextToSize(this.comunicacion.descCorrespondencia, 220);
+   let lines = doc.splitTextToSize(this.comunicacion.descCorrespondencia, 220);
    doc.text(10, 110, lines); //append first name in pdf
 
    doc.text(100, 160, this.comunicacion.codReferenciaSreci); //append last name in pdf
@@ -380,76 +381,76 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Seteo del Json de Secuecnias Encabezados
     this.JsonOutgetCodigoSecuenciaNew = {
-      "codSecuencial" : "",
-      "valor2" : ""
+      'codSecuencial' : '',
+      'valor2' : ''
     }
 
     // Seteo del Json de Secuecnias Encabezados
     this.JsonOutgetCodigoSecuenciaDet = {
-      "codSecuencial" : "",
-      "valor2" : ""
+      'codSecuencial' : '',
+      'valor2' : ''
     }
 
     // Inicializamos los Parametros de Tipo Comunicacion
     this.paramsIdTipoComSend = {
-      "idTipoCom" : "",
-      "idFuncionarioAsignado" : "",
-      "idTipoDoc" : "",
+      'idTipoCom' : '',
+      'idFuncionarioAsignado' : '',
+      'idTipoDoc' : '',
     }
 
     // Iniciamos los Parametros de Instituciones
     this.params = {
-      "idPais"  : "",
-      "idTipoInstitucion"  : ""
+      'idPais'  : '',
+      'idTipoInstitucion'  : ''
     };
 
     // Iniciamos los Parametros de Secuenciales
     this.paramsSecuencia = {
-      "codSecuencial"  : "",
-      "tablaSecuencia" : "",
-      "idTipoDocumento" : ""
+      'codSecuencial'  : '',
+      'tablaSecuencia' : '',
+      'idTipoDocumento' : ''
     };
 
     // Iniciamos los Parametros de Secuenciales
     this.paramsSecuenciaDet = {
-      "codSecuencial"  : "",
-      "tablaSecuencia" : "",
-      "idTipoDocumento" : ""
+      'codSecuencial'  : '',
+      'tablaSecuencia' : '',
+      'idTipoDocumento' : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones
     this.paramsSubDir = {
-      "idDireccionSreci"  : ""
+      'idDireccionSreci'  : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones Acompañantes
     this.paramsSubDirAcom = {
-      "idDireccionSreci"  : ""
+      'idDireccionSreci'  : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
     this.paramsSubDirComVinculante = {
-      "idDireccionSreciComVinc"  : ""
+      'idDireccionSreciComVinc'  : ''
     };
 
     // Iniciamos los Parametros de Usuarios a Asignar el Oficio
     this.paramsTipoFuncionario = {
-      "idTipoFuncionario"  : "",
-      "idDeptoFuncional"  : ""
+      'idTipoFuncionario'  : '',
+      'idDeptoFuncional'  : ''
     };
 
 
     // Iniciamos los Parametros de Encabezado de Conunicacion
     this.paramsSecuenciaIn = {
-      "codSecuencial"  : "",
-      "tablaSecuencia"  : "",
-      "idTipoDocumento"  : ""
+      'codSecuencial'  : '',
+      'tablaSecuencia'  : '',
+      'idTipoDocumento'  : ''
     };
 
     this.paramsComVinculante = {
-      "idDeptoFuncional"  : "",
-      "idTipoDocumento"  : "",
-      "idTipoComunicacion"  : ""
+      'idDeptoFuncional'  : '',
+      'idTipoDocumento'  : '',
+      'idTipoComunicacion'  : ''
     };
 
     this.paramsTipoComunicacion = [];
@@ -459,17 +460,17 @@ export class IngresoComunicacionComponent implements OnInit{
 
     // Json de Documento a Borrar
     this.JsonOutgetListaDocumentosDelete = {
-      "codDocument": "",
-      "extDocument": "",
-      "indicadorExt":""
+      'codDocument': '',
+      'extDocument': '',
+      'indicadorExt': ''
     }
 
     this.nextDocumento = 0;
 
-    $("#newTable").children().remove();
+    $('#newTable').children().remove();
 
     // Limpiamos el Textarea de los COntactos
-    $("#contacAddCC").val();
+    $('#contacAddCC').val();
 
     // Lsita de Tipo de Documentos
     this.getlistaTipoDocumentos();
@@ -493,21 +494,21 @@ export class IngresoComunicacionComponent implements OnInit{
     // Convertimos las Fechas a una Default
     this.convertirFecha();
 
-    this.searchStrFunc = "";
+    this.searchStrFunc = '';
 
     // Deselecciona la Opcion de Sin Seguimiento
-    $("#estadoFin").val(2);
+    $('#estadoFin').val(2);
 
-    $(".chkSinSeguimiento").attr("checked", false);
+    $('.chkSinSeguimiento').attr('checked', false);
 
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
-                                           0, "0", 0, 0, "7", 1, 0, 0, "0", "0",
+    this.comunicacion = new Comunicaciones(1, '', '', '', '', '',
+                                           0, '0', 0, 0, '7', 1, 0, 0, '0', '0',
                                            this.fechafin  , null,
                                            0, 0,  0, 0, 0,
-                                           "", "", "", "", "", "", "", "",
-                                           "", null, null, null );
+                                           '', '', '', '', '', '', '', '',
+                                           '', null, null, null );
 
 
     // Llamado a la Opcion de llenado de las Sub Direcciones
@@ -523,12 +524,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this.getlistaSubDireccionesSRECI();
 
     // Limpiamos el Array de los Documentos
-    this.comunicacion.pdfDocumento = "";
+    this.comunicacion.pdfDocumento = '';
 
     this.JsonOutgetListaDocumentos = [];
 
     //Borra el Contenido del Arreglo de Contactos
-    this.comunicacion.setTomail = "";
+    this.comunicacion.setTomail = '';
 
     // Llenamos la Lsita Funcionarios despues de los Campos Default
     // this.getlistaUsuariosAsinadosSRECI();
@@ -557,9 +558,9 @@ export class IngresoComunicacionComponent implements OnInit{
     // FIN de Ejecucuon de Encabezados
 
     // Eventos de Señaloizacion
-    this.loading = "hide";
+    this.loading = 'hide';
 
-    $(".fakeRadio").attr('checked', false);
+    $('.fakeRadio').attr('checked', false);
 
     // this.getlistaComunicacionVinculanteAll();
     // this.removeFileInput();
@@ -647,7 +648,7 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
   // Ini | Metodo onSubmit
-  onSubmit(forma:NgForm){
+  onSubmit(forma: NgForm){
       //this.validCampos();
       // this.listarCodigoCorrespondencia();
       // Parseo de parametros que no se seleccionan
@@ -675,53 +676,53 @@ export class IngresoComunicacionComponent implements OnInit{
 
       // Parametro para documento Seleccionado
       // Caso 1 ) Evaluamos si el Tipo de User no es Administrador ( 2, 3, 5 )
-      if( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 1 && this.identity.idTipoFunc != 6 ){
+      if ( this.identity.idTipoFunc != 4 && this.identity.idTipoFunc != 1 && this.identity.idTipoFunc != 6 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
-            this.comunicacion.idEstado = "5";
+          if ( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
+            this.comunicacion.idEstado = '5';
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
           }else {
-            this.comunicacion.idEstado = "3";
+            this.comunicacion.idEstado = '3';
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
           }
       // Caso 2 ) Evaluamos si el Tipo de User es Administrador ( 1, 4 ) sin Asignacion a Director
-      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
+      }else if ( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado == 0 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
-            this.comunicacion.idEstado = "5";
+          if ( $('#estadoFin').val() == 1 ){ // Perfil Tipo Ingreso
+            this.comunicacion.idEstado = '5';
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
           }else {
-            this.comunicacion.idEstado = "3";
+            this.comunicacion.idEstado = '3';
             this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
             this.comunicacion.idDireccionSreci = this.identity.idDireccion;
             this.comunicacion.idUsuarioAsaignado = this.identity.sub;
           }
       // Caso 3 ) Evaluamos si el Tipo de User Administrador ( 1 ) con Asignacion a Director
-      }else if( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
+      }else if ( (this.identity.idTipoFunc == 1 || this.identity.idTipoFunc == 4 ) &&
                  this.comunicacion.idUsuarioAsaignado != 0 ){
           // Evalua si se Activo la Comunicacion sin Seguimiento
-          if( $("#estadoFin").val() == 1 ){
-            this.comunicacion.idEstado = "5";
+          if ( $('#estadoFin').val() == 1 ){
+            this.comunicacion.idEstado = '5';
           }else{
-            this.comunicacion.idEstado = "7";
+            this.comunicacion.idEstado = '7';
           }
       // Caso 4 ) Evaluamos si el Tipo de User Director ( 6 )
-      }else if( this.identity.idTipoFunc == 6 ){
+      }else if ( this.identity.idTipoFunc == 6 ){
         // Evalua si se Activo la Comunicacion sin Seguimiento
-        if( $('#estadoFin').val() == 1 ){ // Perfil Tipo Director
-          this.comunicacion.idEstado = "5";
+        if ( $('#estadoFin').val() == 1 ){ // Perfil Tipo Director
+          this.comunicacion.idEstado = '5';
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
           this.comunicacion.idUsuarioAsaignado = this.identity.sub;
         }else {
-          this.comunicacion.idEstado = "7";
+          this.comunicacion.idEstado = '7';
           this.comunicacion.idDeptoFuncional = this.identity.idDeptoFuncional;
           this.comunicacion.idDireccionSreci = this.identity.idDireccion;
           this.comunicacion.idUsuarioAsaignado = this.identity.sub;
@@ -743,14 +744,14 @@ export class IngresoComunicacionComponent implements OnInit{
             this.mensajes = response.msg;
 
             // Condicionamos la Respuesta
-            if(this.status != "success"){
-                this.status = "error";
+            if (this.status != 'success'){
+                this.status = 'error';
                 this.mensajes = response.msg;
-                if(this.loading = 'show'){
+                if (this.loading = 'show'){
                   this.loading = 'hidden';
                 }
                 //alert(this.mensajes);
-                this.addToast(4,"Error",this.mensajes);
+                this.addToast(4, 'Error', this.mensajes);
             }else{
               // this.resetForm();
               this.loading = 'hidden';
@@ -758,28 +759,28 @@ export class IngresoComunicacionComponent implements OnInit{
               this.ngOnInit();
               //this.refresh();
               // this.alertShow();
-              this.addToast(2,"Confirmado",this.mensajes);
+              this.addToast(2, 'Confirmado', this.mensajes);
               //Oculta el Div de Alerta despues de 3 Segundos
               setTimeout(function() {
-                  $("#alertSuccess").fadeOut(1500);
-              },3000);
+                  $('#alertSuccess').fadeOut(1500);
+              }, 3000);
             }
         }, error => {
             //Regisra cualquier Error de la Llamada a la API
             this.errorMessage = <any>error;
 
             //Evaluar el error
-            if(this.errorMessage != null){
+            if (this.errorMessage != null){
               console.log(this.errorMessage);
               this.mensajes = this.errorMessage;
-              this.addToast(4,"Error: Contacta al Administrador ",this.mensajes);
+              this.addToast(4, 'Error: Contacta al Administrador ', this.mensajes);
               //alert("Error en la Petición !!" + this.errorMessage);
               //Oculta el Div de Alerta despues de 3 Segundos
               setTimeout(function() {
-                  $("#alertError").fadeOut(1500);
-              },3000);
+                  $('#alertError').fadeOut(1500);
+              }, 3000);
 
-              if(this.loading = 'show'){
+              if (this.loading = 'show'){
                 this.loading = 'hidden';
               }
 
@@ -814,67 +815,67 @@ export class IngresoComunicacionComponent implements OnInit{
   public resetForm() {
     // Iniciamos los Parametros de Instituciones
     this.params = {
-      "idPais"  : "",
-      "idTipoInstitucion"  : ""
+      'idPais'  : '',
+      'idTipoInstitucion'  : ''
     };
 
     // Iniciamos los Parametros de Secuenciales
     this.paramsSecuencia = {
-      "codSecuencial"  : "",
-      "tablaSecuencia" : "",
-      "idTipoDocumento" : ""
+      'codSecuencial'  : '',
+      'tablaSecuencia' : '',
+      'idTipoDocumento' : ''
     };
 
     // Iniciamos los Parametros de Secuenciales
     this.paramsSecuenciaDet = {
-      "codSecuencial"  : "",
-      "tablaSecuencia" : "",
-      "idTipoDocumento" : ""
+      'codSecuencial'  : '',
+      'tablaSecuencia' : '',
+      'idTipoDocumento' : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones
     this.paramsSubDir = {
-      "idDireccionSreci"  : ""
+      'idDireccionSreci'  : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones Acompañantes
     this.paramsSubDirAcom = {
-      "idDireccionSreci"  : ""
+      'idDireccionSreci'  : ''
     };
 
     // Iniciamos los Parametros de Sub Direcciones Comunicacones Vinculantes
     this.paramsSubDirComVinculante = {
-      "idDireccionSreciComVinc"  : ""
+      'idDireccionSreciComVinc'  : ''
     };
 
     // Iniciamos los Parametros de Usuarios a Asignar Oficios
     this.paramsTipoFuncionario = {
-      "idTipoFuncionario"  : "",
-      "idDeptoFuncional"  : ""
+      'idTipoFuncionario'  : '',
+      'idDeptoFuncional'  : ''
     };
 
-    this.status = "hide";
-    this.loading = "hide";
+    this.status = 'hide';
+    this.loading = 'hide';
 
     // Definicion de la Insercion de los Datos de Nueva Comunicacion
-    this.comunicacion = new Comunicaciones(1, "", "", "", "", "",
-                                           0, "0", 0, 0, "7", 1, 0, 0, "0", "0",
+    this.comunicacion = new Comunicaciones(1, '', '', '', '', '',
+                                           0, '0', 0, 0, '7', 1, 0, 0, '0', '0',
                                            this.fechafin  , null,
                                            0, 0,  0, 0, 0,
-                                           "", "", "", "", "", "", "", "",
-                                           "", null, null, null );
+                                           '', '', '', '', '', '', '', '',
+                                           '', null, null, null );
 
    // Limpiamos el Array de los Documentos
-   this.comunicacion.pdfDocumento = "";
+   this.comunicacion.pdfDocumento = '';
 
    this.JsonOutgetListaDocumentos = [];
 
    //Borra el Contenido del Arreglo de Contactos
-   this.comunicacion.setTomail = "";
+   this.comunicacion.setTomail = '';
 
    this.JsonOutgetListaDocumentosDelete = {
-     "codDocument": "",
-     "extDocument": ""
+     'codDocument': '',
+     'extDocument': ''
    }
 
   } // FIN : FND-00001.1
@@ -889,23 +890,23 @@ export class IngresoComunicacionComponent implements OnInit{
   *****************************************************/
   convertirFecha() {
     //Funcion de Sumatoria de Fechas
-    var d = new Date();
+    let d = new Date();
     let calendario = this.sumarDias(d, 5);
     let diaCal = String(calendario.getDate() );
     let mesCal = String(calendario.getMonth() + 1 );
     let anioCal = String(calendario.getFullYear() );
 
-    if(diaCal.length < 2  ){
+    if (diaCal.length < 2  ){
       //alert("Dia Falta el 0");
-      diaCal = "0" + diaCal;
+      diaCal = '0' + diaCal;
     }
-    if(mesCal.length < 2){
+    if (mesCal.length < 2){
       //alert("Mes Falta el 0");
-      mesCal = "0" + mesCal;
+      mesCal = '0' + mesCal;
     }
 
     //Retorna la fecha seteada
-    this.fechafin = anioCal + "-" + mesCal + "-" + diaCal ;
+    this.fechafin = anioCal + '-' + mesCal + '-' + diaCal ;
     //this.fechafin = day + "-" + month + "-" + year;
     // console.log("Dia " + day + " Mes " + month + " Año " + year);
   } // FIN : FND-00001.2
@@ -927,9 +928,9 @@ export class IngresoComunicacionComponent implements OnInit{
     // Definicion de las variables del Formulario
     let codigoRefIn = this.comunicacion.codCorrespondencia;
 
-    if( codigoRefIn.length < 5 ){
-      alert("Falta Ingresar el Codigo de Referencia del Oficio.");
-      this.mensajes = "Falta Ingresar el Codigo de Referencia del Oficio";
+    if ( codigoRefIn.length < 5 ){
+      alert('Falta Ingresar el Codigo de Referencia del Oficio.');
+      this.mensajes = 'Falta Ingresar el Codigo de Referencia del Oficio';
       return false;
     }
     //alert("Dia " + day + " Mes " + month + " Año " + year);
@@ -946,8 +947,8 @@ export class IngresoComunicacionComponent implements OnInit{
     // Definicion de las variables del Formulario
     //setTimeout(this.status = "hide", 3000);
     // this.status = "hide";
-    setTimeout(function(){ alert("Hello"); }, 3000);
-    setTimeout(function(){ this.status = "hide"; }, 3000);
+    setTimeout(function(){ alert('Hello'); }, 3000);
+    setTimeout(function(){ this.status = 'hide'; }, 3000);
   } // FIN : FND-00001.3
 
 
@@ -961,14 +962,14 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaEstadosComunicacion() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","estados-comunicacion-list").subscribe(
+    this._listasComunes.listasComunes('', 'estados-comunicacion-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaEstados = response.data;
             alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             this.JsonOutgetlistaEstados = response.data;
           }
@@ -985,15 +986,15 @@ export class IngresoComunicacionComponent implements OnInit{
   *******************************************************/
   getlistaPaises() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","paises-list").subscribe(
+    this._listasComunes.listasComunes('', 'paises-list').subscribe(
         response => {
           // successful so redirect to return url
           this.mensajes = response.msg;
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaPaises = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaPaises = response.data;
@@ -1013,15 +1014,15 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaTipoInstituciones() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","tipo-instituciones-sreci-list").subscribe(
+    this._listasComunes.listasComunes('', 'tipo-instituciones-sreci-list').subscribe(
         response => {
           // successful so redirect to return url
           this.mensajes = response.msg;
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTipoInstitucion = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaTipoInstitucion = response.data;
@@ -1043,15 +1044,15 @@ export class IngresoComunicacionComponent implements OnInit{
       this.params.idTipoInstitucion = this.comunicacion.idTipoInstitucion;
       //Llamar al metodo, de Login para Obtener la Identidad
       //console.log(this.params);
-      this._listasComunes.listasComunes(this.params,"instituciones-sreci-list").subscribe(
+      this._listasComunes.listasComunes(this.params, 'instituciones-sreci-list').subscribe(
         response => {
           // successful so redirect to return url
           this.mensajes = response.msg;
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaInstitucion = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             this.JsonOutgetlistaInstitucion = response.data;
             // console.log(response.data);
@@ -1069,15 +1070,15 @@ export class IngresoComunicacionComponent implements OnInit{
   * ( tipo-documento-list ).
   ******************************************************/
   getlistaTipoDocumentos() {
-      this._listasComunes.listasComunes( "" ,"tipo-documento-list").subscribe(
+      this._listasComunes.listasComunes( '' , 'tipo-documento-list').subscribe(
         response => {
           // successful so redirect to return url
           this.mensajes = response.msg;
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTiposDocumentos = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             this.JsonOutgetlistaTiposDocumentos = response.data;
             //console.log(response.data);
@@ -1108,27 +1109,27 @@ export class IngresoComunicacionComponent implements OnInit{
      this.JsonOutgetlistaInstitucion = [];
 
      //Evaluamos el valor del Tipo de Documento
-     if( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
+     if ( this.paramsSecuenciaIn.idTipoDocumento == 1 ){
        /*this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "5";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '5';
+       this.pattern = '';
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 2 ) {
        /*this.paramsSecuencia.codSecuencial = "COM-IN-MEMO";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "5";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '5';
+       this.pattern = '';
 
        //Seteamos la Institcuion por Defecto sreci
        this.comunicacion.idPais = 1;
@@ -1142,24 +1143,24 @@ export class IngresoComunicacionComponent implements OnInit{
        /*this.paramsSecuencia.codSecuencial = "COM-IN-NOTA-VERBAL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
       //  $( "#codReferenciaSreci" ).prop( "disabled", true );
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "5";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '5';
+       this.pattern = '';
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 4 ) {
        /*this.paramsSecuencia.codSecuencial = "COM-IN-CIRCULAR";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
        // Seteo de variable de validaciones | Oficio de Salida
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "5";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '5';
+       this.pattern = '';
 
        //Seteamos la Institcuion por Defecto sreci
        this.comunicacion.idPais = 1;
@@ -1173,62 +1174,62 @@ export class IngresoComunicacionComponent implements OnInit{
        /*this.paramsSecuencia.codSecuencial = "COM-IN-MAIL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_mail";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       $( '#codReferenciaSreci' ).prop( 'disabled', false );
        // Seteo de variable de validaciones | Correo
-       this.maxlengthCodReferencia = "45";
-       this.minlengthCodReferencia = "10";
+       this.maxlengthCodReferencia = '45';
+       this.minlengthCodReferencia = '10';
       //  this.pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
-       this.pattern ="^[^@]+@[^@]+\.[a-zA-Z]{2,}$";
+       this.pattern = '^[^@]+@[^@]+\.[a-zA-Z]{2,}$';
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 7 ){
        /*this.paramsSecuencia.codSecuencial = "COM-IN-CALL";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_call";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       $( '#codReferenciaSreci' ).prop( 'disabled', false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "8";
-       this.minlengthCodReferencia = "8";
-       this.pattern ="^([0-9])*$";
+       this.maxlengthCodReferencia = '8';
+       this.minlengthCodReferencia = '8';
+       this.pattern = '^([0-9])*$';
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 8 ) {
        /*this.paramsSecuencia.codSecuencial = "COM-IN-VERB";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_verb";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       $( '#codReferenciaSreci' ).prop( 'disabled', false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "15";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '15';
+       this.pattern = '';
 
      } else if ( this.paramsSecuenciaIn.idTipoDocumento == 9 ) {
        /*this.paramsSecuencia.codSecuencial = "COM-IN-REUNION";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       $( '#codReferenciaSreci' ).prop( 'disabled', false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "15";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '15';
+       this.pattern = '';
 
      }else if ( this.paramsSecuenciaIn.idTipoDocumento == 10 ) {
        /*this.paramsSecuencia.codSecuencial = "COM-IN-EVENTO";
        this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
        this.paramsSecuencia.idTipoDocumento = this.paramsSecuenciaIn.idTipoDocumento;*/
-       this.comunicacion.codReferenciaSreci = "";
+       this.comunicacion.codReferenciaSreci = '';
        // Disable codReferenciaSreci
-       $( "#codReferenciaSreci" ).prop( "disabled", false );
+       $( '#codReferenciaSreci' ).prop( 'disabled', false );
        // Seteo de variable de validaciones | Llamada
-       this.maxlengthCodReferencia = "40";
-       this.minlengthCodReferencia = "15";
-       this.pattern ="";
+       this.maxlengthCodReferencia = '40';
+       this.minlengthCodReferencia = '15';
+       this.pattern = '';
      }// Fin de Condicion
 
      //Objetivo: Seleccionar la Secuencia
@@ -1242,15 +1243,15 @@ export class IngresoComunicacionComponent implements OnInit{
 
 
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
+    this._listasComunes.listasComunesToken(this.paramsSecuencia, 'gen-secuencia-comunicacion-in' ).subscribe(
         response => {
           // successful so redirect to return url
           this.mensajes = response.msg;
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaNew = response.data;
             alert(response.msg);
-            this.addToast(4,"Error",this.mensajes);
+            this.addToast(4, 'Error', this.mensajes);
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
             console.log(response.data);
@@ -1269,7 +1270,7 @@ export class IngresoComunicacionComponent implements OnInit{
   * indicada con su cosigo
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
-  getCodigoCorrespondenciaDet( idTipoDocumentoIn:number ){
+  getCodigoCorrespondenciaDet( idTipoDocumentoIn: number ){
      //Llamar al metodo, de Login para Obtener la Identidad
      this.paramsSecuenciaDet.idTipoDocumento = this.comunicacion.idTipoDocumento;
      this.paramsSecuenciaDet.idTipoComunicacion = 1;
@@ -1324,14 +1325,14 @@ export class IngresoComunicacionComponent implements OnInit{
 
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);
-    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
+    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, 'gen-secuencia-comunicacion-in' ).subscribe(
         response => {
           // successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaDet = response.data;
             alert(response.msg);
-            this.addToast(4,"Error",response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
             console.log(response.data);
@@ -1359,7 +1360,7 @@ export class IngresoComunicacionComponent implements OnInit{
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
     // Direccion del Metodo de la API
-    let url = this.urlConfigLocal + "/comunes/documentos-upload-options";
+    let url = this.urlConfigLocal + '/comunes/documentos-upload-options';
     // let url = "http://localhost/sicdoc/symfony/web/app_dev.php/comunes/documentos-upload-options";
     // let url = "http://172.17.0.250/sicdoc/symfony/web/app.php/comunes/documentos-upload-options";
 
@@ -1369,14 +1370,14 @@ export class IngresoComunicacionComponent implements OnInit{
     this.codigoSecuencia = this.JsonOutgetCodigoSecuenciaNew.codSecuencial;
     // this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew[0].valor2 + 1;
     this.valorSecuencia  = this.JsonOutgetCodigoSecuenciaNew.valor2 + 1;
-    this.codigoSec = this.codigoSecuencia + "-" + this.valorSecuencia;
+    this.codigoSec = this.codigoSecuencia + '-' + this.valorSecuencia;
 
     this.codigoSec = this.codigoSec + '-' + this.nextDocumento;
     this.nextDocumento = this.nextDocumento + 1;
 
     // Tamaño
-    let sizeByte:number = this.filesToUpload[0].size;
-    let siezekiloByte:number =  Math.round( sizeByte / 1024 );
+    let sizeByte: number = this.filesToUpload[0].size;
+    let siezekiloByte: number =  Math.round( sizeByte / 1024 );
 
     this.seziDocumento = ( siezekiloByte / 1024 );
 
@@ -1386,20 +1387,20 @@ export class IngresoComunicacionComponent implements OnInit{
 
     this.nombreDoc = nameDoc;
 
-    var filename = $("#pdfDocumento").val();
+    let filename = $('#pdfDocumento').val();
 
     // Use a regular expression to trim everything before final dot
     this.extencionDocumento = filename.replace(/^.*\./, '');
 
     //Modificacion; Cuando la extencion es PDF => pdf
-      if( this.extencionDocumento == "PDF" ){
-        this.extencionDocumento = "pdf";
-      }else if( this.extencionDocumento == "jpg" ) {
-        this.extencionDocumento = "jpeg";
+      if ( this.extencionDocumento == 'PDF' ){
+        this.extencionDocumento = 'pdf';
+      }else if ( this.extencionDocumento == 'jpg' ) {
+        this.extencionDocumento = 'jpeg';
       }
 
 
-     let sendParms = "json=" + "";
+     let sendParms = 'json=' + '';
 
      // Parametro para documento Seleccionado
      this.comunicacion.pdfDocumento = this.codigoSec;
@@ -1412,10 +1413,10 @@ export class IngresoComunicacionComponent implements OnInit{
           this.resultUpload = result;
           status = this.resultUpload.status;
           console.log(this.resultUpload);
-          if(status === "error"){
+          if (status === 'error'){
             console.log(this.resultUpload);
             // alert(this.resultUpload.msg);
-            this.addToast(4,"Error",this.resultUpload.msg);
+            this.addToast(4, 'Error', this.resultUpload.msg);
           } else {
             // Añadimos a la Tabla Temporal los Items Subidos
             this.createNewFileInput();
@@ -1440,20 +1441,20 @@ export class IngresoComunicacionComponent implements OnInit{
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    listarCodigoCorrespondencia(){
-    this.paramsSecuencia.codSecuencial = "COM-IN-OFI";
-    this.paramsSecuencia.tablaSecuencia = "tbl_comunicacion_enc";
-    this.paramsSecuencia.idTipoDocumento = "1";
-    let nextCodComunicacion:string = "";
+    this.paramsSecuencia.codSecuencial = 'COM-IN-OFI';
+    this.paramsSecuencia.tablaSecuencia = 'tbl_comunicacion_enc';
+    this.paramsSecuencia.idTipoDocumento = '1';
+    let nextCodComunicacion: string = '';
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);
-    this._listasComunes.listasComunesToken(this.paramsSecuencia, "gen-secuencia-comunicacion-in" ).subscribe(
+    this._listasComunes.listasComunesToken(this.paramsSecuencia, 'gen-secuencia-comunicacion-in' ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaNew = response.data;
             alert(response.msg);
-            this.addToast(4,"Error",response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaNew = response.data;
 
@@ -1474,20 +1475,20 @@ export class IngresoComunicacionComponent implements OnInit{
   * (gen-secuencia-comunicacion-in).
   ******************************************************/
    listarCodigoCorrespondenciaDet(){
-    this.paramsSecuenciaDet.codSecuencial = "COM-IN-DET-OFI";
-    this.paramsSecuenciaDet.tablaSecuencia = "tbl_comunicacion_det";
-    this.paramsSecuenciaDet.idTipoDocumento = "1";
-    let nextCodComunicacion:string = "";
+    this.paramsSecuenciaDet.codSecuencial = 'COM-IN-DET-OFI';
+    this.paramsSecuenciaDet.tablaSecuencia = 'tbl_comunicacion_det';
+    this.paramsSecuenciaDet.idTipoDocumento = '1';
+    let nextCodComunicacion: string = '';
     //Llamar al metodo, de Login para Obtener la Identidad
     //console.log(this.params);
-    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, "gen-secuencia-comunicacion-in" ).subscribe(
+    this._listasComunes.listasComunesToken(this.paramsSecuenciaDet, 'gen-secuencia-comunicacion-in' ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetCodigoSecuenciaDet = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetCodigoSecuenciaDet = response.data;
             //console.log(response.data);
@@ -1523,13 +1524,13 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaDireccionesSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+    this._listasComunes.listasComunes('', 'dir-sreci-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaDireccionSRECI = response.data;
@@ -1549,13 +1550,13 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaDireccionesSRECIAcom() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes("","dir-sreci-list").subscribe(
+    this._listasComunes.listasComunes('', 'dir-sreci-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaDireccionSRECIAcom = response.data;
@@ -1577,14 +1578,14 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     this.paramsSubDir.idDireccionSreci = this.comunicacion.idDireccionSreci;
 
-    this._listasComunes.listasComunes( this.paramsSubDir,"subdir-sreci-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsSubDir, 'subdir-sreci-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionSRECI = response.data;
             alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECI = response.data;
@@ -1609,14 +1610,14 @@ export class IngresoComunicacionComponent implements OnInit{
 
     console.log(this.paramsSubDirComVinculante);
 
-    this._listasComunes.listasComunes( this.paramsSubDirComVinculante,"com-vinculantes-subdir-sreci-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsSubDirComVinculante, 'com-vinculantes-subdir-sreci-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECIComVinculantes = response.data;
@@ -1637,14 +1638,14 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaTipoFuncionariosSRECI() {
     //Llamar al metodo, de Login para Obtener la Identidad
-    this._listasComunes.listasComunes( "","tipo-funcionario-list").subscribe(
+    this._listasComunes.listasComunes( '', 'tipo-funcionario-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaTipoFuncionariosSRECI = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaTipoFuncionariosSRECI = response.data;
@@ -1668,14 +1669,14 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsTipoFuncionario.idTipoFuncionario = this.comunicacion.idTipoFuncionario;
     // this.paramsTipoFuncionario.idTipoFuncionario = this.comunicacion.idDeptoFuncional;
 
-    this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsTipoFuncionario , 'funcionarios-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaFuncionariosSRECI = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosSRECI = response.data;
@@ -1701,14 +1702,14 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de listasComunes para Obtener la Identidad
     this.paramsTipoFuncionario.idDeptoFuncional = this.comunicacion.idDeptoFuncional;
 
-    this._listasComunes.listasComunes( this.paramsTipoFuncionario ,"funcionarios-list-director").subscribe(
+    this._listasComunes.listasComunes( this.paramsTipoFuncionario , 'funcionarios-list-director').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaFuncionariosDirectoresSRECI = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaFuncionariosDirectoresSRECI = response.data;
@@ -1735,14 +1736,14 @@ export class IngresoComunicacionComponent implements OnInit{
     //Llamar al metodo, de Login para Obtener la Identidad
     this.paramsSubDirAcom.idDireccionSreci = this.comunicacion.idDireccionSreciAcom;
 
-    this._listasComunes.listasComunes( this.paramsSubDirAcom,"subdir-sreci-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsSubDirAcom, 'subdir-sreci-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
             this.JsonOutgetlistaSubDireccionSRECIAcom = response.data;
@@ -1766,13 +1767,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 1;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-ingresadas-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-ingresadas-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosIngresados = response.data;
-            this.countOficiosIngresados = "0";
+            this.countOficiosIngresados = '0';
             //alert(response.msg);
             // this.addToast(4,"Error", response.msg);
           }else{
@@ -1800,13 +1801,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 3;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-pendientes-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaNotasPendientes = response.data;
-            this.countNotasPendientes = "0";
+            this.countNotasPendientes = '0';
             //alert(response.msg);
             // this.addToast(4,"Error", response.msg);
           }else{
@@ -1834,13 +1835,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 1;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-pendientes-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosPendientes = response.data;
-            this.countOficiosPendientes = "0";
+            this.countOficiosPendientes = '0';
             //alert(response.msg);
             // this.addToast(4,"Error", response.msg);
           }else{
@@ -1869,13 +1870,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idTipoDoc = 1;
 
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-finalizados-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaOficiosFinalizados = response.data;
-            this.countOficiosFinalizados = "0";
+            this.countOficiosFinalizados = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -1902,13 +1903,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idTipoDoc = 3;
 
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-finalizados-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaNotasFinalizados = response.data;
-            this.countNotasFinalizados = "0";
+            this.countNotasFinalizados = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -1935,13 +1936,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 2;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-finalizados-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaMemosFinalizados = response.data;
-            this.countMemosFinalizados = "0";
+            this.countMemosFinalizados = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -1961,7 +1962,7 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   cleanContact(){
     //Borra el Contenido del Arreglo de Contactos
-    this.comunicacion.setTomail = "";
+    this.comunicacion.setTomail = '';
   } // FIN : FND-00011.1
 
 
@@ -1974,18 +1975,18 @@ export class IngresoComunicacionComponent implements OnInit{
   cleanComunicacionVinculante(){
     //Borra el Contenido del Arreglo de Comunicacones Vinculante
     this.paramsComVinculante = {
-      "idDeptoFuncional"  : "",
-      "idTipoDocumento"  : "",
-      "idTipoComunicacion"  : ""
+      'idDeptoFuncional'  : '',
+      'idTipoDocumento'  : '',
+      'idTipoComunicacion'  : ''
     };
 
     // Limpia los radio Buttons que este Chequedo
-    $(".fakeRadio").attr('checked', false);
+    $('.fakeRadio').attr('checked', false);
 
     // Inicializa el itemList de las Comunicaciones Viculantes
     this.itemComunicacionVincList = [];
 
-    this.comunicacion.idTipoDocumentoComVinc = "0";
+    this.comunicacion.idTipoDocumentoComVinc = '0';
     this.comunicacion.idDeptoFuncionalComVinc = 0;
     this.comunicacion.idDireccionSreciComVinc = 0;
   } // FIN : FND-00011.2
@@ -2007,13 +2008,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 2;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-pendientes-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaMemosPendientes = response.data;
-            this.countMemosPendientes = "0";
+            this.countMemosPendientes = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -2040,13 +2041,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 5;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-finalizados-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaCorreosFinalizados = response.data;
-            this.countCorreosFinalizados = "0";
+            this.countCorreosFinalizados = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -2073,13 +2074,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 5;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-pendientes-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaCorreosPendientes = response.data;
-            this.countCorreosPendientes = "0";
+            this.countCorreosPendientes = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -2106,13 +2107,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 7;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-finalizados-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-finalizados-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaLlamadasFinalizados = response.data;
-            this.countLlamadasFinalizados = "0";
+            this.countLlamadasFinalizados = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -2139,13 +2140,13 @@ export class IngresoComunicacionComponent implements OnInit{
     this.paramsIdTipoComSend.idFuncionarioAsignado = this.identity.idFuncionario;
     this.paramsIdTipoComSend.idTipoDoc = 7;
 
-    this._listasComunes.listasComunes( this.paramsIdTipoComSend, "com-pendientes-list").subscribe(
+    this._listasComunes.listasComunes( this.paramsIdTipoComSend, 'com-pendientes-list').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetListaLlamadasPendientes = response.data;
-            this.countLlamadasPendientes = "0";
+            this.countLlamadasPendientes = '0';
             //alert(response.msg);
           }else{
             //this.data = JSON.stringify(response.data);
@@ -2170,26 +2171,26 @@ export class IngresoComunicacionComponent implements OnInit{
 
    // Mes Actual
    let final_month = mesAct.toString();
-   if( mesAct <= 9 ){
-     final_month = "0" + final_month;
+   if ( mesAct <= 9 ){
+     final_month = '0' + final_month;
    }
 
    // Dia del Mes
    let day = this.fechaHoy.getDate(); // Dia
    let final_day = day.toString();
-   if( day <= 9 ){
-     final_day = "0" + final_day;
+   if ( day <= 9 ){
+     final_day = '0' + final_day;
    }
 
-   let newSecAct = this.codigoSec + "-"  + this.fechaHoy.getFullYear() +  "-" + final_month + "-" + final_day;
+   let newSecAct = this.codigoSec + '-'  + this.fechaHoy.getFullYear() +  '-' + final_month + '-' + final_day;
 
 
    // Agrega Items al Json
    this.JsonOutgetListaDocumentos.push({
-     "nameDoc": newSecAct,
-     "extDoc": this.extencionDocumento,
-     "pesoDoc": this.seziDocumento,
-     "nombreDoc" : this.nombreDoc
+     'nameDoc': newSecAct,
+     'extDoc': this.extencionDocumento,
+     'pesoDoc': this.seziDocumento,
+     'nombreDoc' : this.nombreDoc
    });
 
 
@@ -2222,16 +2223,16 @@ export class IngresoComunicacionComponent implements OnInit{
   protected onSelectedFunc( item: CompleterItem ) {
     // Validar si hay datos Previos
 
-    if( this.comunicacion.setTomail == '' ){
+    if ( this.comunicacion.setTomail == '' ){
       this.selectedFuncionarioAll = '';
     }
 
-    if( this.selectedFuncionarioAll == '' ){
+    if ( this.selectedFuncionarioAll == '' ){
       // alert( this.selectedFuncionarioAll );
-      this.selectedFuncionario = item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionario = item ? item.originalObject.emailFuncionario : '';
       this.selectedFuncionarioAll = this.selectedFuncionario;
     }else {
-      this.selectedFuncionario = this.selectedFuncionario + ',' + item? item.originalObject.emailFuncionario : "";
+      this.selectedFuncionario = this.selectedFuncionario + ',' + item ? item.originalObject.emailFuncionario : '';
       this.selectedFuncionarioAll = this.selectedFuncionarioAll + ',' + this.selectedFuncionario;
     }
 
@@ -2249,14 +2250,14 @@ export class IngresoComunicacionComponent implements OnInit{
   ******************************************************/
   getlistaFuncionariosSreci() {
     // Llamamos al Servicio que provee todas las Instituciones
-    this._listasComunes.listasComunes("","funcionarios-list-all").subscribe(
+    this._listasComunes.listasComunes('', 'funcionarios-list-all').subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaFuncionarios = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetlistaFuncionarios = response.data;
             // console.log(response.data);
@@ -2283,21 +2284,21 @@ export class IngresoComunicacionComponent implements OnInit{
     // Llamamos al Servicio que provee todas las Instituciones
     let direcconSreci = 0;
 
-    if( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
+    if ( this.comunicacion.idDireccionSreciAcom != null || this.comunicacion.idDireccionSreciAcom != 0 ){
         direcconSreci = this.comunicacion.idDireccionSreciAcom;
     }else {
       direcconSreci = 0;
     }
 
-    this._listasComunes.listasComunes("","sub-direcciones-sreci-list?idDireccionSreci=" + direcconSreci).subscribe(
+    this._listasComunes.listasComunes('', 'sub-direcciones-sreci-list?idDireccionSreci=' + direcconSreci).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
             this.itemList = [];
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetlistaSubDireccionesSrec = response.data;
 
@@ -2317,10 +2318,10 @@ export class IngresoComunicacionComponent implements OnInit{
     $('.chkSinSeguimiento').each(function () {
         if (this.checked) {
           //alert('Activado ' + this.comunicacionSinSeguimientoNew );
-          $("#estadoFin").val(1);
+          $('#estadoFin').val(1);
         } else{
           // alert('Activado ' + this.comunicacionSinSeguimientoNew );
-          $("#estadoFin").val(2);
+          $('#estadoFin').val(2);
         }
     });
   } // FIN | FND-000017
@@ -2333,11 +2334,11 @@ export class IngresoComunicacionComponent implements OnInit{
   * Descripcion: Delete de nuevo File input, en Tabla
   * ( deleteRowHomeForm ).
   ******************************************************/
-  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn:string, extDocumentoIn:string){
+  deleteRowHomeForm(homeFormIndex: number, codDocumentoIn: string, extDocumentoIn: string){
     // Borra el Elemento al Json
-    this.JsonOutgetListaDocumentos.splice(homeFormIndex,1);
+    this.JsonOutgetListaDocumentos.splice(homeFormIndex, 1);
     this.changeDetectorRef.detectChanges();
-    this.comunicacion.pdfDocumento = "";
+    this.comunicacion.pdfDocumento = '';
 
     // Ejecutamos la Fucnion que Borra el Archivo desde le Servidor
     this.borrarDocumentoServer(codDocumentoIn, extDocumentoIn);
@@ -2352,26 +2353,26 @@ export class IngresoComunicacionComponent implements OnInit{
   * Servidor
   * metodo ( borrar-documento-server ).
   ******************************************************/
-  borrarDocumentoServer(codDocumentoIn:string, extDocumentoIn:string) {
+  borrarDocumentoServer(codDocumentoIn: string, extDocumentoIn: string) {
     //Llamar al metodo, de Login para Obtener la Identidad
     // Agrega Items al Json
     this.JsonOutgetListaDocumentosDelete.codDocument =  codDocumentoIn;
     this.JsonOutgetListaDocumentosDelete.indicadorExt = 1;
 
     // Cambiamos la Extencion si es jpg
-    if( extDocumentoIn == "jpg" ){
-      extDocumentoIn = "jpeg";
+    if ( extDocumentoIn == 'jpg' ){
+      extDocumentoIn = 'jpeg';
     }
     this.JsonOutgetListaDocumentosDelete.extDocument = extDocumentoIn;
 
     this._uploadService.borrarDocumento( this.JsonOutgetListaDocumentosDelete ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             //this.JsonOutgetlistaEstados = response.data;
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }
         });
   } // FIN : FND-00019
@@ -2388,10 +2389,10 @@ export class IngresoComunicacionComponent implements OnInit{
   * Params: idDeptoFuncional, idTipoDocumento, idTipoComunicacion
   * ( vinculacionComunicacion/vinculacion-de-comunicacion ).
   **********************************************************/
-  getlistaComunicacionVinculanteAll(idOpcion:number) {
+  getlistaComunicacionVinculanteAll(idOpcion: number) {
     // Llamamos al Servicio que provee todas las Comunicaciones por DeptoFuncional
     // Condicionamos la Busqueda
-    if( idOpcion == 1 ){
+    if ( idOpcion == 1 ){
       this.paramsComVinculante.idDeptoFuncional = this.comunicacion.idDeptoFuncionalComVinc;
       this.paramsComVinculante.idTipoDocumento  = this.comunicacion.idTipoDocumentoComVinc;
       this.paramsComVinculante.idTipoComunicacion = [1];
@@ -2404,7 +2405,7 @@ export class IngresoComunicacionComponent implements OnInit{
     }else if ( idOpcion == 3 ){
       this.paramsComVinculante.idDeptoFuncional = this.comunicacion.idDeptoFuncionalComVinc;
       this.paramsComVinculante.idTipoDocumento  = this.comunicacion.idTipoDocumentoComVinc;
-      this.paramsComVinculante.idTipoComunicacion = [1,2];
+      this.paramsComVinculante.idTipoComunicacion = [1, 2];
       //console.log('Caso #3 Ambas');
     }
 
@@ -2412,12 +2413,12 @@ export class IngresoComunicacionComponent implements OnInit{
     this._vinculacionComunicacionService.listaComunicacionVinculantes( this.paramsComVinculante ).subscribe(
         response => {
           // login successful so redirect to return url
-          if(response.status == "error"){
+          if (response.status == 'error'){
             //Mensaje de alerta del error en cuestion
             this.JsonOutgetlistaComunicacionVinculante = response.data;
             this.itemComunicacionVincList = [];
             // alert(response.msg);
-            this.addToast(4,"Error", response.msg);
+            this.addToast(4, 'Error', response.msg);
           }else{
             this.JsonOutgetlistaComunicacionVinculante = response.data;
 
@@ -2446,15 +2447,15 @@ export class IngresoComunicacionComponent implements OnInit{
   * Descripcion: Libreria Toasty para los mensajes
   * Objetivo: Metodo de msg en la APP
   ******************************************************/
-  addToast(options:number,title:string, msg:string) {
+  addToast(options: number, title: string, msg: string) {
       let interval = 1000;
       let timeoutIn = 11000;
       let seconds = timeoutIn / 1000;
       let subscription: Subscription;
 
        let toastOptions: ToastOptions = {
-           title: this.getTitle(title,0),
-           msg: this.getMessage(msg,0),
+           title: this.getTitle(title, 0),
+           msg: this.getMessage(msg, 0),
            showClose: true,
            timeout: 7000,
            theme: 'bootstrap',
@@ -2498,6 +2499,6 @@ export class IngresoComunicacionComponent implements OnInit{
 
 // Interface de Parametros | de Instituciones
 export interface paramsInstituciones{
-   idPais:string;
-   idTipoInstitucion:string;
+   idPais: string;
+   idTipoInstitucion: string;
 }
